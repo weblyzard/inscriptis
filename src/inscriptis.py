@@ -46,7 +46,7 @@ class Parser(HTMLParser):
         self.buffer = ''
 
     def __if_not_then_append(self, ifnot):
-        if self.buffer[-len(ifnot):] != ifnot:
+        if not self.buffer.endswith(ifnot):
             self.buffer += ifnot
 
     def handle_starttag(self, tag, attrs):
@@ -149,19 +149,19 @@ class Parser(HTMLParser):
         pass
 
     def end_i(self):
-        self.__if_not_then_append(" ")
+        pass
 
     def start_b(self):
         pass
 
     def end_b(self):
-        self.__if_not_then_append(" ")
+        pass
 
     def start_u(self):
         pass
 
     def end_u(self):
-        self.__if_not_then_append(" ")
+        pass
 
     def start_a(self, attrs):
         self.in_a = True
@@ -183,13 +183,13 @@ class Parser(HTMLParser):
         pass
 
     def end_strike(self):
-        self.__if_not_then_append(" ")
+        pass
 
     def start_span(self, attrs):
         pass
 
     def end_span(self):
-        self.__if_not_then_append(" ")
+        pass
 
     def start_table(self):
         self.in_table = True

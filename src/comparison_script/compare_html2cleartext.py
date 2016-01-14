@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import sys, os
-test_dir = os.path.dirname(__file__)
+test_dir = '/tmp/'
 src_dir = '../'
+print("***" + test_dir)
 sys.path.insert(0, os.path.abspath(os.path.join(test_dir, src_dir)))
 
-from html2cleartext import Parser
+from inscriptis import Parser
 from bs4 import BeautifulSoup
 import html2text
 
