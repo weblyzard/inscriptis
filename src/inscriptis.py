@@ -1,19 +1,30 @@
+#!/usr/bin/env python
+# coding:utf-8
+"""
+Converts HTML to Text
+"""
+
+__author__ = "Fabian Odoni, Albert Weichselbraun, Samuel Abels"
+__copyright__ = "Copyright 2015, HTW Chur"
+__license__ = "GPL"
+__version__ = "0.0.1"
+__maintainer__ = "Fabian Odoni"
+__email__ = "fabian.odoni@htwchur.ch"
+__status__ = "Prototype"
+
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup
-import lxml
-import time
 import urllib
 import argparse
 
 
 class Cell:
-    data    = ''
+    data = ''
     colspan = 1
     rowspan = 1
 
 
 class Parser(HTMLParser):
-# class Html2Wiki():
     def __init__(self):
         HTMLParser.__init__(self)
         self.wiki = ''
@@ -42,7 +53,7 @@ class Parser(HTMLParser):
             self.buffer += '\n'
 
     def __flush(self):
-        self.wiki  += self.buffer
+        self.wiki += self.buffer
         self.buffer = ''
 
     def __if_not_then_append(self, ifnot):
@@ -96,25 +107,25 @@ class Parser(HTMLParser):
         self.__if_not_then_append('\n\n')
 
     def end_h1(self):
-         self.__if_not_then_append('\n\n')
+        self.__if_not_then_append('\n\n')
 
     def start_h2(self):
-         self.__if_not_then_append('\n\n')
+        self.__if_not_then_append('\n\n')
 
     def end_h2(self):
-         self.__if_not_then_append('\n\n')
+        self.__if_not_then_append('\n\n')
 
     def start_h3(self):
-         self.__if_not_then_append('\n\n')
+        self.__if_not_then_append('\n\n')
 
     def end_h3(self):
-         self.__if_not_then_append('\n\n')
+        self.__if_not_then_append('\n\n')
 
     def start_p(self):
-         self.__if_not_then_append('\n\n')
+        self.__if_not_then_append('\n\n')
 
     def end_p(self):
-         self.__if_not_then_append('\n\n')
+        self.__if_not_then_append('\n\n')
 
     def start_ul(self):
         self.in_ul = True
@@ -261,7 +272,7 @@ class Parser(HTMLParser):
         else:
             for cell in self.cells:
                 self.__output(('\t' * cell.colspan) + ' ' + cell.data.replace('\n', ''))
-        self.cells   = []
+        self.cells = []
         self.indent -= 1
         self.__flush()
 
@@ -274,68 +285,75 @@ class Parser(HTMLParser):
         self.buffer += '\n'
 
     def start_div(self):
-         self.__if_not_then_append('\n')
+        self.__if_not_then_append('\n')
 
     def end_div(self):
-         self.__if_not_then_append('\n')
+        self.__if_not_then_append('\n')
 
 
 def get_html(url_input):
-    try:
-        html = urllib.request.urlopen(url_input)
-        html_source = get_clean_bs_html(html.read())
-    except:
-        try:
-            with open(url_input, 'r') as open_file:
-                for line in open_file:
-                    html_source += line
-        except:
-            raise
-    return html_source
+    """ """
+    return urllib.request.urlopen(url_input)
 
 
-def get_clean_bs_html(input_data):
+def clean_html(input_data):
+    """ """
     soup = BeautifulSoup(input_data, "lxml")
     for script in soup(["script", "style"]):
         script.extract()
-    return str(soup).strip('\t\r\n')
+
+    html = str(soup).strip('\t\r\n')
+
+    '''
+    bad_tags = ['<i>', '</i>', '<b>', '</b>', '<u>', '</u>']
+    for tag in bad_tags:
+        html = html.replace(tag, '')
+    # '''
+
+    return html
 
 
-def get_output_html2cleartext(input_data):
+def clean_text(text):
+    """ """
+    while "\n\n\n" in text:
+        text = text.replace("\n\n\n", "\n\n")
+
+    text = "".join(text)
+    text = text.replace('  ', ' ')
+    text = text.replace(' \t', '\t')
+    text = text.replace('\t ', '\t')
+
+    return text
+
+
+def get_text(input_data):
+    """ """
     parser = Parser()
     parser.feed(input_data)
-    result = parser.wiki.replace("* \n", "\n")
-
-    while "\n\n\n" in result:
-        result = result.replace("\n\n\n", "\n\n")
-
-    return "".join(result)
-
-def get_cleartext(url, get_runtime=False):
-    html_source = get_html(url)
-
-    start_time = time.time()
-    cleartext = get_output_html2cleartext(html_source)
-    stop_time = time.time()
-    runtime = stop_time - start_time
-
-    if get_runtime:
-        result = cleartext, runtime
-    else:
-         result = cleartext
+    result = parser.wiki
+    result = clean_text(result)
 
     return result
 
+
+def get_text_from_url(url):
+    """ """
+    html = get_html(url)
+    html = clean_html(html.read())
+    text = get_text(html)
+
+    return text
+
+
 def get_args():
+    """ """
     parser = argparse.ArgumentParser(description='Converts HTML from file or url to a clean text version')
-
-    parser.add_argument('-t', '--time', action='store_true', help='get runtime' )
-    parser.add_argument('-u', '--input', help='Html input either from a file or an url' )
-    parser.add_argument('input', nargs='?', help='Html input either from a file or an url' )
+    parser.add_argument('-u', '--input', help='Html input either from a file or an url')
+    parser.add_argument('input', nargs='?', help='Html input either from a file or an url')
     parser.add_argument('-o', '--output', type=str, help='Define file to save output to')
-    parser.add_argument('-p', '--printout', action='store_true', help='Print the output on the console' )
-
+    parser.add_argument('-p', '--printout', action='store_true', help='Print the output on the console')
     args = parser.parse_args()
+
     return args
 
 
@@ -347,19 +365,12 @@ if __name__ == "__main__":
     else:
         url = args.input
 
-    if args.time:
-        cleartext, runtime = get_cleartext(url, True)
-    else:
-        cleartext = get_cleartext(url)
+    text = get_text_from_url(url)
 
     if args.output:
         with open(args.output, 'w') as open_file:
-            if args.time:
-                open_file.write("Runtime: {}\n".format(runtime))
-            for line in cleartext:
+            for line in text:
                 open_file.write(line)
 
     if args.printout:
-        if args.time:
-            print("Runtime: {}\n".format(runtime))
-        print(cleartext)
+        print(text)

@@ -3,8 +3,6 @@
 
 from setuptools import setup, find_packages
 
-from sys import exit
-
 setup(
       ###########################################
       ## Metadata
@@ -19,6 +17,6 @@ setup(
 
       ###########################################
       ## Package List
-      packages = find_packages('src'),
+      packages=find_packages('src'),
 
 )
