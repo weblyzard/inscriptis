@@ -50,16 +50,17 @@ except OSError as e:
         lynx_available = False
         raise
 
-benchmarking_dir = os.path.dirname(__file__)
-src_dir = '../src'
-sys.path.insert(0, os.path.abspath(os.path.join(benchmarking_dir, src_dir)))
+benchmarking_root = os.path.dirname(__file__)
+benchmarking_results_dir = '/benchmarking_results/'
+src_dir = os.path.join(benchmarking_root, '../src')
+sys.path.insert(0, os.path.abspath(src_dir))
 import inscriptis
 
 timestamp = str(datetime.now()).replace(" ", "_").replace(":", "-").split(".")[0]
 
 
 def save_to_file(algorithm, url, data):
-    with open(benchmarking_dir + '/benchmarking_results/' + timestamp + '/output_{}_{}.txt'.format(algorithm, url), 'w') as output_file:
+    with open(benchmarking_root + benchmarking_results_dir + timestamp + '/output_{}_{}.txt'.format(algorithm, url), 'w') as output_file:
         output_file.write(data)
 
 
@@ -156,27 +157,18 @@ def pipeline():
     run_inscriptis = True
 
     # These are a few predefined urls the script will
-    sources = ["http://www.watson.de",
-               "http://www.watson.ch/Digital%20&%20Games/Android/134350872-Der-Monster-Akku-in-diesem-Smartphone-h%C3%A4lt-bis-15-Tage",
-               "http://www.heise.de",
-               "http://www.heise.de/newsticker/meldung/Fairphone-2-im-Test-Das-erste-modulare-Smartphone-3043417.html",
-               "http://www.nzz.de",
-               "http://www.nzz.ch/mobilitaet/auto-mobil/bekenntnis-zum-stromauto-ld.3630",
-               "https://de.wikipedia.org/wiki/Wikipedia:Hauptseite",
-               "https://de.wikipedia.org/wiki/Python_(Programmiersprache)",
-               "https://de.wikipedia.org/wiki/Chur",
-               "http://jr-central.co.jp",
-               "http://www.aljazeera.net/portal",
-               "http://www.aljazeera.net/news/humanrights/2015/12/14/%D8%A3%D9%88%D8%A8%D8%A7%D9%85%D8%A7-%D9%8A%D8%AC%D8%AF%D8%AF-%D8%A7%D9%84%D8%AA%D8%B2%D8%A7%D9%85%D9%87-%D8%A8%D8%A5%D8%BA%D9%84%D8%A7%D9%82-%D8%BA%D9%88%D8%A7%D9%86%D8%AA%D8%A7%D9%86%D8%A7%D9%85%D9%88",
-               "http://www.htwchur.ch"]
+    sources = []
+    with open(os.path.join(benchmarking_root, 'url_list.txt')) as url_list:
+        for line in url_list:
+            sources.append(line)
 
-    if not os.path.exists(benchmarking_dir + '/benchmarking_results'):
-        os.makedirs(benchmarking_dir + '/benchmarking_results')
+    if not os.path.exists(benchmarking_root + benchmarking_results_dir[:-1]):
+        os.makedirs(benchmarking_root + benchmarking_results_dir[:-1])
 
-    if not os.path.exists(benchmarking_dir + '/benchmarking_results/' + timestamp):
-        os.makedirs(benchmarking_dir + '/benchmarking_results/' + timestamp)
+    if not os.path.exists(benchmarking_root + benchmarking_results_dir + timestamp):
+        os.makedirs(benchmarking_root + benchmarking_results_dir + timestamp)
 
-    with open(benchmarking_dir + '/benchmarking_results/' + timestamp + '/speed_comparisons.txt', 'w') as output_file:
+    with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'w') as output_file:
             output_file.write("")
 
     for source in sources:
@@ -196,7 +188,7 @@ def pipeline():
             source_name = source_name.replace(key, value)
         source_name = source_name[0:100]
 
-        with open(benchmarking_dir + '/benchmarking_results/' + timestamp + '/speed_comparisons.txt', 'a') as output_file:
+        with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'a') as output_file:
             output_file.write("\nURL: {}\n".format(source_name))
         print("\nURL: {}".format(source_name))
 
@@ -229,7 +221,7 @@ def pipeline():
         if run_beautifulsoup:
             algorithm = "beautifulsoup"
             start_time = time.time()
-            data = get_output_beautifulsoup(html.read())
+            data = get_output_beautifulsoup(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)
@@ -245,9 +237,9 @@ def pipeline():
         speed_table = get_speed_table(times)
         print(speed_table)
 
-        with open(benchmarking_dir + '/benchmarking_results/' + timestamp + '/speed_comparisons.txt', 'a') as output_file:
+        with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'a') as output_file:
             output_file.write(speed_table + "\n")
-    with open(benchmarking_dir + '/benchmarking_results/' + timestamp + '/speed_comparisons.txt', 'a') as output_file:
+    with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'a') as output_file:
         output_file.write("\n")
 
 if __name__ == "__main__":

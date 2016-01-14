@@ -61,7 +61,7 @@ class Parser(HTMLParser):
             self.buffer += ifnot
 
     def handle_starttag(self, tag, attrs):
-        if   tag == 'table': self.start_table()
+        if tag == 'table': self.start_table()
         elif tag == 'tr': self.start_tr()
         elif tag == 'th': self.start_th(attrs)
         elif tag == 'td': self.start_td(attrs)
@@ -83,7 +83,7 @@ class Parser(HTMLParser):
         elif tag == 'div': self.start_div()
 
     def handle_endtag(self, tag):
-        if   tag == 'table':  self.end_table();
+        if tag == 'table': self.end_table()
         elif tag == 'tr': self.end_tr()
         elif tag == 'th': self.end_th()
         elif tag == 'td': self.end_td()
@@ -292,12 +292,12 @@ class Parser(HTMLParser):
 
 
 def get_html(url_input):
-    """ """
+    """ Returns the HTML Code from an URL via urllib """
     return urllib.request.urlopen(url_input)
 
 
 def clean_html(input_data):
-    """ """
+    """ Cleans up the HTML Code """
     soup = BeautifulSoup(input_data, "lxml")
     for script in soup(["script", "style"]):
         script.extract()
@@ -314,7 +314,7 @@ def clean_html(input_data):
 
 
 def clean_text(text):
-    """ """
+    """ Cleans up the text """
     while "\n\n\n" in text:
         text = text.replace("\n\n\n", "\n\n")
 
@@ -327,7 +327,7 @@ def clean_text(text):
 
 
 def get_text(input_data):
-    """ """
+    """ Turns HTML into text """
     parser = Parser()
     parser.feed(input_data)
     result = parser.wiki
@@ -337,7 +337,7 @@ def get_text(input_data):
 
 
 def get_text_from_url(url):
-    """ """
+    """ Returns the text from an URL """
     html = get_html(url)
     html = clean_html(html.read())
     text = get_text(html)
@@ -346,7 +346,7 @@ def get_text_from_url(url):
 
 
 def get_args():
-    """ """
+    """ Parses the arguments if script is run directly via console """
     parser = argparse.ArgumentParser(description='Converts HTML from file or url to a clean text version')
     parser.add_argument('-u', '--input', help='Html input either from a file or an url')
     parser.add_argument('input', nargs='?', help='Html input either from a file or an url')
