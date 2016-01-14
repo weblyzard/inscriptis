@@ -326,7 +326,7 @@ def clean_text(text):
     return text
 
 
-def get_text(input_data):
+def get_text_from_html(input_data):
     """ Turns HTML into text """
     parser = Parser()
     parser.feed(input_data)
@@ -340,7 +340,7 @@ def get_text_from_url(url):
     """ Returns the text from an URL """
     html = get_html(url)
     html = clean_html(html.read())
-    text = get_text(html)
+    text = get_text_from_html(html)
 
     return text
 
@@ -348,7 +348,7 @@ def get_text_from_url(url):
 def get_args():
     """ Parses the arguments if script is run directly via console """
     parser = argparse.ArgumentParser(description='Converts HTML from file or url to a clean text version')
-    parser.add_argument('-u', '--input', help='Html input either from a file or an url')
+    parser.add_argument('-i', '--input', help='Html input either from a file or an url')
     parser.add_argument('input', nargs='?', help='Html input either from a file or an url')
     parser.add_argument('-o', '--output', type=str, help='Define file to save output to')
     parser.add_argument('-p', '--printout', action='store_true', help='Print the output on the console')

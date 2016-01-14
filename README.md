@@ -6,41 +6,46 @@ A python based HTML to text converter based on SpiffWikiMarkup by Samuel Abel.
 * BeautifulSoup4
 * lxml
 
-
 ### Usage
 
-Convert single url
+Get text from url
 The "http://" prefix must be also entered since urllib will not
 ```python
-from inscriptis import get_cleartext
+from inscriptis import get_text_from_url
 
 url = "http://www.informationscience.ch"
-clear_text = get_cleartext(url)
-print(clear_text)
+text = get_text_from_url(url)
+
+print(text)
 ```
 
-Convert multiple urls
+Get text from html
 ```python
-from inscriptis import get_cleartext
-
-urls = ["http://www.informationscience.ch", "http://www.informationswissenschaft.ch"]
-clear_texts = []
-clear_texts.append(get_cleartext(url) for url in urls)
-print(clear_texts)
-```
-
-To get the runtime of the script use "get_runtime=True"
-```python
-from inscriptis import get_cleartext
+from inscriptis import get_text_from_html
 
 url = "http://www.informationscience.ch"
-clear_text, runtime = get_cleartext(url, get_runtime=True)
-print("It took {} seconds to convert the html to cleartext\n".format(runtime))
-print(clear_text)
+html = urllib.request.urlopen(url_input)
+
+text = get_text_from_html(html)
+
+print(text)
 ```
 
-# To run the comparison script call the script from the command line without any arguments
->>> $ python3.5 tests
+### Benchmarking
+To run the benchmarking script ```run_benchmarking.py``` in ```benchmarking```.
+In ```def pipeline()``` set the which HTML -> Text algorithms to be executed by modifying 
+```python
+run_lynx = True
+run_justext = True
+run_html2text = True
+run_beautifulsoup = True
+run_inscriptis = True
+```
 
-# The module can also be called from the command line
-# python3.5 inscriptis.py -i
+In ```url_list.txt``` the URLs to be parsed can be specified by adding them to the file, one per line with no additional formatting. URLs need to be complete (including http:// or https://)
+e.g.
+```
+http://www.informationscience.ch
+https://en.wikipedia.org/wiki/Information_science
+...
+```
