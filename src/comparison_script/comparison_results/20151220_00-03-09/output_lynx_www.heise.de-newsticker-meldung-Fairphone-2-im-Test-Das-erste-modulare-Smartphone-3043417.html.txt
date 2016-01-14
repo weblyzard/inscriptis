@@ -1,0 +1,244 @@
+   #alternate Vorige Meldung Naechste Meldung Startseite Copyright Suche Aktuelle News von heise online Aktuelle News von heise online (für ältere RSS-Reader) publisher
+
+   Einloggen auf heise online
+   heise online
+     *
+          + News
+          + heise Developer
+          + heise Netze
+          + heise Open Source
+          + heise Security
+     *
+          + c't
+          + iX
+          + Technology Review
+          + c't Digitale Fotografie
+          + Mac & i
+          + Make
+     *
+          + Telepolis
+          + heise Autos
+          + heise Foto
+          + TechStage
+     *
+          + heise Download
+          + Preisvergleich
+          + Whitepapers
+          + Webcasts
+          + Stellenmarkt
+          + IT-Markt
+          + Tarifrechner
+     *
+          + heise shop
+          + Artikel-Archiv
+          + Zeitschriften-Abo
+          + Veranstaltungen
+          + Arbeiten bei Heise
+
+   ____________________ Los
+
+   News
+     * Newsticker
+     * 7-Tage-News
+     * Archiv
+     * Foren
+
+     * RSS
+     * Newsletter
+     * Google+
+     * Facebook
+     * Twitter
+     * Kontakt
+
+   Topthemen:
+    1. Windows 10
+    2. CES 2016
+    3. Amazon
+    4. iPad Pro
+    5. Android
+    6. iPhone 6s
+    7. VW-Skandal
+    8. Surface
+    9. VDS
+   10. iOS 9
+
+   heise online > News > 2015 > KW 51 >
+
+Fairphone 2 im Test: Das erste "modulare" Smartphone
+
+   « Vorige | Nächste »
+
+Fairphone 2 im Test: Das erste "modulare" Smartphone
+
+   heise online
+   14.12.2015 14:01 Uhr Martin Holland
+   vorlesen
+   [auf_macer-1299a2cdd0fda609-4fd129cc1283aec5.jpeg]
+
+   Die Module des Fairphone 2
+
+   (Bild: c't)
+
+   Mit dem Fairphone wollen die Macher beweisen, dass ein Smartphone umweltfreundlicher und transparenter hergestellt werden kann. Die zweite Version ist nun das erste wirklich "modulare" Mobiltelefon und hat nur wenige Schwächen, bilanziert c't.
+
+   Mit dem Fairphone 2 gibt es erstmals ein Smartphone, das man wirklich als "modular" bezeichnen kann. Der Schritt zu diesem Design sei teuer und riskant gewesen, habe aber geklappt, bilanziert c't nun im Test des Geräts. Akku und Display lassen sich ohne Werkzeug tauschen, andere Module ganz einfach mit einem Schraubendreher. Das soll die Nutzungsdauer des Smartphones verlängern – und so die Umweltbilanz verbessern.
+
+   Bild 1 von 8
+
+Fairphone 2 im Test (8 Bilder)
+
+   [Huellen_88877-cwo-rgb-3c77dddc486973ef.jpeg]
+
+   Die Rückseite lässt Fairphone absichtlich nicht lackieren, weil der Prozess für die Arbeiter gesundheitsschädlich sein kann. Deshalb sammeln sich auf dem Plastik schnell Kratzer.
+
+   Das zweite Fairphone hat 32 GByte Speicher, einen SD-Slot und Platz für zwei SIM-Karten. Der Qualcomm Snapdragon 801 ist schnell genug für eine flüssige Bedienung, das Full-HD-Display (5 Zoll) scharf und hell. Die größten Schwächen: Die Laufzeit von 5 bis 8 Stunden (Video/WLAN) ist unterdurchschnittlich, die Fotoqualität ebenfalls.
+
+   Als Betriebssystem dient ein kaum verändertes Android 5.1. In Zukunft sollen Nutzer ohne Garantieverlust auf ein anderes Betriebssystem wechseln können. Mit 525 Euro kostet das Fairphone 2 aber vergleichsweise viel, was nicht zuletzt an der niedrigen Stückzahl liegt.
+
+   Lesen Sie den gesamten Test des Fairphone 2 bei c't:
+     * Fairphone 2: Smartphone fürs gute Gewissen
+
+   (mho)
+
+   « Vorige | Nächste »
+
+   Kommentare lesen (137 Beiträge)
+
+   Forum zum Thema: Smartphones & Navis
+
+   http://heise.de/-3043417
+
+   Drucken
+
+   Mehr zum Thema Fairphone Fair IT Test Umweltschutz Smartphones
+   Weitere News zum Thema
+   Fairphone 2: Android-Smartphone in Modulbauweise
+   Fairphone 2: Android-Smartphone in Modulbauweise
+
+   Das nächste Fairphone soll besonders langlebig werden: Es hat eine bessere Ausstattung als der Vorgänger, das Display lässt sich ohne Werkzeug…
+   16. Juni 2015, 11:33 Uhr
+   Das zweite Fairphone: Bessere Hardware, teurer, ab Ende Sommer vorbestellbar
+   Das zweite Fairphone: Bessere Hardware, teurer, ab Ende Sommer vorbestellbar
+
+   Fairphone bereitet die zweite Version seines möglichst nachhaltigen Smartphones vor. Wir sprachen mit Technikchef Olivier Hebert über die technischen…
+   09. März 2015, 13:00 Uhr
+   Fairphone 2: 15.000 Vorbesteller für modular aufgebautes, fair hergestelltes Smartphone
+   Fairphone erreicht Ziel von 15.000 Vorbestellern
+
+   Das Fairphone 2 ist modular aufgebaut, unter anderem können Kamera und Bildschirm leicht ausgetauscht werden. Ein Blick auf den Prototypen des neuen,…
+   30. September 2015, 07:45 Uhr
+   iPhone-Ersatzteile: angeblich original, tatsächlich minderwertig
+   iPhone-Ersatzteile: angeblich original, tatsÃ¤chlich minderwertig
+
+   Zahlreiche Online-Händler locken Kunden mit "Original-Ersatzteilen" für iPhones. Stichproben von c't zeigen: Tatsächlich muss man mit nachgebauten…
+   11. November 2014, 13:59 Uhr
+   Themen im Trend
+   Aldi-Notebook Medion Erazer P7644 im Test
+   Aldi-Notebook Medion Erazer P7644
+
+   Wer bei Notebooks vom Lebensmitteldiscounter nur an besonders günstige Geräte denkt, muss umlernen: Ab dem 21.12. gibt es bei Aldi Süd einen…
+   "Leicht gepolstert": Maßnahmen gegen Website-Fingerprinting-Angriffe auf Tor
+   &quot;Leicht gepolstert&quot;: MaÃŸnahmen gegen Website-Fingerprinting-Angriffe auf Tor
+
+   Anonymes Surfen versuchen Staatsspione durch einen Abgleich von "Fingerabdrücken" besuchter Webseiten zu konterkarieren. Forscher in den Niederlanden…
+   14. Dezember 2015, 15:54 Uhr
+   Übererfüllung
+   Fahrbericht: Ford Ranger 3.2 TDCi 4x4
+
+   Der Ford Ranger wird nahezu weltweit angeboten, er ist in in 180 Ländern im Programm. Kaum ein anderes Ford-Modell hat eine ähnliche Reichweite.
+   Kalendertür 10 – Båstnäs
+
+   Ein ehemaliger Autofriedhof verseucht die schwedische Natur und wird dennoch von der Regierung unter Schutz gestellt. Heute ist er eine Pilgerstätte…
+   Zur heise online Startseite Top-News der Redaktion von heise online
+   Kuba und das Ende des US-EmbargosEin Staat organisiert den Weg ins Internet Kuba: Ein Staat organisiert den Weg ins Internet
+
+   Genau ein Jahr nach der Ankündigung des Endes der US-Blockadepolitik gegen Kuba wird immer deutlicher, wie der Inselstaat die…
+   58
+   Zivile DrohnenBundesregierung will Drohnen-Einsatz regeln Bundesregierung will Drohnen-Einsatz regeln
+
+   Das Verkehrsministerium arbeitet an Regeln für die Nutzung von zivilen Drohnen. Es soll deutliche Unterschiede zwischen privater…
+   89
+   Digitalisierte LandwirtschaftBauern-Apps und twitternde Schäfer Digitalisierte Landwirtschaft: Bauern-Apps und twitternde Schäfer
+
+   Twitternde Schäfer und Bauern, die ihre Daten in der Cloud ablegen: Landwirte im Südwesten sind nicht technikscheu. Das könnte…
+   20
+   Smart MeternBundesrat fordert Wahlfreiheit Bundesrat fordert Wahlfreiheit beim Einbau intelligenter Stromzähler
+
+   Haushalte mit einem Jahresstromverbrauch unter 6000 kWh sollen "Zwangsdigitalisierung" verhindern dürfen.
+   214
+   Anzeige
+   Anzeige
+   Ähnliche Artikel
+   Fairphone-Produktion in China
+
+   Das niederländische Start-up Fairphone lässt sein Smartphone vom chinesischen Auftragsfertiger A'Hong produzieren. Ein Blick auf die Arbeit an den…
+   Fairphone 2: Das Smartphone fürs gute Gewissen
+   Fairphone 2 Test
+
+   Das erste Fairphone sprach nur Weltverbesserer an, der Nachfolger ist auch technisch spannend: Er lässt sich kinderleicht in Module zerlegen und…
+   Fairphone im Kurztest
+
+   Das Fairphone soll sozialer und umweltfreundlicher sein als andere Smartphones. Unser Kurztest zeigt, was es rein technisch gesehen drauf hat.
+
+   Anzeige
+
+   Anzeige
+     * LEARNTEC 2016 - Lernen mit IT
+     * FiBu-Tutorial: Fehler in Rechnungen vermeiden
+     * Was ist dran an Microsofts „deutscher“ Cloud?
+     * Effizienter arbeiten - mehr erreichen!
+     * Überleben im Zeitalter rapiden Datenwachstums
+     * Das Insider Portal – Fakten zu aktuellen IT-Themen
+     * Erfolgreich Identitäten und Zugriffe managen!
+     * Wie Sie Ihre Stammdaten optimieren
+     * Shirts, die nur ein echter Nerd versteht
+     * So gelingt die Cloud-Migration
+
+     * heise online
+     * c't Magazin
+     * iX Magazin
+     * Technology Review
+     * Mac & i
+
+     * Telepolis
+     * Make
+     * Digitale Fotografie
+     * heise Autos
+     * heise Developer
+
+     * heise Foto
+     * heise Netze
+     * Open Source
+     * heise Security
+
+     * heise Video
+     * TechStage
+     * Download
+     * Preisvergleich
+     * Stellenmarkt
+
+     * Veranstaltungen
+     * IT-Markt
+     * heise Business Services
+     * Tarifrechner
+     * Shop
+
+     * Artikel-Archiv
+     * Abo
+     * Loseblattwerke
+     * RSS
+
+     * Leserforum
+     * Newsletter
+     * Suche
+     * iMonitor
+
+     * Datenschutzhinweis
+     * Impressum
+     * Kontakt
+     * Mediadaten
+     * News mobil
+     * 1712591
+     * Content Management by InterRed
+     * Hosted by Plus.line
+     * Copyright © 2015 Heise Medien

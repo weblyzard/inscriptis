@@ -1,0 +1,878 @@
+Einloggen auf heise online
+
+![heise online](//www.heise.de/icons/ho/heise_online_logo_top.gif)
+
+  *     * News
+    * heise Developer
+    * heise Netze
+    * heise Open Source
+    * heise Security
+  *     * c't
+    * iX
+    * Technology Review
+    * c't Digitale Fotografie
+    * Mac & i
+    * Make
+  *     * Telepolis
+    * heise Autos
+    * heise Foto
+    * TechStage
+  *     * heise Download
+    * Preisvergleich
+    * Whitepapers
+    * Webcasts
+    * Stellenmarkt
+    * IT-Markt
+    * Tarifrechner
+  *     * heise shop
+    * Artikel-Archiv
+    * Zeitschriften-Abo
+    * Veranstaltungen
+    * Arbeiten bei Heise
+
+News
+
+  * **Newsticker**
+  * **7-Tage-News**
+  * **Archiv**
+  * **Foren**
+  * RSS
+  * Newsletter
+  * Google+
+  * Facebook
+  * Twitter
+  * Kontakt
+
+Topthemen:
+
+  1. Windows 10
+  2. CES 2016
+  3. Amazon
+  4. iPad Pro
+  5. Android
+  6. iPhone 6s
+  7. VW-Skandal
+  8. Surface
+  9. VDS
+  10. iOS 9
+
+**Kuba und das Ende des US-Embargos**
+
+## Ein Staat organisiert den Weg ins Internet
+
+![Kuba: Ein Staat organisiert den Weg ins Internet](//3.f.ix.de/scale/geometry
+/695/q75/imgs/71/1/7/1/6/5/2/7/WLANHotspot_in_Havanna-08e68107807a5b49.jpg)
+
+Genau ein Jahr nach der Ankündigung des Endes der US-Blockadepolitik gegen
+Kuba wird immer deutlicher, wie der Inselstaat die Bevölkerung ins Internet
+bringen will. Die Voraussetzungen für eine Aufholjagd im IT-Bereich sind gar
+nicht schlecht.
+
+58 Kommentare
+
+  * mit Bilderstrecke
+
+**Zivile Drohnen**
+
+## Bundesregierung will Drohnen-Einsatz regeln
+
+![Bundesregierung will Drohnen-Einsatz
+regeln](//3.f.ix.de/scale/geometry/335/q75/imgs/71/1/7/1/6/5/2/7/urn-newsml-
+dpa-com-20090101-150903-99-05711_large_4_3-603f76bc7258db42-77bcce1aded7ab36-9
+dff86e9ab480065-ccb5378166912c30.jpeg)
+
+Das Verkehrsministerium arbeitet an Regeln für die Nutzung von zivilen
+Drohnen. Es soll deutliche Unterschiede zwischen privater und gewerblicher
+Nutzung geben.
+
+89 Kommentare
+
+**Digitalisierte Landwirtschaft**
+
+## Bauern-Apps und twitternde Schäfer
+
+![Digitalisierte Landwirtschaft: Bauern-Apps und twitternde
+Schäfer](//1.f.ix.de/scale/geometry/335/q75/imgs/71/1/7/1/6/5/2/7/index-
+fdae1d8beb89a7f5.jpeg)
+
+Twitternde Schäfer und Bauern, die ihre Daten in der Cloud ablegen: Landwirte
+im Südwesten sind nicht technikscheu. Das könnte sogar der Umwelt
+zugutekommen.
+
+20 Kommentare
+
+  * mit Bilderstrecke
+
+**Smart Metern**
+
+## Bundesrat fordert Wahlfreiheit
+
+![Bundesrat fordert Wahlfreiheit beim Einbau intelligenter Stromzähler](//3.f.
+ix.de/scale/geometry/215/q75/imgs/71/1/7/1/6/5/2/7/Stromz__hler-8d64df3b6d2e55
+b1-05d825a5e5905714-620a5fc067e0c64b.jpeg)
+
+Haushalte mit einem Jahresstromverbrauch unter 6000 kWh sollen
+"Zwangsdigitalisierung" verhindern dürfen.
+
+214 Kommentare
+
+**Linux Foundation **
+
+## Allianz für Blockchain-Standard
+
+![Linux Foundation schmiedet Blockchain-
+Allianz](//2.f.ix.de/scale/geometry/215/q75/imgs/71/1/7/1/6/5/2/7/wallet-
+schloss-b623ce49d1cca8c5.jpeg)
+
+Die Linux Foundation und Größen der IT- und Finanzbranche gründen eine
+Initiative für die Blockchain-Technik.
+
+16 Kommentare
+
+**Wolf 1061c**
+
+## Bewohnbarer Exoplanet bei Nachbarstern
+
+![Astronomen entdecken potenziell bewohnbaren Planeten bei Nachbarstern](//3.f
+.ix.de/scale/geometry/215/q75/imgs/71/1/7/1/6/5/2/7/Wolf_1061_planet_orbits_Ko
+pie-8b6e228b43af5a54.jpeg)
+
+Die Möglichkeit außerirdischen Lebens fasziniert. Manche Planeten bieten die
+nötigen Voraussetzungen.
+
+219 Kommentare
+
+  * mit Bilderstrecke
+
+**Ausprobiert**
+
+## Stereolithographie-3D-Drucker Form 2 von Formlabs
+
+![Ausprobiert: Stereolithographie-3D-Drucker Form 2 von Formlabs](//2.f.ix.de/
+scale/geometry/335/q75/imgs/71/1/7/1/6/5/2/7/Anriss-7c15205f19477340.jpeg)
+
+Der Form 2 mit stärkerem Laser und größerem Bauraum gehörte zu den wenigen
+Neuheiten auf der diesjährigen 3D-Druck-Messe Euromold. Wir konnten eines der
+ersten Testgeräte ergattern – und sind jetzt beeindruckt.
+
+37 Kommentare
+
+  * mit Bilderstrecke
+
+**Sicherheitslücke**
+
+## FBI untersucht Schnüffelcode bei Juniper
+
+![Computer-Tastatur](//1.f.ix.de/scale/geometry/335/q75/imgs/71/1/7/1/6/5/2/7/
+ir_engine-747e379a00e5fa61.jpeg)
+
+Juniper hat Schadcode im eigenen Betriebssystem gefunden, der die Geräte und
+darüber laufenden verschlüsselten Datenverkehr angreifbar macht. Nun schaltet
+sich das FBI ein.
+
+62 Kommentare
+
+  * Juniper findet Schnüffelcode bei sich selbst
+
+###  Windows 10 Mobile: Veröffentlichung für ältere Geräte erst ab Anfang 2016
+
+  * gestern, 18:32 Uhr
+  * 36 Kommentare
+![Nokia Lumia 920](//2.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/5/3/8
+/lumia920_39100296_original-655f2371ac189920.jpeg)
+
+Das Gratis-Upgrade auf Windows 10 Mobile für Smartphones mit Windows Phone 8
+und 8.1 lässt weiter auf sich warten. Anfang 2016 soll es für die ersten
+Lumia-Geräte aber soweit sein.
+
+###  Mehr Geld für Planetenforschung und Space Launch System: NASA-Budget
+aufgestockt
+
+  * gestern, 16:48 Uhr
+  * 9 Kommentare
+  * mit Bilderstrecke
+![Space Launch System](//2.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/5
+/2/3/13765689965_1233e3ae2a_o-27fc90e388630468.jpeg)
+
+Im Jahr 2016 bekommt die US-Raumfahrtbehörde NASA rund 1,3 Milliarden US-
+Dollar mehr als erwartet. Die Gewinner der Budgeterhöhung sind zum Beispiel
+die Planetenforschung und das Space Launch System - wie schon im vergangenen
+Jahr.
+
+  * Die phantastischen Abenteuer des Raumschiffs Orion: Start geglückt, NASA-Raumkapsel auf dem Weg
+
+###  US-Kongress verabschiedet Gesetz für Cybersicherheit mit
+Überwachungslizenz
+
+  * gestern, 16:43 Uhr
+  * 6 Kommentare
+![Docker - Container - Sicherheit](//1.f.ix.de/scale/geometry/160x90/q75/imgs/
+18/1/7/1/6/5/4/2/docker-sec-32eb4278f25912a6.jpeg)
+
+Das Repräsentantenhaus und der Senat haben ohne weitere Aussprache einen
+umstrittenen Cybersecurity Act beschlossen, der in ein Budgetgesetz eingebaut
+worden war. Firmen können so Informationen direkt mit der NSA austauschen.
+
+###  Arbeit im "digitalen Zeitalter": Arbeitgeber dringen auf Ende des starren
+Acht-Stunden-Tags
+
+  * gestern, 15:55 Uhr
+  * 156 Kommentare
+![Arbeit im "digitalen Zeitalter": Arbeitgeber dringen auf Ende des starren
+Acht-Stunden-Tags](//1.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/5/3/4
+/Arbeit1-281a4be969aec2c0.jpeg)
+
+Sheena Easton sang im Hit "Morning Train": "Er arbeitet von neun bis fünf."
+Der Acht-Stunden-Tag ist jedoch oft nicht mehr die Realität. Die Arbeitgeber
+wollen die Arbeitszeitgesetze deshalb ändern: Sie passten nicht mehr ins
+digitale Zeitalter.
+
+  * Sind acht Stunden genug? Streit um starre Regeln zur Arbeitszeit
+
+###  Erste Verfassungsbeschwerde gegen neue Vorratsdatenspeicherung
+
+  * gestern, 15:23 Uhr
+  * 78 Kommentare
+![Vorratsdatenspeicherung](//1.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1
+/6/5/3/0/urn-newsml-dpa-
+com-20090101-150612-99-07157_large_4_3-d0debe2d1f11b6ef.jpeg)
+
+Eine Berliner Anwaltskanzlei hat am gleichen Tag, an dem das neue Gesetz zum
+anlasslosen Protokollieren von Nutzerspuren im Netz und im Mobilfunk in Kraft
+trat, bereits Klage dagegen in Karlsruhe erhoben. Weitere solche Initiativen
+sind geplant.
+
+  * Gesetz zur neuen Vorratsdatenspeicherung tritt in Kraft
+
+###  Schulunterricht: Baden-Württemberg will Informatik stärken
+
+  * gestern, 15:02 Uhr
+  * 24 Kommentare
+![Programmieren auf dem
+Stundenplan](//2.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/5/1/5/urn-
+newsml-dpa-com-20090101-150902-99-05243_large_4_3-95869eb4633e7566.jpeg)
+
+Noch im Sommer hatte es geheißen, Baden-Württemberg wolle den Informatik-
+Unterricht an Unter- und Mittelstufe in ein Fach "Medienbildung" aufgehen
+lassen. Das ist wohl vom Tisch, denn zumindest in der 7. Klasse solle es ein
+Pflichtfach Informatik geben.
+
+###  Britischer Geheimdienst betreibt "Big Brother"-Datenbank Preston
+
+  * gestern, 14:24 Uhr
+  * 16 Kommentare
+![Vernetzte
+Menschheit](//3.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/5/2/0/urn-
+newsml-dpa-com-20090101-150228-99-02633_large_4_3-1f697308065fa8a2.jpeg)
+
+Am Parlament vorbei hat der britische Inlandsgeheimdienst MI5 schon vor 15
+Jahren mit einer massiven Vorratsspeicherung von Telekommunikations- Finanz-
+und Reisedaten begonnen, enthüllt der "Echelon"-Entdecker Duncan Campbell.
+
+###  Linux-Distribution Rosa R6 erstmals mit LXQt-Desktop
+
+  * gestern, 14:03 Uhr
+  * 41 Kommentare
+![Linux-Distribution Rosa R6 erstmals mit LXQt-
+Desktop](//1.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/5/1/2/rosa-
+cf75d35ca2e1dfdc.jpeg)
+
+Die Rosa-Entwickler haben Rosa R6 Desktop Fresh LXQt veröffentlicht, eine
+ressourcenschonende Variante ihrer Linux-Distribution Rosa mit schlanker
+Software-Auswahl. Als Desktop kommt erstmals LXQt zum Einsatz, der ein
+traditionelles Bedienkonzept bietet.
+
+###  Sophos übernimmt Sicherheitsdienstleister SurfRight
+
+  * gestern, 13:06 Uhr
+  * 3 Kommentare
+![Sophos übernimmt Sicherheitsdienstleister SurfRight](//2.f.ix.de/scale/geome
+try/160x90/q75/imgs/18/1/7/1/6/5/0/8/Abingdon_Headquarters_4-ce42687ae6537a5f.
+jpeg)
+
+Der britische Security-Dienstleister Sophos hat das niederländische
+Unternehmen SurfRight übernommen. Das entwickelt Software, die Infektionen
+ohne Signaturen erkennt und beseitigt. Dessen Produkte sollen fortgeführt
+werden.
+
+![](//pubads.g.doubleclick.net/gampad/ad?iu=%2F6514%2Fwww.heise.de%2Fhomepage%
+2F&c=9238893638&sz=540x296&tile=1)
+
+###  Apple-Chef Tim Cook bestreitet Steuertricks
+
+  * gestern, 12:36 Uhr
+  * 86 Kommentare
+![Apple](//1.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/4/9/9/urn-
+newsml-dpa-com-20090101-150610-99-06291_large_4_3-5f18c09e61b8fefd.jpeg)
+
+Apple-Firmenchef Tim Cook hat in einer TV-Sendung bestritten, dass Apple
+versuche, Steuern zu umgehen. Der iPhone-Hersteller zahle jeden geschuldeten
+Steuer-Dollar.
+
+###  Firefox unterstützt HTML5-Player von Netflix
+
+  * gestern, 11:18 Uhr
+  * 78 Kommentare
+![HTML5-Player in Firefox](//2.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1
+/6/4/9/0/netflix_firefox_html5-7dca463267d2b929.png)
+
+Der HTML-5-Player von Netflix funktioniert jetzt auch in Firefox – zumindest
+unter Windows. Damit lassen sich Netflix-Videostreams ohne Browser-Plugins wie
+Adobe Flash oder Silverlight in Firefox ansehen.
+
+###  Verbraucherzentrale warnt vor "Fake-Shops" im Internet
+
+  * gestern, 10:31 Uhr
+  * 55 Kommentare
+![Einkaufen im Internet](//1.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6
+/4/8/6/kaufin_39639800_original-daa6ce750b2012dc.jpeg)
+
+Kurz vor Weihnachten sitzt das Geld besonders locker, auch bei Online-
+Shoppern. Trotzdem sollte besonders bei teuren Geschäften auf die Seriosität
+des Anbieters geachtet werden. Die Verbraucherzentrale Hamburg empfiehlt ein
+Prüfsiegel.
+
+###  c't uplink 9.7: CPU-Beratung, Hate Speech, Billigtablets
+
+  * gestern, 08:45 Uhr
+  * 15 Kommentare
+  * mit Video
+![c't uplink 9.7: CPU-Beratung, Hate Speech, Billigtablets](//1.f.ix.de/scale/
+geometry/160x90/q75/imgs/18/1/7/1/6/4/5/8/THUMB-ed76cb71dea367af.png)
+
+Im letzten Podcast aus Nerdistan vor Weihnachten gibt es vielleicht noch einen
+Tipp für das letzte Geschenk: Wir sprechen über günstige Tablets und aktuelle
+Prozessoren. Außerdem diskutieren wir über Hate Speech, vor allem auf
+Facebook.
+
+###  Microsoft: Kein Office-Continuum ohne 365-Abo
+
+  * 18\. Dezember, 19:23 Uhr
+  * 172 Kommentare
+![Microsoft](//3.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/4/1/5/urn-
+newsml-dpa-com-20090101-150318-99-01952_large_4_3-24f31735eca056fd.jpeg)
+
+Einfach das Windows-Smartphone an einen externen Bildschirm anschließen und
+einen bequemen Desktop inklusive Office vor sich haben. Dieses Feature sollte
+Microsofts Plattform fördern, doch bald setzt es ein Cloud-Abo voraus.
+
+###  Auch in NRW: Am 4. Advent muss bei Amazon die Arbeit ruhen
+
+  * 18\. Dezember, 19:05 Uhr
+  * 169 Kommentare
+![Auch in NRW: Am 4. Advent muss beim Amazon die Arbeit
+ruhen](//2.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/6/4/5/3/urn-newsml-
+dpa-com-20090101-151112-99-08864_large_4_3-7d645dded0af2ff4.jpeg)
+
+In den nordrhein-westfälischen Logistikzentren des Online-Händlers darf am
+vierten Adventssonntag nicht gearbeitet werden. Die Gewerkschaft Verdi war
+damit auch in der zweiten Instanz erfolgreich.
+
+Anzeige  
+
+![](//pubads.g.doubleclick.net/gampad/ad?iu=%2F6514%2Fwww.heise.de%2Fhomepage%
+2F&c=9238893638&sz=4x4%7C540x65&tile=2)
+
+###  Update für Crimeware Kit Microsoft Word Intruder
+
+  * 18\. Dezember, 18:00 Uhr
+  * 36 Kommentare
+![Update für Crimeware Kit Microsoft Word Intruder](//1.f.ix.de/scale/geometry
+/160x90/q75/imgs/18/1/7/1/6/3/9/6/wmi-5d7f8f88fd097d66.png)
+
+Über Sicherheitslücken in Microsoft Word kann ein Dateianhang schon beim
+Öffnen Windows-Systeme infizieren. Der Autor des im Untergrund beliebten
+Crimeware Kits MWI legt jetzt mit neuen Exploits nach.
+
+###  Jolla: Finanzierung gesichert, Jolla Tablet kommt – vielleicht
+
+  * 18\. Dezember, 16:59 Uhr
+  * 28 Kommentare
+![Jolla: Finanzierung gesichert, neues Sailfish-Smartphone und Jolla Tablet
+kommt – vielleicht](//3.f.ix.de/scale/geometry/160x90/q75/imgs/18/1/7/1/5/7/9/
+5/Jolla_Tablets-f84c9147a09b74ac.jpeg)
+
+Jolla, der in schwere finanzielle Probleme geratene Entwickler von Sailfish OS
+kann mit frischem Geld weiter machen und die Lizenzierung des mobilen
+Betriebssystem fortsetzen. Die Zukunft des Jolla Tablets steht weiter in den
+Sternen.
+
+Neuere MeldungenWeitere Meldungen
+
+Fehlt eine wichtige Nachricht? Geben Sie uns Bescheid!  
+
+![](//2.f.ix.de/icons/ho/00on.gif)
+
+![](//1.f.ix.de/icons/ho/00off.gif)
+
+Videos alle Videos im Überblick
+
+![](//2.f.ix.de/scale/geometry/270x151/q75/imgs/09/1/7/0/8/2/0/0/THUMB-0fc320c
+f74c08467.jpeg)
+
+Verschlüsselungstrojaner: Neue TeslaCrypt-Version grassiert
+
+![](//3.f.ix.de/scale/geometry/270x151/q75/imgs/09/1/7/0/9/7/6/8/Hoverboard-6c
+c3a9fb745b1c19.jpeg)
+
+"Hoverboard": Spaßig, aber gefährlich
+
+![](//3.f.ix.de/scale/geometry/270x151/q75/imgs/09/1/7/1/2/0/6/3/THUMB-0ff8fb8
+61a19f804.jpeg)
+
+Podcast: c't uplink 9.6 - High-End-Smartphones / Dolby Atmos / "Hoverboard"
+
+![](//2.f.ix.de/scale/geometry/270x151/q75/imgs/09/1/7/0/9/4/9/8/THUMB-7381e29
+7ba35e9bb.jpeg)
+
+nachgehakt: Was taugen Tablets unter 100 Euro?
+
+alle Telepolis-Inhalte Von Politik zur Kultur: kritisch, informativ,
+meinungsstark
+
+Französische Bahn will mit Überwachungskameras verdächtiges Verhalten erkennen
+![](//2.f.ix.de/scale/geometry/540x303/q75/imgs/09/1/5/5/9/8/7/4/46914_2x-aadb
+6b63e3f0a48a.jpeg)
+
+Der "Ausnahmecharakter" der Terrorbedrohung soll neue Maßnahmen rechtfertigen
+
+Schmidt und Scholl-Latour: Eine Zusammenkunft alter Männer ![](//2.f.ix.de/sca
+le/geometry/540x303/q75/imgs/09/1/5/5/9/8/6/7/46804_1x-ae9f5eb0e8498461.jpeg)
+
+Ungebetener Doppelnachruf auf einen "weisen Staatsmann" und einen "weisen
+Beobachter"
+
+alle Make-Inhalte Das Magazin für den kreativen Umgang mit Technik
+
+Festival für Cocktail-RobotikRoboexotica 2015 ![Roboexotica 2014](//3.f.ix.de/
+scale/geometry/360x202/q75/imgs/18/1/7/1/4/6/2/1/roboexotica2015-657f147614fda
+6e3.jpeg)
+
+Bunte Drinks und schräge Automaten: Am Wochenende trifft sich in Wien die
+Cocktailroboter-Szene – zum 17. Mal.
+
+3D-Desktop-Scanner im Test Matter and Form ![Kurz vorgestellt: Matter and Form
+3D-Scanner](//3.f.ix.de/scale/geometry/360x202/q75/imgs/18/1/7/1/2/7/7/7/IMG_0
+002_zuges-b4ece550441207d1.jpeg)
+
+Der günstige und qualitativ hochwertige 3D-Scanner von Matter and Form
+arbeitet nach dem Lichtschnittverfahren.
+
+1
+
+Schnäppchen-3D-Drucker im TestDaycom 3DP-100 für 479 € ![Roboter aus 3D-Druck]
+(//2.f.ix.de/scale/geometry/360x202/q75/imgs/18/1/7/1/3/7/6/9/IMG_9959-7637114
+6f1ce5056.jpeg)
+
+Selten hat uns ein 3D-Drucker dieser Preisklasse so mit seiner Druckqualität
+begeistert – nach holperigem Start.
+
+83
+
+alle Foto-Inhalte Das Online-Magazin rund ums digitale Bild
+
+c't Digitale Fotografie: 35-mm-Festbrennweiten für höchste Ansprüche ![c't
+Digitale Fotografie
+1/2016](//2.f.ix.de/scale/geometry/540x303/q75/imgs/18/1/7/1/3/1/7/2/titel-ct-
+digitale-fotografie-df-01-16-bdf78f813f926dc6.jpeg)
+
+Die einen können nichts damit anfangen, für die anderen sind sie eine
+Offenbarung: 35-mm-Objektive. Für die hochauflösenden…
+
+64
+
+Test: Olympus OM-D E-M10 II, Panasonic GX8 und Sony RX100 IV ![Test: Olympus
+OM-D E-M10 II, Panasonic GX8 und Sony RX100 IV](//3.f.ix.de/scale/geometry/540
+x303/q75/foto/imgs/13/1/7/0/3/1/6/3/Aufmacher-393fde301b558374.png)
+
+Four-Thirds- gegen Typ-1-Zoll-Sensor: In unserem Vergleich treten die Micro-
+Four-Thirds-Kameras Olympus OM-D E-M10 II und…
+
+12
+
+alle iX-Inhalte Magazin für professionelle Informationstechnik
+
+Aus iX 1/16Kurz erklärt: Software-defined Wide Area Networks
+![](//2.f.ix.de/scale/geometry/360x202/q75/imgs/09/1/7/1/2/5/1/9/SUN-
+KISTE-6400d865bb016bcc.jpeg)
+
+In (fast) jeder Ausgabe erklärt iX auf einer Heftseite einen aktuellen IT-
+Begriff. In der Januar-Ausgabe 2016 geht es um…
+
+Aus iX 1/16Editorial: Sicheres E-Mail-Chaos ![](//3.f.ix.de/scale/geometry/360
+x202/q75/imgs/09/1/7/1/2/5/0/0/MFoerster_sw-595ad142fc17d0ae.jpeg)
+
+Ob sich PEP nicht ein bisschen zu wichtig nimmt, fragt sich iX-Redakteur
+Moritz Förster im Editorial der iX 1/2016.
+
+Aus iX 1/16Apps zum Flippern ![](//3.f.ix.de/scale/geometry/360x202/q75/imgs/0
+9/1/7/1/2/5/2/9/ka-31eeb0993cd986d3.jpeg)
+
+iX veröffentlicht in jedem Heft eine App-Auswahl. In der Januar-Ausgabe 2016
+geht es um Flipperautomaten.
+
+alle Autos-Inhalte News, Tests, Technik, Service rund ums Auto
+
+Warum Renault-Nissan fast zerbrach, und was nach Ghosn kommtAlles geht um
+Ghosn ![](//3.f.ix.de/scale/geometry/540x303/q75/autos/imgs/14/1/7/1/4/9/3/7/C
+arlos_Ghosn_Yokohama_-10-__c__Bertel_Schmitt-2416876f816df38e.jpeg)
+
+Letzte Woche unterschrieb Frankreich einen Friedensvertrag mit Japan. Ein
+schmerzhafter Streit zwischen Nissan und Renault, der…
+
+2
+
+Daimler überarbeitet den Mercedes SLK und nennt ihn SLCKlappen gehört zum
+Geschäft ![Neuvorstellung Mercedes SLC](//2.f.ix.de/scale/geometry/540x303/q75
+/autos/imgs/14/1/7/1/3/2/2/3/Mercedes_SLC_2016__7_-eb7628161f0be8d7.jpeg)
+
+Der Mercedes SLK heißt ab März 2016 offiziell SLC. Ansonsten bleibt weitgehend
+alles wie gewohnt. Auch als SLC behält der…
+
+alle Mac & i-Inhalte Das Apple-Magazin von c't
+
+App Store und ChipsApple besetzt wichtige Führungspositionen neu
+![Apple](//1.f.ix.de/scale/geometry/360x202/q75/imgs/18/1/7/1/4/7/5/3/urn-
+newsml-dpa-com-20090101-150518-99-02363_large_4_3-56aa6329b77771fd.jpeg)
+
+Der Marketing-Chef übernimmt die Leitung des App Store. Apple hat außerdem
+einen Chief Operating Officer ernannt.
+
+29
+
+Mac & i Heft 6/2015Neues Apple TV und iPad Pro im Test ![Mac & i Heft 6/2015
+unter anderem zu Apple TV und iPad Pro](//2.f.ix.de/scale/geometry/360x202/q75
+/imgs/18/1/7/0/1/2/9/6/Inhalt-2a02cc919dd9d66c.jpeg)
+
+Weitere Themen: Neue iMacs, Windows 10 virtualisieren, Mehrfach-Ladegeräte,
+LTE-Prepaid-Tarife und Fotos-App-Erweiterungen.
+
+iPhone 6s und 6s PlusMehr Unterstützung für 3D Touch gewünscht ![3D
+Touch](//1.f.ix.de/scale/geometry/360x202/q75/imgs/18/1/7/1/4/4/2/0/urn-
+newsml-dpa-com-20090101-150921-99-11159_large_4_3-ee42b903c7939d91.jpeg)
+
+Mit einem Rundschreiben hat Apple iOS-Entwickler dazu aufgerufen, 3D Touch in
+Apps zu integrieren.
+
+9
+
+Alle Download-Inhalte Software und Apps zum Download - gratis, schnell und
+sicher
+
+Anzeige Der große heise Download Adventskalender 2015
+![](//www.heise.de/software/screenshots/sps3411.jpg)
+
+Auch am Wochenende macht unser Weihnachtspirat keine Pause und bringt euch ein
+tolles Angebot von seiner Reise mit. Schaut vorbei und lasst euch überraschen,
+welches Software-Produkt wir euch heute schenken.
+
+Software im Fokus  Windows 10
+
+Windows 10 ist ein Betriebssystem von Microsoft, das 2015 in der finalen
+Version veröffentlicht wurde.
+
+WhatsApp Web
+
+Browser-Variante von WhatsApp für Google Chrome und Firefox.
+
+TrueCrypt
+
+Die aktuelle Version der Verschlüsselungs-Software TrueCrypt gilt als
+unsicher. Wir bieten daher weit...
+
+Top Downloads  AdwCleaner
+
+AdwCleaner ist ein schlankes Werkzeug, das störende und gefährliche Software
+wie Adware, Toolbars und...
+
+H2testw
+
+H2testw ist ein Kommandozeilen-Tool zum Testen von Zustand und Integrität
+großformatiger Datenträger.
+
+IrfanView
+
+IrfanView ist ein kostenloser Bildbetrachter, der Fotos und diverse andere
+Medien-Formate anzeigt und...
+
+  
+Alle Top-Downloads »
+
+alle c't-Inhalte Magazin für Computer-Technik
+
+c’t 27 – c’t noch öfter? Nein! ![c’t 27 – c’t noch öfter? Nein!](//2.f.ix.de/s
+cale/geometry/360x202/q75/ct/imgs/04/1/7/0/6/3/6/2/Titel_27-498a90bb6ba50171.j
+peg)
+
+2015 wird es eine c’t mit der Heftnummer 27 geben, also die c’t 27/15. Und
+Nein! Das wird keine Dauereinrichtung und wir machen…
+
+3
+
+Geschönter EnergieverbrauchFinger weg vom Helligkeitsregler ![Geschönter
+Energieverbrauch bei 4K-Fernseher von Samsung](//2.f.ix.de/scale/geometry/360x
+202/q75/ct/imgs/04/1/7/0/9/5/1/7/Energiemessung-a45567049def5848.jpeg)
+
+Samsungs Flachbildfernseher halten nicht alle Versprechen des Herstellers. So
+liegt der Energiebedarf beim UE55JU6050U in der…
+
+"Hate Speech" auf sozialen Plattformen und was dagegen hilft !["Hate Speech"
+auf sozialen Plattformen und was dagegen hilft](//3.f.ix.de/scale/geometry/360
+x202/q75/ct/imgs/04/1/7/0/7/7/1/2/Hatespeech-INterview-8566a951e5aed061.jpeg)
+
+c't sprach mit Johannes Baldauf, Leiter des Projekts no-nazi.net, sowie dem
+Strafrichter und Netzexperten Ulf Buermeyer über die…
+
+11
+
+alle Technology Review-Inhalte Das Magazin für Innovation
+
+"Ich hatte mir mehr Sorgen um staatliche Überwachung gemacht" !["Ich hatte mir
+mehr Sorgen um staatliche Überwachung gemacht"](//3.f.ix.de/scale/geometry/360
+x202/q75/tr/imgs/08/1/7/1/1/5/0/0/Anonymous-Pierre_Rennes_-Flickr-cc-
+by-2.0.6857122239_f0d02a3c2b_z-0e3e53b0d8ab21d3.jpg)
+
+Gabriella Coleman ist Expertin für Hacker- und Internet-Subkulturen. Im
+Interview berichtet sie von der Entwicklung von Anonymous.
+
+1
+
+Google: Quanten-Chip ist millionenfach schneller ![Google: Quanten-Chip ist
+millionenfach schneller](//2.f.ix.de/scale/geometry/360x202/q75/tr/imgs/08/1/7
+/1/1/4/2/9/D-Wave_Two_in_Lab-017c3fae4e29a2bd.jpg)
+
+Google hat nach eigenen Angaben Beweise dafür, dass eine im Jahr 2013 gekaufte
+umstrittene Maschine tatsächlich Quantenphysik…
+
+Keramik-Partikel machen Röntgenbilder billiger ![Keramik-Partikel machen
+Röntgenbilder billiger](//2.f.ix.de/scale/geometry/360x202/q75/tr/imgs/08/1/7/
+1/3/1/1/7/Jason_Woodhead-Flickr-
+CC_BY_2.0-21203367024_a8200e52b3_z-5849ce6734100939.jpg)
+
+Neue Röntgendetektoren aus Keramik-Partikeln und leitfähigem Kunststoff
+erzeugen Röntgenbilder in höherer Auflösung.
+
+alle TechStage-Inhalte Mobile. Gadgets. Lifestyle.
+
+Test: Unterwegs mit dem Self-Balancing-board ![](//2.f.ix.de/scale/geometry/54
+0x303/q75/imgs/09/1/5/9/3/7/4/8/TechStage_Top-
+Teaser-67480ecdcec031ee-24ff329026c84c6e.jpeg)
+
+Hi, mein Name ist Kamal und ich fahre eines dieser futuristischen Self-
+Balancing-boards…
+
+Test: Google Nexus 5X – die Rückkehr von LG ![](//2.f.ix.de/scale/geometry/540
+x303/q75/imgs/09/1/5/9/3/6/7/5/TechStage_Top-
+Teaser_GN5X-d48a69c72703f686-438c8ff5ed719199.jpeg)
+
+Das Nexus 5X ist der Nachfolger des Nexus 5 aus dem Jahr 2013. Was es kann,
+lest Ihr in unserem Test.
+
+Magazine zum Shop
+
+![Coverbild](//2.f.ix.de/scale/geometry/140x200/q75/imgs/09/1/5/8/3/8/1/6/ct-2
+015-27-f3a307d8cef14565.jpeg) Zum Heft
+
+![](//1.f.ix.de/scale/geometry/140x200/q75/imgs/09/1/3/7/1/3/4/3/51459369e26e2
+aef.png) Zum Heft
+
+![01/2016](//3.f.ix.de/scale/geometry/140x200/q75/imgs/09/1/3/6/2/9/6/5/2dd0ed
+45469d1558.png) Zum Heft
+
+![](//1.f.ix.de/scale/geometry/140x200/q75/imgs/09/1/3/7/0/9/5/0/mac-2015-06-d
+a28700d6edf151e.jpeg) Zum Heft
+
+![](//2.f.ix.de/scale/geometry/140x200/q75/imgs/09/1/3/7/1/1/8/7/make-2015-06-
+d4ac93a28cd7bacc.jpeg) Zum Heft
+
+![c't Digitale Fotografie 1/2016](//3.f.ix.de/scale/geometry/140x200/q75/imgs/
+09/1/7/1/4/7/0/5/df_0116-48cc7c0fb4565468.jpeg) Zum Heft
+
+Anzeige  
+
+![](//pubads.g.doubleclick.net/gampad/ad?iu=%2F6514%2Fwww.heise.de%2Fhomepage%
+2F&c=9238893638&sz=500x500%7C540x65&tile=3)
+
+nach oben
+
+Anzeige  
+
+![](//pubads.g.doubleclick.net/gampad/ad?iu=%2F6514%2Fwww.heise.de%2Fhomepage%
+2F&c=9238893638&sz=300x250%7C300x600%7C336x280&tile=4)
+
+#### Top-Newsletter
+
+Die wichtigsten Meldungen 2 ✕ wöchentlich.
+
+Datenschutz
+
+Anmelden
+
+Anzeige  
+![](//3.f.ix.de/imgs/02/1/7/0/9/3/9/6/BVF-15.003_US-
+Ad_336x200px-48cf9c9a4987ca65.jpg)
+
+![](/avw-bin/ivw/CP/barfoo/ho/3038373/0.gif)
+
+Anzeige
+
+  * So gelingt die Cloud-Migration
+  * MyCloud-Nas von WD – Die sichere Cloud zu Hause
+  * Ihr Unternehmen vor dem Security-GAU schützen
+  * Arbeiten bei PAYBACK – IT-Spezialisten gesucht!
+  * LEARNTEC 2016 - Lernen mit IT
+  * FiBu-Tutorial: Fehler in Rechnungen vermeiden
+  * Was ist dran an Microsofts „deutscher“ Cloud?
+  * Effizienter arbeiten - mehr erreichen!
+  * Überleben im Zeitalter rapiden Datenwachstums
+  * Das Insider Portal – Fakten zu aktuellen IT-Themen
+
+Free Software Foundation Europe sucht finanzielle Unterstützung ![Free
+Software Foundation Europe sammelt Geld für AKtivitäten](//2.f.ix.de/scale/geo
+metry/360x202/q75/imgs/18/1/7/1/5/4/8/8/8992711869_c38636e278_k-e4b3a53cbcce4a
+47.jpeg)
+
+Die FSFE will sich im nächsten Jahr verstärkt dafür engagieren, dass
+öffentlich finanzierte Software als "Freie Software"…
+
+12
+
+Viren-Welle: Erpressungstrojaner kommt mit Word-Datei ![Aktuelle Viren-Welle
+dringt bis ins Innenministerium
+vor](//3.f.ix.de/scale/geometry/360x202/q75/imgs/18/1/7/1/0/3/6/8/viren-
+welle-a93abc163f1976f0.png)
+
+Derzeit sollte man jeden Dateianhang in einer E-Mail kritisch betrachten. Denn
+in letzter Zeit häufen sich Vorfälle, bei denen…
+
+537
+
+Java und SQLAnwendungsentwicklung mit Oracle ADF und MySQL ![](//3.f.ix.de/sca
+le/geometry/360x202/q75/imgs/09/1/7/1/3/5/4/5/aufmacher_ajax-61ed18f9c8136626.
+jpeg)
+
+Die Produktivität durch die rein deklarative Vorgehensweise von Oracles
+Application Development Framework steigern
+
+Anzeige
+
+![](//1.f.ix.de/heisejobs/icons/jobs_logo.png)Der Stellenmarkt auf heise
+online.
+
+  * **E-Learning-Koordinator (m/w)** Aufbereitung von E-Learning-Inhalten bestehender Lehrveranstaltungen
+
+  * **Referent (m/w)** Technische Projektleitung von Softwareprojekten, Weiterentwicklung bestehender Softwaresysteme
+
+  * **Consultant/Prozessmanager Einkaufsabrechnung Fokus Leistungen (m/w)** Definition und Weiterentwicklung von Prozessen in der Einkaufsabrechnung
+
+Top-10 Preisvergleich
+
+  1. ** Intel Core i7-6700K  ** ab 399,00 €  Intel Sockel 1151 
+  2. ** Samsung SSD 850 Evo 250GB  ** ab 77,00 €  Solid State Drives (SSDs) 
+  3. ** Samsung SSD 850 Evo 500GB  ** ab 150,94 €  Solid State Drives (SSDs) 
+  4. ** Intel Core i5-6600K  ** ab 257,34 €  Intel Sockel 1151 
+  5. ** Dell UltraSharp U2515H  ** ab 305,45 €  LCD-Monitore 
+  6. ** Sapphire Radeon R9 390 Nitro + Backplate  ** ab 341,72 €  PCIe 
+  7. ** Samsung Galaxy S6 G920F 32GB schwarz  ** ab 399,00 €  Handys ohne Vertrag 
+  8. ** AVM FRITZ!Box 7490  ** ab 189,00 €  Router mit Modem 
+  9. ** Intel Core i5-6500  ** ab 203,49 €  Intel Sockel 1151 
+  10. ** Zotac GeForce GTX 780 + Game-Bundle  ** ab 232,90 €  PCIe 
+in allen Kategorien in Hardware in Software in Games in Video/Foto/TV in
+Telefon & Co in Audio/HIFI in DVD in Haushalt
+
+Anzeige
+
+![](//2.f.ix.de/imgs/02/1/3/3/6/8/8/9/lexoffice_HBSAd-e6b4e99ff9023ecf.gif) ![
+](//1.f.ix.de/imgs/02/1/3/3/6/8/8/9/PZ_Comarch_hbsad_300x200_thf-137debb4c33e7
+413.jpg) ![](//2.f.ix.de/imgs/02/1/3/3/6/8/8/9/MS_DtCloud_Webcast_HBSAd_ondema
+nd-794949113f2a3f6a.jpg)
+
+Anzeige getDigital - Gadgets für Geeks
+
+Anzeige heise online Tarifrechner - DSL-Preisvergleich
+
+heise online Themen
+
+  1. A
+  2. B
+  3. C
+  4. D
+  5. E
+  6. F
+  7. G
+  8. H
+  9. I
+  10. J
+  11. K
+  12. L
+  13. M
+  14. N
+  15. O
+  16. P
+  17. Q
+  18. R
+  19. S
+  20. T
+  21. U
+  22. V
+  23. W
+  24. X
+  25. Y
+  26. Z
+  27. &
+  28. 123
+
+  * heise online
+  * c't Magazin
+  * iX Magazin
+  * Technology Review
+  * Mac & i
+  * Telepolis
+  * Make
+  * Digitale Fotografie
+  * heise Autos
+  * heise Developer
+  * heise Foto
+  * heise Netze
+  * Open Source
+  * heise Security
+  * heise Video
+  * TechStage
+  * Download
+  * Preisvergleich
+  * Stellenmarkt
+  * Veranstaltungen
+  * IT-Markt
+  * heise Business Services
+  * Tarifrechner
+  * Shop
+  * Artikel-Archiv
+  * Abo
+  * Loseblattwerke
+  * RSS
+  * Leserforum
+  * Newsletter
+  * Suche
+  * iMonitor
+
+![](//pubads.g.doubleclick.net/gampad/ad?iu=%2F6514%2Fwww.heise.de%2Fhomepage%
+2F&c=9238893638&sz=468x60%7C728x90%7C970x250&tile=5)
+
+![](//pubads.g.doubleclick.net/gampad/ad?iu=%2F6514%2Fwww.heise.de%2Fhomepage%
+2F&c=9238893638&sz=160x600%7C200x800&tile=6)
+
+![](/ivw-bin/ivw/CP/?url=%2F)
+
+![](//prophet.heise.de/288689636920174/wt.pl?p=322,www.heise.de.startseite.sta
+rtseite&cg1=www.heise.de&cg10=startseite&cg2=startseite&cg3=startseite&cg9=sta
+rtseite)
+
+  * Datenschutzhinweis
+  * Impressum
+  * Kontakt
+  * Mediadaten
+  * News mobil
+  * Content Management by **InterRed**
+  * Hosted by Plus.line
+  * Copyright © 2015 Heise Medien
+

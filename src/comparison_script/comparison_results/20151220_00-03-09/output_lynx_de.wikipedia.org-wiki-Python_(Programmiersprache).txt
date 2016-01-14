@@ -1,0 +1,566 @@
+   #alternate Seite bearbeiten Wikipedia (de) copyright Atom-Feed für „Wikipedia“
+
+Python (Programmiersprache)
+
+   aus Wikipedia, der freien Enzyklopädie
+   Wechseln zu: Navigation, Suche
+   Python
+   Logo
+   Basisdaten
+   Paradigmen: multiparadigmatisch
+   Erscheinungsjahr: 1991
+   Entwickler: Python Software Foundation
+   Aktuelle Version: 3.5.1 (6. Dezember 2015),
+   2.7.11  (5. Dezember 2015)
+   Typisierung: stark, dynamisch („Duck-Typing“)
+   Wichtige Implementierungen: CPython, Jython, IronPython, PyPy
+   Beeinflusst von: ABC, Algol 68, Modula-3, Icon, C, C++, Perl, Java, Lisp, Haskell;
+   Beeinflusste: Ruby, Boo, Groovy, Cython, Swift;
+   Lizenz: Python Software Foundation Lizenz^[1]
+   www.python.org
+
+   Python ([ˈpaɪθn̩], [ˈpaɪθɑn], auf Deutsch auch [ˈpyːtɔn]) ist eine universelle, üblicherweise interpretierte höhere Programmiersprache.^[2] Ihre Entwurfsphilosophie betont Programmlesbarkeit, außerdem ist Python-Code im Vergleich mit anderssprachigem Code teilweise deutlich kürzer.^[3] Zur besseren Lesbarkeit soll auch der Verzicht auf geschweifte Klammern zur Bildung von Code-Blöcken dienen, da die Programmstruktur durch Einrückungen gebildet wird.
+
+   Python unterstützt mehrere Programmierparadigmen, z. B. die objektorientierte, die aspektorientierte und die funktionale Programmierung. Ferner bietet es eine dynamische Typisierung. Wie viele dynamische Sprachen wird Python oft als Skriptsprache genutzt.
+
+   Die Sprache hat ein offenes, gemeinschaftsbasiertes Entwicklungsmodell, das durch die gemeinnützige Python Software Foundation, die de facto die Definition der Sprache in der Referenzumsetzung CPython pflegt, gestützt wird.
+
+   Python gilt als einfach zu erlernende Sprache, da sie über eine klare und übersichtliche Syntax verfügt. Ferner besitzt sie eine umfangreiche Standardbibliothek und zahlreiche Pakete im Python Package Index.^[4]
+
+Inhaltsverzeichnis
+
+     * 1 Entwicklungsgeschichte
+     * 2 Ziele
+     * 3 Datentypen und Strukturen
+          + 3.1 Sammeltypen
+          + 3.2 Objektsystem
+     * 4 Syntax
+          + 4.1 Strukturierung durch Einrücken
+          + 4.2 Funktionales Programmieren
+          + 4.3 Ausnahmebehandlung
+     * 5 Standardbibliothek
+     * 6 Beispiel
+     * 7 Interaktive Benutzung
+     * 8 Implementierungen
+     * 9 Entwicklungsumgebung
+     * 10 Paketverwaltung
+     * 11 Verbreitung und Einsatz
+     * 12 Kritik
+     * 13 Einzelnachweise
+     * 14 Literatur
+          + 14.1 Für den Einstieg
+               o 14.1.1 Für Kinder und Jugendliche
+          + 14.2 Referenzen
+          + 14.3 Weiterführendes
+     * 15 Weblinks
+     * 16 Siehe auch
+
+Entwicklungsgeschichte[Bearbeiten]
+
+   Guido van Rossum, der Entwickler von Python
+
+   Die Sprache wurde Anfang der 1990er Jahre von Guido van Rossum am Centrum Wiskunde & Informatica in Amsterdam als Nachfolger für die Programmier-Lehrsprache ABC entwickelt und war ursprünglich für das verteilte Betriebssystem Amoeba gedacht.
+
+   Der Name geht nicht etwa (wie das Logo vermuten ließe) auf die gleichnamige Schlangengattung (Pythons) zurück, sondern bezog sich ursprünglich auf die englische Komikertruppe Monty Python. In der Dokumentation finden sich daher auch einige Anspielungen auf Sketche aus dem Flying Circus.^[5] Trotzdem etablierte sich die Assoziation zur Schlange, was sich unter anderem in der Programmiersprache Cobra^[6] sowie dem Python-Toolkit „Boa“^[7] äußert.
+
+   Über den Ursprung der Sprache schrieb van Rossum rückblickend 1996:^[8]
+
+     “Over six years ago, in December 1989, I was looking for a „hobby“ programming project that would keep me occupied during the week around Christmas. My office … would be closed, but I had a home computer, and not much else on my hands. I decided to write an interpreter for the new scripting language I had been thinking about lately: a descendant of ABC that would appeal to Unix-/C-Hackers. I chose Python as a working title for the project, being in a slightly irreverent mood (and a big fan of Monty Python’s Flying Circus).”
+
+     „Vor sechs Jahren, im Dezember 1989, suchte ich nach einem Hobby-Projekt im Bereich der Programmierung, das mich in der Weihnachtswoche beschäftigen würde. Mein Büro würde geschlossen sein, aber ich besaß einen Heimcomputer und hatte nicht viel anderes zu tun. Ich entschied mich, einen Interpreter für die Skriptsprache zu schreiben, über die ich in letzter Zeit nachgedacht hatte: Ein Nachfahre von ABC, der Unix-/C-Programmierern gefallen würde. Ich wählte in einer leicht ehrfurchtslosen Stimmung (und als ein großer Fan von Monty Python’s Flying Circus) „Python“ als Arbeitstitel.“
+
+   Die erste Vollversion erschien unter der Bezeichnung Python 1.0 und wurde im Januar 1994 veröffentlicht. Gegenüber früheren Versionen wurden einige Konzepte der funktionalen Programmierung implementiert, die allerdings später wieder aufgegeben wurden.^[9] Von 1995 bis 2000 erschienen Updates, die fortlaufend als Python 1.1, 1.2 etc. bezeichnet wurden.
+
+   Python 2.0 erschien am 16. Oktober 2000. Neue Funktionen umfassten eine voll funktionsfähige Garbage Collection (automatische Speicherbereinigung) und die Unterstützung für den Unicode-Zeichensatz.^[10] In Version 2.6 wurde eine Hilfe eingebaut, mit der angezeigt werden kann, welche Code-Sequenzen vom Nachfolger Python 3 nicht mehr unterstützt werden und daher in darauf aufbauenden Versionen nicht mehr lauffähig sind.^[11]
+
+   Python 3.0 (auch Python 3000) erschien am 3. Dezember 2008 nach längerer Entwicklungszeit. Es beinhaltet einige tiefgreifende Änderungen an der Sprache, etwa das Entfernen von Redundanzen bei Befehlssätzen und veralteten Konstrukten. Daher ist Python 3.0 in einigen Teilen inkompatibel zu früheren Versionen.^[12] Wesentliche Verbesserungen werden mittels Patches für frühere Python-Versionen umgeschrieben und implementiert.
+
+   Am 13. September 2015 wurde die neueste Version 3.5 veröffentlicht.^[13]
+
+Ziele[Bearbeiten]
+
+   Python wurde mit dem Ziel größter Einfachheit und Übersichtlichkeit entworfen. Dies wird vor allem durch zwei Maßnahmen erreicht. Zum einen kommt die Sprache mit relativ wenigen Schlüsselwörtern aus.^[14] Zum anderen ist die Syntax reduziert und auf Übersichtlichkeit optimiert. Dadurch lassen sich Python-basierte Skripte deutlich knapper formulieren als in anderen Sprachen.^[15]
+
+   Van Rossum legte bei der Entwicklung großen Wert auf eine Standardbibliothek, die überschaubar, dafür aber leicht erweiterbar ist. Dies war Ergebnis seiner schlechten Erfahrung mit Einschränkungen der Sprache ABC, in der das Gegenteil der Fall ist.^[16]
+
+   Durch dieses Konzept wurde es auch ermöglicht, Python-Programme in anderen Sprachen als Module einzubetten. Dadurch können Schwächen von Python umgangen werden. Beispielsweise können für zeitkritische Teile Routinen in maschinennäheren Sprachen wie z. B. C aufgerufen werden.^[17] Umgekehrt lassen sich mit Python Module und Plug-ins für andere Programme schreiben, die die entsprechende Unterstützung bieten. Dies ist z. B. bei Blender, Cinema 4D, GIMP, Maya, OpenOffice bzw. LibreOffice, PyMOL, SPSS, QGIS oder KiCad der Fall.
+
+   Python ist eine Multiparadigmensprache. Das bedeutet, Python zwingt den Programmierer nicht zu einem einzigen Programmierstil, sondern erlaubt, das für die jeweilige Aufgabe am besten geeignete Paradigma zu wählen. Objektorientierte und strukturierte Programmierung werden vollständig unterstützt, funktionale und aspektorientierte Programmierung werden durch einzelne Elemente der Sprache unterstützt.
+
+   Die Datentypen werden dynamisch verwaltet, eine statische Typprüfung wie z. B. bei C++ gibt es nicht. Die Freigabe nicht mehr benutzter Speicherbereiche erfolgt durch Referenzzählung. Unicode-Unterstützung wurde in der Version 2.0 eingeführt.
+
+   Die wesentlichen Ziele und Regeln der Sprache wurden mit einer Reihe kurzer, humorvoller Phrasen unter dem Titel The Zen of Python im Jahr 2004 herausgegeben.^[18]
+
+Datentypen und Strukturen[Bearbeiten]
+
+   Python besitzt eine größere Anzahl von grundlegenden Datentypen. Neben der herkömmlichen Arithmetik unterstützt es transparent auch beliebig große Ganzzahlen und komplexe Zahlen.
+
+   Es verfügt über die übliche Ausstattung an Zeichenkettenoperationen. Zeichenketten sind in Python allerdings unveränderliche Objekte (wie auch in Java). Damit führen Operationen, die das Ändern einer Zeichenkette bewerkstelligen sollen – wie z. B. das Ersetzen von Zeichen – dazu, dass stattdessen eine neue Zeichenkette zurückgegeben wird.
+
+   In Python ist alles ein Objekt; Klassen, Typen, Methoden, Module etc. Der Datentyp ist jeweils an das Objekt (den Wert) gebunden und nicht an eine Variable, d. h. Datentypen werden dynamisch vergeben, so wie bei Smalltalk oder Lisp – und nicht wie bei Java.
+
+   Trotz der dynamischen Typverwaltung enthält Python eine gewisse Typprüfung. Diese ist strenger als bei Perl, aber weniger strikt als etwa bei Objective CAML. Implizite Umwandlungen nach dem Duck-Typing-Prinzip sind unter anderem für numerische Typen definiert, so dass man beispielsweise eine komplexe Zahl mit einer langen Ganzzahl ohne explizite Typumwandlung multiplizieren kann. Mit dem Format-Operator % gibt es eine implizite Umwandlung eines Objekts in eine Zeichenkette. Der Operator == überprüft zwei Objekte auf (Wert-)Gleichheit. Der Operator is überprüft die tatsächliche Identität zweier Objekte.^[19]
+
+Sammeltypen[Bearbeiten]
+
+   Python besitzt mehrere Sammeltypen, darunter Listen, Tupel, Mengen (Sets) und assoziative Arrays (Dictionaries). Listen, Tupel und Zeichenketten sind Folgen (Sequenzen, Arrays) und kennen fast alle die gleichen Methoden: Über die Zeichen einer Kette kann man ebenso iterieren wie über die Elemente einer Liste. Außerdem gibt es die unveränderlichen Objekte, die nach ihrer Erzeugung nicht mehr geändert werden können. Listen sind z. B. erweiterbare Felder (Arrays), wohingegen Tupel und Zeichenketten eine feste Länge haben und unveränderlich sind.
+
+   Der Zweck solcher Unveränderlichkeit hängt z. B. mit den Wörterbüchern zusammen, einem Datentyp, der auch als assoziatives Array bezeichnet wird. Um die Datenkonsistenz zu sichern, müssen die Schlüssel eines Wörterbuches vom Typ „unveränderlich“ sein. Die ins Wörterbuch eingetragenen Werte können dagegen von beliebigem Typ sein.
+
+   Sets sind Mengen von Objekten und in CPython ab Version 2.4 im Standardsprachumfang enthalten. Diese Datenstruktur kann beliebige (paarweise unterschiedliche) Objekte aufnehmen und stellt Mengenoperationen wie beispielsweise Durchschnitt, Differenz und Vereinigung zur Verfügung.
+
+Objektsystem[Bearbeiten]
+
+   Das Typsystem von Python ist auf das Klassensystem abgestimmt. Obwohl die eingebauten Datentypen genau genommen keine Klassen sind, können Klassen von einem Typ erben. So kann man die Eigenschaften von Zeichenketten oder Wörterbüchern erweitern – auch von Ganzzahlen. Python unterstützt Mehrfachvererbung.
+
+   Die Sprache unterstützt direkt den Umgang mit Typen und Klassen. Typen können ausgelesen (ermittelt) und verglichen werden und verhalten sich wie Objekte – in Wirklichkeit sind die Typen (wie in Smalltalk) selbst ein Objekt. Die Attribute eines Objektes können als Wörterbuch extrahiert werden.
+
+Syntax[Bearbeiten]
+
+   Eines der Entwurfsziele für Python war die gute Lesbarkeit des Quellcodes. Die Anweisungen benutzen häufig englische Schlüsselwörter, wo andere Sprachen Symbole einsetzen. Darüber hinaus besitzt Python weniger syntaktische Konstruktionen als viele andere strukturierte Sprachen wie C, Perl oder Pascal:
+     * zwei Schleifenformen
+          + for zur Iteration über die Elemente einer Sequenz
+          + while zur Wiederholung einer Schleife, solange ein logischer Ausdruck wahr ist.
+     * Verzweigungen
+          + if … elif … else für Verzweigungen
+
+   Beim letzten Punkt bieten andere Programmiersprachen zusätzlich switch und/oder goto. Diese wurden zugunsten der Lesbarkeit in Python weggelassen und müssen durch if-Konstrukte oder andere Verzweigungsmöglichkeiten (Slices, Wörterbücher) abgebildet werden. Im Gegensatz zu vielen anderen Sprachen, können for-Schleifen einen else Teil haben. Dieser wird ausgeführt, wenn die Schleife mittels break abgebrochen wird.
+
+Strukturierung durch Einrücken[Bearbeiten]
+
+   Python benutzt wie Miranda und Haskell Einrückungen als Strukturierungselement. Diese Idee wurde erstmals von Peter J. Landin vorgeschlagen und von ihm off-side rule („Abseitsregel“) genannt. In den meisten anderen Programmiersprachen werden Blöcke durch Klammern oder Schlüsselwörter markiert, während verschieden große Leerräume außerhalb von Zeichenketten keine spezielle Semantik tragen. Bei diesen Sprachen ist die Einrückung zur optischen Hervorhebung eines Blockes zwar erlaubt und in der Regel auch erwünscht, aber nicht vorgeschrieben. Für Programmierneulinge wird der Zwang zu lesbarem Stil aber als Vorteil gesehen.
+
+   Hierzu als Beispiel die Berechnung der Fakultät einer Ganzzahl, einmal in C und einmal in Python:
+
+   Fakultätsfunktion in C:
+int fakultaet(int x) {
+    if (x > 1)
+        return x * fakultaet(x - 1);
+     else
+        return 1;
+}
+
+   Jetzt die gleiche Funktion in Python:
+def fakultaet(x):
+    if x > 1:
+        return x * fakultaet(x - 1)
+    else:
+        return 1
+
+   Es ist jedoch darauf zu achten, die Einrückungen im gesamten Programmtext gleich zu gestalten. Die gemischte Verwendung von Leerzeichen und Tabulatorzeichen kann zu Problemen führen, da der Python-Interpreter Tab-Stops im Abstand von acht Leerzeichen annimmt. Je nach Konfiguration des Editors können Tabulatoren optisch mit weniger als acht Leerzeichen dargestellt werden, was zu Syntaxfehlern oder ungewollter Programmstrukturierung führen kann. Als vorbeugende Maßnahme kann man den Editor Tabulatoren durch eine feste Anzahl von Leerzeichen ersetzen lassen. Die Python-Distribution enthält in der Standardbibliothek das Modul tabnanny, welches die Vermischung von Tabulatoren und Leerzeichen zu erkennen und beheben hilft.
+
+   Man kann die Fakultätsfunktion aber auch wie in C einzeilig mit ternärem Operator formulieren:
+
+   Die Fakultätsfunktion in C:
+int fakultaet(int x) {
+    return (x > 1) ? (x * fakultaet(x - 1)) : 1;
+}
+
+   Die Fakultätsfunktion in Python:
+def fakultaet(x):
+    return x * fakultaet(x - 1) if x > 1 else 1
+
+Funktionales Programmieren[Bearbeiten]
+
+   Ausdrucksstarke syntaktische Elemente zur funktionalen Programmierung vereinfachen das Arbeiten mit Listen und anderen Sammeltypen. Eine solche Vereinfachung ist die Listennotation, die aus der funktionalen Programmiersprache Haskell stammt; hier bei der Berechnung der ersten fünf Zweierpotenzen:
+zahlen = [1, 2, 3, 4, 5]
+zweierpotenzen = [2 ** n for n in zahlen]
+
+   Weil in Python Funktionen als Argumente auftreten dürfen, kann man auch ausgeklügeltere Konstruktionen ausdrücken, wie den Continuation-passing style.
+
+   Pythons Schlüsselwort lambda könnte manche Anhänger der funktionalen Programmierung fehlleiten. Solche lambda-Blöcke in Python können nur Ausdrücke enthalten, aber keine Anweisungen. Damit sind sie nicht der allgemeinste Weg, um eine Funktion zurückzugeben. Die übliche Vorgehensweise ist stattdessen, den Namen einer lokalen Funktion zurückzugeben. Das folgende Beispiel zeigt dies anhand einer einfachen Funktion nach den Ideen von Haskell Brooks Curry:
+def add_and_print_maker(x):
+    def temp(y):
+        print("{} + {} = {}".format(x, y, x + y))
+    return temp
+
+   Damit ist auch Currying auf einfache Art möglich, um generische Funktionsobjekte auf problemspezifische herunterzubrechen. Hier ein einfaches Beispiel:
+def curry(func, knownargument):
+    return lambda unknownargument: func(unknownargument, knownargument)
+
+   Wird die curry-Funktion aufgerufen, erwartet diese eine Funktion mit zwei notwendigen Parametern sowie die Parameterbelegung für den zweiten Parameter dieser Funktion. Der Rückgabewert von curry ist eine Funktion, die dasselbe tut wie func aber nur noch einen Parameter benötigt.
+
+   Anonyme Namensräume (sog. Closures) sind mit den o. g. Mechanismen in Python ebenfalls einfach möglich. Ein simples Beispiel für einen Stack, intern durch eine Liste repräsentiert:
+def stack():
+    l = []
+
+    def pop():
+        return l.pop()
+
+    def push(element):
+        l.append(element)
+
+    def isempty():
+        return len(l) == 0
+
+    return pop, push, isempty
+
+POP, PUSH, ISEMPTY = stack()
+
+   Auf diese Weise erhält man die drei Funktionsobjekte POP, PUSH, ISEMPTY, um den Stack zu modifizieren bzw. auf enthaltene Elemente zu prüfen, ohne l direkt modifizieren zu können.
+
+Ausnahmebehandlung[Bearbeiten]
+
+   Python nutzt ausgiebig die Ausnahmebehandlung (engl. exception handling) als ein Mittel, um Fehlerbedingungen zu testen. Dies ist so weit in Python integriert, dass es teilweise sogar möglich ist, Syntaxfehler abzufangen und zur Laufzeit zu behandeln.
+
+   Ausnahmen haben einige Vorteile gegenüber anderen beim Programmieren üblichen Verfahren der Fehlerbehandlung (wie z. B. Fehler-Rückgabewerte und globale Statusvariablen). Sie sind Thread-sicher und können leicht bis in die höchste Programmebene weitergegeben oder an einer beliebigen anderen Ebene der Funktionsaufruffolge behandelt werden. Der korrekte Einsatz von Ausnahmebehandlungen beim Zugriff auf dynamische Ressourcen erleichtert es zudem, bestimmte auf Race Conditions basierende Sicherheitslücken zu vermeiden, die entstehen können, wenn Zugriffe auf bereits veralteten Statusabfragen basieren.
+
+   Der Python-Ansatz legt den Einsatz von Ausnahmen nahe, wann immer eine Fehlerbedingung entstehen könnte. Nützlich ist dieses Prinzip beispielsweise bei der Konstruktion robuster Eingabeaufforderungen:
+while True:
+    num = raw_input("Eine Zahl eingeben: ")
+    try:
+        num = int(num)
+        break
+    except ValueError:
+        print("Eine _Zahl_, bitte!")
+
+   Dieser Code wird den Benutzer so lange nach einer Nummer fragen, bis dieser eine Zeichenfolge eingibt, die sich per int() in eine Ganzzahl konvertieren lässt. Durch die Ausnahmebehandlung wird hier vermieden, dass eine Fehleingabe zu einem Laufzeitfehler führt, der das Programm zur Beendigung zwingt.
+
+   Ebenso kann auch das hier nicht berücksichtigte Interrupt-Signal (SIGINT, häufig Strg+C) mittels Ausnahmebehandlung in Python abgefangen und behandelt werden (except KeyboardInterrupt: …).
+
+Standardbibliothek[Bearbeiten]
+
+   Python verfügt über eine große Standardbibliothek, wodurch es sich für viele Anwendungen gut eignet. Sie ist eine der größten Stärken von Python. Der überwiegende Teil davon ist plattformunabhängig, so dass auch größere Python-Programme oft auf Unix, Windows, Mac OS X und anderen Plattformen ohne Änderung laufen. Die Module der Standardbibliothek können mit in C oder Python selbst geschriebenen Modulen ergänzt werden.
+
+   Die Standardbibliothek ist besonders auf Internet-Anwendungen zugeschnitten, mit der Unterstützung einer großen Anzahl von Standardformaten und -Protokollen (wie MIME und HTTP). Module zur Schaffung grafischer Schnittstellen, zur Verbindung mit relationalen Datenbanken und zur Manipulation regulärer Ausdrücke sind ebenfalls enthalten.
+
+   Mit Hilfe des mitgelieferten Moduls Tkinter kann in Python (wie in Perl und Tcl) schnell eine grafische Oberfläche (GUI) mit Tk erzeugt werden. Es gibt darüber hinaus eine Vielzahl von weiteren Wrappern von anderen Anbietern. Sie stellen Anbindungen (engl. language bindings) zu GUI-Bibliotheken wie z. B. PyGTK, PyQt, PyKDE, wxPython, PyObjC und PyFLTK zur Verfügung.
+
+Beispiel[Bearbeiten]
+
+   Als nicht triviales Beispiel sei hier der kompakte Sortieralgorithmus Quicksort angegeben:
+def quicksort(liste):
+    if len(liste) <= 1:
+        return liste
+    pivotelement = liste.pop()
+    links  = [element for element in liste if element < pivotelement]
+    rechts = [element for element in liste if element >= pivotelement]
+    return quicksort(links) + [pivotelement] + quicksort(rechts)
+
+   Hier ermöglicht insbesondere die Listennotation für die Variablen links und rechts eine kompakte Darstellung. Zum Vergleich eine iterative Formulierung dieser zwei Zeilen:
+...
+    links, rechts = [], []  # Leere Listen links und rechts
+    pivotelement = liste.pop()  # Das letzte Element aus der Liste nehmen
+    for element in liste:  # Die verkürzte Liste durchlaufen
+        if element < pivotelement:
+            links.append(element)  # wenn < dann an linke Liste anhängen
+        else:
+            rechts.append(element)  # wenn nicht < (also >=) dann an rechte Liste anhängen
+...
+
+   Dies ist nur ein Beispiel für die gesparte Schreibarbeit durch die Listennotation. Tatsächlich ist in diesem Fall die iterative Formulierung die schnellere, da pro Durchgang nur einmal über das Array „liste“ iteriert wird, und nicht zweimal wie in der Listennotation.
+
+Interaktive Benutzung[Bearbeiten]
+
+   So wie Lisp, Ruby, Groovy und Perl unterstützt der Python-Interpreter auch einen interaktiven Modus, in dem Ausdrücke am Terminal eingegeben und die Ergebnisse sofort betrachtet werden können. Das ist nicht nur für Neulinge angenehm, die die Sprache lernen, sondern auch für erfahrene Programmierer: Code-Stückchen können interaktiv ausgiebig getestet werden, bevor man sie in ein geeignetes Programm aufnimmt.
+
+   Darüber hinaus steht mit Python Shell ein Kommandozeileninterpreter für verschiedene unixoide Computer-Betriebssysteme zur Verfügung, der neben klassischen Unix-Shellkommandos auch direkte Eingaben in Python-Form verarbeiten kann. IPython ist eine populäre interaktive Python-Shell und IDE mit stark erweiterter Funktionalität.
+
+Implementierungen[Bearbeiten]
+
+   Mit Cython steht ein Compiler zur Verfügung, mit dem Python-Code in effiziente C-Erweiterungen übersetzt oder externer C-Code angebunden werden kann. Ferner gibt es einen in Java implementierten Python-Interpreter namens Jython, mit dem die Bibliothek des Java Runtime Environments für Python verfügbar gemacht wird. Ebenso existiert eine Python-Implementierung (IronPython) für die .NET- bzw. Mono-Plattform. Um Python als Skriptsprache für Programme in C++ zu nutzen, setzt sich vermehrt die Boost.Python-Bibliothek durch. Ein Python-Parser für Parrot und ein in Python geschriebener Interpreter für Python, PyPy, welcher von der EU gefördert wurde, sind ebenfalls in Entwicklung. Es existiert ein Python-Interpreter für Mikrocontroller namens PyMite.^[20]
+
+Entwicklungsumgebung[Bearbeiten]
+
+   Neben IDLE, das oft mit Python installiert wird und im Wesentlichen aus einer Textumgebung und einer Shell besteht, wurden auch einige vollwertige Entwicklungsumgebungen (IDEs) für Python entwickelt, beispielsweise Eric Python IDE oder PyCharm. Des Weiteren existieren Plugins für größere IDEs wie Eclipse, Visual Studio und NetBeans. Texteditoren für Programmierer wie Vim und Emacs lassen sich gegebenenfalls auch für Python anpassen. Allerdings ist keine IDE notwendig, da Pythoncode nicht kompiliert werden muss, sodass sich Skripte grundsätzlich auch mit einem beliebigen Texteditor schreiben lassen.
+
+   Für die verschiedenen GUI-Frameworks, wie z. B. Tkinter (GUI-Builder), WxPython (wxGlade), PyQt (Qt Designer), PySide, PyGTK (Glade), Kivy oder PyFLTK gibt es teils eigene Editoren, mit denen sich grafische Benutzeroberflächen auf vergleichsweise einfache Art aufbauen lassen.
+
+Paketverwaltung[Bearbeiten]
+
+   Python unterstützt die Erstellung von Paketen. Beim Erstellen der Pakete helfen distutils und setuptools. Die Pakete werden auf PyPI, dem Python Package Index, gespeichert und von dort zur Installation abgerufen. Als Paketmanager wird üblicherweise pip oder auf alten Systeme auch easy_install eingesetzt.
+
+Verbreitung und Einsatz[Bearbeiten]
+
+   Python ist für die meisten gängigen Betriebssysteme frei erhältlich und bei den meisten Linux-Distributionen im Standardumfang enthalten. Um Python in Webserver einzubinden, wird Webserver-umgreifend WSGI verwendet, welches die Nachteile von CGI umgeht. WSGI stellt eine universelle Schnittstelle zwischen Webserver und Python(-Framework) zur Verfügung.
+
+   Eine Reihe von Web-Application-Frameworks nutzt Python, darunter Django, Pylons, SQLAlchemy, TurboGears, web2py, Flask und Zope. Ferner gibt es einen Python-Interpreter für das Symbian-Betriebssystem, so dass Python auf verschiedenen Mobiltelefonen verfügbar ist. In der Version 2.5.1 ist Python ein Bestandteil von AmigaOS 4.0. Außerdem basieren mehrere bekannte kommerzielle Projekte, etwa Google und YouTube, in Teilen auf Python.^[21] Auch in der Spieleindustrie findet die Sprache bisweilen Einsatz, etwa in EVE Online, World in Conflict und Civilization IV.
+
+   Im Rahmen des Projektes 100-Dollar-Laptop wird Python als Standardsprache der Benutzeroberfläche verwendet. Da der 100-Dollar-Laptop für die Schulausbildung von Kindern konzipiert ist, soll bei Benutzung der dafür gestalteten grafischen Benutzeroberfläche „Sugar“ auf Knopfdruck der gerade laufende Python-Quellcode angezeigt werden.^[22] Damit soll Kindern die Möglichkeit gegeben werden, die dahinter liegende Informationstechnologie real zu erleben und nach Belieben „hinter die Kulissen“ zu schauen.
+
+Kritik[Bearbeiten]
+
+   Bei der Definition (aber nicht beim Aufruf) von Methoden muss der Parameter self, der der Instanz entspricht, dessen Methode aufgerufen wird, explizit angegeben werden. Dies wird oft als unelegant und nicht objektorientiert empfunden.^[23] Es ist aber nötig, um bestimmte wichtige Konstrukte zu ermöglichen;^[24] außerdem entspricht es dem Python-Grundsatz „Explicit is better than implicit“.^[18]
+
+   Bis zur Version 3.0 wurde kritisiert, dass in einer Methodendefinition der Aufruf der Basisklassenversion derselben Methode die explizite Angabe der Klasse und Instanz erfordert. Dies wurde als Verletzung des DRY-Prinzips („Don’t repeat yourself“) gesehen, außerdem behinderte es Umbenennungen. In Python 3.0 wurde dieser Kritikpunkt behoben.^[25]
+
+   Einige in anderen Sprachen gebräuchliche Kontrollstrukturen sind in Python nicht vorhanden und müssen daher mithilfe von Ersatzstrukturen nachgeahmt werden.^[23]
+
+   Auf Multiprozessor-Systemen behindert der sogenannte Global Interpreter Lock (GIL) von CPython die Effizienz von Python-Anwendungen, die softwareseitiges Multithreading benutzen. Diese Beschränkung existiert unter Jython oder IronPython allerdings nicht. Bislang ist von offizieller Seite nicht geplant, den GIL zu ersetzen. Stattdessen wird empfohlen, mehrere miteinander kommunizierende Prozesse anstelle von Threads zu verwenden.^[26]^[27]
+
+   In den aktuell vorherrschenden Implementationen ist die Geschwindigkeit niedriger als bei vielen kompilierbaren Sprachen,^[28] aber ähnlich wie bei Perl,^[29] PHP^[30] oder Smalltalk^[31] und höher als bei Ruby.^[32] Das liegt zum Teil daran, dass bei der Entwicklung von CPython der Klarheit des Codes gegenüber der Geschwindigkeit Vorrang eingeräumt wird.^[33] Man beruft sich dabei auf Autoritäten wie Donald Knuth und Tony Hoare, die von verfrühter Optimierung abraten. Wenn Performanceprobleme auftreten, die nicht durch Optimierung des Python-Codes gelöst werden können,^[34] werden stattdessen JIT-Compiler wie PyPy verwendet oder zeitkritische Funktionen in maschinennähere Sprachen wie C oder gar Assembler (CorePy) ausgelagert.
+
+Einzelnachweise[Bearbeiten]
+
+    1. ↑ Python License
+    2. ↑ What is Python Good For?. In: General Python FAQ. Python Foundation. Abgerufen am 5. September 2008.
+    3. ↑ What is Python? Executive Summary. In: Python documentation. Python Foundation. Abgerufen am 21. März 2007.
+    4. ↑ PyPI – the Python Package Index. Abgerufen am 31. Mai 2015.
+    5. ↑ Offizielle Python FAQ, sowie Python Tutorial, Kapitel 1
+    6. ↑ Cobra
+    7. ↑ boa-constructor.sourceforge.net
+    8. ↑ Guido van Rossum: Vorwort für das Buch „Programming Python“. 1996, abgerufen am 12. August 2014.
+    9. ↑ Guido van Rossum: Kommentar zur Entfernung einiger funktionaler Konzepte. Abgerufen am 11. August 2014 (englisch).
+   10. ↑ A. Kuchling, Moshe Zadka: Dokumentation Python 2.0. Python Software Foundation, abgerufen am 11. August 2014 (englisch).
+   11. ↑ heise.de: Python 2.6 öffnet Wege zu Version 3 vom 2. Oktober 2008, abgerufen am 4. Oktober 2008
+   12. ↑ Guido van Rossum: Dokumentation Python 3.0. Python Software Foundation, 14. Februar 2009, abgerufen am 11. August 2014 (englisch).
+   13. ↑ Release Notes zu Python 3.5. Python Software Foundation, abgerufen am 21. September 2015 (englisch).
+   14. ↑ docs.python.org
+   15. ↑  Marty Alchin, Apress (Hrsg.): Pro Python. 15. Juni 2010, ISBN 978-1-4302-2757-1, S. 6.
+   16. ↑ Bill Venners: Interview mit Guido van Rossum. Artima, 13. Januar 2003, abgerufen am 15. August 2014 (englisch).
+   17. ↑ Verwendung fremdsprachiger Module. Python Software Foundation, abgerufen am 12. August 2014 (englisch).
+   18. ↑ ^a ^b Tim Peters: The Zen of Python. Python Software Foundation, 19. August 2004, abgerufen am 12. August 2014 (englisch).
+   19. ↑ my.safaribooksonline.com
+   20. ↑ PyMite in der Python Wiki
+   21. ↑ Quotes about Python. Abgerufen am 25. Juni 2011.
+   22. ↑ OLPC-Wiki: „Python für den 100-Dollar-Laptop“
+   23. ↑ ^a ^b http://www.amk.ca/python/writing/warts.html (Memento vom 2. Oktober 2003 im Internet Archive)Vorlage:Webarchiv/Wartung/Linktext_fehlt
+   24. ↑ Guido van Rossum: Why explicit self has to stay
+   25. ↑ python.org
+   26. ↑ python.org
+   27. ↑ artima.com
+   28. ↑ Python–C
+   29. ↑ Python–Perl (Seite nicht mehr abrufbar)Vorlage:Toter Link/!...nourl
+   30. ↑ Benchmark-Vergleich Python–PHP
+   31. ↑ Benchmark-Vergleich Python–Smalltalk
+   32. ↑ Benchmark-Vergleich Python–Ruby
+   33. ↑ Python Culture
+   34. ↑ Python Patterns – An Optimization Anecdote (offline)
+
+Literatur[Bearbeiten]
+
+Für den Einstieg[Bearbeiten]
+
+     *  Allen B. Downey: Programmieren lernen mit Python. 2. Auflage. O'Reilly, Köln (u. a.) 2014 (übersetzt von Stefan Fröhlich), ISBN 978-3-95561-806-3, S. 297.
+     *  Bernd Klein: Einführung in Python 3. Für Ein- und Umsteiger. 2., überarb. und erw. Auflage. Hanser, München 2014, ISBN 978-3-446-44133-0, S. 494 (Inhaltsverzeichnis).
+     *  Thomas Theis: Einstieg in Python. Ideal für Programmieranfänger geeignet. 4., akt. u. erw. Auflage. Galileo Press, Bonn 2014, ISBN 978-3-8362-2861-9, S. 478 (Inhaltsverzeichnis).
+     *  Mark Lutz: Learning Python. 5. Auflage. O'Reilly, Sebastopol (u. a.) 2013, ISBN 978-1-4493-5573-9, S. 1540 (Inhaltsverzeichnis).
+     * Hans Petter Langtangen: A Primer on Scientific Programming with Python.
+       Springer, 4. Auflage 2014, ISBN 978-3-642-54958-8
+     * Mark Pilgrim, Florian Wollenschein: Python 3 – Intensivkurs, Springer, 1. Auflage 2010, ISBN 978-3-642-04376-5
+       (Deutsche Übersetzung von Dive Into Python 3 bei google-books)
+     * Mark Pilgrim: Dive Into Python 3 Springer, 2. Auflage 2009, ISBN 1-4302-2415-0 (Download verfügbar)
+
+Für Kinder und Jugendliche[Bearbeiten]
+
+     *  Martina Glöde (Hrsg.): Programmieren supereasy. Einfacher Einstieg in Scratch und Python. Dorling Kindersley, München 2015 (übersetzt von Birgit Reit), ISBN 978-3-8310-2700-2, S. 224.
+     *  Warren D. Sande; Carter Sande: Hello World! Programmieren für Kids und andere Anfänger. 2., akt. u. erw. Auflage. Hanser, München 2014 (übersetzt von Jürgen Dubau), ISBN 978-3-446-43806-4, S. 475.
+
+Referenzen[Bearbeiten]
+
+     *  Michael Weigend: Python ge-packt. 6. Auflage. mitp, Frechen 2015, ISBN 978-3-8266-8726-6, S. 644 (Inhaltsverzeichnis).
+     *  Johannes Ernesti; Peter Kaiser: Python 3. Das umfassende Handbuch. 4., akt. u. erw. Auflage. Rheinwerk, Bonn 2015, ISBN 978-3-8362-3633-1, S. 1032 (Inhaltsverzeichnis).
+     *  Mark Lutz: Python. Kurz & gut. 5. Auflage. O'Reilly, Köln (u.a.) 2014, ISBN 978-3-95561-770-7, S. 270 (Inhaltsverzeichnis).
+
+Weiterführendes[Bearbeiten]
+
+     * Gregor Lingl: Python für Kids, bhv, 4. Auflage 2010, ISBN 3-8266-8673-X.
+     * Farid Hajji: Das Python-Praxisbuch, Addison-Wesley, 1. Auflage 2008, ISBN 978-3-8273-2543-3.
+     * Hans P. Langtangen: Python Scripting for Computational Science, Springer, 3. Auflage 2008, ISBN 3-540-43508-5.
+     * Michael Weigend: Objektorientierte Programmierung mit Python, mitp-Verlag, 1. Auflage 2006, ISBN 3-8266-0966-2.
+
+Weblinks[Bearbeiten]
+
+    Commons: Python – Sammlung von Bildern, Videos und Audiodateien
+    Wikibooks: Python 2 unter Linux – Lern- und Lehrmaterialien
+     * Offizielle Website (englisch)
+     * Das deutsche Python-Forum
+     * Python-Kurs.eu – Online-Kurs und Tutorials für Python 2 und 3
+     * Python Tutorials (englisch)
+     * Python beginners guide (englisch)
+     * A byte of Python v. C. H. Swaroop, (Download verfügbar)
+     * Eric S. Raymond über seine Erfahrungen mit Python (englisch)
+     * Snake Wrangling for Kids – Learning to Program with Python v. Jason R. Briggs, für achtjährige und ältere Kinder, Creative Commons Lizenz (englisch)
+     * Schlangengerangel für Kinder – Programmieren Lernen für Kinder, für achtjährige und ältere Kinder, Creative Commons Lizenz (deutsch)
+     * Code Like a Pythonista: Idiomatic Python v. David Goodger (englisch)
+
+Siehe auch[Bearbeiten]
+
+     * pip, Paketverwaltungsprogramm für Programmpakete aus dem Python Package Index
+     * virtualenv, ermöglicht die Erstellung von isolierten (virtuellen) python Umgebungen auf dem lokalen Rechner.
+
+   Dieser Artikel existiert auch als Audiodatei.
+   Gesprochene Wikipedia Dieser Artikel ist als Audiodatei verfügbar:
+   Entschuldige, aber für deinen Browser ist entweder die Nutzung von JavaScript deaktiviert oder er verfügt über keine unterstützte Abspielsoftware.
+   Du kannst den Clip herunterladen oder eine Abspielsoftware herunterladen, um den Clip im Browser abspielen zu können.
+   Speichern | Informationen | 20.30 min (13,0 MB) Text der gesprochenen Version (5. Januar 2010)
+                         Mehr Informationen zur gesprochenen Wikipedia
+   Dies ist ein als lesenswert ausgezeichneter Artikel.
+   Dieser Artikel wurde am 23. Oktober 2005 in dieser Version in die Liste der lesenswerten Artikel aufgenommen.
+   Normdaten (Sachbegriff): GND: 4434275-5 (AKS) | LCCN: sh96008834
+   Von „https://de.wikipedia.org/w/index.php?title=Python_(Programmiersprache)&oldid=149201575“
+   Kategorien:
+     * Wikipedia:Gesprochener Artikel
+     * Wikipedia:Lesenswert
+     * Python (Programmiersprache)
+     * Skriptsprache
+     * Objektorientierte Programmiersprache
+     * Imperative Programmiersprache
+     * Funktionale Programmiersprache
+
+   Wartungskategorie:
+     * Wikipedia:Weblink offline
+
+Navigationsmenü
+
+Meine Werkzeuge
+
+     * Nicht angemeldet
+     * Diskussionsseite
+     * Beiträge
+     * Benutzerkonto erstellen
+     * Anmelden
+
+Namensräume
+
+     * Artikel
+     * Diskussion
+
+Varianten
+
+Ansichten
+
+     * Lesen
+     * Bearbeiten
+     * Versionsgeschichte
+
+Mehr
+
+Suche
+
+   ____________________ Volltext Artikel
+
+Navigation
+
+     * Hauptseite
+     * Themenportale
+     * Von A bis Z
+     * Zufälliger Artikel
+
+Mitmachen
+
+     * Artikel verbessern
+     * Neuen Artikel anlegen
+     * Autorenportal
+     * Hilfe
+     * Letzte Änderungen
+     * Kontakt
+     * Spenden
+
+Drucken/exportieren
+
+     * Buch erstellen
+     * Als PDF herunterladen
+     * Druckversion
+
+Werkzeuge
+
+     * Links auf diese Seite
+     * Änderungen an verlinkten Seiten
+     * Spezialseiten
+     * Permanenter Link
+     * Seiteninformationen
+     * Wikidata-Datenobjekt
+     * Artikel zitieren
+
+In anderen Sprachen
+
+     * Afrikaans
+     * Alemannisch
+     * Aragonés
+     * العربية
+     * অসমীয়া
+     * Azərbaycanca
+     * تۆرکجه
+     * Беларуская
+     * Български
+     * বাংলা
+     * Bosanski
+     * ᨅᨔ ᨕᨘᨁᨗ
+     * Català
+     * Cebuano
+     * کوردیی ناوەندی
+     * Čeština
+     * Dansk
+     * Ελληνικά
+     * English
+     * Esperanto
+     * Español
+     * Eesti
+     * Euskara
+     * فارسی
+     * Suomi
+     * Français
+     * Galego
+     * ગુજરાતી
+     * עברית
+     * हिन्दी
+     * Hrvatski
+     * Magyar
+     * Հայերեն
+     * Interlingua
+     * Bahasa Indonesia
+     * Íslenska
+     * Italiano
+     * 日本語
+     * Lojban
+     * ქართული
+     * Қазақша
+     * ភាសាខ្មែរ
+     * 한국어
+     * Latina
+     * Lietuvių
+     * Latviešu
+     * Македонски
+     * മലയാളം
+     * Монгол
+     * मराठी
+     * Bahasa Melayu
+     * မြန်မာဘာသာ
+     * Plattdüütsch
+     * नेपाली
+     * Nederlands
+     * Norsk bokmål
+     * ଓଡ଼ିଆ
+     * Polski
+     * Português
+     * Română
+     * Русский
+     * Srpskohrvatski / српскохрватски
+     * සිංහල
+     * Simple English
+     * Slovenčina
+     * Slovenščina
+     * Shqip
+     * Српски / srpski
+     * Svenska
+     * தமிழ்
+     * తెలుగు
+     * Тоҷикӣ
+     * ไทย
+     * Tagalog
+     * Türkçe
+     * Українська
+     * Oʻzbekcha/ўзбекча
+     * Tiếng Việt
+     * 吴语
+     * 中文
+     * Bân-lâm-gú
+     * 粵語
+     *
+
+   Links bearbeiten
+
+     * Diese Seite wurde zuletzt am 19. Dezember 2015 um 11:15 Uhr geändert.
+     * Abrufstatistik
+       Der Text ist unter der Lizenz „Creative Commons Attribution/Share Alike“ verfügbar; Informationen zu den Urhebern und zum Lizenzstatus eingebundener Mediendateien (etwa Bilder oder Videos) können im Regelfall durch Anklicken dieser abgerufen werden. Möglicherweise unterliegen die Inhalte jeweils zusätzlichen Bedingungen. Durch die Nutzung dieser Website erklären Sie sich mit den Nutzungsbedingungen und der Datenschutzrichtlinie einverstanden.
+       Wikipedia® ist eine eingetragene Marke der Wikimedia Foundation Inc.
+
+     * Datenschutz
+     * Über Wikipedia
+     * Impressum
+     * Softwareentwickler
+     * Mobile Ansicht
+
+     * Wikimedia Foundation
+     * Powered by MediaWiki
