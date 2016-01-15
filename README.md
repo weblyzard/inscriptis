@@ -32,7 +32,7 @@ print(text)
 ```
 
 ### Benchmarking
-To run the benchmarking script ```run_benchmarking.py``` in ```benchmarking```.
+To run the benchmarking script execute ```run_benchmarking.py``` from within the folder ```benchmarking```.
 In ```def pipeline()``` set the which HTML -> Text algorithms to be executed by modifying 
 ```python
 run_lynx = True
