@@ -50,7 +50,7 @@ except OSError as e:
         lynx_available = False
         raise
 
-benchmarking_root = os.path.dirname(__file__)
+benchmarking_root = os.path.dirname(os.path.abspath(__file__))
 benchmarking_results_dir = '/benchmarking_results/'
 src_dir = os.path.join(benchmarking_root, '../src')
 sys.path.insert(0, os.path.abspath(src_dir))
@@ -160,7 +160,7 @@ def pipeline():
     sources = []
     with open(os.path.join(benchmarking_root, 'url_list.txt')) as url_list:
         for line in url_list:
-            sources.append(line)
+            sources.append(line.strip())
 
     if not os.path.exists(benchmarking_root + benchmarking_results_dir[:-1]):
         os.makedirs(benchmarking_root + benchmarking_results_dir[:-1])
@@ -229,7 +229,7 @@ def pipeline():
         if run_inscriptis:
             algorithm = "inscriptis"
             start_time = time.time()
-            data = inscriptis.get_text(html)
+            data = inscriptis.get_text_from_html(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)

@@ -1,0 +1,5 @@
+*.pyc
+.*.swp
+*.egg-info
+__pycache__/
+benchmarking_results/
