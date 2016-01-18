@@ -9,8 +9,39 @@ A python based HTML to text converter based on SpiffWikiMarkup by Samuel Abel.
 
 ### Usage
 
-Get text from url
-The "http://" prefix must be also entered since urllib will not
+#### Command line
+The command line client converts text files or text retrieved from Web pages to the
+corresponding text representation.
+
+***Command line parameters***
+```bash
+usage: inscriptis.py [-h] [-o OUTPUT] [-e ENCODING] input
+
+Converts HTML from file or url to a clean text version
+
+positional arguments:
+  input                 Html input either from a file or an url
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        Output file (default:stdout).
+  -e ENCODING, --encoding ENCODING
+                        Content encoding for files (default:utf-8)
+```
+
+***Examples***
+```
+# convert the given page to text and output the result to the screen
+python3 inscriptis.py http://www.htwchur.ch
+
+# convert the file to text and save the output to output.txt
+python3 inscriptis.py htwchur.html -o htwchur.txt
+```
+
+
+#### Library
+
 ```python
 from inscriptis import get_text_from_url
 

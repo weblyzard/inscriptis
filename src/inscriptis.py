@@ -363,7 +363,7 @@ if __name__ == "__main__":
     text = get_text_from_html(html_content)
     if args.output:
         with open(args.output, 'w') as open_file:
-            open_file.write(text.encode("utf8"))
+            open_file.write(text)
     else:
         print(text)
 
