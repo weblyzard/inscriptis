@@ -12,9 +12,16 @@ __maintainer__ = "Fabian Odoni"
 __email__ = "fabian.odoni@htwchur.ch"
 __status__ = "Prototype"
 
-from html.parser import HTMLParser
+try: # python 3.x
+    from html.parser import HTMLParser
+    from urllib.request import urlopen
+except ImportError: # python 2.x
+    from HTMLParser import HTMLParser
+    from urllib import urlopen
+    from io import open
 from bs4 import BeautifulSoup
-import urllib
+
+
 import argparse
 
 
@@ -227,9 +234,9 @@ class Parser(HTMLParser):
         if not self.in_pre:
             data = data.replace('\n', '')
 
-        if self.in_a:
-            if data == self.last_href:
-                return
+        #if self.in_a:
+        #    if data == self.last_href:
+        #        return
 
         if self.li_lvl > 0:
             self.buffer += data
@@ -291,11 +298,6 @@ class Parser(HTMLParser):
         self.__if_not_then_append('\n')
 
 
-def get_html(url_input):
-    """ Returns the HTML Code from an URL via urllib """
-    return urllib.request.urlopen(url_input)
-
-
 def clean_html(input_data):
     """ Cleans up the HTML Code """
     soup = BeautifulSoup(input_data, "lxml")
@@ -303,6 +305,7 @@ def clean_html(input_data):
         script.extract()
 
     html = str(soup).strip('\t\r\n')
+    html = html.replace("\n", " ")      # html handles '\n' like ' '
 
     '''
     bad_tags = ['<i>', '</i>', '<b>', '</b>', '<u>', '</u>']
@@ -329,6 +332,7 @@ def clean_text(text):
 def get_text_from_html(input_data):
     """ Turns HTML into text """
     parser = Parser()
+    input_data = clean_html(input_data)
     parser.feed(input_data)
     result = parser.wiki
     result = clean_text(result)
@@ -336,22 +340,12 @@ def get_text_from_html(input_data):
     return result
 
 
-def get_text_from_url(url):
-    """ Returns the text from an URL """
-    html = get_html(url)
-    html = clean_html(html.read())
-    text = get_text_from_html(html)
-
-    return text
-
-
 def get_args():
     """ Parses the arguments if script is run directly via console """
     parser = argparse.ArgumentParser(description='Converts HTML from file or url to a clean text version')
-    parser.add_argument('-i', '--input', help='Html input either from a file or an url')
-    parser.add_argument('input', nargs='?', help='Html input either from a file or an url')
-    parser.add_argument('-o', '--output', type=str, help='Define file to save output to')
-    parser.add_argument('-p', '--printout', action='store_true', help='Print the output on the console')
+    parser.add_argument('input', help='Html input either from a file or an url')
+    parser.add_argument('-o', '--output', type=str, help='Output file (default:stdout).')
+    parser.add_argument('-e', '--encoding', type=str, help='Content encoding for files (default:utf-8)', default='utf-8')
     args = parser.parse_args()
 
     return args
@@ -360,17 +354,16 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
 
-    if not args.input:
-        url = "http://www.informationscience.ch"
+    if args.input.startswith("http://") or args.input.startswith("https://"):
+        html_content = urlopen(args.input)
     else:
-        url = args.input
+        with open(args.input, encoding=args.encoding) as f:
+            html_content = f.read()
 
-    text = get_text_from_url(url)
-
+    text = get_text_from_html(html_content)
     if args.output:
         with open(args.output, 'w') as open_file:
-            for line in text:
-                open_file.write(line)
-
-    if args.printout:
+            open_file.write(text.encode("utf8"))
+    else:
         print(text)
+
