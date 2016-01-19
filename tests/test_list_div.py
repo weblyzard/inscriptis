@@ -14,4 +14,10 @@ def test_successive_a():
     html = u'Thomas <ul><li><div>Anton</div>Maria</ul>'
     assert get_text_from_html(html) == 'Thomas\n  * Anton\n    Maria'
 
+    html = u'Thomas <ul><li>  <div>Anton</div>Maria</ul>'
+    assert get_text_from_html(html) == 'Thomas\n  * Anton\n    Maria'
+
+    html = u'Thomas <ul><li> a  <div>Anton</div>Maria</ul>'
+    assert get_text_from_html(html) == 'Thomas\n  * a\n    Anton\n    Maria'
+
 
