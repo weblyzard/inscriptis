@@ -9,10 +9,7 @@ from inscriptis import get_text_from_html
 
 def test_successive_a():
     html = u'<html><body><a href="first">first</a><a href="second">second</a></body></html>'
-    print(get_text_from_html(html)+"<<")
     assert get_text_from_html(html) == 'firstsecond'
 
     html = u'<html><body><a href="first">first</a>\n<a href="second">second</a></body></html>'
     assert get_text_from_html(html) == 'first second'
-
-

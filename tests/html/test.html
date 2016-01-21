@@ -1,19 +1,116 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+</meta>
+
+<body>
+
 <!-- This document collects HTML elements which should be given a special
      consideration during rendering
  -->
 
 <!-- enumerations and display:block -->
+The first enumeration
 <ul>
  <li><p>first line</p>second line
  <li>third line
 </ul>
 
+
+The second enumeration
 <ul>
-  <li>first line<p>second line<p>third line
+ <li>first
+ <li><p>second</p>
+ <li>third
+ <li>forth
+</ul>
+
+The third enumeration
+<ul>
+  <li>first line<p>second line</p>third line
   <li>last line
 </ul>
+
+The forth enumeration (div rather than p)
+<ul>
+  <li>first line<div>second line</div>third line
+  <li>last line
+</ul>
+
+
+Spaces between enumerated items?
+<ul>
+  <li>first line<br><br><br>
+  <li>second line
+  <li><p>third line</p>
+  <li>last line
+</ul>
+
+Normal enumeration
+<ul>
+ <li>first
+ <li>second
+ <li>third
+</ul>
+<ol>
+ <li>first
+ <li>second
+ <li>first
+ <li>second
+ <li>first
+ <li>second
+ <li>first
+ <li>second
+ <li>first
+ <li>second
+ <li>first
+ <li>second
+</ol>
 
 
 <!-- use of quotes -->
 Amen, amen ich sage euch - <q>Ehre sei Gott</q> in der Höhe!
 
+<hr />
+
+<!-- margins in elements -->
+Davor...
+Inline <b style="-webkit-margin-before: 1em; -webkit-margin-after:1em; -webkit-padding-start: 40px;">alles drunter?</b> Weiter geht's?
+
+<!-- does a block element requires a new line, even if we are at the beginning
+     of a line? -->
+
+<h3>Block elements</h3>
+This is the first line <br />
+<div>Block Element - is there a space to the previous line?</div>
+
+<h3>Whitespaces</h3>
+White  space <b> space</b>
+und <pre>  mehr  ...</pre>.
+
+<h3>Divs</h3>
+Thomas<div>Anton</div>Maria
+
+<h3>One versus two divs</h3>
+One
+<div>Anna</div>
+Div.
+
+<hr>
+
+Two
+<div></div><div>Anna</div>
+Div.
+
+<hr>
+
+Empty
+<div />
+Div.
+
+
+
+
+
+</body>
+</html>

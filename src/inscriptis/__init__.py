@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 # coding:utf-8
-"""
+'''
 Converts HTML to Text
-"""
+
+Guiding principles:
+
+ a. break lines only if we encounter a block element
+ b. paddings:
+'''
 
 __author__ = "Fabian Odoni, Albert Weichselbraun, Samuel Abels"
 __copyright__ = "Copyright 2015, HTW Chur"
@@ -19,10 +24,39 @@ except ImportError: # python 2.x
     from HTMLParser import HTMLParser
     from urllib import urlopen
     from io import open
-from bs4 import BeautifulSoup
 
+from bs4 import BeautifulSoup
+from inscriptis.css import CSS, HtmlElement
+from inscriptis.html import Display, WhiteSpace
 
 import argparse
+
+class Line(object):
+    '''
+    Object used to represent a line
+    '''
+
+    def __init__(self):
+        self.margin_before = 0
+        self.margin_after = 0
+        self.prefix = ""
+        self.suffix = ""
+        self.content = ""
+        self.list_bullet = ""
+        self.padding = 0
+
+    def extract_pre_text(self):
+        pass
+
+    def get_text(self):
+        print(">>" + self.content + "<<" + str(self.margin_before) + ", " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
+        return '\n' * self.margin_before + \
+               ' ' * (self.padding - len(self.list_bullet)) + \
+               self.list_bullet + \
+               self.prefix + \
+               ' '.join(self.content.split()) + \
+               self.suffix + \
+               '\n' * self.margin_after
 
 
 class Cell:
@@ -32,9 +66,16 @@ class Cell:
 
 
 class Parser(HTMLParser):
+
+    ul_counter = ['*', '+', 'o', '-'] * 10
+
     def __init__(self):
         HTMLParser.__init__(self)
-        self.wiki = ''
+        # self.current_tag = [HtmlElement()] # a stack containing information on the current tag
+        self.current_tag = [HtmlElement()]
+        self.current_line = Line()
+        self.next_line = Line()
+        self.clean_text_lines = []
         self.buffer = ''
         self.indent = 0
         self.rows = []
@@ -42,16 +83,18 @@ class Parser(HTMLParser):
         self.in_table = False
         self.in_td = False
         self.in_heading = False
-        self.in_ul = False
-        self.in_ol = False
-        self.ol_nr = False
-        self.in_li = False
-        self.li_lvl = 0
-        self.in_a = False
-        self.in_pre = False
-        self.last_href = ''
-        self.span_path = []
-        self.bullet_points = ['', '*', '+', 'o', '-'] * 10
+        self.li_counter = []
+        self.li_level = 0
+
+    def get_text(self):
+        '''
+        ::returns:
+           a text representation of the parsed content
+        '''
+        if self.current_line:
+            self.__flush()
+            self.current_line = None
+        return '\n'.join(self.clean_text_lines)
 
     def __output(self, text):
         self.buffer += (' ' * self.indent * 2)
@@ -60,153 +103,78 @@ class Parser(HTMLParser):
             self.buffer += '\n'
 
     def __flush(self):
-        self.wiki += self.buffer
-        self.buffer = ''
-
-    def __if_not_then_append(self, ifnot):
-        if not self.buffer.endswith(ifnot):
-            self.buffer += ifnot
+        print("____", self.current_tag[-1])
+        self.clean_text_lines.append(self.current_line.get_text())
+        self.current_line = self.next_line
+        self.next_line = Line()
 
     def handle_starttag(self, tag, attrs):
+        # use the css to handle tags known to it :)
+        cur = CSS.get(tag, HtmlElement())
+        self.current_tag.append(cur)
+        self.next_line.padding = self.current_line.padding + cur.padding
+        # flush text before display:block elements
+        if cur.display == Display.block:
+            self.__flush()
+
         if tag == 'table': self.start_table()
         elif tag == 'tr': self.start_tr()
         elif tag == 'th': self.start_th(attrs)
         elif tag == 'td': self.start_td(attrs)
-        elif tag == 'h1': self.start_h1()
-        elif tag == 'h2': self.start_h2()
-        elif tag == 'h3': self.start_h3()
-        elif tag == 'p': self.start_p()
         elif tag == 'ul': self.start_ul()
         elif tag == 'ol': self.start_ol()
         elif tag == 'li': self.start_li(tag)
-        elif tag == 'i': self.start_i()
-        elif tag == 'b': self.start_b()
-        elif tag == 'u': self.start_u()
-        elif tag == 'a': self.start_a(attrs)
-        elif tag == 'pre': self.start_pre()
-        elif tag == 'strike': self.start_strike()
-        elif tag == 'span': self.start_span(attrs)
         elif tag == 'br': self.newline()
-        elif tag == 'div': self.start_div()
 
     def handle_endtag(self, tag):
+        cur = self.current_tag.pop()
+        self.next_line.padding = self.current_line.padding - cur.padding
+        # flush text after display:block elements
+        if cur.display == Display.block:
+            self.__flush()
+
         if tag == 'table': self.end_table()
         elif tag == 'tr': self.end_tr()
         elif tag == 'th': self.end_th()
         elif tag == 'td': self.end_td()
-        elif tag == 'h1': self.end_h1()
-        elif tag == 'h2': self.end_h2()
-        elif tag == 'h3': self.end_h3()
-        elif tag == 'p': self.end_p()
         elif tag == 'ul': self.end_ul()
         elif tag == 'ol': self.end_ol()
         elif tag == 'li': self.end_li(tag)
-        elif tag == 'i': self.end_i()
-        elif tag == 'b': self.end_b()
-        elif tag == 'u': self.end_u()
-        elif tag == 'a': self.end_a()
-        elif tag == 'pre': self.end_pre()
-        elif tag == 'strike': self.end_strike()
-        elif tag == 'span': self.end_span()
-        elif tag == 'div': self.start_div()
 
-    def start_h1(self):
-        self.__if_not_then_append('\n\n')
+    def handle_data(self, data):
+        # protect pre areas
+        if self.current_tag[-1].whitespace == WhiteSpace.pre:
+            data = '\0' + data + '\0'
 
-    def end_h1(self):
-        self.__if_not_then_append('\n\n')
-
-    def start_h2(self):
-        self.__if_not_then_append('\n\n')
-
-    def end_h2(self):
-        self.__if_not_then_append('\n\n')
-
-    def start_h3(self):
-        self.__if_not_then_append('\n\n')
-
-    def end_h3(self):
-        self.__if_not_then_append('\n\n')
-
-    def start_p(self):
-        self.__if_not_then_append('\n\n')
-
-    def end_p(self):
-        self.__if_not_then_append('\n\n')
+        self.current_line.content += data
 
     def start_ul(self):
-        self.in_ul = True
+        self.li_level += 1
+        self.li_counter.append(Parser.ul_counter[self.li_level-1])
 
     def end_ul(self):
-        self.in_ul = False
+        self.li_level -= 1
+        self.li_counter.pop()
 
     def start_ol(self):
-        self.in_ol = True
+        self.li_counter.append(1)
+        self.li_level += 1
 
     def end_ol(self):
-        self.ol_nr = False
-        self.in_ol = False
+        self.li_level -= 1
+        self.li_counter.pop()
 
     def start_li(self, tag):
-        self.li_lvl += 1
-
-        if self.in_ol:
-            self.ol_nr += 1
-            self.buffer += '\n{}{}. '.format('\t' * self.li_lvl, str(self.ol_nr))
-
-        elif self.in_ul:
-            self.buffer += '\n{}{} '.format('\t' * self.li_lvl, self.bullet_points[self.li_lvl])
-
+        self.__flush()
+        bullet = self.li_counter[-1]
+        if isinstance(bullet, int):
+            self.li_counter[-1] += 1
+            self.list_bullet = "{}. ".format(bullet)
         else:
-            self.buffer += '\n{}{} '.format('\t' * self.li_lvl, self.bullet_points[self.li_lvl])
+            self.list_bullet = bullet
+
 
     def end_li(self, tag):
-        self.li_lvl -= 1
-
-    def start_i(self):
-        pass
-
-    def end_i(self):
-        pass
-
-    def start_b(self):
-        pass
-
-    def end_b(self):
-        pass
-
-    def start_u(self):
-        pass
-
-    def end_u(self):
-        pass
-
-    def start_a(self, attrs):
-        self.in_a = True
-        self.last_href = ''
-        for key, value in attrs:
-            if key == 'href':
-                self.last_href = value
-
-    def end_a(self):
-        self.in_a = False
-
-    def start_pre(self):
-        self.in_pre = True
-
-    def end_pre(self):
-        self.in_pre = False
-
-    def start_strike(self):
-        pass
-
-    def end_strike(self):
-        pass
-
-    def start_span(self, attrs):
-        pass
-
-    def end_span(self):
         pass
 
     def start_table(self):
@@ -229,28 +197,6 @@ class Parser(HTMLParser):
             elif key == 'colspan':
                 cell.colspan = int(value)
         self.cells.append(cell)
-
-    def handle_data(self, data):
-        if not self.in_pre:
-            data = data.replace('\n', '')
-
-        #if self.in_a:
-        #    if data == self.last_href:
-        #        return
-
-        if self.li_lvl > 0:
-            self.buffer += data
-            return
-
-        if self.in_ul or self.in_ol:
-            self.__flush()
-            return
-
-        if self.in_td:
-            self.buffer += data
-        elif not self.in_table:
-            self.buffer += data
-            self.__flush()
 
     def end_td(self):
         if len(self.cells) > 0:
@@ -291,11 +237,6 @@ class Parser(HTMLParser):
     def newline(self):
         self.buffer += '\n'
 
-    def start_div(self):
-        self.__if_not_then_append('\n')
-
-    def end_div(self):
-        self.__if_not_then_append('\n')
 
 
 def clean_html(input_data):
@@ -304,27 +245,19 @@ def clean_html(input_data):
     for script in soup(["script", "style"]):
         script.extract()
 
-    html = str(soup).strip('\t\r\n')
-    html = html.replace("\n", " ")      # html handles '\n' like ' '
-
-    '''
-    bad_tags = ['<i>', '</i>', '<b>', '</b>', '<u>', '</u>']
-    for tag in bad_tags:
-        html = html.replace(tag, '')
-    # '''
-
+    html = str(soup)
     return html
 
 
 def clean_text(text):
     """ Cleans up the text """
-    while "\n\n\n" in text:
-        text = text.replace("\n\n\n", "\n\n")
+    # while "\n\n\n" in text:
+    #     text = text.replace("\n\n\n", "\n\n")
 
-    text = "".join(text)
-    text = text.replace('  ', ' ')
-    text = text.replace(' \t', '\t')
-    text = text.replace('\t ', '\t')
+    # text = "".join(text)
+    # text = text.replace('  ', ' ')
+    # text = text.replace(' \t', '\t')
+    # text = text.replace('\t ', '\t')
 
     return text
 
@@ -334,7 +267,7 @@ def get_text_from_html(input_data):
     parser = Parser()
     input_data = clean_html(input_data)
     parser.feed(input_data)
-    result = parser.wiki
+    result = parser.get_text()
     result = clean_text(result)
 
     return result
