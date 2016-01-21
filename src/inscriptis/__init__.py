@@ -27,7 +27,7 @@ except ImportError: # python 2.x
 
 from bs4 import BeautifulSoup
 from inscriptis.css import CSS, HtmlElement
-from inscriptis.html import Display, WhiteSpace
+from inscriptis.html_properties import Display, WhiteSpace
 
 import argparse
 
@@ -49,14 +49,14 @@ class Line(object):
         pass
 
     def get_text(self):
-        print(">>" + self.content + "<<" + str(self.margin_before) + ", " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
-        return '\n' * self.margin_before + \
-               ' ' * (self.padding - len(self.list_bullet)) + \
-               self.list_bullet + \
-               self.prefix + \
-               ' '.join(self.content.split()) + \
-               self.suffix + \
-               '\n' * self.margin_after
+        print(">>" + self.content + "<< before: " + str(self.margin_before) + ", after: " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
+        return ''.join(['\n' * self.margin_before,
+                        ' ' * (self.padding - len(self.list_bullet)),
+                        self.list_bullet,
+                        self.prefix,
+                        ' '.join(self.content.split()),
+                        self.suffix,
+                        '\n' * self.margin_after])
 
 
 class Cell:
@@ -110,12 +110,13 @@ class Parser(HTMLParser):
         ::returns:
             True, if a line has been writer, otherwise False
         '''
+        print("___>" + ' '.join(self.current_line.content.split()) + "<<<")
+        print("PRN>", (self.current_line.content.strip() != ""))
+
         # only break the line if there is any relevant content
         if not self.current_line.content.strip():
             self.current_line.margin_before = max(self.current_line.margin_before, \
                                                   self.current_tag[-1].margin_before)
-            self.current_line.margin_after = max(self.current_line.margin_after, \
-                                                 self.current_tag[-1].margin_after)
             return False
         else:
             self.clean_text_lines.append(self.current_line.get_text())
@@ -131,7 +132,9 @@ class Parser(HTMLParser):
         self.next_line.padding = self.current_line.padding + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
-            self.__flush()
+            if not self.__flush():
+                self.current_line.margin_before = self.next_line.margin_before
+                self.current_line.padding = self.next_line.padding
 
         if tag == 'table': self.start_table()
         elif tag == 'tr': self.start_tr()
@@ -172,7 +175,6 @@ class Parser(HTMLParser):
         self.li_counter.append(Parser.ul_counter[self.li_level-1])
 
     def end_ul(self):
-        print("end")
         self.li_level -= 1
         self.li_counter.pop()
 
@@ -181,7 +183,6 @@ class Parser(HTMLParser):
         self.li_level += 1
 
     def end_ol(self):
-        print("end")
         self.li_level -= 1
         self.li_counter.pop()
 
@@ -305,4 +306,3 @@ if __name__ == "__main__":
             open_file.write(text)
     else:
         print(text)
-

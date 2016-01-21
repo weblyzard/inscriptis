@@ -6,7 +6,7 @@ Handeling of CSS files.
 '''
 
 from collections import namedtuple
-from inscriptis.html import Display, WhiteSpace
+from inscriptis.html_properties import Display, WhiteSpace
 
 HtmlElement = namedtuple("HtmlElement", "tag prefix suffix display margin_before margin_after padding whitespace")
 HtmlElement.__new__.__defaults__ = ('/', '', '', Display.inline, 0, 0, 0, WhiteSpace.normal)
@@ -20,6 +20,14 @@ CSS = {
 
     'p': HtmlElement('p', display=Display.block, margin_before=1, margin_after=1),
     'figure': HtmlElement('figure', display=Display.block, margin_before=1, margin_after=1),
+
+
+    'h1': HtmlElement('h1', display=Display.block, margin_before=1, margin_after=1),
+    'h2': HtmlElement('h2', display=Display.block, margin_before=1, margin_after=1),
+    'h3': HtmlElement('h3', display=Display.block, margin_before=1, margin_after=1),
+    'h4': HtmlElement('h4', display=Display.block, margin_before=1, margin_after=1),
+    'h5': HtmlElement('h5', display=Display.block, margin_before=1, margin_after=1),
+    'h6': HtmlElement('h6', display=Display.block, margin_before=1, margin_after=1),
 
     'ul': HtmlElement('ul', display=Display.block, margin_before=0, margin_after=1, padding=4),
     'ol': HtmlElement('ol', display=Display.block, margin_before=0, margin_after=1, padding=4),
