@@ -67,7 +67,7 @@ class Cell:
 
 class Parser(HTMLParser):
 
-    ul_counter = ['*', '+', 'o', '-'] * 10
+    ul_counter = ['* ', '+ ', 'o ', '- '] * 10
 
     def __init__(self):
         HTMLParser.__init__(self)
@@ -103,15 +103,23 @@ class Parser(HTMLParser):
             self.buffer += '\n'
 
     def __flush(self):
-        print("____", self.current_tag[-1])
-        self.clean_text_lines.append(self.current_line.get_text())
-        self.current_line = self.next_line
-        self.next_line = Line()
+        # only break the line if there is any relevant content
+        if not self.current_line.content.strip():
+            self.current_line.margin_before = max(self.current_line.margin_before, \
+                                                  self.current_tag[-1].margin_before)
+            self.current_line.margin_after = max(self.current_line.margin_after, \
+                                                 self.current_tag[-1].margin_after)
+            return
+        else:
+            self.clean_text_lines.append(self.current_line.get_text())
+            self.current_line = self.next_line
+            self.next_line = Line()
 
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
         cur = CSS.get(tag, HtmlElement())
         self.current_tag.append(cur)
+        self.next_line.margin_before = max(self.next_line.margin_before, cur.margin_before)
         self.next_line.padding = self.current_line.padding + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
@@ -129,6 +137,7 @@ class Parser(HTMLParser):
     def handle_endtag(self, tag):
         cur = self.current_tag.pop()
         self.next_line.padding = self.current_line.padding - cur.padding
+        self.current_line.margin_after = max(self.current_line.margin_after, cur.margin_after)
         # flush text after display:block elements
         if cur.display == Display.block:
             self.__flush()
@@ -169,9 +178,9 @@ class Parser(HTMLParser):
         bullet = self.li_counter[-1]
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.list_bullet = "{}. ".format(bullet)
+            self.current_line.list_bullet = "{}. ".format(bullet)
         else:
-            self.list_bullet = bullet
+            self.current_line.list_bullet = bullet
 
 
     def end_li(self, tag):
@@ -249,26 +258,12 @@ def clean_html(input_data):
     return html
 
 
-def clean_text(text):
-    """ Cleans up the text """
-    # while "\n\n\n" in text:
-    #     text = text.replace("\n\n\n", "\n\n")
-
-    # text = "".join(text)
-    # text = text.replace('  ', ' ')
-    # text = text.replace(' \t', '\t')
-    # text = text.replace('\t ', '\t')
-
-    return text
-
-
 def get_text_from_html(input_data):
     """ Turns HTML into text """
     parser = Parser()
     input_data = clean_html(input_data)
     parser.feed(input_data)
     result = parser.get_text()
-    result = clean_text(result)
 
     return result
 
