@@ -15,13 +15,12 @@ def test_divs():
     assert get_text_from_html(html) == 'Thomas\nAnna läuft weit weg.'
 
     html = u'<body>Thomas <ul><li><div>Anton</div>Maria</ul></body>'
-    assert get_text_from_html(html) == 'Thomas\n\n  * Anton\n    Maria'
+    assert get_text_from_html(html) == 'Thomas\n  * Anton\n    Maria'
 
     html = u'<body>Thomas <ul><li>  <div>Anton</div>Maria</ul></body>'
-    assert get_text_from_html(html) == 'Thomas\n\n  * Anton\n    Maria'
+    assert get_text_from_html(html) == 'Thomas\n  * Anton\n    Maria'
 
     html = u'<body>Thomas <ul><li> a  <div>Anton</div>Maria</ul></body>'
-    print(get_text_from_html(html))
-    assert get_text_from_html(html) == 'Thomas\n\n  * a\n    Anton\n    Maria'
+    assert get_text_from_html(html) == 'Thomas\n  * a\n    Anton\n    Maria'
 
 

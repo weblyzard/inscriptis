@@ -103,17 +103,25 @@ class Parser(HTMLParser):
             self.buffer += '\n'
 
     def __flush(self):
+        '''
+        Writes the current line to the buffer, provided that there is any
+        data to write.
+
+        ::returns:
+            True, if a line has been writer, otherwise False
+        '''
         # only break the line if there is any relevant content
         if not self.current_line.content.strip():
             self.current_line.margin_before = max(self.current_line.margin_before, \
                                                   self.current_tag[-1].margin_before)
             self.current_line.margin_after = max(self.current_line.margin_after, \
                                                  self.current_tag[-1].margin_after)
-            return
+            return False
         else:
             self.clean_text_lines.append(self.current_line.get_text())
             self.current_line = self.next_line
             self.next_line = Line()
+            return True
 
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
@@ -140,7 +148,10 @@ class Parser(HTMLParser):
         self.current_line.margin_after = max(self.current_line.margin_after, cur.margin_after)
         # flush text after display:block elements
         if cur.display == Display.block:
-            self.__flush()
+            # propagate the new padding to the current line, if nothing has
+            # been written
+            if not self.__flush():
+                self.current_line.padding = self.next_line.padding
 
         if tag == 'table': self.end_table()
         elif tag == 'tr': self.end_tr()
@@ -148,7 +159,6 @@ class Parser(HTMLParser):
         elif tag == 'td': self.end_td()
         elif tag == 'ul': self.end_ul()
         elif tag == 'ol': self.end_ol()
-        elif tag == 'li': self.end_li(tag)
 
     def handle_data(self, data):
         # protect pre areas
@@ -162,6 +172,7 @@ class Parser(HTMLParser):
         self.li_counter.append(Parser.ul_counter[self.li_level-1])
 
     def end_ul(self):
+        print("end")
         self.li_level -= 1
         self.li_counter.pop()
 
@@ -170,21 +181,21 @@ class Parser(HTMLParser):
         self.li_level += 1
 
     def end_ol(self):
+        print("end")
         self.li_level -= 1
         self.li_counter.pop()
 
     def start_li(self, tag):
         self.__flush()
-        bullet = self.li_counter[-1]
+        if self.li_level > 0:
+            bullet = self.li_counter[-1]
+        else:
+            bullet = "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
             self.current_line.list_bullet = "{}. ".format(bullet)
         else:
             self.current_line.list_bullet = bullet
-
-
-    def end_li(self, tag):
-        pass
 
     def start_table(self):
         self.in_table = True
