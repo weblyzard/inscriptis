@@ -13,9 +13,14 @@ A python based HTML to text converter based on SpiffWikiMarkup by Samuel Abel.
 The command line client converts text files or text retrieved from Web pages to the
 corresponding text representation.
 
+***Installation***
+```bash
+sudo python3 setup.py install
+```
+
 ***Command line parameters***
 ```bash
-usage: inscriptis.py [-h] [-o OUTPUT] [-e ENCODING] input
+usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] input
 
 Converts HTML from file or url to a clean text version
 

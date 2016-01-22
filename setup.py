@@ -19,4 +19,10 @@ setup(
       ## Package List
       packages=find_packages('src'),
 
+      ###########################################
+      ## scripts
+      scripts = [
+        'scripts/inscript.py'
+      ]
+
 )
