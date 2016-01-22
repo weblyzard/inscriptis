@@ -27,7 +27,7 @@ except ImportError: # python 2.x
 
 from bs4 import BeautifulSoup
 from inscriptis.css import CSS, HtmlElement
-from inscriptis.html_properties import Display, WhiteSpace
+from inscriptis.html_properties import Display, WhiteSpace, Table
 
 import argparse
 
@@ -49,7 +49,7 @@ class Line(object):
         pass
 
     def get_text(self):
-        print(">>" + self.content + "<< before: " + str(self.margin_before) + ", after: " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
+        # print(">>" + self.content + "<< before: " + str(self.margin_before) + ", after: " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
         return ''.join(['\n' * self.margin_before,
                         ' ' * (self.padding - len(self.list_bullet)),
                         self.list_bullet,
@@ -57,12 +57,6 @@ class Line(object):
                         ' '.join(self.content.split()),
                         self.suffix,
                         '\n' * self.margin_after])
-
-
-class Cell:
-    data = ''
-    colspan = 1
-    rowspan = 1
 
 
 class Parser(HTMLParser):
@@ -80,9 +74,8 @@ class Parser(HTMLParser):
         self.indent = 0
         self.rows = []
         self.cells = []
-        self.in_table = False
+        self.current_table = []
         self.in_td = False
-        self.in_heading = False
         self.li_counter = []
         self.li_level = 0
 
@@ -102,7 +95,7 @@ class Parser(HTMLParser):
         if self.buffer[-2:] != '\n' and len(self.buffer) > 0:
             self.buffer += '\n'
 
-    def __flush(self):
+    def __flush(self, force=False):
         '''
         Writes the current line to the buffer, provided that there is any
         data to write.
@@ -110,19 +103,27 @@ class Parser(HTMLParser):
         ::returns:
             True, if a line has been writer, otherwise False
         '''
-        print("___>" + ' '.join(self.current_line.content.split()) + "<<<")
-        print("PRN>", (self.current_line.content.strip() != ""))
-
         # only break the line if there is any relevant content
-        if not self.current_line.content.strip():
+        if not force and not self.current_line.content.strip():
             self.current_line.margin_before = max(self.current_line.margin_before, \
                                                   self.current_tag[-1].margin_before)
             return False
         else:
-            self.clean_text_lines.append(self.current_line.get_text())
+            line = self.current_line.get_text()
+            if len(self.current_table) > 0:
+                self.current_table[-1].add_text(line.replace('\n', ' '))
+            else:
+                self.clean_text_lines.append(line)
+
             self.current_line = self.next_line
             self.next_line = Line()
             return True
+
+    def __flush_verbatim(self, text):
+        '''
+        Writes the current buffer without any modifications.
+        '''
+        self.clean_text_lines.append(text)
 
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
@@ -138,11 +139,11 @@ class Parser(HTMLParser):
 
         if tag == 'table': self.start_table()
         elif tag == 'tr': self.start_tr()
-        elif tag == 'th': self.start_th(attrs)
-        elif tag == 'td': self.start_td(attrs)
+        elif tag == 'th': self.start_tr()
+        elif tag == 'td': self.start_td()
         elif tag == 'ul': self.start_ul()
         elif tag == 'ol': self.start_ol()
-        elif tag == 'li': self.start_li(tag)
+        elif tag == 'li': self.start_li()
         elif tag == 'br': self.newline()
 
     def handle_endtag(self, tag):
@@ -157,11 +158,9 @@ class Parser(HTMLParser):
                 self.current_line.padding = self.next_line.padding
 
         if tag == 'table': self.end_table()
-        elif tag == 'tr': self.end_tr()
-        elif tag == 'th': self.end_th()
-        elif tag == 'td': self.end_td()
         elif tag == 'ul': self.end_ul()
         elif tag == 'ol': self.end_ol()
+        elif tag == 'td': self.end_td()
 
     def handle_data(self, data):
         # protect pre areas
@@ -186,7 +185,7 @@ class Parser(HTMLParser):
         self.li_level -= 1
         self.li_counter.pop()
 
-    def start_li(self, tag):
+    def start_li(self):
         self.__flush()
         if self.li_level > 0:
             bullet = self.li_counter[-1]
@@ -199,64 +198,24 @@ class Parser(HTMLParser):
             self.current_line.list_bullet = bullet
 
     def start_table(self):
-        self.in_table = True
+        self.__flush(force=True)
+        self.current_table.append(Table())
 
     def start_tr(self):
-        pass
+        self.current_table[-1].add_row()
 
-    def start_th(self, attrs):
-        self.in_heading = True
-        self.start_td(attrs)
-
-    def start_td(self, attrs):
-        self.__flush()
-        self.in_td = True
-        cell = Cell()
-        for key, value in attrs:
-            if key == 'rowspan':
-                cell.rowspan = int(value)
-            elif key == 'colspan':
-                cell.colspan = int(value)
-        self.cells.append(cell)
+    def start_td(self):
+        self.current_table[-1].add_column()
 
     def end_td(self):
-        if len(self.cells) > 0:
-            self.cells[-1].data += self.buffer
-        self.buffer = ''
-        self.in_td = False
-
-    def end_th(self):
-        self.end_td()
-
-    def end_tr(self):
-        if len(self.cells) is 0:
-            return
-        if self.in_heading:
-            self.__output('')
-            self.in_heading = False
-        else:
-            self.__output('')
-        self.indent += 1
-        line = ('\t' * self.cells[0].colspan) + ' ' + self.cells[0].data.replace('\n', '')
-        for cell in self.cells[1:]:
-            line += ' ' + ('\t' * cell.colspan) + ' ' + cell.data.replace('\n', '')
-
-        if len(line) <= 80:
-            self.__output(line)
-        else:
-            for cell in self.cells:
-                self.__output(('\t' * cell.colspan) + ' ' + cell.data.replace('\n', ''))
-        self.cells = []
-        self.indent -= 1
-        self.__flush()
+        self.__flush(force=True)
 
     def end_table(self):
-        self.in_table = False
-        self.buffer += '\n'
-        self.__flush()
+        table = self.current_table.pop()
+        self.__flush_verbatim(str(table))
 
     def newline(self):
-        self.buffer += '\n'
+        self.__flush(force=True)
 
 
 
