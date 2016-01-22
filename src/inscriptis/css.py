@@ -29,8 +29,8 @@ CSS = {
     'h5': HtmlElement('h5', display=Display.block, margin_before=1, margin_after=1),
     'h6': HtmlElement('h6', display=Display.block, margin_before=1, margin_after=1),
 
-    'ul': HtmlElement('ul', display=Display.block, margin_before=0, margin_after=1, padding=4),
-    'ol': HtmlElement('ol', display=Display.block, margin_before=0, margin_after=1, padding=4),
+    'ul': HtmlElement('ul', display=Display.block, margin_before=0, margin_after=0, padding=4),
+    'ol': HtmlElement('ol', display=Display.block, margin_before=0, margin_after=0, padding=4),
     'li': HtmlElement('li', display=Display.block),
 
     'address': HtmlElement('address', display=Display.block),
