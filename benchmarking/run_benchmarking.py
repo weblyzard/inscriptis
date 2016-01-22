@@ -23,7 +23,7 @@ import threading
 import time
 import urllib
 
-TRIES = 20
+TRIES = 2
 
 try:
     import justext
@@ -195,8 +195,11 @@ def pipeline():
         if os.path.exists(source_cache_path):
             html = open(source_cache_path).read()
         else:
-            html = urllib.request.urlopen(source).read()
-            open(source_cache_path, 'bw').write(html)
+            try:
+                html = urllib.request.urlopen(source).read().decode("utf-8")
+            except UnicodeDecodeError:
+                html = urllib.request.urlopen(source).read().decode("latin1")
+            open(source_cache_path, 'w').write(html)
 
         with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'a') as output_file:
             output_file.write("\nURL: {}\n".format(source_name))
