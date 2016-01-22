@@ -142,8 +142,8 @@ class Inscriptis(object):
 
         if tag == 'table': self.start_table()
         elif tag == 'tr': self.start_tr()
-        elif tag == 'th': self.start_tr()
         elif tag == 'td': self.start_td()
+        elif tag == 'th': self.start_td()
         elif tag == 'ul': self.start_ul()
         elif tag == 'ol': self.start_ol()
         elif tag == 'li': self.start_li()
@@ -168,6 +168,7 @@ class Inscriptis(object):
         elif tag == 'ul': self.end_ul()
         elif tag == 'ol': self.end_ol()
         elif tag == 'td': self.end_td()
+        elif tag == 'th': self.end_td()
 
     def handle_data(self, data):
         if self.invisible:
@@ -208,7 +209,6 @@ class Inscriptis(object):
             self.current_line.list_bullet = bullet
 
     def start_table(self):
-        self.__flush(force=True)
         self.current_table.append(Table())
 
     def start_tr(self):

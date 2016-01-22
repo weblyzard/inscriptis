@@ -22,6 +22,8 @@ class Table(object):
         self.rows.append(Row())
 
     def add_column(self):
+        if not self.rows:
+            self.add_row()
         self.rows[-1].columns.append("")
 
     def add_text(self, text):

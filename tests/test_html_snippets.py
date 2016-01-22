@@ -26,7 +26,7 @@ def test_html_snippets(filter_str=''):
         converted_txt = get_text(html).strip()
 
         if converted_txt != reference_txt:
-            print ("HTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(html, reference_txt, converted_txt))
+            print ("File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(testcase_txt, html, reference_txt, converted_txt))
 
         assert converted_txt == reference_txt
 

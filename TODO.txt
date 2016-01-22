@@ -1,2 +1,5 @@
 * optionally output image descriptions
-* check: tables (wikipedia - bevölkerung)
+* check: 
+  - tables (wikipedia - bevölkerung)
+  - diepresse - whitespaces
+  - support for </hr>?
