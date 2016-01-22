@@ -224,12 +224,12 @@ class Parser(HTMLParser):
 
 def clean_html(input_data):
     """ Cleans up the HTML Code """
-    soup = BeautifulSoup(input_data, "lxml")
-    for script in soup(["script", "style"]):
-        script.extract()
+    #soup = BeautifulSoup(input_data, "lxml")
+    #for script in soup(["script", "style"]):
+    #    script.extract()
 
-    html = str(soup)
-    return html
+    #html = str(soup)
+    return input_data
 
 
 def get_text_from_html(input_data):

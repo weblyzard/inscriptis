@@ -23,6 +23,8 @@ import threading
 import time
 import urllib
 
+TRIES = 20
+
 try:
     import justext
     justext_available = True
@@ -51,20 +53,22 @@ except OSError as e:
         raise
 
 benchmarking_root = os.path.dirname(os.path.abspath(__file__))
-benchmarking_results_dir = '/benchmarking_results/'
+timestamp = str(datetime.now()).replace(" ", "_").replace(":", "-").split(".")[0]
+benchmarking_results_dir = os.path.join(benchmarking_root, 'benchmarking_results', timestamp)
+cache_dir = os.path.join(benchmarking_root, 'html_cache')
+
 src_dir = os.path.join(benchmarking_root, '../src')
 sys.path.insert(0, os.path.abspath(src_dir))
 import inscriptis
 
-timestamp = str(datetime.now()).replace(" ", "_").replace(":", "-").split(".")[0]
 
 
 def save_to_file(algorithm, url, data):
-    with open(benchmarking_root + benchmarking_results_dir + timestamp + '/output_{}_{}.txt'.format(algorithm, url), 'w') as output_file:
+    result_file = os.path.join(benchmarking_results_dir, '{}_{}.txt'.format(algorithm, url))
+    with open(result_file, 'w') as output_file:
         output_file.write(data)
 
-
-def get_output_lynx(url):
+def get_output_lynx(html):
 
     def kill_lynx(pid):
         os.kill(pid, os.signal.SIGKILL)
@@ -73,9 +77,11 @@ def get_output_lynx(url):
 
     web_data = ""
 
-    lynx_args = '-width=20000 -force_html -nocolor -dump -nolist -nobold -display_charset=utf8'
-    cmd = "/usr/bin/lynx {} \"{}\"".format(lynx_args, url)
-    lynx = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    lynx_args = '-stdin -width=20000 -force_html -nocolor -dump -nolist -nobold -display_charset=utf8'
+    cmd = ["/usr/bin/lynx", ] + lynx_args.split(" ")
+    lynx = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    lynx.stdin.write(html.encode("utf8"))
+    lynx.stdin.close()
     t = threading.Timer(200.0, kill_lynx, args=[lynx.pid])
     t.start()
 
@@ -148,6 +154,17 @@ def get_speed_table(times):
 
     return result
 
+def clean_source_name(src):
+    trash = (("http://", ""),
+             ("https://", ""),
+             ("/", "-"),
+             (":", "-"),
+             ("%", ""))
+
+    for key, value in trash:
+        src = src.replace(key, value)
+    return src[0:100]
+
 
 def pipeline():
     run_lynx = True
@@ -162,33 +179,26 @@ def pipeline():
         for line in url_list:
             sources.append(line.strip())
 
-    if not os.path.exists(benchmarking_root + benchmarking_results_dir[:-1]):
-        os.makedirs(benchmarking_root + benchmarking_results_dir[:-1])
+    if not os.path.exists(benchmarking_results_dir):
+        os.makedirs(benchmarking_results_dir)
 
-    if not os.path.exists(benchmarking_root + benchmarking_results_dir + timestamp):
-        os.makedirs(benchmarking_root + benchmarking_results_dir + timestamp)
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
 
-    with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'w') as output_file:
+    with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'w') as output_file:
             output_file.write("")
 
     for source in sources:
 
-        html = urllib.request.urlopen(source)
-        html = inscriptis.clean_html(html.read())
+        source_name = clean_source_name(source)
+        source_cache_path= os.path.join(cache_dir, source_name)
+        if os.path.exists(source_cache_path):
+            html = open(source_cache_path).read()
+        else:
+            html = urllib.request.urlopen(source).read()
+            open(source_cache_path, 'bw').write(html)
 
-        source_name = source
-
-        trash = (("http://", ""),
-                 ("https://", ""),
-                 ("/", "-"),
-                 (":", "-"),
-                 ("%", ""))
-
-        for key, value in trash:
-            source_name = source_name.replace(key, value)
-        source_name = source_name[0:100]
-
-        with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'a') as output_file:
+        with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'a') as output_file:
             output_file.write("\nURL: {}\n".format(source_name))
         print("\nURL: {}".format(source_name))
 
@@ -197,7 +207,8 @@ def pipeline():
         if run_lynx and lynx_available:
             algorithm = "lynx"
             start_time = time.time()
-            data = get_output_lynx(source)
+            for n in range(TRIES):
+                data = get_output_lynx(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)
@@ -205,7 +216,8 @@ def pipeline():
         if run_justext and justext_available:
             algorithm = "justext"
             start_time = time.time()
-            data = get_output_justext(html)
+            for n in range(TRIES):
+                data = get_output_justext(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)
@@ -213,7 +225,8 @@ def pipeline():
         if run_html2text and html2text_available:
             algorithm = "html2text"
             start_time = time.time()
-            data = get_output_html2text(html)
+            for n in range(TRIES):
+                data = get_output_html2text(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)
@@ -221,7 +234,8 @@ def pipeline():
         if run_beautifulsoup:
             algorithm = "beautifulsoup"
             start_time = time.time()
-            data = get_output_beautifulsoup(html)
+            for n in range(TRIES):
+                data = get_output_beautifulsoup(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)
@@ -229,7 +243,8 @@ def pipeline():
         if run_inscriptis:
             algorithm = "inscriptis"
             start_time = time.time()
-            data = inscriptis.get_text_from_html(html)
+            for n in range(TRIES):
+                data = inscriptis.get_text_from_html(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)
@@ -237,9 +252,9 @@ def pipeline():
         speed_table = get_speed_table(times)
         print(speed_table)
 
-        with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'a') as output_file:
+        with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'a') as output_file:
             output_file.write(speed_table + "\n")
-    with open(benchmarking_root + benchmarking_results_dir + timestamp + '/speed_comparisons.txt', 'a') as output_file:
+    with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'a') as output_file:
         output_file.write("\n")
 
 if __name__ == "__main__":
