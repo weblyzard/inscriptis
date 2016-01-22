@@ -65,19 +65,15 @@ class Parser(HTMLParser):
 
     def __init__(self):
         HTMLParser.__init__(self)
-        # self.current_tag = [HtmlElement()] # a stack containing information on the current tag
         self.current_tag = [HtmlElement()]
         self.current_line = Line()
         self.next_line = Line()
         self.clean_text_lines = []
         self.buffer = ''
-        self.indent = 0
-        self.rows = []
-        self.cells = []
         self.current_table = []
-        self.in_td = False
         self.li_counter = []
         self.li_level = 0
+        self.invisible = [] # a list of attributes that are considered invisible
 
     def get_text(self):
         '''
@@ -88,12 +84,6 @@ class Parser(HTMLParser):
             self.__flush()
             self.current_line = None
         return '\n'.join(self.clean_text_lines)
-
-    def __output(self, text):
-        self.buffer += (' ' * self.indent * 2)
-        self.buffer += text
-        if self.buffer[-2:] != '\n' and len(self.buffer) > 0:
-            self.buffer += '\n'
 
     def __flush(self, force=False):
         '''
@@ -117,7 +107,6 @@ class Parser(HTMLParser):
 
             self.current_line = self.next_line
             self.next_line = Line()
-            print("Successful flush", self.next_line.margin_before)
             return True
 
     def __flush_verbatim(self, text):
@@ -131,6 +120,10 @@ class Parser(HTMLParser):
 
         cur = CSS.get(tag, HtmlElement())
         self.current_tag.append(cur)
+        if cur.display == Display.none or self.invisible:
+            self.invisible.append(cur)
+            return
+
         self.next_line.padding = self.current_line.padding + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
@@ -151,6 +144,10 @@ class Parser(HTMLParser):
 
     def handle_endtag(self, tag):
         cur = self.current_tag.pop()
+        if self.invisible:
+            self.invisible.pop()
+            return
+
         self.next_line.padding = self.current_line.padding - cur.padding
         self.current_line.margin_after = max(self.current_line.margin_after, cur.margin_after)
         # flush text after display:block elements
@@ -166,6 +163,9 @@ class Parser(HTMLParser):
         elif tag == 'td': self.end_td()
 
     def handle_data(self, data):
+        if self.invisible:
+            return
+
         # protect pre areas
         if self.current_tag[-1].whitespace == WhiteSpace.pre:
             data = '\0' + data + '\0'
