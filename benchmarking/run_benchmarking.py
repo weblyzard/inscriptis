@@ -244,7 +244,7 @@ def pipeline():
             algorithm = "inscriptis"
             start_time = time.time()
             for n in range(TRIES):
-                data = inscriptis.get_text_from_html(html)
+                data = inscriptis.get_text(html)
             stop_time = time.time()
             times[algorithm] = stop_time - start_time
             save_to_file(algorithm, source_name, data)

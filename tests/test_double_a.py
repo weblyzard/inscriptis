@@ -5,11 +5,11 @@
     or space between the tags.
 '''
 
-from inscriptis import get_text_from_html
+from inscriptis import get_text
 
 def test_successive_a():
     html = u'<html><body><a href="first">first</a><a href="second">second</a></body></html>'
-    assert get_text_from_html(html) == 'firstsecond'
+    assert get_text(html) == 'firstsecond'
 
     html = u'<html><body><a href="first">first</a>\n<a href="second">second</a></body></html>'
-    assert get_text_from_html(html) == 'first second'
+    assert get_text(html) == 'first second'

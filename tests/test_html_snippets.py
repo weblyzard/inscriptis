@@ -7,7 +7,7 @@
 from os.path import dirname, join
 from glob import glob
 
-from inscriptis import get_text_from_html
+from inscriptis import get_text
 
 TESTCASE_PATTERN = join(dirname(__file__), 'html/*.txt')
 
@@ -23,7 +23,7 @@ def test_html_snippets(filter_str=''):
         with open(testcase_txt.replace(".txt", ".html")) as f:
             html = "<html><body>{}</body></html>".format(f.read())
 
-        converted_txt = get_text_from_html(html).strip()
+        converted_txt = get_text(html).strip()
 
         if converted_txt != reference_txt:
             print ("HTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(html, reference_txt, converted_txt))
