@@ -117,6 +117,7 @@ class Parser(HTMLParser):
 
             self.current_line = self.next_line
             self.next_line = Line()
+            print("Successful flush", self.next_line.margin_before)
             return True
 
     def __flush_verbatim(self, text):
@@ -127,15 +128,17 @@ class Parser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
+
         cur = CSS.get(tag, HtmlElement())
         self.current_tag.append(cur)
-        self.next_line.margin_before = max(self.next_line.margin_before, cur.margin_before)
         self.next_line.padding = self.current_line.padding + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
             if not self.__flush():
-                self.current_line.margin_before = self.next_line.margin_before
+                self.current_line.margin_before = max(self.current_line.margin_before, cur.margin_before)
                 self.current_line.padding = self.next_line.padding
+            else:
+                self.current_line.margin_after = cur.margin_before
 
         if tag == 'table': self.start_table()
         elif tag == 'tr': self.start_tr()
