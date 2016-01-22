@@ -55,7 +55,18 @@ class Inscriptis(object):
 
     ul_counter = ('* ', '+ ', 'o ', '- ') * 10
 
-    def __init__(self, html_tree):
+    def __init__(self, html_tree, display_images=True, deduplicate_captions=True):
+        '''
+        ::param: display_images \
+            whether to include image tiles/alt texts
+        ::param: deduplicate_captions \
+            whether to deduplicate captions such as image titles
+            (many newspaper include images and video previews with
+             identifical titles).
+        '''
+        self.display_images = display_images
+        self.deduplicate_captions = deduplicate_captions
+
         self.current_tag = [HtmlElement()]
         self.current_line = Line()
         self.next_line = Line()
@@ -65,6 +76,7 @@ class Inscriptis(object):
         self.li_counter = []
         self.li_level = 0
         self.invisible = [] # a list of attributes that are considered invisible
+        self.last_caption = None
 
         # crawl the html tree
         self.crawl_tree(html_tree)
@@ -148,6 +160,7 @@ class Inscriptis(object):
         elif tag == 'ol': self.start_ol()
         elif tag == 'li': self.start_li()
         elif tag == 'br': self.newline()
+        elif tag == 'img' :self.start_img(attrs)
 
     def handle_endtag(self, tag):
         cur = self.current_tag.pop()
@@ -183,6 +196,13 @@ class Inscriptis(object):
     def start_ul(self):
         self.li_level += 1
         self.li_counter.append(Inscriptis.ul_counter[self.li_level-1])
+
+    def start_img(self, attrs):
+        if self.display_images:
+            image_text = attrs.get('alt', '') or attrs.get('title', '')
+            if image_text and not (self.deduplicate_captions and image_text == self.last_caption):
+                self.current_line.content += '[{}]'.format(image_text)
+                self.last_caption = image_text
 
     def end_ul(self):
         self.li_level -= 1
