@@ -64,8 +64,8 @@ class Inscriptis(object):
             (many newspaper include images and video previews with
              identifical titles).
         '''
-        self.display_images = display_images
-        self.deduplicate_captions = deduplicate_captions
+        self.cfg_display_images = display_images
+        self.cfg_deduplicate_captions = deduplicate_captions
 
         self.current_tag = [HtmlElement()]
         self.current_line = Line()
@@ -198,9 +198,9 @@ class Inscriptis(object):
         self.li_counter.append(Inscriptis.ul_counter[self.li_level-1])
 
     def start_img(self, attrs):
-        if self.display_images:
+        if self.cfg_display_images:
             image_text = attrs.get('alt', '') or attrs.get('title', '')
-            if image_text and not (self.deduplicate_captions and image_text == self.last_caption):
+            if image_text and not (self.cfg_deduplicate_captions and image_text == self.last_caption):
                 self.current_line.content += '[{}]'.format(image_text)
                 self.last_caption = image_text
 
