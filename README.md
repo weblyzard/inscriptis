@@ -60,6 +60,15 @@ text = get_text(html)
 print(text)
 ```
 
+### Unit tests
+
+Test cases concerning the html to text conversion are located in the `tests/html` directory and consist of two files:
+
+ 1. `test-name.html` and
+ 2. `test-name.txt`
+
+the latter one containing the reference text output for the given html file.
+
 ### Text convertion output comparison and speed benchmarking
 inscriptis offers a small benchmarking script that can compare different HTML to txt convertion approaches. 
 The script will run the different approaches on a list of URLs, ```url_list.txt```, and save the text output into a time stampped folder in ```benchmarking/benchmarking_results``` for manual comparison.
