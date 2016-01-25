@@ -34,18 +34,19 @@ class Line(object):
 
     def get_text(self):
         # print(">>" + self.content + "<< before: " + str(self.margin_before) + ", after: " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
-        return ''.join(['\n' * self.margin_before,
+        return ''.join(('\n' * self.margin_before,
                         ' ' * (self.padding - len(self.list_bullet)),
                         self.list_bullet,
                         self.prefix,
                         ' '.join(self.content.split()),
                         self.suffix,
-                        '\n' * self.margin_after])
+                        '\n' * self.margin_after))
 
 
 class Inscriptis(object):
 
-    ul_counter = ('* ', '+ ', 'o ', '- ') * 10
+    UL_COUNTER = ('* ', '+ ', 'o ', '- ') * 10
+    DEFAULT_ELEMENT = HtmlElement()
 
     def __init__(self, html_tree, display_images=True, deduplicate_captions=True):
         '''
@@ -56,9 +57,30 @@ class Inscriptis(object):
             (many newspaper include images and video previews with
              identifical titles).
         '''
-        self.cfg_display_images = display_images
+        # setup config
         self.cfg_deduplicate_captions = deduplicate_captions
 
+        # setup start and end tag call tables
+        self.start_tag_handler_dict = {
+            'table': self.start_table,
+            'tr': self.start_tr,
+            'td': self.start_td,
+            'th': self.start_td,
+            'ul': self.start_ul,
+            'ol': self.start_ol,
+            'li': self.start_li,
+            'br': self.newline,
+            'img' :self.start_img if display_images else None,
+        }
+        self.end_tag_handler_dict = {
+            'table': self.end_table,
+            'ul': self.end_ul,
+            'ol': self.end_ol,
+            'td': self.end_td,
+            'th': self.end_td,
+        }
+
+        # instance variables
         self.current_tag = [HtmlElement()]
         self.current_line = Line()
         self.next_line = Line()
@@ -73,7 +95,7 @@ class Inscriptis(object):
         # crawl the html tree
         self.crawl_tree(html_tree)
         if self.current_line:
-            self.__flush()
+            self.write_line()
 
     def crawl_tree(self, tree):
         if type(tree.tag) is str:
@@ -96,7 +118,7 @@ class Inscriptis(object):
         '''
         return '\n'.join(self.clean_text_lines)
 
-    def __flush(self, force=False):
+    def write_line(self, force=False):
         '''
         Writes the current line to the buffer, provided that there is any
         data to write.
@@ -105,7 +127,7 @@ class Inscriptis(object):
             True, if a line has been writer, otherwise False
         '''
         # only break the line if there is any relevant content
-        if not force and not self.current_line.content.strip():
+        if not force and self.current_line.content.isspace():
             self.current_line.margin_before = max(self.current_line.margin_before, \
                                                   self.current_tag[-1].margin_before)
             return False
@@ -120,16 +142,17 @@ class Inscriptis(object):
             self.next_line = Line()
             return True
 
-    def __flush_verbatim(self, text):
+    def write_line_verbatim(self, text):
         '''
         Writes the current buffer without any modifications.
         '''
         self.clean_text_lines.append(text)
 
+
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
 
-        cur = CSS.get(tag, HtmlElement())
+        cur = CSS.get(tag, Inscriptis.DEFAULT_ELEMENT)
         self.current_tag.append(cur)
         if cur.display == Display.none or self.invisible or ('style' in attrs and 'display:none' in attrs['style']):
             self.invisible.append(cur)
@@ -138,21 +161,16 @@ class Inscriptis(object):
         self.next_line.padding = self.current_line.padding + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
-            if not self.__flush():
+            if not self.write_line():
                 self.current_line.margin_before = max(self.current_line.margin_before, cur.margin_before)
                 self.current_line.padding = self.next_line.padding
             else:
                 self.current_line.margin_after = cur.margin_before
 
-        if tag == 'table': self.start_table()
-        elif tag == 'tr': self.start_tr()
-        elif tag == 'td': self.start_td()
-        elif tag == 'th': self.start_td()
-        elif tag == 'ul': self.start_ul()
-        elif tag == 'ol': self.start_ol()
-        elif tag == 'li': self.start_li()
-        elif tag == 'br': self.newline()
-        elif tag == 'img' :self.start_img(attrs)
+        handler = self.start_tag_handler_dict.get(tag, None)
+        if handler:
+            handler(attrs)
+
 
     def handle_endtag(self, tag):
         cur = self.current_tag.pop()
@@ -166,14 +184,12 @@ class Inscriptis(object):
         if cur.display == Display.block:
             # propagate the new padding to the current line, if nothing has
             # been written
-            if not self.__flush():
+            if not self.write_line():
                 self.current_line.padding = self.next_line.padding
 
-        if tag == 'table': self.end_table()
-        elif tag == 'ul': self.end_ul()
-        elif tag == 'ol': self.end_ol()
-        elif tag == 'td': self.end_td()
-        elif tag == 'th': self.end_td()
+        handler = self.end_tag_handler_dict.get(tag, None)
+        if handler:
+            handler()
 
     def handle_data(self, data):
         if self.invisible:
@@ -185,22 +201,21 @@ class Inscriptis(object):
 
         self.current_line.content += data
 
-    def start_ul(self):
+    def start_ul(self, attrs):
         self.li_level += 1
-        self.li_counter.append(Inscriptis.ul_counter[self.li_level-1])
-
-    def start_img(self, attrs):
-        if self.cfg_display_images:
-            image_text = attrs.get('alt', '') or attrs.get('title', '')
-            if image_text and not (self.cfg_deduplicate_captions and image_text == self.last_caption):
-                self.current_line.content += '[{}]'.format(image_text)
-                self.last_caption = image_text
+        self.li_counter.append(Inscriptis.UL_COUNTER[self.li_level-1])
 
     def end_ul(self):
         self.li_level -= 1
         self.li_counter.pop()
 
-    def start_ol(self):
+    def start_img(self, attrs):
+        image_text = attrs.get('alt', '') or attrs.get('title', '')
+        if image_text and not (self.cfg_deduplicate_captions and image_text == self.last_caption):
+            self.current_line.content += '[{}]'.format(image_text)
+            self.last_caption = image_text
+
+    def start_ol(self, attrs):
         self.li_counter.append(1)
         self.li_level += 1
 
@@ -208,8 +223,9 @@ class Inscriptis(object):
         self.li_level -= 1
         self.li_counter.pop()
 
-    def start_li(self):
-        self.__flush()
+
+    def start_li(self, attrs):
+        self.write_line()
         if self.li_level > 0:
             bullet = self.li_counter[-1]
         else:
@@ -220,21 +236,21 @@ class Inscriptis(object):
         else:
             self.current_line.list_bullet = bullet
 
-    def start_table(self):
+    def start_table(self, attrs):
         self.current_table.append(Table())
 
-    def start_tr(self):
+    def start_tr(self, attrs):
         self.current_table[-1].add_row()
 
-    def start_td(self):
+    def start_td(self, attrs):
         self.current_table[-1].add_column()
 
     def end_td(self):
-        self.__flush(force=True)
+        self.write_line(force=True)
 
     def end_table(self):
         table = self.current_table.pop()
-        self.__flush_verbatim(str(table))
+        self.write_line_verbatim(str(table))
 
-    def newline(self):
-        self.__flush(force=True)
+    def newline(self, attrs):
+        self.write_line(force=True)

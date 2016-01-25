@@ -1,13 +1,14 @@
-from enum import Enum
+#!/usr/bin/env python3
+# encoding: utf-8
 
-class Display(Enum):
+class Display(object):
     inline = 1
     block = 2
     none = 3
 
-class WhiteSpace(Enum):
+class WhiteSpace(object):
     normal = 1 # sequences of whitespace will collapse into a single one
-    pre = 3 # sequences of whitespace will be preserved
+    pre = 3    # sequences of whitespace will be preserved
 
 
 class Table(object):
