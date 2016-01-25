@@ -4,7 +4,6 @@ A python based HTML to text converter with minimal support for CSS.
 
 ### Requirements
 * Python 3.x
-* BeautifulSoup4
 * lxml
 
 ### Usage
@@ -33,6 +32,9 @@ optional arguments:
                         Output file (default:stdout).
   -e ENCODING, --encoding ENCODING
                         Content encoding for files (default:utf-8)
+  -i, --image-captions  Display image captions (default:false).
+  -d, --deduplicate-image-captions
+                        Deduplicate image captions (default:false).
 ```
 
 ***Examples***
@@ -48,22 +50,12 @@ python3 inscriptis.py htwchur.html -o htwchur.txt
 #### Library
 
 ```python
-from inscriptis import get_text_from_url
-
-url = "http://www.informationscience.ch"
-text = get_text_from_url(url)
-
-print(text)
-```
-
-Get text from html
-```python
-from inscriptis import get_text_from_html
+from inscriptis import get_text
 
 url = "http://www.informationscience.ch"
 html = urllib.request.urlopen(url_input)
 
-text = get_text_from_html(html)
+text = get_text(html)
 
 print(text)
 ```
