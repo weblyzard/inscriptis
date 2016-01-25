@@ -9,7 +9,7 @@ Guiding principles:
  b. paddings:
 '''
 
-from inscriptis.css import CSS, HtmlElement
+from inscriptis.css import CSS, CssParse, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Table
 
 class Line(object):
@@ -150,8 +150,10 @@ class Inscriptis(object):
         # use the css to handle tags known to it :)
 
         cur = CSS.get(tag, Inscriptis.DEFAULT_ELEMENT)
+        if 'style' in attrs:
+            cur = CssParse.get_style_attribute(attrs['style'], html_element=cur)
         self.current_tag.append(cur)
-        if cur.display == Display.none or self.invisible or ('style' in attrs and 'display:none' in attrs['style']):
+        if cur.display == Display.none or self.invisible:
             self.invisible.append(cur)
             return
 
