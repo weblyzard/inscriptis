@@ -1,6 +1,6 @@
 # inscriptis
 
-A python based HTML to text converter based on SpiffWikiMarkup by Samuel Abel.
+A python based HTML to text converter with minimal support for CSS.
 
 ### Requirements
 * Python 3.x

@@ -23,7 +23,7 @@ import threading
 import time
 import urllib
 
-TRIES = 2
+TRIES = 5
 
 try:
     import justext

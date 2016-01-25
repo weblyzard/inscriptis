@@ -9,14 +9,6 @@ Guiding principles:
  b. paddings:
 '''
 
-__author__ = "Fabian Odoni, Albert Weichselbraun, Samuel Abels"
-__copyright__ = "Copyright 2015, HTW Chur"
-__license__ = "GPL"
-__version__ = "0.0.1"
-__maintainer__ = "Fabian Odoni"
-__email__ = "fabian.odoni@htwchur.ch"
-__status__ = "Prototype"
-
 from lxml.html import fromstring
 from inscriptis.css import CSS, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Table
