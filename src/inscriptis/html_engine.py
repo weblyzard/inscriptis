@@ -9,7 +9,6 @@ Guiding principles:
  b. paddings:
 '''
 
-from lxml.html import fromstring
 from inscriptis.css import CSS, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Table
 
@@ -85,7 +84,6 @@ class Inscriptis(object):
         self.current_line = Line()
         self.next_line = Line()
         self.clean_text_lines = []
-        self.buffer = ''
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
@@ -98,7 +96,7 @@ class Inscriptis(object):
             self.write_line()
 
     def crawl_tree(self, tree):
-        if type(tree.tag) is str:
+        if isinstance(tree.tag, str):
             self.handle_starttag(tree.tag, tree.attrib)
             if tree.text:
                 self.handle_data(tree.text)
@@ -127,7 +125,7 @@ class Inscriptis(object):
             True, if a line has been writer, otherwise False
         '''
         # only break the line if there is any relevant content
-        if not force and self.current_line.content.isspace():
+        if not force and (not self.current_line.content or self.current_line.content.isspace()):
             self.current_line.margin_before = max(self.current_line.margin_before, \
                                                   self.current_tag[-1].margin_before)
             return False
@@ -148,7 +146,6 @@ class Inscriptis(object):
         '''
         self.clean_text_lines.append(text)
 
-
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
 
@@ -165,12 +162,11 @@ class Inscriptis(object):
                 self.current_line.margin_before = max(self.current_line.margin_before, cur.margin_before)
                 self.current_line.padding = self.next_line.padding
             else:
-                self.current_line.margin_after = cur.margin_before
+                self.current_line.margin_after = max(self.current_line.margin_after, cur.margin_after)
 
         handler = self.start_tag_handler_dict.get(tag, None)
         if handler:
             handler(attrs)
-
 
     def handle_endtag(self, tag):
         cur = self.current_tag.pop()
@@ -254,3 +250,4 @@ class Inscriptis(object):
 
     def newline(self, attrs):
         self.write_line(force=True)
+

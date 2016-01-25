@@ -36,7 +36,7 @@ class Table(object):
             ::returns:
             a rendered string representation of the given table
         '''
-        return '\n'.join([str(row) for row in self.rows])
+        return '\n'.join((str(row) for row in self.rows))
 
 class Row(object):
     ''' A single row within a table '''
