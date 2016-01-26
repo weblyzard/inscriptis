@@ -4,6 +4,7 @@ high priority:
 - finalize support for WhiteSpace.pre (pre)
 - add a class that translates style sheets to the corresponding dictionary of `HtmlElement`s.
 - add support for nested tags in white spaces (e.g. `ul ol`)
+- check: option to remove links with a one letter description (footnotes)
 
 
 low priority:
