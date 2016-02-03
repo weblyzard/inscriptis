@@ -50,10 +50,11 @@ python3 inscriptis.py htwchur.html -o htwchur.txt
 #### Library
 
 ```python
+import urllib.request
 from inscriptis import get_text
 
 url = "http://www.informationscience.ch"
-html = urllib.request.urlopen(url_input)
+html = urllib.request.urlopen(url).read()
 
 text = get_text(html)
 
