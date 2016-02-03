@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from inscriptis.html_properties import Table
+from inscriptis.table_engine import Table
 
 def test_table():
     t = Table()
