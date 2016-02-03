@@ -20,7 +20,13 @@ class Table(object):
         self.rows[-1].columns.append(Line())
 
     def add_text(self, text):
-        ''' adds text to the current column '''
+        ''' adds text to the current column
+
+        ::note
+            the component calling add_text _must ensure_ that at least one
+            column has been added to the table.
+
+        '''
         self.rows[-1].columns[-1].content += text
 
     def __str__(self):
