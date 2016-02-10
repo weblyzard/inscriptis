@@ -29,12 +29,12 @@ class Table(object):
         '''
         self.rows[-1].columns[-1].content += text
 
-    def __str__(self):
+    def get_text(self):
         '''
             ::returns:
             a rendered string representation of the given table
         '''
-        return '\n'.join((str(row) for row in self.rows))
+        return '\n'.join((row.get_text() for row in self.rows))
 
 
 class Row(object):
@@ -44,7 +44,7 @@ class Row(object):
     def __init__(self):
         self.columns = []
 
-    def __str__(self):
+    def get_text(self):
         '''
             ::returns:
             a rendered string representation of the given row
@@ -52,5 +52,5 @@ class Row(object):
             ::note
                 ... we currently do not allow any newlines in a column
         '''
-        return '\t'.join((str(column).replace('\n', ' ') for column in self.columns))
+        return '\t'.join((column.get_text().replace('\n', ' ') for column in self.columns))
 

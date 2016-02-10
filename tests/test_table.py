@@ -21,6 +21,5 @@ def test_table():
     t.add_column()
     t.add_text("c")
 
-    text = str(t)
-    print(text)
-    assert text == 'first\tsecond\tthird\na\tb\tc'
+    text = t.get_text()
+    assert text == u'first\tsecond\tthird\na\tb\tc'

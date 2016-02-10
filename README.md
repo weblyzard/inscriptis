@@ -3,7 +3,7 @@
 A python based HTML to text converter with minimal support for CSS.
 
 ### Requirements
-* Python 3.x
+* Python 3.4+ (preferred) or Python 2.7+
 * lxml
 
 ### Usage

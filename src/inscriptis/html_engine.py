@@ -103,7 +103,7 @@ class Inscriptis(object):
                                                   self.current_tag[-1].margin_before)
             return False
         else:
-            line = str(self.current_line)
+            line = self.current_line.get_text()
             self.clean_text_lines.append(line)
             self.current_line = self.next_line
             self.next_line = Line()
@@ -231,7 +231,7 @@ class Inscriptis(object):
     def end_table(self):
         self.write_line()
         table = self.current_table.pop()
-        self.write_line_verbatim(str(table))
+        self.write_line_verbatim(table.get_text())
 
     def newline(self, attrs):
         self.write_line(force=True)

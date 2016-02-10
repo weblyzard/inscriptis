@@ -100,7 +100,7 @@ class CssParse(object):
         unit = m.group(2)
 
         if unit not in ('em', 'qem', 'rem'):
-            value = round(value/8)
+            value = int(round(value/8))
         return value
 
     # ------------------------------------------------------------------------

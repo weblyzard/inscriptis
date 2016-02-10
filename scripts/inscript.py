@@ -17,7 +17,11 @@ __maintainer__ = "Fabian Odoni"
 __email__ = "fabian.odoni@htwchur.ch"
 __status__ = "Prototype"
 
-from urllib.request import urlopen
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib import urlopen
+    from io import open
 import argparse
 
 from inscriptis import get_text
@@ -52,5 +56,5 @@ if __name__ == "__main__":
         with open(args.output, 'w') as open_file:
             open_file.write(text)
     else:
-        print(text)
+        print(text.encode("utf-8"))
 

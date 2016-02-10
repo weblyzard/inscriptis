@@ -13,6 +13,12 @@ __maintainer__ = "Fabian Odoni"
 __email__ = "fabian.odoni@htwchur.ch"
 __status__ = "Prototype"
 
+# python2 support
+from sys import version_info
+if version_info[0] == 2:
+    from io import open
+    str = unicode
+
 from bs4 import BeautifulSoup
 from datetime import datetime
 import operator
@@ -186,7 +192,7 @@ def pipeline():
         os.makedirs(cache_dir)
 
     with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'w') as output_file:
-            output_file.write("")
+            output_file.write(u"")
 
     for source in sources:
 
@@ -202,7 +208,7 @@ def pipeline():
             open(source_cache_path, 'w').write(html)
 
         with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'a') as output_file:
-            output_file.write("\nURL: {}\n".format(source_name))
+            output_file.write(u"\nURL: {}\n".format(source_name))
         print("\nURL: {}".format(source_name))
 
         times = {}
@@ -256,9 +262,9 @@ def pipeline():
         print(speed_table)
 
         with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'a') as output_file:
-            output_file.write(speed_table + "\n")
+            output_file.write(speed_table + u"\n")
     with open(os.path.join(benchmarking_results_dir, 'speed_comparisons.txt'), 'a') as output_file:
-        output_file.write("\n")
+        output_file.write(u"\n")
 
 if __name__ == "__main__":
     pipeline()
