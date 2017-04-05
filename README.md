@@ -24,7 +24,7 @@ usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] input
 Converts HTML from file or url to a clean text version
 
 positional arguments:
-  input                 Html input either from a file or an url
+  input                 Html input either from a file, url or string input
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -44,6 +44,9 @@ python3 inscriptis.py http://www.htwchur.ch
 
 # convert the file to text and save the output to output.txt
 python3 inscriptis.py htwchur.html -o htwchur.txt
+
+# convert the string input to text and save the output to output.txt
+python3 inscriptis.py -o htwchur.txt <body><p>Make it so!</p>></body>
 ```
 
 
@@ -71,12 +74,12 @@ Test cases concerning the html to text conversion are located in the `tests/html
 the latter one containing the reference text output for the given html file.
 
 ### Text convertion output comparison and speed benchmarking
-inscriptis offers a small benchmarking script that can compare different HTML to txt convertion approaches. 
-The script will run the different approaches on a list of URLs, ```url_list.txt```, and save the text output into a time stampped folder in ```benchmarking/benchmarking_results``` for manual comparison.
-Additionally the processing speed of every approach per URL is measured and saved in a text file called ```speed_comparisons.txt``` in the respective time stampped folder.
+inscriptis offers a small benchmarking script that can compare different HTML to txt convertion approaches.
+The script will run the different approaches on a list of URLs, ```url_list.txt```, and save the text output into a time stamped folder in ```benchmarking/benchmarking_results``` for manual comparison.
+Additionally the processing speed of every approach per URL is measured and saved in a text file called ```speed_comparisons.txt``` in the respective time stamped folder.
 
 To run the benchmarking script execute ```run_benchmarking.py``` from within the folder ```benchmarking```.
-In ```def pipeline()``` set the which HTML -> Text algorithms to be executed by modifying 
+In ```def pipeline()``` set the which HTML -> Text algorithms to be executed by modifying
 ```python
 run_lynx = True
 run_justext = True
