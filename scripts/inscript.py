@@ -23,7 +23,7 @@ except ImportError:
     from urllib import urlopen
     from io import open
 import argparse
-import os.path.isfile as isfile
+from os.path import isfile
 
 from inscriptis import get_text
 
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         with open(args.input, encoding=args.encoding) as f:
             html_content = f.read()
     elif args.input.startswith("http://") or args.input.startswith("https://"):
-        html_content = urlopen(args.input)
+        html_content = urlopen(args.input).read()
     else:
         html_content = str(args.input)
 
