@@ -40,13 +40,13 @@ optional arguments:
 ***Examples***
 ```
 # convert the given page to text and output the result to the screen
-python3 inscriptis.py http://www.htwchur.ch
+inscriptis.py http://www.htwchur.ch
 
 # convert the file to text and save the output to output.txt
-python3 inscriptis.py htwchur.html -o htwchur.txt
+inscriptis.py htwchur.html -o htwchur.txt
 
 # convert the string input to text and save the output to output.txt
-python3 inscriptis.py -o htwchur.txt <body><p>Make it so!</p>></body>
+inscriptis.py -o htwchur.txt <body><p>Make it so!</p>></body>
 ```
 
 
