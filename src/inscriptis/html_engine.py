@@ -234,5 +234,8 @@ class Inscriptis(object):
         self.write_line_verbatim(table.get_text())
 
     def newline(self, attrs):
-        self.write_line(force=True)
+        if self.in_column and self.current_table:
+            self.current_table[len(self.in_column)-1].add_text(" ")
+        else:
+            self.write_line(force=True)
 
