@@ -6,3 +6,4 @@ benchmarking_results/
 .tox
 build/
 dist/
+benchmarking/
