@@ -13,9 +13,18 @@ class WhiteSpace(object):
 class Line(object):
     '''
     Object used to represent a line
+
+    Format specification:
+    =====================
+    - align: the line's alignment using string.format's format specification
+             * '<': left
+             * '>': right
+             * '^': center
+    - width: line width
+
     '''
     __slots__ = ('margin_before', 'margin_after', 'prefix', 'suffix',
-                 'content', 'list_bullet', 'padding')
+                 'content', 'list_bullet', 'padding', 'align', 'width')
 
     def __init__(self):
         self.margin_before = 0
@@ -26,17 +35,30 @@ class Line(object):
         self.list_bullet = ""
         self.padding = 0
 
+        # alignment options
+        self.align = None
+        self.width = None
+
     def extract_pre_text(self):
         pass
 
+    def get_format_spec(self):
+        '''
+        The format specification according to the values of `align` and `width`
+        '''
+        return "{{:{align}{width}}}".format(align=self.align, width=self.width)
+
     def get_text(self):
         # print(">>" + self.content + "<< before: " + str(self.margin_before) + ", after: " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
-        return ''.join(('\n' * self.margin_before,
+        text = ''.join(('\n' * self.margin_before,
                         ' ' * (self.padding - len(self.list_bullet)),
                         self.list_bullet,
                         self.prefix,
                         ' '.join(self.content.split()),
                         self.suffix,
                         '\n' * self.margin_after))
+
+        return self.get_format_spec().format(text) if self.align else text
+
     def __str__(self):
         self.get_text()
