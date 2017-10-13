@@ -39,12 +39,12 @@ class Table(object):
 
         for column_idx in range(max_columns):
             # determine max_column_width
-            max_column_width = max([len(row.get_cell_text(column_idx).get_text()) for row in self.rows])
+            max_column_width = max([len(row.get_cell_text(column_idx).get_text().strip()) for row in self.rows])
 
             # set column width in all rows
             for row in self.rows:
-                for cell in row.columns:
-                    cell.width = max_column_width
+                if len(row.columns) > column_idx:
+                    row.columns[column_idx].width = max_column_width
 
     def get_text(self):
         '''

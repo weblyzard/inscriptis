@@ -1,4 +1,4 @@
-Titel                         Beschreibung                  Länge                        
-1                             2                             3                            
-Der Prinz von Ägypten         Basierend auf dem Buch Exodus 99 min                       
-Leo Lausemaus                 Der Läusebub                  99 min                       
+Titel                 Beschreibung                  Länge 
+1                     2                             3     
+Der Prinz von Ägypten Basierend auf dem Buch Exodus 99 min
+Leo Lausemaus         Der Läusebub                  99 min

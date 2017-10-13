@@ -57,6 +57,8 @@ class Line(object):
                         ' '.join(self.content.split()),
                         self.suffix,
                         '\n' * self.margin_after))
-
         return self.get_format_spec().format(text) if self.align and self.width else text
+
+    def __str__(self):
+        return "<Line: '{}'; align={}; width={}".format(self.get_text(), self.align, self.width)
 
