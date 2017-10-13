@@ -26,7 +26,7 @@ class Line(object):
     __slots__ = ('margin_before', 'margin_after', 'prefix', 'suffix',
                  'content', 'list_bullet', 'padding', 'align', 'width')
 
-    def __init__(self):
+    def __init__(self, align=None):
         self.margin_before = 0
         self.margin_after = 0
         self.prefix = ""
@@ -36,7 +36,7 @@ class Line(object):
         self.padding = 0
 
         # alignment options
-        self.align = None
+        self.align = align
         self.width = None
 
     def extract_pre_text(self):
@@ -58,7 +58,5 @@ class Line(object):
                         self.suffix,
                         '\n' * self.margin_after))
 
-        return self.get_format_spec().format(text) if self.align else text
+        return self.get_format_spec().format(text) if self.align and self.width else text
 
-    def __str__(self):
-        self.get_text()
