@@ -7,7 +7,7 @@ setup(
       ###########################################
       ## Metadata
       name="inscriptis",
-      version="0.0.2.1",
+      version="0.0.3.0",
       description='inscriptis - HTML to text converter.',
       author='Albert Weichselbraun, Fabian Odoni',
       author_email='albert.weichselbraun@htwchur.ch, fabian.odoni@htwchur.ch',
