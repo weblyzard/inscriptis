@@ -96,7 +96,7 @@ https://en.wikipedia.org/wiki/Information_science
 ...
 ```
 
-*** Changelog ***
+### Changelog
 
 * 0.0.3.0: 
   * improved table rendering - same columns are aligned below each other
