@@ -95,3 +95,9 @@ http://www.informationscience.ch
 https://en.wikipedia.org/wiki/Information_science
 ...
 ```
+
+*** Changelog ***
+
+* 0.0.3.0: 
+  * improved table rendering - same columns are aligned below each other
+  * add: infrastructure for cell alignment (left, center, right)

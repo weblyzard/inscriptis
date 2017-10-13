@@ -1,2 +1,2 @@
-First	Second	Third
-a	b	c
+First Second Third
+a     b      c
