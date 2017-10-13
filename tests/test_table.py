@@ -22,4 +22,4 @@ def test_table():
     t.add_text("c")
 
     text = t.get_text()
-    assert text == u'first second third \na     b      c     '
+    assert text == u'first second third\na     b      c    '
