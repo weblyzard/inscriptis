@@ -1,4 +1,5 @@
 
+from re import compile
 from lxml.html import fromstring
 
 from inscriptis.html_engine import Inscriptis
@@ -11,6 +12,8 @@ __maintainer__ = "Fabian Odoni"
 __email__ = "fabian.odoni@htwchur.ch"
 __status__ = "Prototype"
 
+RE_STRIP_XML_DECLARATION = compile(r'^<\?xml [^>]+?\?>')
+
 
 def get_text(html_content, display_images=False, deduplicate_captions=False):
     '''
@@ -18,6 +21,10 @@ def get_text(html_content, display_images=False, deduplicate_captions=False):
     ::returns:
         a text representation of the html content.
     '''
+    # strip XML declaration, if necessary
+    if html_content.startswith('<?xml '):
+        html_content = RE_STRIP_XML_DECLARATION.sub('', html_content, count=1)
+
     html_tree = fromstring(html_content)
     parser = Inscriptis(html_tree, display_images=display_images, deduplicate_captions=deduplicate_captions)
     return parser.get_text()
