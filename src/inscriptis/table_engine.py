@@ -33,7 +33,12 @@ class Table(object):
         '''
         compute and set the column width for all colls in the table
         '''
+        # skip tables with no or only one row
+        if len(self.rows) <= 1:
+            return
+
         empty_line = Line()
+
         # determine maximum number of columns
         max_columns = max([len(row.columns) for row in self.rows])
 
