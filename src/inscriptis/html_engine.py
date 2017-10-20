@@ -202,6 +202,7 @@ class Inscriptis(object):
             bullet = self.li_counter[-1]
         else:
             bullet = "* "
+        print("bullet: ", bullet)
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
             self.current_line.list_bullet = "{}. ".format(bullet)
@@ -235,7 +236,7 @@ class Inscriptis(object):
 
     def newline(self, attrs):
         if self.in_column and self.current_table:
-            self.current_table[len(self.in_column)-1].add_text(" ")
+            self.current_table[len(self.in_column)-1].add_text('\n')
         else:
             self.write_line(force=True)
 
