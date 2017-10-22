@@ -8,6 +8,7 @@ Guiding principles:
  a. break lines only if we encounter a block element
  b. paddings:
 '''
+from itertools import chain
 
 from inscriptis.css import CSS, CssParse, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Line
@@ -55,9 +56,14 @@ class Inscriptis(object):
         self.current_tag = [HtmlElement()]
         self.current_line = Line()
         self.next_line = Line()
-        self.clean_text_lines = []
+
+        # the canvases used for displaying text
+        # clean_text_line[0] refers to the root canvas; tables write into child
+        # canvases that are created for every table line and merged with the
+        # root canvas at the end of a table
+        self.clean_text_lines = [[]]
+
         self.current_table = []
-        self.in_column = []
         self.li_counter = []
         self.li_level = 0
         self.invisible = [] # a list of attributes that are considered invisible
@@ -87,7 +93,7 @@ class Inscriptis(object):
         ::returns:
            a text representation of the parsed content
         '''
-        return '\n'.join(self.clean_text_lines)
+        return '\n'.join(chain(*self.clean_text_lines))
 
     def write_line(self, force=False):
         '''
@@ -104,7 +110,7 @@ class Inscriptis(object):
             return False
         else:
             line = self.current_line.get_text()
-            self.clean_text_lines.append(line)
+            self.clean_text_lines[-1].append(line)
             self.current_line = self.next_line
             self.next_line = Line()
             return True
@@ -113,7 +119,7 @@ class Inscriptis(object):
         '''
         Writes the current buffer without any modifications.
         '''
-        self.clean_text_lines.append(text)
+        self.clean_text_lines[-1].append(text)
 
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
@@ -168,10 +174,7 @@ class Inscriptis(object):
 
         # determine whether to add this content to a table column
         # or to a standard line
-        if self.in_column and self.current_table:
-            self.current_table[len(self.in_column)-1].add_text(data)
-        else:
-            self.current_line.content += data
+        self.current_line.content += data
 
     def start_ul(self, attrs):
         self.li_level += 1
@@ -202,7 +205,6 @@ class Inscriptis(object):
             bullet = self.li_counter[-1]
         else:
             bullet = "* "
-        print("bullet: ", bullet)
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
             self.current_line.list_bullet = "{}. ".format(bullet)
@@ -218,16 +220,14 @@ class Inscriptis(object):
 
     def start_td(self, attrs):
         if self.current_table:
-            self.current_table[-1].add_column()
-            self.in_column.append(True)
+            self.clean_text_lines.append([])
+            self.current_table[-1].add_cell(self.clean_text_lines[-1])
 
     def end_td(self):
-        if self.current_table:
-            self.in_column.pop()
+        self.clean_text_lines.pop()
 
     def end_tr(self):
-        if self.current_table:
-            pass
+        pass
 
     def end_table(self):
         self.write_line()
@@ -235,8 +235,4 @@ class Inscriptis(object):
         self.write_line_verbatim(table.get_text())
 
     def newline(self, attrs):
-        if self.in_column and self.current_table:
-            self.current_table[len(self.in_column)-1].add_text('\n')
-        else:
-            self.write_line(force=True)
-
+        self.write_line(force=True)
