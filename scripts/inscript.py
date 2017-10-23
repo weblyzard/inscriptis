@@ -45,7 +45,7 @@ if __name__ == "__main__":
     args = get_args()
 
     if isfile(args.input):
-        with open(args.input, encoding=args.encoding) as f:
+        with open(args.input, encoding=args.encoding, errors='ignore') as f:
             html_content = f.read()
     elif args.input.startswith("http://") or args.input.startswith("https://"):
         html_content = urlopen(args.input).read()
@@ -59,4 +59,4 @@ if __name__ == "__main__":
         with open(args.output, 'w') as open_file:
             open_file.write(text)
     else:
-        print(text.encode("utf-8"))
+        print(text)

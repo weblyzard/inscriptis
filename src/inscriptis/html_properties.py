@@ -35,10 +35,6 @@ class Line(object):
         self.list_bullet = ""
         self.padding = 0
 
-        # alignment options
-        self.align = align
-        self.width = None
-
     def extract_pre_text(self):
         pass
 
@@ -50,15 +46,14 @@ class Line(object):
 
     def get_text(self):
         # print(">>" + self.content + "<< before: " + str(self.margin_before) + ", after: " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
-        text = ''.join(('\n' * self.margin_before,
+        return ''.join(('\n' * self.margin_before,
                         ' ' * (self.padding - len(self.list_bullet)),
                         self.list_bullet,
                         self.prefix,
                         ' '.join(self.content.split()),
                         self.suffix,
                         '\n' * self.margin_after))
-        return self.get_format_spec().format(text) if self.align and self.width else text
 
     def __str__(self):
-        return "<Line: '{}'; align={}; width={}".format(self.get_text(), self.align, self.width)
+        return "<Line: '{}'>".format(self.get_text().strip())
 

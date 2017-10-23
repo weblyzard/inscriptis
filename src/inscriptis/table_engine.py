@@ -1,33 +1,40 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-from inscriptis.html_properties import Line
+class TableCell:
+
+    def __init__(self, canvas, align):
+        self.canvas = canvas
+        self.align = align
+        self.width = None
+
+    def get_format_spec(self):
+        '''
+        The format specification according to the values of `align` and `width`
+        '''
+        return "{{:{align}{width}}}".format(align=self.align, width=self.width)
+
+    def get_text(self):
+        text = '\n'.join(self.canvas)
+        return self.get_format_spec().format(text) if self.width else text
 
 class Table(object):
     ''' A HTML table. '''
 
-    __slot__ = ('rows', 'align')
+    __slot__ = ('rows', 'td_is_open')
 
     def __init__(self):
         self.rows = []
+        # keep track of whether the last td tag has been closed
+        self.td_is_open = False
 
     def add_row(self):
         self.rows.append(Row())
 
-    def add_column(self, align='<'):
+    def add_cell(self, canvas, align='<'):
         if not self.rows:
             self.add_row()
-        self.rows[-1].columns.append(Line(align=align))
-
-    def add_text(self, text):
-        ''' adds text to the current column
-
-        ::note
-            the component calling add_text _must ensure_ that at least one
-            column has been added to the table.
-
-        '''
-        self.rows[-1].columns[-1].content += text
+        self.rows[-1].columns.append(TableCell(canvas, align))
 
     def compute_column_width(self):
         '''
@@ -37,14 +44,12 @@ class Table(object):
         if len(self.rows) <= 1:
             return
 
-        empty_line = Line()
-
         # determine maximum number of columns
         max_columns = max([len(row.columns) for row in self.rows])
 
         for column_idx in range(max_columns):
             # determine max_column_width
-            max_column_width = max([len(row.get_cell_text(column_idx).get_text().strip()) for row in self.rows])
+            max_column_width = max([len(row.get_cell_text(column_idx)) for row in self.rows])
 
             # set column width in all rows
             for row in self.rows:
@@ -72,7 +77,7 @@ class Row(object):
             ''returns:
             the text at the column_idx or an empty Line if the column does not exist
         '''
-        return Line() if column_idx >= len(self.columns) else self.columns[column_idx]
+        return '' if column_idx >= len(self.columns) else self.columns[column_idx].get_text()
 
 
     def get_text(self):
@@ -84,4 +89,3 @@ class Row(object):
                 ... we currently do not allow any newlines in a column
         '''
         return ' '.join((column.get_text().replace('\n', ' ') for column in self.columns))
-
