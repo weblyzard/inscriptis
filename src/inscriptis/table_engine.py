@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-from collections import namedtuple
-from inscriptis.html_properties import Line
-
 class TableCell:
 
     def __init__(self, canvas, align):
@@ -24,10 +21,12 @@ class TableCell:
 class Table(object):
     ''' A HTML table. '''
 
-    __slot__ = ('rows', )
+    __slot__ = ('rows', 'td_is_open')
 
     def __init__(self):
         self.rows = []
+        # keep track of whether the last td tag has been closed
+        self.td_is_open = False
 
     def add_row(self):
         self.rows.append(Row())
@@ -50,7 +49,7 @@ class Table(object):
 
         for column_idx in range(max_columns):
             # determine max_column_width
-            max_column_width = max([len(row.get_cell_text(column_idx).strip()) for row in self.rows])
+            max_column_width = max([len(row.get_cell_text(column_idx)) for row in self.rows])
 
             # set column width in all rows
             for row in self.rows:
@@ -63,7 +62,6 @@ class Table(object):
             a rendered string representation of the given table
         '''
         self.compute_column_width()
-        print("ROWS:", len(self.rows))
         return '\n'.join((row.get_text() for row in self.rows))
 
 

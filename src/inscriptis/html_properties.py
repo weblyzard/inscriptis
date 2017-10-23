@@ -55,5 +55,5 @@ class Line(object):
                         '\n' * self.margin_after))
 
     def __str__(self):
-        return "<Line: '{}'; align={}; width={}".format(self.get_text(), self.align, self.width)
+        return "<Line: '{}'>".format(self.get_text().strip())
 

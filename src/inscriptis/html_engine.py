@@ -54,8 +54,8 @@ class Inscriptis(object):
 
         # instance variables
         self.current_tag = [HtmlElement()]
-        self.current_line = Line()
-        self.next_line = Line()
+        self.current_line = [Line()]
+        self.next_line = [Line()]
 
         # the canvases used for displaying text
         # clean_text_line[0] refers to the root canvas; tables write into child
@@ -71,7 +71,7 @@ class Inscriptis(object):
 
         # crawl the html tree
         self.crawl_tree(html_tree)
-        if self.current_line:
+        if self.current_line[-1]:
             self.write_line()
 
     def crawl_tree(self, tree):
@@ -104,15 +104,15 @@ class Inscriptis(object):
             True, if a line has been writer, otherwise False
         '''
         # only break the line if there is any relevant content
-        if not force and (not self.current_line.content or self.current_line.content.isspace()):
-            self.current_line.margin_before = max(self.current_line.margin_before, \
+        if not force and (not self.current_line[-1].content or self.current_line[-1].content.isspace()):
+            self.current_line[-1].margin_before = max(self.current_line[-1].margin_before, \
                                                   self.current_tag[-1].margin_before)
             return False
         else:
-            line = self.current_line.get_text()
+            line = self.current_line[-1].get_text()
             self.clean_text_lines[-1].append(line)
-            self.current_line = self.next_line
-            self.next_line = Line()
+            self.current_line[-1] = self.next_line[-1]
+            self.next_line[-1] = Line()
             return True
 
     def write_line_verbatim(self, text):
@@ -132,14 +132,14 @@ class Inscriptis(object):
             self.invisible.append(cur)
             return
 
-        self.next_line.padding = self.current_line.padding + cur.padding
+        self.next_line[-1].padding = self.current_line[-1].padding + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
             if not self.write_line():
-                self.current_line.margin_before = max(self.current_line.margin_before, cur.margin_before)
-                self.current_line.padding = self.next_line.padding
+                self.current_line[-1].margin_before = max(self.current_line[-1].margin_before, cur.margin_before)
+                self.current_line[-1].padding = self.next_line[-1].padding
             else:
-                self.current_line.margin_after = max(self.current_line.margin_after, cur.margin_after)
+                self.current_line[-1].margin_after = max(self.current_line[-1].margin_after, cur.margin_after)
 
         handler = self.start_tag_handler_dict.get(tag, None)
         if handler:
@@ -151,14 +151,14 @@ class Inscriptis(object):
             self.invisible.pop()
             return
 
-        self.next_line.padding = self.current_line.padding - cur.padding
-        self.current_line.margin_after = max(self.current_line.margin_after, cur.margin_after)
+        self.next_line[-1].padding = self.current_line[-1].padding - cur.padding
+        self.current_line[-1].margin_after = max(self.current_line[-1].margin_after, cur.margin_after)
         # flush text after display:block elements
         if cur.display == Display.block:
             # propagate the new padding to the current line, if nothing has
             # been written
             if not self.write_line():
-                self.current_line.padding = self.next_line.padding
+                self.current_line[-1].padding = self.next_line[-1].padding
 
         handler = self.end_tag_handler_dict.get(tag, None)
         if handler:
@@ -174,7 +174,7 @@ class Inscriptis(object):
 
         # determine whether to add this content to a table column
         # or to a standard line
-        self.current_line.content += data
+        self.current_line[-1].content += data
 
     def start_ul(self, attrs):
         self.li_level += 1
@@ -187,7 +187,7 @@ class Inscriptis(object):
     def start_img(self, attrs):
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.cfg_deduplicate_captions and image_text == self.last_caption):
-            self.current_line.content += '[{}]'.format(image_text)
+            self.current_line[-1].content += '[{}]'.format(image_text)
             self.last_caption = image_text
 
     def start_ol(self, attrs):
@@ -207,29 +207,50 @@ class Inscriptis(object):
             bullet = "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.current_line.list_bullet = "{}. ".format(bullet)
+            self.current_line[-1].list_bullet = "{}. ".format(bullet)
         else:
-            self.current_line.list_bullet = bullet
+            self.current_line[-1].list_bullet = bullet
 
     def start_table(self, attrs):
         self.current_table.append(Table())
 
     def start_tr(self, attrs):
         if self.current_table:
+            # check whether we need to cleanup a <td> tag that has not been
+            # closed yet
+            if self.current_table[-1].td_is_open:
+                self.end_td()
+
             self.current_table[-1].add_row()
 
     def start_td(self, attrs):
         if self.current_table:
+            # check whether we need to cleanup a <td> tag that has not been
+            # closed yet
+            if self.current_table[-1].td_is_open:
+                self.end_td()
+
+            # open td tag
             self.clean_text_lines.append([])
+            self.current_line.append(Line())
+            self.next_line.append(Line())
             self.current_table[-1].add_cell(self.clean_text_lines[-1])
+            self.current_table[-1].td_is_open = True
 
     def end_td(self):
-        self.clean_text_lines.pop()
+        if self.current_table and self.current_table[-1].td_is_open:
+            self.current_table[-1].td_is_open = False
+            self.write_line(force=True)
+            self.clean_text_lines.pop()
+            self.current_line.pop()
+            self.next_line.pop()
 
     def end_tr(self):
         pass
 
     def end_table(self):
+        if self.current_table and self.current_table[-1].td_is_open:
+            self.end_td()
         self.write_line()
         table = self.current_table.pop()
         self.write_line_verbatim(table.get_text())
