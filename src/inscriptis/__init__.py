@@ -15,7 +15,7 @@ __status__ = "Prototype"
 RE_STRIP_XML_DECLARATION = compile(r'^<\?xml [^>]+?\?>')
 
 
-def get_text(html_content, display_images=False, deduplicate_captions=False):
+def get_text(html_content, display_images=False, deduplicate_captions=False, display_links=False):
     '''
     ::param: html_content
     ::returns:
@@ -26,5 +26,5 @@ def get_text(html_content, display_images=False, deduplicate_captions=False):
         html_content = RE_STRIP_XML_DECLARATION.sub('', html_content, count=1)
 
     html_tree = fromstring(html_content)
-    parser = Inscriptis(html_tree, display_images=display_images, deduplicate_captions=deduplicate_captions)
+    parser = Inscriptis(html_tree, display_images=display_images, deduplicate_captions=deduplicate_captions, display_links=display_links)
     return parser.get_text()

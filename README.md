@@ -19,12 +19,12 @@ sudo python3 setup.py install
 
 ***Command line parameters***
 ```bash
-usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] input
+usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-l] [-d] input
 
 Converts HTML from file or url to a clean text version
 
 positional arguments:
-  input                 Html input either from a file, url or string input
+  input                 Html input either from a file or an url
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -32,7 +32,10 @@ optional arguments:
                         Output file (default:stdout).
   -e ENCODING, --encoding ENCODING
                         Content encoding for files (default:utf-8)
-  -i, --image-captions  Display image captions (default:false).
+  -i, --display-image-captions
+                        Display image captions (default:false).
+  -l, --display-link-targets
+                        Display link targets (default:false).
   -d, --deduplicate-image-captions
                         Deduplicate image captions (default:false).
 ```
@@ -40,13 +43,13 @@ optional arguments:
 ***Examples***
 ```
 # convert the given page to text and output the result to the screen
-inscriptis.py http://www.htwchur.ch
+inscript.py http://www.htwchur.ch
 
 # convert the file to text and save the output to output.txt
-inscriptis.py htwchur.html -o htwchur.txt
+inscript.py htwchur.html -o htwchur.txt
 
 # convert the string input to text and save the output to output.txt
-inscriptis.py -o htwchur.txt <body><p>Make it so!</p>></body>
+inscript.py -o htwchur.txt '<body><p>Make it so!</p>></body>'
 ```
 
 
@@ -99,5 +102,6 @@ https://en.wikipedia.org/wiki/Information_science
 ### Changelog
 
 * 0.0.3.0: 
-  * improved table rendering - same columns are aligned below each other
+  * improved table rendering - same columns are aligned below each other, support for nested tables
   * add: infrastructure for cell alignment (left, center, right)
+  * add: support for displaying link targets

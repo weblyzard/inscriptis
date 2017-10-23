@@ -4,9 +4,8 @@
 '''
 Handeling of CSS files.
 '''
-
-from inscriptis.html_properties import Display, WhiteSpace
 from re import compile as re_compile
+from inscriptis.html_properties import Display, WhiteSpace
 
 class HtmlElement(object):
 

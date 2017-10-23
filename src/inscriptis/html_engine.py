@@ -20,7 +20,7 @@ class Inscriptis(object):
     UL_COUNTER = ('* ', '+ ', 'o ', '- ') * 10
     DEFAULT_ELEMENT = HtmlElement()
 
-    def __init__(self, html_tree, display_images=True, deduplicate_captions=True):
+    def __init__(self, html_tree, display_images, deduplicate_captions, display_links):
         '''
         ::param: display_images \
             whether to include image tiles/alt texts
@@ -28,6 +28,8 @@ class Inscriptis(object):
             whether to deduplicate captions such as image titles
             (many newspaper include images and video previews with
              identifical titles).
+        ::param: display_links \
+            whether to display link targets (e.g. `[Python](https://www.python.org)`)
         '''
         # setup config
         self.cfg_deduplicate_captions = deduplicate_captions
@@ -42,6 +44,7 @@ class Inscriptis(object):
             'ol': self.start_ol,
             'li': self.start_li,
             'br': self.newline,
+            'a': self.start_a if display_links else None,
             'img' :self.start_img if display_images else None,
         }
         self.end_tag_handler_dict = {
@@ -50,6 +53,7 @@ class Inscriptis(object):
             'ol': self.end_ol,
             'td': self.end_td,
             'th': self.end_td,
+            'a': self.end_a if display_links else None,
         }
 
         # instance variables
@@ -68,6 +72,9 @@ class Inscriptis(object):
         self.li_level = 0
         self.invisible = [] # a list of attributes that are considered invisible
         self.last_caption = None
+
+        # used if display_links is enabled
+        self.link_target = ''
 
         # crawl the html tree
         self.crawl_tree(html_tree)
@@ -108,12 +115,12 @@ class Inscriptis(object):
             self.current_line[-1].margin_before = max(self.current_line[-1].margin_before, \
                                                   self.current_tag[-1].margin_before)
             return False
-        else:
-            line = self.current_line[-1].get_text()
-            self.clean_text_lines[-1].append(line)
-            self.current_line[-1] = self.next_line[-1]
-            self.next_line[-1] = Line()
-            return True
+
+        line = self.current_line[-1].get_text()
+        self.clean_text_lines[-1].append(line)
+        self.current_line[-1] = self.next_line[-1]
+        self.next_line[-1] = Line()
+        return True
 
     def write_line_verbatim(self, text):
         '''
@@ -190,6 +197,13 @@ class Inscriptis(object):
             self.current_line[-1].content += '[{}]'.format(image_text)
             self.last_caption = image_text
 
+    def start_a(self, attrs):
+        self.link_target = attrs.get('href', '')
+        self.current_line[-1].content += '['
+
+    def end_a(self):
+        self.current_line[-1].content += ']({})'.format(self.link_target)
+
     def start_ol(self, attrs):
         self.li_counter.append(1)
         self.li_level += 1
@@ -257,3 +271,4 @@ class Inscriptis(object):
 
     def newline(self, attrs):
         self.write_line(force=True)
+

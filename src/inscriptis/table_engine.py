@@ -2,11 +2,24 @@
 # encoding: utf-8
 
 class TableCell:
+    ''' A single table cell '''
 
-    def __init__(self, canvas, align):
+    __slots__ = ('canvas', 'align', 'width')
+
+    def __init__(self, canvas, align, width=None):
+        '''
+        ::param: canvas \
+            canvas to which the table cell is written
+        ::param: align \
+            the line's alignment using string.format's format specification
+                 * '<': left
+                 * '>': right
+                 * '^': center
+        ::param width: line width
+        '''
         self.canvas = canvas
         self.align = align
-        self.width = None
+        self.width = width
 
     def get_format_spec(self):
         '''
@@ -17,6 +30,7 @@ class TableCell:
     def get_text(self):
         text = '\n'.join(self.canvas)
         return self.get_format_spec().format(text) if self.width else text
+
 
 class Table(object):
     ''' A HTML table. '''

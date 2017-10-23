@@ -34,7 +34,8 @@ def get_args():
     parser.add_argument('input', help='Html input either from a file or an url')
     parser.add_argument('-o', '--output', type=str, help='Output file (default:stdout).')
     parser.add_argument('-e', '--encoding', type=str, help='Content encoding for files (default:utf-8)', default='utf-8')
-    parser.add_argument('-i', '--image-captions', action='store_true', default=False, help='Display image captions (default:false).')
+    parser.add_argument('-i', '--display-image-captions', action='store_true', default=False, help='Display image captions (default:false).')
+    parser.add_argument('-l', '--display-link-targets', action='store_true', default=False, help='Display link targets (default:false).')
     parser.add_argument('-d', '--deduplicate-image-captions', action='store_true', default=False, help='Deduplicate image captions (default:false).')
     args = parser.parse_args()
 
@@ -53,8 +54,9 @@ if __name__ == "__main__":
         html_content = str(args.input)
 
     text = get_text(html_content,
-                    display_images=args.image_captions,
-                    deduplicate_captions=args.deduplicate_image_captions)
+                    display_images=args.display_image_captions,
+                    deduplicate_captions=args.deduplicate_image_captions,
+                    display_links=args.display_link_targets)
     if args.output:
         with open(args.output, 'w') as open_file:
             open_file.write(text)

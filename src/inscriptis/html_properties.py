@@ -13,15 +13,6 @@ class WhiteSpace(object):
 class Line(object):
     '''
     Object used to represent a line
-
-    Format specification:
-    =====================
-    - align: the line's alignment using string.format's format specification
-             * '<': left
-             * '>': right
-             * '^': center
-    - width: line width
-
     '''
     __slots__ = ('margin_before', 'margin_after', 'prefix', 'suffix',
                  'content', 'list_bullet', 'padding', 'align', 'width')
@@ -38,12 +29,6 @@ class Line(object):
     def extract_pre_text(self):
         pass
 
-    def get_format_spec(self):
-        '''
-        The format specification according to the values of `align` and `width`
-        '''
-        return "{{:{align}{width}}}".format(align=self.align, width=self.width)
-
     def get_text(self):
         # print(">>" + self.content + "<< before: " + str(self.margin_before) + ", after: " + str(self.margin_after) + ", padding: ", self.padding, ", list: ", self.list_bullet)
         return ''.join(('\n' * self.margin_before,
@@ -56,4 +41,3 @@ class Line(object):
 
     def __str__(self):
         return "<Line: '{}'>".format(self.get_text().strip())
-
