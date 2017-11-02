@@ -24,7 +24,7 @@ usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-l] [-d] input
 Converts HTML from file or url to a clean text version
 
 positional arguments:
-  input                 Html input either from a file or an url
+  input                 Html input either from a file or an url (default:stdin)
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -48,8 +48,8 @@ inscript.py http://www.htwchur.ch
 # convert the file to text and save the output to output.txt
 inscript.py htwchur.html -o htwchur.txt
 
-# convert the string input to text and save the output to output.txt
-inscript.py -o htwchur.txt '<body><p>Make it so!</p>></body>'
+# convert the text provided via stdin and save the output to output.txt
+echo '<body><p>Make it so!</p>></body>' | inscript.py -o htwchur.txt 
 ```
 
 
@@ -60,7 +60,7 @@ import urllib.request
 from inscriptis import get_text
 
 url = "http://www.informationscience.ch"
-html = urllib.request.urlopen(url).read()
+html = urllib.request.urlopen(url).read().decode('utf-8')
 
 text = get_text(html)
 
