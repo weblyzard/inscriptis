@@ -20,7 +20,7 @@ class Inscriptis(object):
     UL_COUNTER = ('* ', '+ ', 'o ', '- ') * 10
     DEFAULT_ELEMENT = HtmlElement()
 
-    def __init__(self, html_tree, display_images, deduplicate_captions, display_links):
+    def __init__(self, html_tree, display_images=False, deduplicate_captions=False, display_links=False):
         '''
         ::param: display_images \
             whether to include image tiles/alt texts
