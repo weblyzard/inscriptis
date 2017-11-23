@@ -99,6 +99,29 @@ https://en.wikipedia.org/wiki/Information_science
 ...
 ```
 
+### Flask Web Service
+
+The Flask Web Service translates HTML pages to the corresponding plain text. 
+
+#### Requirements
+
+* python3-flask
+
+#### Startup
+
+```bash
+export FLASK_APP="web-service.py"
+python3 -m flask run
+```
+
+#### Usage
+The Web services receives the HTML file in the request body and returns the corresponding text. The file's encoding needs to be specified 
+in the `Content-Type` header (`UTF-8` in the example below).
+
+```bash
+curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://localhost:5000/get_text
+```
+
 ### Changelog
 
 * 0.0.3.0: 
