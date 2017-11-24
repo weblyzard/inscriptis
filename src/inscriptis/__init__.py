@@ -21,6 +21,10 @@ def get_text(html_content, display_images=False, deduplicate_captions=False, dis
     ::returns:
         a text representation of the html content.
     '''
+    html_content = html_content.strip()
+    if not html_content:
+        return ""
+
     # strip XML declaration, if necessary
     if html_content.startswith('<?xml '):
         html_content = RE_STRIP_XML_DECLARATION.sub('', html_content, count=1)
