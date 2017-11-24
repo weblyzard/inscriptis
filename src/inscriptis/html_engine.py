@@ -17,7 +17,9 @@ from inscriptis.table_engine import Table
 
 class Inscriptis(object):
 
-    UL_COUNTER = ('* ', '+ ', 'o ', '- ') * 10
+    UL_COUNTER = ('* ', '+ ', 'o ', '- ')
+    UL_COUNTER_LEN = len(UL_COUNTER)
+
     DEFAULT_ELEMENT = HtmlElement()
 
     def __init__(self, html_tree, display_images=False, deduplicate_captions=False, display_links=False):
@@ -185,7 +187,7 @@ class Inscriptis(object):
 
     def start_ul(self, attrs):
         self.li_level += 1
-        self.li_counter.append(Inscriptis.UL_COUNTER[self.li_level-1])
+        self.li_counter.append(Inscriptis.get_bullet(self.li_level-1))
 
     def end_ul(self):
         self.li_level -= 1
@@ -271,4 +273,13 @@ class Inscriptis(object):
 
     def newline(self, attrs):
         self.write_line(force=True)
+
+    @staticmethod
+    def get_bullet(index):
+        '''
+        ::return:
+           the bullet that corresponds to the given index
+        '''
+        return Inscriptis.UL_COUNTER[index % Inscriptis.UL_COUNTER_LEN]
+
 
