@@ -53,7 +53,7 @@ class CssParse(object):
     `HtmlElement.display=Display.none`.
     '''
     # used to separate value and unit from each other
-    RE_UNIT = re_compile(r'(\d+)(\w+)')
+    RE_UNIT = re_compile(r'([0-9\.]+)(\w+)')
 
     @staticmethod
     def get_style_attribute(style_attribute, html_element):
@@ -95,12 +95,13 @@ class CssParse(object):
             the length in em's.
         '''
         m = CssParse.RE_UNIT.search(length)
-        value = int(m.group(1))
+        value = float(m.group(1))
         unit = m.group(2)
 
         if unit not in ('em', 'qem', 'rem'):
-            value = int(round(value/8))
-        return value
+            return int(round(value/8))
+        else:
+            return int(round(value))
 
     # ------------------------------------------------------------------------
     # css styles
