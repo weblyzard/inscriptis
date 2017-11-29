@@ -1,3 +1,3 @@
-column with nested table   column 2 column 3
-nested table 1      2      Tom      Joe     
-last                       line    
+column with nested table column 2 column 3
+nested table 1      2    Tom      Joe     
+last                     line    

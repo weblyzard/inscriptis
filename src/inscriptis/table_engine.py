@@ -28,7 +28,7 @@ class TableCell:
         return "{{:{align}{width}}}".format(align=self.align, width=self.width)
 
     def get_text(self):
-        text = '\n'.join(self.canvas)
+        text = '\n'.join(self.canvas).strip()
         return self.get_format_spec().format(text) if self.width else text
 
 
