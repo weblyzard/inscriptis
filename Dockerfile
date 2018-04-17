@@ -13,15 +13,13 @@ RUN apt-get update --quiet &&\
 
 RUN mkdir /inscriptis
 
-COPY ./benchmarking /inscriptis/benchmarking
-COPY ./scripts /inscriptis/scripts
-COPY ./src /inscriptis/src
-COPY ./tests /inscriptis/tests
-COPY ./setup.py /inscriptis/setup.py
+COPY ./ /inscriptis/
 
 WORKDIR /inscriptis
 RUN pip3 install --upgrade pip &&\
     pip3 install Flask &&\
     python3 setup.py install
 
-CMD ["python3", "/inscriptis/scripts/web-service.py"]
+# RUN export FLASK_APP="web-service.py"
+# CMD ["python3", "-m", "flask", "run"]
+CMD ["python3", "scripts/web-service.py"]

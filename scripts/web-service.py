@@ -9,6 +9,12 @@ from inscriptis import get_text
 
 app = Flask(__name__)
 
+
+@app.route("/")
+def index():
+    return "Hello"
+
+
 @app.route("/get_text", methods=['POST'])
 def get_text_call():
     content_type = request.headers['Content-type']
@@ -22,3 +28,7 @@ def get_text_call():
                     deduplicate_captions=True,
                     display_links=False)
     return Response(text, mimetype='text/plain')
+
+
+if __name__ == '__main__':
+    app.run(threaded=True, host='0.0.0.0', port=5000)
