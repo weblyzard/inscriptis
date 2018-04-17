@@ -4,8 +4,7 @@
 from setuptools import setup, find_packages
 
 setup(
-      ###########################################
-      ## Metadata
+      # Metadata
       name="inscriptis",
       version="0.0.3.2",
       description='inscriptis - HTML to text converter.',
@@ -15,14 +14,17 @@ setup(
       license="GPL2",
       package_dir={'': 'src'},
 
-      ###########################################
-      ## Package List
+      # Package List
       packages=find_packages('src'),
 
-      ###########################################
-      ## scripts
-      scripts = [
+      # Scripts
+      scripts=[
         'scripts/inscript.py'
+      ],
+
+      # Requirements
+      install_requires=[
+        'lxml'
       ]
 
 )
