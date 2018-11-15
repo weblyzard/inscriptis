@@ -124,7 +124,4 @@ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://
 
 ### Changelog
 
-* 0.0.3.0: 
-  * improved table rendering - same columns are aligned below each other, support for nested tables
-  * add: infrastructure for cell alignment (left, center, right)
-  * add: support for displaying link targets
+see [Release notes](releases).
