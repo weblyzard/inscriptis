@@ -14,6 +14,12 @@ from inscriptis.css import CSS, CssParse, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Line
 from inscriptis.table_engine import Table
 
+try:
+    # python 2 compatibility
+    from HTMLParser import HTMLParser
+except ImportError:
+    from html import unescape
+
 
 class Inscriptis(object):
 
@@ -102,7 +108,7 @@ class Inscriptis(object):
         ::returns:
            a text representation of the parsed content
         '''
-        return '\n'.join(chain(*self.clean_text_lines))
+        return unescape('\n'.join(chain(*self.clean_text_lines)))
 
     def write_line(self, force=False):
         '''
