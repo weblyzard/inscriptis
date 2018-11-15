@@ -124,4 +124,4 @@ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://
 
 ### Changelog
 
-see [Release notes](releases).
+see [Release notes](https://github.com/weblyzard/inscriptis/releases).
