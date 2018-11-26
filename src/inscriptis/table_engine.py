@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+
 class TableCell:
     ''' A single table cell '''
 
@@ -25,7 +26,7 @@ class TableCell:
         '''
         The format specification according to the values of `align` and `width`
         '''
-        return "{{:{align}{width}}}".format(align=self.align, width=self.width)
+        return u"{{:{align}{width}}}".format(align=self.align, width=self.width)
 
     def get_text(self):
         text = '\n'.join(self.canvas).strip()
@@ -63,7 +64,8 @@ class Table(object):
 
         for column_idx in range(max_columns):
             # determine max_column_width
-            max_column_width = max([len(row.get_cell_text(column_idx)) for row in self.rows])
+            max_column_width = max(
+                [len(row.get_cell_text(column_idx)) for row in self.rows])
 
             # set column width in all rows
             for row in self.rows:
@@ -92,7 +94,6 @@ class Row(object):
             the text at the column_idx or an empty Line if the column does not exist
         '''
         return '' if column_idx >= len(self.columns) else self.columns[column_idx].get_text()
-
 
     def get_text(self):
         '''
