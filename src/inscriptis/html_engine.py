@@ -17,6 +17,7 @@ from inscriptis.table_engine import Table
 try:
     # python 2 compatibility
     from HTMLParser import HTMLParser
+    unescape = HTMLParser().unescape
 except ImportError:
     from html import unescape
 
@@ -53,7 +54,7 @@ class Inscriptis(object):
             'li': self.start_li,
             'br': self.newline,
             'a': self.start_a if display_links else None,
-            'img' :self.start_img if display_images else None,
+            'img': self.start_img if display_images else None,
         }
         self.end_tag_handler_dict = {
             'table': self.end_table,
@@ -78,7 +79,7 @@ class Inscriptis(object):
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
-        self.invisible = [] # a list of attributes that are considered invisible
+        self.invisible = []  # a list of attributes that are considered invisible
         self.last_caption = None
 
         # used if display_links is enabled
@@ -120,8 +121,8 @@ class Inscriptis(object):
         '''
         # only break the line if there is any relevant content
         if not force and (not self.current_line[-1].content or self.current_line[-1].content.isspace()):
-            self.current_line[-1].margin_before = max(self.current_line[-1].margin_before, \
-                                                  self.current_tag[-1].margin_before)
+            self.current_line[-1].margin_before = max(self.current_line[-1].margin_before,
+                                                      self.current_tag[-1].margin_before)
             return False
 
         line = self.current_line[-1].get_text()
@@ -141,7 +142,8 @@ class Inscriptis(object):
 
         cur = CSS.get(tag, Inscriptis.DEFAULT_ELEMENT)
         if 'style' in attrs:
-            cur = CssParse.get_style_attribute(attrs['style'], html_element=cur)
+            cur = CssParse.get_style_attribute(
+                attrs['style'], html_element=cur)
         self.current_tag.append(cur)
         if cur.display == Display.none or self.invisible:
             self.invisible.append(cur)
@@ -151,10 +153,12 @@ class Inscriptis(object):
         # flush text before display:block elements
         if cur.display == Display.block:
             if not self.write_line():
-                self.current_line[-1].margin_before = max(self.current_line[-1].margin_before, cur.margin_before)
+                self.current_line[-1].margin_before = max(
+                    self.current_line[-1].margin_before, cur.margin_before)
                 self.current_line[-1].padding = self.next_line[-1].padding
             else:
-                self.current_line[-1].margin_after = max(self.current_line[-1].margin_after, cur.margin_after)
+                self.current_line[-1].margin_after = max(
+                    self.current_line[-1].margin_after, cur.margin_after)
 
         handler = self.start_tag_handler_dict.get(tag, None)
         if handler:
@@ -167,7 +171,8 @@ class Inscriptis(object):
             return
 
         self.next_line[-1].padding = self.current_line[-1].padding - cur.padding
-        self.current_line[-1].margin_after = max(self.current_line[-1].margin_after, cur.margin_after)
+        self.current_line[-1].margin_after = max(
+            self.current_line[-1].margin_after, cur.margin_after)
         # flush text after display:block elements
         if cur.display == Display.block:
             # propagate the new padding to the current line, if nothing has
@@ -193,7 +198,7 @@ class Inscriptis(object):
 
     def start_ul(self, attrs):
         self.li_level += 1
-        self.li_counter.append(Inscriptis.get_bullet(self.li_level-1))
+        self.li_counter.append(Inscriptis.get_bullet(self.li_level - 1))
 
     def end_ul(self):
         self.li_level -= 1
@@ -219,7 +224,6 @@ class Inscriptis(object):
     def end_ol(self):
         self.li_level -= 1
         self.li_counter.pop()
-
 
     def start_li(self, attrs):
         self.write_line()
@@ -287,5 +291,3 @@ class Inscriptis(object):
            the bullet that corresponds to the given index
         '''
         return Inscriptis.UL_COUNTER[index % Inscriptis.UL_COUNTER_LEN]
-
-
