@@ -51,7 +51,11 @@ if __name__ == "__main__":
         with open(args.input, encoding=args.encoding, errors='ignore') as f:
             html_content = f.read()
     elif args.input.startswith("http://") or args.input.startswith("https://"):
-        html_content = urlopen(args.input).read().decode(args.encoding)
+        http_client = urlopen(args.input)
+        if ('Content-Type' in http_client.headers and
+            'charset=' in http_client.headers['Content-Type']):
+            args.encoding = http_client.headers['Content-Type'].split('charset=')[1]
+        html_content = http_client.read().decode(args.encoding)
     else:
         print("ERROR: Cannot open input file '{}'.\n".format(args.input))
         parser.print_help()
