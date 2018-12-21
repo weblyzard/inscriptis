@@ -11,3 +11,4 @@ benchmarking/
 .project
 .pydevproject
 .settings/
+.pytest_cache/
