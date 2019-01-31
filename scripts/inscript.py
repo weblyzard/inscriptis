@@ -17,11 +17,7 @@ __maintainer__ = "Fabian Odoni"
 __email__ = "fabian.odoni@htwchur.ch"
 __status__ = "Prototype"
 
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib import urlopen
-    from io import open
+import requests
 import argparse
 import sys
 from os.path import isfile
@@ -51,11 +47,7 @@ if __name__ == "__main__":
         with open(args.input, encoding=args.encoding, errors='ignore') as f:
             html_content = f.read()
     elif args.input.startswith("http://") or args.input.startswith("https://"):
-        http_client = urlopen(args.input)
-        if ('Content-Type' in http_client.headers and
-            'charset=' in http_client.headers['Content-Type']):
-            args.encoding = http_client.headers['Content-Type'].split('charset=')[1]
-        html_content = http_client.read().decode(args.encoding)
+        html_content = requests.get(args.input).text
     else:
         print("ERROR: Cannot open input file '{}'.\n".format(args.input))
         parser.print_help()

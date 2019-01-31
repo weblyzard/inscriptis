@@ -37,7 +37,8 @@ setup(
 
     # Requirements
     install_requires=[
-        'lxml'
+        'lxml',
+        'requests'
     ]
 
 )
