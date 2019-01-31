@@ -13,7 +13,7 @@ with open(path.join(here, 'README.md')) as f:  # , encoding='utf-8'
 setup(
     # Metadata
     name="inscriptis",
-    version="0.0.3.7",
+    version="0.0.3.8",
     description='inscriptis - HTML to text converter.',
     long_description=long_description,
     long_description_content_type='text/markdown',

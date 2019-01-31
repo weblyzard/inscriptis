@@ -2,23 +2,26 @@
 
 A python based HTML to text converter with minimal support for CSS.
 
-### Requirements
+## Requirements
 * Python 3.4+ (preferred) or Python 2.7+
 * lxml
+* requests
 
-### Usage
+## Usage
 
-#### Command line
+### Command line
 The command line client converts text files or text retrieved from Web pages to the
 corresponding text representation.
 
-***Installation***
-```bash
-sudo python3 setup.py install
-```
+#### Installation
 
-***Command line parameters***
-```bash
+``` {.sourceCode .bash}
+sudo python3 setup.py install
+``` 
+
+#### Command line parameters
+
+``` {.sourceCode .bash}
 usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-l] [-d] input
 
 Converts HTML from file or url to a clean text version
@@ -40,7 +43,8 @@ optional arguments:
                         Deduplicate image captions (default:false).
 ```
 
-***Examples***
+#### Examples
+
 ```
 # convert the given page to text and output the result to the screen
 inscript.py http://www.htwchur.ch
@@ -53,7 +57,7 @@ echo '<body><p>Make it so!</p>></body>' | inscript.py -o htwchur.txt
 ```
 
 
-#### Library
+### Library
 
 ```python
 import urllib.request
@@ -67,7 +71,7 @@ text = get_text(html)
 print(text)
 ```
 
-### Unit tests
+## Unit tests
 
 Test cases concerning the html to text conversion are located in the `tests/html` directory and consist of two files:
 
@@ -76,7 +80,7 @@ Test cases concerning the html to text conversion are located in the `tests/html
 
 the latter one containing the reference text output for the given html file.
 
-### Text convertion output comparison and speed benchmarking
+## Text convertion output comparison and speed benchmarking
 inscriptis offers a small benchmarking script that can compare different HTML to txt convertion approaches.
 The script will run the different approaches on a list of URLs, ```url_list.txt```, and save the text output into a time stamped folder in ```benchmarking/benchmarking_results``` for manual comparison.
 Additionally the processing speed of every approach per URL is measured and saved in a text file called ```speed_comparisons.txt``` in the respective time stamped folder.
@@ -99,29 +103,29 @@ https://en.wikipedia.org/wiki/Information_science
 ...
 ```
 
-### Flask Web Service
+## Flask Web Service
 
 The Flask Web Service translates HTML pages to the corresponding plain text. 
 
-#### Requirements
+### Requirements
 
 * python3-flask
 
-#### Startup
+### Startup
 
-```bash
+``` {.sourceCode .bash}
 export FLASK_APP="web-service.py"
 python3 -m flask run
 ```
 
-#### Usage
+### Usage
 The Web services receives the HTML file in the request body and returns the corresponding text. The file's encoding needs to be specified 
 in the `Content-Type` header (`UTF-8` in the example below).
 
-```bash
+``` {.sourceCode .bash}
 curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://localhost:5000/get_text
 ```
 
-### Changelog
+## Changelog
 
 see [Release notes](https://github.com/weblyzard/inscriptis/releases).
