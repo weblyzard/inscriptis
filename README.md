@@ -1,6 +1,8 @@
 # inscriptis
 
-A python based HTML to text converter with minimal support for CSS.
+A python based HTML to text converter with support for nested tables and a subset of CSS.
+
+Please take a look at the [Rendering](RENDERING) document for a demonstration of inscriptis' conversion quality.
 
 ## Requirements
 * Python 3.4+ (preferred) or Python 2.7+
