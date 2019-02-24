@@ -5,8 +5,13 @@ The following page compares the HTML rendering obtained by
    	2. Inscriptis and
  	3. Lynx 2.8.9dev.19
  to each other.
+ 
+### Use cases
 
-### Wikipedia Table
+1. [Wikipedia table](#Wikipedia-table)
+2. [Nested tables](#Nested-tables)
+
+### Wikipedia table
 A table taken from the English Wikipedia page for [Chur](https://en.wikipedia.org/wiki/Chur).
 
 * Firefox (screenshot)
@@ -80,6 +85,10 @@ Climate[[166]edit]
 
 ### Nested tables
 A table that contains three other tables per row.
+
+* Firefox (screenshot)
+![ ](/home/albert/workspace.python/inscriptis/img/nested-table-firefox.png  "Nested table rendered by Firefox")
+
 
 * inscriptis
 
