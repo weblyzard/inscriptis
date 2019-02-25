@@ -109,7 +109,7 @@ class Inscriptis(object):
         ::returns:
            a text representation of the parsed content
         '''
-        return unescape('\n'.join(chain(*self.clean_text_lines))).strip()
+        return unescape('\n'.join(chain(*self.clean_text_lines))).rstrip()
 
     def write_line(self, force=False):
         '''

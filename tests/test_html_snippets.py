@@ -22,12 +22,13 @@ def test_html_snippets(filter_str=''):
             continue
 
         with open(testcase_txt) as f:
-            reference_txt = f.read().strip()
+            reference_txt = f.read().rstrip()
 
         with open(testcase_txt.replace(".txt", ".html")) as f:
+            print(f.name)
             html = u"<html><body>{}</body></html>".format(f.read())
 
-        converted_txt = get_text(html).strip()
+        converted_txt = get_text(html).rstrip()
 
         if converted_txt != reference_txt:
             print (u"File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(testcase_txt, html, reference_txt, converted_txt))

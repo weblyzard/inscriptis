@@ -1,3 +1,3 @@
-
-First a special line Second Third
-a                    b      c   
+First           Second  Third
+a special line               
+a               b       c

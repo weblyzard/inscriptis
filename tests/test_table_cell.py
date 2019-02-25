@@ -15,10 +15,10 @@ def test_cell_formatting():
     canvas.append('Ehre sei Gott!')
 
     # left alignment
-    assert cell.get_text() == 'Ehre sei Gott!  '
+    assert cell.get_cell_lines() == ['Ehre sei Gott!  ']
 
     # right alignment
     cell.align = '>'
-    assert cell.get_text() == '  Ehre sei Gott!'
+    assert cell.get_cell_lines() == ['  Ehre sei Gott!']
 
 
