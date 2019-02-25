@@ -15,7 +15,7 @@ The following page compares the HTML rendering obtained by
 A table taken from the English Wikipedia page for [Chur](https://en.wikipedia.org/wiki/Chur).
 
 * Firefox (screenshot)
-![ ](/home/albert/workspace.python/inscriptis/img/wikipedia-chur-firefox.png  "Wikipedia table rendered by Firefox")
+![ ](https://github.com/weblyzard/inscriptis/raw/master/img/wikipedia-chur-firefox.png  "Wikipedia table rendered by Firefox")
 
 * inscriptis
 ```
@@ -87,7 +87,7 @@ Climate[[166]edit]
 A table that contains three other tables per row.
 
 * Firefox (screenshot)
-![ ](/home/albert/workspace.python/inscriptis/img/nested-table-firefox.png  "Nested table rendered by Firefox")
+![ ](https://github.com/weblyzard/inscriptis/raw/master/img/nested-table-firefox.png  "Nested table rendered by Firefox")
 
 
 * inscriptis
