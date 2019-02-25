@@ -83,6 +83,8 @@ Climate[[166]edit]
 ... 
 ``` 
 
+--- 
+
 ### Nested tables
 A table that contains three other tables per row.
 
