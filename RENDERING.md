@@ -1,10 +1,12 @@
 ## HTML rendering
 
 The following page compares the HTML rendering obtained by 
-   	1. Mozilla Firefox 65
-   	2. Inscriptis and
- 	3. Lynx 2.8.9dev.19
+   1. Mozilla Firefox 65
+   2. inscriptis and
+   3. Lynx 2.8.9dev.19
  to each other.
+ 
+Since inscriptis is often used for natural language processing, we do not insert any line breaks, unless they are explicitley requested in the HTML code (e.g. using `<p>`, `<br>`, etc.). 
  
 ### Use cases
 
@@ -15,7 +17,7 @@ The following page compares the HTML rendering obtained by
 A table taken from the English Wikipedia page for [Chur](https://en.wikipedia.org/wiki/Chur).
 
 * Firefox (screenshot)
-![ ](https://github.com/weblyzard/inscriptis/raw/master/img/wikipedia-chur-firefox.png  "Wikipedia table rendered by Firefox")
+<img src="https://github.com/weblyzard/inscriptis/raw/master/img/wikipedia-chur-firefox.png" align="left" alt="Wikipedia table rendered by Firefox" />
 
 * inscriptis
 ```
@@ -89,7 +91,7 @@ Climate[[166]edit]
 A table that contains three other tables per row.
 
 * Firefox (screenshot)
-![ ](https://github.com/weblyzard/inscriptis/raw/master/img/nested-table-firefox.png  "Nested table rendered by Firefox")
+<img src="https://github.com/weblyzard/inscriptis/raw/master/img/nested-table-firefox.png" alt="Nested table rendered by Firefox" />
 
 
 * inscriptis
