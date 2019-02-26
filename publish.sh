@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO
+# - check release version number!
+
 # publish the latest package to pypi
 # sources:
 # - https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
