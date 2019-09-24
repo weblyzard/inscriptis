@@ -192,6 +192,9 @@ class Inscriptis(object):
         if self.current_tag[-1].whitespace == WhiteSpace.pre:
             data = '\0' + data + '\0'
 
+        # add prefix, if present
+        data = self.current_tag[-1].prefix + data + self.current_tag[-1].suffix
+
         # determine whether to add this content to a table column
         # or to a standard line
         self.current_line[-1].content += data
