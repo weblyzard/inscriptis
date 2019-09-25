@@ -113,24 +113,29 @@ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://
 
 The following options are available for fine tuning the way inscriptis translates HTML to text.
 
-1. **More rigorous indentation:** call `get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in `inscript.py` and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
+1. **More rigorous indentation:** call `inscriptis.get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in `inscript.py` and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
 
 2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can override these definitions (and therefore change the rendering) as outlined below:
 
    ```python
-   from inscriptis.css import CSS, HtmlElement
+   from lxml.html import fromstring
+
+   from inscriptis.css import DEFAULT_CSS, HtmlElement
    from inscriptis.html_properties import Display
 
-   # change the rendering of `div` and `span` elements
-   CSS['div'] = HtmlElement('div', display=Display.block, padding=2)
-   CSS['span'] = HtmlElement('span', prefix=' ', suffix=' ')
-   ```
-   The following code snippet restores the standard behaviour:
-   ```python
-   from inscriptis.css import CSS, DEFAULT_CSS
+   # create a custom CSS based on the default style sheet and change the rendering of `div` and `span` elements
+   css = DEFAULT_CSS.copy()
+   css['div'] = HtmlElement('div', display=Display.block, padding=2)
+   css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
 
-   # restore standard behaviour
-   CSS = DEFAULT_CSS.copy()
+   html_tree = fromstring(html)
+   # create a parser using the custom css
+   parser = Inscriptis(html_tree,
+                       display_images=display_images,
+                       deduplicate_captions=deduplicate_captions,
+                       display_links=display_links,
+                       css=css)
+   text = parser.get_text()
    ```
 
 ## Testing, benchmarking and evaluation

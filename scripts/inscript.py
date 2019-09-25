@@ -34,6 +34,7 @@ def get_parser():
     parser.add_argument('-i', '--display-image-captions', action='store_true', default=False, help='Display image captions (default:false).')
     parser.add_argument('-l', '--display-link-targets', action='store_true', default=False, help='Display link targets (default:false).')
     parser.add_argument('-d', '--deduplicate-image-captions', action='store_true', default=False, help='Deduplicate image captions (default:false).')
+    parser.add_argument('--indentation', default='standard', help='How to handle indentation (extended or standard; default: standard).')
     return parser
 
 
@@ -56,7 +57,8 @@ if __name__ == "__main__":
     text = get_text(html_content,
                     display_images=args.display_image_captions,
                     deduplicate_captions=args.deduplicate_image_captions,
-                    display_links=args.display_link_targets)
+                    display_links=args.display_link_targets,
+                    indentation=args.indentation)
     if args.output:
         with open(args.output, 'w') as open_file:
             open_file.write(text)

@@ -10,7 +10,7 @@ Guiding principles:
 '''
 from itertools import chain
 
-from inscriptis.css import CSS, CssParse, HtmlElement
+from inscriptis.css import DEFAULT_CSS, CssParse, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Line
 from inscriptis.table_engine import Table
 
@@ -29,7 +29,7 @@ class Inscriptis(object):
 
     DEFAULT_ELEMENT = HtmlElement()
 
-    def __init__(self, html_tree, display_images=False, deduplicate_captions=False, display_links=False):
+    def __init__(self, html_tree, display_images=False, deduplicate_captions=False, display_links=False, css=None):
         '''
         ::param: display_images \
             whether to include image tiles/alt texts
@@ -42,6 +42,7 @@ class Inscriptis(object):
         '''
         # setup config
         self.cfg_deduplicate_captions = deduplicate_captions
+        self.css = css if css else DEFAULT_CSS
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {
@@ -140,7 +141,7 @@ class Inscriptis(object):
     def handle_starttag(self, tag, attrs):
         # use the css to handle tags known to it :)
 
-        cur = CSS.get(tag, Inscriptis.DEFAULT_ELEMENT)
+        cur = self.css.get(tag, Inscriptis.DEFAULT_ELEMENT)
         if 'style' in attrs:
             cur = CssParse.get_style_attribute(
                 attrs['style'], html_element=cur)
@@ -191,6 +192,9 @@ class Inscriptis(object):
         # protect pre areas
         if self.current_tag[-1].whitespace == WhiteSpace.pre:
             data = '\0' + data + '\0'
+
+        # add prefix, if present
+        data = self.current_tag[-1].prefix + data + self.current_tag[-1].suffix
 
         # determine whether to add this content to a table column
         # or to a standard line

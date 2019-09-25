@@ -38,15 +38,14 @@ class HtmlElement(object):
         return "<{tag} prefix={prefix}, suffix={suffix}, display={display}, " \
                "margin_before={margin_before}, margin_after={margin_after}, " \
                "padding={padding}, whitespace={whitespace}>".format(
-                  tag=self.tag,
-                  prefix=self.prefix,
-                  suffix=self.suffix,
-                  display=self.display,
-                  margin_before=self.margin_before,
-                  margin_after=self.margin_after,
-                  padding=self.padding,
-                  whitespace=self.whitespace)
-
+                   tag=self.tag,
+                   prefix=self.prefix,
+                   suffix=self.suffix,
+                   display=self.display,
+                   margin_before=self.margin_before,
+                   margin_after=self.margin_after,
+                   padding=self.padding,
+                   whitespace=self.whitespace)
 
 class CssParse(object):
     '''
@@ -103,8 +102,7 @@ class CssParse(object):
 
         if unit not in ('em', 'qem', 'rem'):
             return int(round(value/8))
-        else:
-            return int(round(value))
+        return int(round(value))
 
     # ------------------------------------------------------------------------
     # css styles
@@ -140,7 +138,7 @@ class CssParse(object):
     _attr_padding_start = _attr_padding_left
 
 
-CSS = {
+DEFAULT_CSS = {
     'head': HtmlElement('head', display=Display.none),
     'link': HtmlElement('link', display=Display.none),
     'meta': HtmlElement('meta', display=Display.none),
