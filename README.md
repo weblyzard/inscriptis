@@ -1,10 +1,12 @@
 # inscriptis
 
+[![Build Status](https://www.travis-ci.org/weblyzard/inscriptis.png?branch=master)](https://www.travis-ci.org/weblyzard/inscriptis)
+
 A python based HTML to text converter with support for nested tables and a subset of CSS.
 Please take a look at the [Rendering](https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md) document for a demonstration of inscriptis' conversion quality.
 
 ## Requirements
-* Python 3.4+ (preferred) or Python 2.7+
+* Python 3.5+ (preferred) or Python 2.7+
 * lxml
 * requests
 
