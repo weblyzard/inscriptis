@@ -6,12 +6,12 @@ A python based HTML to text conversion library, command line client and Web serv
 Please take a look at the [Rendering](https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md) document for a demonstration of inscriptis' conversion quality.
 
 ##### Table of Contents
-[Requirements and installation](#install)
-[Command line client](#client)
-[Python library](#library)
-[Web service](#web-service)
-[Testing, benchmarking and evaluation](#testing)
-[Changelog](#changelog)
+1. [Requirements and installation](#install)
+2. [Command line client](#client)
+3. [Python library](#library)
+4. [Web service](#web-service)
+5. [Testing, benchmarking and evaluation](#testing)
+6. [Changelog](#changelog)
 
 <a name="install" />
 ## Requirements and installation
