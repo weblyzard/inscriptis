@@ -67,7 +67,9 @@ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt
 ```
 
 
-### Python library
+## Python library
+
+Embedding inscriptis into your code is easy, as outlined below:
 
 ```python
 import urllib.request
