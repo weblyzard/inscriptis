@@ -52,6 +52,8 @@ optional arguments:
                         Display link targets (default:false).
   -d, --deduplicate-image-captions
                         Deduplicate image captions (default:false).
+  --indentation
+                        How to handle indentation (extended or standard; default: extended)
 ```
 
 ### Examples
@@ -109,9 +111,11 @@ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://
 
 ## Fine tuning
 
-1. more rigorous indentation: call `get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in inscriptis and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
+The following options are available for fine tuning the way inscriptis translates HTML to text.
 
-2. Overwrite the default CSS definition: inscriptis uses CSS definitions that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can override these definitions (and therefore change the rendering) as outlined below:
+1. **More rigorous indentation:** call `get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in `inscript.py` and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
+
+2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can override these definitions (and therefore change the rendering) as outlined below:
 
    ```python
    from inscriptis.css import CSS, HtmlElement
@@ -141,7 +145,7 @@ Test cases concerning the html to text conversion are located in the `tests/html
 the latter one containing the reference text output for the given html file.
 
 ### Text conversion output comparison and speed benchmarking
-inscriptis offers a small benchmarking script that can compare different HTML to txt convertion approaches.
+inscriptis offers a small benchmarking script that can compare different HTML to text conversion approaches.
 The script will run the different approaches on a list of URLs, `url_list.txt`, and save the text output into a time stamped folder in `benchmarking/benchmarking_results` for manual comparison.
 Additionally the processing speed of every approach per URL is measured and saved in a text file called `speed_comparisons.txt` in the respective time stamped folder.
 
