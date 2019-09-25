@@ -6,14 +6,13 @@ A python based HTML to text conversion library, command line client and Web serv
 Please take a look at the [Rendering](https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md) document for a demonstration of inscriptis' conversion quality.
 
 ##### Table of Contents
-1. [Requirements and installation](#install)
-2. [Command line client](#client)
-3. [Python library](#library)
-4. [Web service](#web-service)
-5. [Testing, benchmarking and evaluation](#testing)
+1. [Requirements and installation](#requirements-and-installation)
+2. [Command line client](#command-line-client)
+3. [Python library](#python-library)
+4. [Web service](#flask-web-service)
+5. [Testing, benchmarking and evaluation](#testingi-benchmarking-and-evaluation)
 6. [Changelog](#changelog)
 
-<a name="install" />
 ## Requirements and installation
 
 ### Requirements
@@ -25,8 +24,7 @@ Please take a look at the [Rendering](https://github.com/weblyzard/inscriptis/bl
 ``` {.sourceCode .bash}
 sudo python3 setup.py install
 ``` 
-<a name="client" />
-## Command line
+## Command line client
 The command line client converts text files or text retrieved from Web pages to the
 corresponding text representation.
 
@@ -69,7 +67,6 @@ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt
 ```
 
 
-<a name="library" />
 ### Python library
 
 ```python
@@ -84,7 +81,6 @@ text = get_text(html)
 print(text)
 ```
 
-<a name="web-service#" />
 ## Flask Web Service
 
 The Flask Web Service translates HTML pages to the corresponding plain text. 
@@ -108,7 +104,6 @@ in the `Content-Type` header (`UTF-8` in the example below).
 curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://localhost:5000/get_text
 ```
 
-<a name="testing" />
 ## Testing, benchmarking and evaluation
 
 ### Unit tests
@@ -143,7 +138,6 @@ https://en.wikipedia.org/wiki/Information_science
 ...
 ```
 
-<a name="changelog" />
 ## Changelog
 
 see [Release notes](https://github.com/weblyzard/inscriptis/releases).
