@@ -10,8 +10,9 @@ Please take a look at the [Rendering](https://github.com/weblyzard/inscriptis/bl
 2. [Command line client](#command-line-client)
 3. [Python library](#python-library)
 4. [Web service](#flask-web-service)
-5. [Testing, benchmarking and evaluation](#testingi-benchmarking-and-evaluation)
-6. [Changelog](#changelog)
+5. [Fine tuning](#fine-tuning)
+6. [Testing, benchmarking and evaluation](#testing-benchmarking-and-evaluation)
+7. [Changelog](#changelog)
 
 ## Requirements and installation
 
@@ -105,6 +106,28 @@ in the `Content-Type` header (`UTF-8` in the example below).
 ``` {.sourceCode .bash}
 curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://localhost:5000/get_text
 ```
+
+## Fine tuning
+
+1. more rigorous indentation: call `get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in inscriptis and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
+
+2. Overwrite the default CSS definition: inscriptis uses CSS definitions that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can override these definitions (and therefore change the rendering) as outlined below:
+
+   ```python
+   from inscriptis.css import CSS, HtmlElement
+   from inscriptis.html_properties import Display
+
+   # change the rendering of `div` and `span` elements
+   CSS['div'] = HtmlElement('div', display=Display.block, padding=2)
+   CSS['span'] = HtmlElement('span', prefix=' ', suffix=' ')
+   ```
+   The following code snippet restores the standard behaviour:
+   ```python
+   from inscriptis.css import CSS, DEFAULT_CSS
+
+   # restore standard behaviour
+   CSS = DEFAULT_CSS.copy()
+   ```
 
 ## Testing, benchmarking and evaluation
 
