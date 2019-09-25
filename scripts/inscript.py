@@ -34,7 +34,7 @@ def get_parser():
     parser.add_argument('-i', '--display-image-captions', action='store_true', default=False, help='Display image captions (default:false).')
     parser.add_argument('-l', '--display-link-targets', action='store_true', default=False, help='Display link targets (default:false).')
     parser.add_argument('-d', '--deduplicate-image-captions', action='store_true', default=False, help='Deduplicate image captions (default:false).')
-    parser.add_argument('--indentation', default='standard', help='How to handle indentation (extended or standard; default: standard).')
+    parser.add_argument('--indentation', default='extended', help='How to handle indentation (extended or standard; default: standard).')
     return parser
 
 
