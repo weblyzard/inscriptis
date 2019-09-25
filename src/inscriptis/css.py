@@ -47,7 +47,6 @@ class HtmlElement(object):
                    padding=self.padding,
                    whitespace=self.whitespace)
 
-
 class CssParse(object):
     '''
     Translates css directives into the corresponding HtmlElements.
@@ -179,5 +178,3 @@ DEFAULT_CSS = {
     'q': HtmlElement('q', prefix='"', suffix='"'),
     'span': HtmlElement('span', ),
 }
-
-CSS = DEFAULT_CSS

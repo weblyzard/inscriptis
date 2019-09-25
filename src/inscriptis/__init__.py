@@ -2,7 +2,7 @@
 import re
 from lxml.html import fromstring
 
-from inscriptis.css import CSS, DEFAULT_CSS, HtmlElement
+from inscriptis.css import DEFAULT_CSS, HtmlElement
 from inscriptis.html_engine import Inscriptis
 from inscriptis.html_properties import Display
 
@@ -17,7 +17,7 @@ __status__ = "Prototype"
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
 def get_text(html_content, display_images=False, deduplicate_captions=False,
-             display_links=False, indentation='standard'):
+             display_links=False, indentation='extended'):
     '''
     :param html_content: the html string to be converted to text
     :param display_images: whether to display image caption
@@ -28,12 +28,13 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
     if not html_content:
         return ''
 
-    global CSS
     if indentation == 'extended':
-        CSS['div'] = HtmlElement('div', display=Display.block, padding=2)
-        CSS['span'] = HtmlElement('span', prefix=' ', suffix=' ')
+        css = DEFAULT_CSS.copy()
+        css['div'] = HtmlElement('div', display=Display.block, padding=2)
+        css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
     else:
-        CSS = DEFAULT_CSS
+        css = DEFAULT_CSS
+
 
     # strip XML declaration, if necessary
     if html_content.startswith('<?xml '):
@@ -43,5 +44,6 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
     parser = Inscriptis(html_tree,
                         display_images=display_images,
                         deduplicate_captions=deduplicate_captions,
-                        display_links=display_links)
+                        display_links=display_links,
+                        css=css)
     return parser.get_text()

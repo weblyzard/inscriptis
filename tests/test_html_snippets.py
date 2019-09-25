@@ -28,7 +28,7 @@ def test_html_snippets(filter_str=''):
             print(f.name)
             html = u"<html><body>{}</body></html>".format(f.read())
 
-        converted_txt = get_text(html).rstrip()
+        converted_txt = get_text(html, indentation='standard').rstrip()
 
         if converted_txt != reference_txt:
             print (u"File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(testcase_txt, html, reference_txt, converted_txt))
