@@ -2,27 +2,36 @@
 
 [![Build Status](https://www.travis-ci.org/weblyzard/inscriptis.png?branch=master)](https://www.travis-ci.org/weblyzard/inscriptis)
 
-A python based HTML to text converter with support for nested tables and a subset of CSS.
+A python based HTML to text conversion library, command line client and Web service with support for nested tables and a subset of CSS.
 Please take a look at the [Rendering](https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md) document for a demonstration of inscriptis' conversion quality.
 
-## Requirements
+##### Table of Contents
+[Requirements and installation](#install)
+[Command line client](#client)
+[Python library](#library)
+[Web service](#web-service)
+[Testing, benchmarking and evaluation](#testing)
+[Changelog](#changelog)
+
+<a name="install" />
+## Requirements and installation
+
+### Requirements
 * Python 3.5+ (preferred) or Python 2.7+
 * lxml
 * requests
 
-## Usage
-
-### Command line
-The command line client converts text files or text retrieved from Web pages to the
-corresponding text representation.
-
-#### Installation
-
+### Installation
 ``` {.sourceCode .bash}
 sudo python3 setup.py install
 ``` 
+<a name="client" />
+## Command line
+The command line client converts text files or text retrieved from Web pages to the
+corresponding text representation.
 
-#### Command line parameters
+
+### Command line parameters
 
 ``` {.sourceCode .bash}
 usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-l] [-d] input
@@ -46,21 +55,22 @@ optional arguments:
                         Deduplicate image captions (default:false).
 ```
 
-#### Examples
+### Examples
 
 ```
 # convert the given page to text and output the result to the screen
-inscript.py http://www.htwchur.ch
+inscript.py https://www.fhgr.ch
 
 # convert the file to text and save the output to output.txt
-inscript.py htwchur.html -o htwchur.txt
+inscript.py fhgr.html -o fhgr.txt
 
 # convert the text provided via stdin and save the output to output.txt
-echo '<body><p>Make it so!</p>></body>' | inscript.py -o htwchur.txt 
+echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt 
 ```
 
 
-### Library
+<a name="library" />
+### Python library
 
 ```python
 import urllib.request
@@ -74,43 +84,12 @@ text = get_text(html)
 print(text)
 ```
 
-## Unit tests
-
-Test cases concerning the html to text conversion are located in the `tests/html` directory and consist of two files:
-
- 1. `test-name.html` and
- 2. `test-name.txt`
-
-the latter one containing the reference text output for the given html file.
-
-## Text convertion output comparison and speed benchmarking
-inscriptis offers a small benchmarking script that can compare different HTML to txt convertion approaches.
-The script will run the different approaches on a list of URLs, ```url_list.txt```, and save the text output into a time stamped folder in ```benchmarking/benchmarking_results``` for manual comparison.
-Additionally the processing speed of every approach per URL is measured and saved in a text file called ```speed_comparisons.txt``` in the respective time stamped folder.
-
-To run the benchmarking script execute ```run_benchmarking.py``` from within the folder ```benchmarking```.
-In ```def pipeline()``` set the which HTML -> Text algorithms to be executed by modifying
-```python
-run_lynx = True
-run_justext = True
-run_html2text = True
-run_beautifulsoup = True
-run_inscriptis = True
-```
-
-In ```url_list.txt``` the URLs to be parsed can be specified by adding them to the file, one per line with no additional formatting. URLs need to be complete (including http:// or https://)
-e.g.
-```
-http://www.informationscience.ch
-https://en.wikipedia.org/wiki/Information_science
-...
-```
-
+<a name="web-service#" />
 ## Flask Web Service
 
 The Flask Web Service translates HTML pages to the corresponding plain text. 
 
-### Requirements
+### Additional Requirements
 
 * python3-flask
 
@@ -129,6 +108,42 @@ in the `Content-Type` header (`UTF-8` in the example below).
 curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://localhost:5000/get_text
 ```
 
+<a name="testing" />
+## Testing, benchmarking and evaluation
+
+### Unit tests
+
+Test cases concerning the html to text conversion are located in the `tests/html` directory and consist of two files:
+
+ 1. `test-name.html` and
+ 2. `test-name.txt`
+
+the latter one containing the reference text output for the given html file.
+
+### Text conversion output comparison and speed benchmarking
+inscriptis offers a small benchmarking script that can compare different HTML to txt convertion approaches.
+The script will run the different approaches on a list of URLs, `url_list.txt`, and save the text output into a time stamped folder in `benchmarking/benchmarking_results` for manual comparison.
+Additionally the processing speed of every approach per URL is measured and saved in a text file called `speed_comparisons.txt` in the respective time stamped folder.
+
+To run the benchmarking script execute `run_benchmarking.py` from within the folder `benchmarking`.
+In `def pipeline()` set the which HTML -> Text algorithms to be executed by modifying
+```python
+run_lynx = True
+run_justext = True
+run_html2text = True
+run_beautifulsoup = True
+run_inscriptis = True
+```
+
+In `url_list.txt` the URLs to be parsed can be specified by adding them to the file, one per line with no additional formatting. URLs need to be complete (including http:// or https://)
+e.g.
+```
+http://www.informationscience.ch
+https://en.wikipedia.org/wiki/Information_science
+...
+```
+
+<a name="changelog" />
 ## Changelog
 
 see [Release notes](https://github.com/weblyzard/inscriptis/releases).
