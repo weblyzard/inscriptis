@@ -67,7 +67,7 @@ optional arguments:
 
 ### Examples
 
-```
+``` {.sourceCode .bash}
 # convert the given page to text and output the result to the screen
 inscript.py https://www.fhgr.ch
 
