@@ -1,6 +1,7 @@
 # inscriptis
 
 [![PyPI version](https://badge.fury.io/py/inscriptis.svg)](https://badge.fury.io/py/inscriptis)
+[![Coverage](https://codecov.io/gh/weblyzard/inscriptis/branch/master/graph/badge.svg)](https://codecov.io/gh/weblyzard/inscriptis/)
 [![Build Status](https://www.travis-ci.org/weblyzard/inscriptis.png?branch=master)](https://www.travis-ci.org/weblyzard/inscriptis)
 
 A python based HTML to text conversion library, command line client and Web service with support for nested tables and a subset of CSS.
