@@ -12,3 +12,4 @@ benchmarking/
 .pydevproject
 .settings/
 .pytest_cache/
+.coverage
