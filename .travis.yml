@@ -6,7 +6,12 @@ python:
 
 install:
   - python setup.py install
+  - pip install pytest-cov
+  - pip install codecov
 
 script:
-  - pip install pytest-cov
   - py.test --cov=./src ./tests
+
+# Push the results back to codecov
+after_success:
+  - codecov
