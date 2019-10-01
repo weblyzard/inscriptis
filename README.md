@@ -1,5 +1,6 @@
 # inscriptis
 
+[![PyPI version](https://badge.fury.io/py/inscriptis.svg)](https://badge.fury.io/py/inscriptis)
 [![Build Status](https://www.travis-ci.org/weblyzard/inscriptis.png?branch=master)](https://www.travis-ci.org/weblyzard/inscriptis)
 
 A python based HTML to text conversion library, command line client and Web service with support for nested tables and a subset of CSS.
@@ -22,9 +23,17 @@ Please take a look at the [Rendering](https://github.com/weblyzard/inscriptis/bl
 * requests
 
 ### Installation
-``` {.sourceCode .bash}
-sudo python3 setup.py install
-``` 
+
+* Using pip
+  ``` {.sourceCode .bash}
+  sudo pip install inscriptis
+  ``` 
+
+* Manually
+  ``` {.sourceCode .bash}
+  sudo python3 setup.py install
+  ``` 
+
 ## Command line client
 The command line client converts text files or text retrieved from Web pages to the
 corresponding text representation.
@@ -58,7 +67,7 @@ optional arguments:
 
 ### Examples
 
-```
+``` {.sourceCode .bash}
 # convert the given page to text and output the result to the screen
 inscript.py https://www.fhgr.ch
 
