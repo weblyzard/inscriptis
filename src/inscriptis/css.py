@@ -2,13 +2,16 @@
 # coding: utf-8
 
 '''
-Handeling of CSS files.
+This module implements inscriptis' CSS handling.
 '''
 from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace
 
 
 class HtmlElement(object):
+    '''
+    Descriptor used for HtmlElements.
+    '''
 
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
                  'margin_after', 'padding', 'whitespace')
@@ -49,7 +52,7 @@ class HtmlElement(object):
 
 class CssParse(object):
     '''
-    Translates css directives into the corresponding HtmlElements.
+    Translates CSS directives into the corresponding HtmlElements.
 
     The attribute `display: none`, for instance, is translated to
     `HtmlElement.display=Display.none`.

@@ -1,18 +1,41 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+'''
+This module contains constants that handle
+
+ 1. The Display
+'''
+
 class Display(object):
+    '''
+    This class specifies whether content will be rendered as inline, block or
+    none (i.e. not rendered).
+    '''
     inline = 1
     block = 2
     none = 3
 
 class WhiteSpace(object):
-    normal = 1 # sequences of whitespace will collapse into a single one
-    pre = 3    # sequences of whitespace will be preserved
+    '''
+    This class specifies the whitespace handling used for an HTML element as
+    outlined in the `Cascading Style Sheets level 1 <https://www.w3.org/TR/CSS1/>`_
+    specification.
+
+    .. data:: normal
+
+    Sequences of whitespaces will be collapsed into a single one.
+
+    .. data:: pre
+
+    Sequences of whitespaces will preserved.
+    '''
+    normal = 1
+    pre = 3
 
 class Line(object):
     '''
-    Object used to represent a line
+    This class represents a line to render.
     '''
     __slots__ = ('margin_before', 'margin_after', 'prefix', 'suffix',
                  'content', 'list_bullet', 'padding', 'align', 'width')
