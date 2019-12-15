@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 '''
-This module implements inscriptis' CSS handling.
+This module implements basic CSS support for inscriptis.
+
+The HtmlElement class encapsulates all CSS properties of a single HTML element.
 '''
 from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace
@@ -10,7 +11,17 @@ from inscriptis.html_properties import Display, WhiteSpace
 
 class HtmlElement(object):
     '''
-    Descriptor used for HtmlElements.
+    The HtmlElement class stores the following CSS propierties of HTML
+    elements:
+
+    - tag: tag name of the given HtmlElement
+    - prefix: specifies a prefix that to insert before the tag's content
+    - suffix: a suffix to append after the tag's content
+    - display: Display strategy used for the content
+    - margin_before: vertical margin before the tag's content
+    - margin_after: vertical margin after the tag's content
+    - padding: horizontal padding before the tag's content
+    - whitespace: the whitespace handling strategy
     '''
 
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
@@ -30,8 +41,8 @@ class HtmlElement(object):
 
     def clone(self):
         '''
-        ::return: \
-            a clone of the current HtmlElement
+        Returns:
+           a clone of the current HtmlElement
         '''
         return HtmlElement(self.tag, self.prefix, self.suffix, self.display,
                            self.margin_before, self.margin_after, self.padding,
@@ -52,7 +63,7 @@ class HtmlElement(object):
 
 class CssParse(object):
     '''
-    Translates CSS directives into the corresponding HtmlElements.
+    Parses CSS specifications and translates them into the corresponding HtmlElements.
 
     The attribute `display: none`, for instance, is translated to
     `HtmlElement.display=Display.none`.
@@ -63,16 +74,14 @@ class CssParse(object):
     @staticmethod
     def get_style_attribute(style_attribute, html_element):
         '''
-        ::param: style_directive \
-          The attribute value of the given style sheet.
-          Example: display: none
+        Args:
+          style_directive: The attribute value of the given style sheet.
+                           Example: display: none
+          html_element: The HtmlElement to which the given style is applied.
 
-        ::param: html_element: \
-          The HtmlElement to which the given style is applied
-
-        ::returns:
-            A HtmlElement that merges the given element with
-            the style attributes specified.
+        Returns:
+          An HtmlElement that merges the given element with the style
+          attributes specified.
         '''
         custome_html_element = html_element.clone()
         for style_directive in style_attribute.lower().split(';'):
@@ -93,11 +102,12 @@ class CssParse(object):
     @staticmethod
     def _get_em(length):
         '''
-        ::param: length \
-            the length specified in the CSS.
+        Args:
+          length (str): the length (e.g. 2em, 2px, etc.) as specified in the
+                        CSS.
 
-        ::return:
-            the length in em's.
+        Returns:
+            int -- the length in em's.
         '''
         m = CssParse.RE_UNIT.search(length)
         value = float(m.group(1))

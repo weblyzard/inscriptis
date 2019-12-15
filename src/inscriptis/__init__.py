@@ -1,3 +1,24 @@
+'''
+Inscripits parses HTML content and converts it into a text representation.
+Among others it provides support for
+
+- nested HTML tables and
+- basic Cascade Style Sheets.
+
+Example::
+
+   import urllib.request
+   from inscriptis import get_text
+
+   url = "https://www.fhgr.ch"
+   html = urllib.request.urlopen(url).read().decode('utf-8')
+
+   text = get_text(html)
+
+   print(text)
+
+'''
+
 import re
 from lxml.html import fromstring
 
@@ -14,30 +35,41 @@ __status__ = "Prototype"
 
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
+CSS_PROFILES = {'standard': DEFAULT_CSS,
+                'extended': DEFAULT_CSS.copy()}
+CSS_PROFILES['extended']['div'] = HtmlElement('div', display=Display.block, padding=2)
+CSS_PROFILES['extended']['span'] = HtmlElement('span', prefix=' ', suffix=' ')
+
+
 def get_text(html_content, display_images=False, deduplicate_captions=False,
              display_links=False, indentation='extended'):
     '''
-    Converts an HTML string to text.
+    Converts an HTML string to text, optionally including and deduplicating
+    image captions, displaying link targets and using either the standard
+    or extended indentation strategy.
 
-    :param html_content: the HTML string to be converted to text.
-    :param display_images: whether to display image caption.
-    :param deduplicate_captions: whether to deduplicate image captions.
-    :param display_links: whether to display links in the text version.
-    :param indentation: either 'standard' (solely based on the css) or 'extended'
-          which intends divs and adds spaces between span tags
-    :returns: str -- The text representation of the HTML content.
+
+    Args:
+      html_content (str): the HTML string to be converted to text.
+      display_images (bool): whether to include image captions in the output.
+      deduplicate_captions (bool): whether to deduplicate image captions.
+      display_links (bool): whether to display links in the text version.
+      indentation: either 'standard' (solely based on the css) or 'extended'
+          which intends divs and adds spaces between span tags. The extended
+          indentation strategy (default) usually yields better results for
+          later text extraction steps.
+
+    Returns:
+      str -- The text representation of the HTML content.
     '''
     html_content = html_content.strip()
     if not html_content:
         return ''
 
-    if indentation == 'extended':
-        css = DEFAULT_CSS.copy()
-        css['div'] = HtmlElement('div', display=Display.block, padding=2)
-        css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
-    else:
-        css = DEFAULT_CSS
-
+    # select the CSS profile required for the selected indentation strategy.
+    if not indentation in CSS_PROFILES:
+        raise ValueError("Unsupported indentation profile:", indentation)
+    css = CSS_PROFILES['indentation']
 
     # strip XML declaration, if necessary
     if html_content.startswith('<?xml '):
