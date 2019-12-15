@@ -3,7 +3,10 @@
 '''
 This module implements basic CSS support for inscriptis.
 
-The HtmlElement class encapsulates all CSS properties of a single HTML element.
+- The :class:`HtmlElement` class encapsulates all CSS properties of a single HTML
+  element.
+- :class:`CssParse` parses CSS specifications and translates them into the corresponding
+  HtmlElements used by Inscriptis for rendering HTML pages.
 '''
 from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace
@@ -17,7 +20,7 @@ class HtmlElement(object):
     - tag: tag name of the given HtmlElement
     - prefix: specifies a prefix that to insert before the tag's content
     - suffix: a suffix to append after the tag's content
-    - display: Display strategy used for the content
+    - display: :class:`inscriptis.html_properties.Display` strategy used for the content
     - margin_before: vertical margin before the tag's content
     - margin_after: vertical margin after the tag's content
     - padding: horizontal padding before the tag's content

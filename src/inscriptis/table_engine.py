@@ -14,14 +14,15 @@ class TableCell:
 
     def __init__(self, canvas, align, width=None, height=None):
         '''
-        ::param: canvas \
-            canvas to which the table cell is written
-        ::param: align \
-            the line's alignment using string.format's format specification
-                 * '<': left
-                 * '>': right
-                 * '^': center
-        ::param width: line width
+        Args:
+          canvas: canvas to which the table cell is written
+          align: the line's alignment using string.format's format specification
+
+                 - '<': left
+                 - '>': right
+                 - '^': center
+
+          width: line width
         '''
         self.canvas = canvas
         self.align = align
@@ -30,7 +31,7 @@ class TableCell:
 
     def get_format_spec(self):
         '''
-        The format specification according to the values of `align` and `width`
+        The format specification according to the values of `align` and `width`.
         '''
         return u"{{:{align}{width}}}".format(align=self.align, width=self.width)
 
@@ -65,7 +66,7 @@ class Table(object):
 
     def compute_column_width_and_height(self):
         '''
-        compute and set the column width for all colls in the table
+        Compute and set the column width for all colls in the table.
         '''
         # skip tables with no row
         if not self.rows:
@@ -92,8 +93,8 @@ class Table(object):
 
     def get_text(self):
         '''
-            ::returns:
-            a rendered string representation of the given table
+        Returns:
+          A rendered string representation of the given table.
         '''
         self.compute_column_width_and_height()
         return '\n'.join((row.get_text() for row in self.rows))
@@ -108,15 +109,15 @@ class Row(object):
 
     def get_cell_lines(self, column_idx):
         '''
-            ''returns:
-            the lines of the cell specified by the column_idx or an empty list if the column does not exist
+        Returns:
+          The lines of the cell specified by the column_idx or an empty list if the column does not exist.
         '''
         return [] if column_idx >= len(self.columns) else self.columns[column_idx].get_cell_lines()
 
     def get_text(self):
         '''
-            ::returns:
-            a rendered string representation of the given row
+        Returns:
+          A rendered string representation of the given row.
         '''
         row_lines = []
         for line in zip_longest(*[column.get_cell_lines() for column in self.columns], fillvalue=' '):
