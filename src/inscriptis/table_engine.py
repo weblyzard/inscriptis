@@ -119,7 +119,5 @@ class Row(object):
         Returns:
           A rendered string representation of the given row.
         '''
-        row_lines = []
-        for line in zip_longest(*[column.get_cell_lines() for column in self.columns], fillvalue=' '):
-            row_lines.append('  '.join(line))
+        row_lines = ['  '.join(line) for line in zip_longest(*[column.get_cell_lines() for column in self.columns], fillvalue=' ')]
         return '\n'.join(row_lines)

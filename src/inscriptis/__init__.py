@@ -69,7 +69,7 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
     # select the CSS profile required for the selected indentation strategy.
     if not indentation in CSS_PROFILES:
         raise ValueError("Unsupported indentation profile:", indentation)
-    css = CSS_PROFILES['indentation']
+    css = CSS_PROFILES[indentation]
 
     # strip XML declaration, if necessary
     if html_content.startswith('<?xml '):
