@@ -7,6 +7,7 @@ try:
 except ImportError:
     from itertools import izip_longest as zip_longest
 
+
 class TableCell:
     ''' A single table cell '''
 
@@ -36,6 +37,10 @@ class TableCell:
         return u"{{:{align}{width}}}".format(align=self.align, width=self.width)
 
     def get_cell_lines(self):
+        '''
+        Returns:
+          list -- A list of all the lines stores within the :class:`TableCell`.
+        '''
         format_spec = self.get_format_spec()
         # normalize the canvas
         self.canvas = list(chain(*[line.split('\n') for line in self.canvas]))
@@ -57,16 +62,23 @@ class Table(object):
         self.td_is_open = False
 
     def add_row(self):
+        '''
+        Adds an empty :class:`Row` to the table.
+        '''
         self.rows.append(Row())
 
     def add_cell(self, canvas, align='<'):
+        '''
+        Adds a new :class:`TableCell` to the table's last row. If no row
+        exists yet, a new row is created.
+        '''
         if not self.rows:
             self.add_row()
         self.rows[-1].columns.append(TableCell(canvas, align))
 
     def compute_column_width_and_height(self):
         '''
-        Compute and set the column width for all colls in the table.
+        Compute and set the column width and height for all colls in the table.
         '''
         # skip tables with no row
         if not self.rows:
@@ -109,15 +121,19 @@ class Row(object):
 
     def get_cell_lines(self, column_idx):
         '''
+        Computes the list of lines in the cell specified by the column_idx.
+
+        Args:
+          column_idx: The column index of the cell.
         Returns:
-          The lines of the cell specified by the column_idx or an empty list if the column does not exist.
+          list -- The list of lines in the cell specified by the column_idx or an empty list if the column does not exist.
         '''
         return [] if column_idx >= len(self.columns) else self.columns[column_idx].get_cell_lines()
 
     def get_text(self):
         '''
         Returns:
-          A rendered string representation of the given row.
+          str -- A rendered string representation of the given row.
         '''
         row_lines = ['  '.join(line) for line in zip_longest(*[column.get_cell_lines() for column in self.columns], fillvalue=' ')]
         return '\n'.join(row_lines)
