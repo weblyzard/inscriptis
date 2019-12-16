@@ -20,7 +20,7 @@ class HtmlElement(object):
     - tag: tag name of the given HtmlElement
     - prefix: specifies a prefix that to insert before the tag's content
     - suffix: a suffix to append after the tag's content
-    - display: :class:`inscriptis.html_properties.Display` strategy used for the content
+    - display: :class:`~inscriptis.html_properties.Display` strategy used for the content
     - margin_before: vertical margin before the tag's content
     - margin_after: vertical margin after the tag's content
     - padding: horizontal padding before the tag's content
