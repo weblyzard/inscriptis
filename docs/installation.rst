@@ -1,6 +1,7 @@
 ============
 Installation
 ============
+Inscriptis requires Python 3.5+ and depends upon the lxml and requests libraries.
 
 At the command line::
 
