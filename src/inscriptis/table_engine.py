@@ -16,8 +16,9 @@ class TableCell:
     def __init__(self, canvas, align, width=None, height=None):
         '''
         Args:
-          canvas: canvas to which the table cell is written
-          align: the line's alignment using string.format's format specification
+          canvas: canvas to which the table cell is written.
+          align: the line's alignment using string.format's format
+                 specification.
 
                  - '<': left
                  - '>': right
@@ -32,9 +33,10 @@ class TableCell:
 
     def get_format_spec(self):
         '''
-        The format specification according to the values of `align` and `width`.
+        The format specification according to the values of `align` and
+        `width`.
         '''
-        return u"{{:{align}{width}}}".format(align=self.align, width=self.width)
+        return f'{{:{self.align}{self.width}}}'
 
     def get_cell_lines(self):
         '''
@@ -48,7 +50,8 @@ class TableCell:
             canvas = self.canvas + ((self.height - len(self.canvas)) * [''])
         else:
             canvas = self.canvas
-        return [format_spec.format(line) if self.width else line for line in canvas]
+        return [format_spec.format(line) if self.width else line
+                for line in canvas]
 
 
 class Table(object):
@@ -86,7 +89,9 @@ class Table(object):
 
         # determine row height
         for row in self.rows:
-            max_row_height = max((len(cell.get_cell_lines()) for cell in row.columns)) if row.columns else 1
+            max_row_height = max((len(cell.get_cell_lines())
+                                  for cell in row.columns)) \
+                                  if row.columns else 1
             for cell in row.columns:
                 cell.height = max_row_height
 
@@ -95,8 +100,10 @@ class Table(object):
 
         for column_idx in range(max_columns):
             # determine max_column_width
-            row_cell_lines = [row.get_cell_lines(column_idx) for row in self.rows]
-            max_column_width = max((len(line) for line in chain(*row_cell_lines)))
+            row_cell_lines = [row.get_cell_lines(column_idx)
+                              for row in self.rows]
+            max_column_width = max((len(line)
+                                    for line in chain(*row_cell_lines)))
 
             # set column width in all rows
             for row in self.rows:
@@ -126,14 +133,19 @@ class Row(object):
         Args:
           column_idx: The column index of the cell.
         Returns:
-          list -- The list of lines in the cell specified by the column_idx or an empty list if the column does not exist.
+          list -- The list of lines in the cell specified by the column_idx or
+                  an empty list if the column does not exist.
         '''
-        return [] if column_idx >= len(self.columns) else self.columns[column_idx].get_cell_lines()
+        return [] if column_idx >= len(self.columns) \
+            else self.columns[column_idx].get_cell_lines()
 
     def get_text(self):
         '''
         Returns:
           str -- A rendered string representation of the given row.
         '''
-        row_lines = ['  '.join(line) for line in zip_longest(*[column.get_cell_lines() for column in self.columns], fillvalue=' ')]
+        row_lines = ['  '.join(line)
+                     for line in zip_longest(*[column.get_cell_lines()
+                                               for column in self.columns],
+                                             fillvalue=' ')]
         return '\n'.join(row_lines)

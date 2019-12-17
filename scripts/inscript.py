@@ -1,21 +1,8 @@
 #!/usr/bin/env python3
 # coding:utf-8
 '''
-Converts HTML to Text
-
-Guiding principles:
-
- a. break lines only if we encounter a block element
- b. paddings:
+Inscriptis command line client.
 '''
-
-__author__ = "Fabian Odoni, Albert Weichselbraun, Samuel Abels"
-__copyright__ = "Copyright 2015-2017, HTW Chur"
-__license__ = "GPL"
-__version__ = "0.0.2.1"
-__maintainer__ = "Fabian Odoni"
-__email__ = "fabian.odoni@htwchur.ch"
-__status__ = "Prototype"
 
 import requests
 import argparse

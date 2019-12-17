@@ -7,6 +7,7 @@ This module contains constants that handle
  1. The Display
 '''
 
+
 class Display(object):
     '''
     This class specifies whether content will be rendered as inline, block or
@@ -16,10 +17,11 @@ class Display(object):
     block = 2
     none = 3
 
+
 class WhiteSpace(object):
     '''
     This class specifies the whitespace handling used for an HTML element as
-    outlined in the `Cascading Style Sheets level 1 <https://www.w3.org/TR/CSS1/>`_
+    outlined in the `Cascading Style Sheets <https://www.w3.org/TR/CSS1/>`_
     specification.
 
     .. data:: normal
@@ -32,6 +34,7 @@ class WhiteSpace(object):
     '''
     normal = 1
     pre = 3
+
 
 class Line(object):
     '''
@@ -62,4 +65,4 @@ class Line(object):
                         '\n' * self.margin_after))
 
     def __str__(self):
-        return "<Line: '{}'>".format(self.get_text().strip())
+        return f"<Line: '{self.get_text().strip()}'>"

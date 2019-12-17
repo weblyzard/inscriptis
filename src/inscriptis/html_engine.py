@@ -29,7 +29,8 @@ class Inscriptis(object):
 
     DEFAULT_ELEMENT = HtmlElement()
 
-    def __init__(self, html_tree, display_images=False, deduplicate_captions=False, display_links=False, css=None):
+    def __init__(self, html_tree, display_images=False,
+                 deduplicate_captions=False, display_links=False, css=None):
         '''
         ::param: display_images \
             whether to include image tiles/alt texts
@@ -38,7 +39,8 @@ class Inscriptis(object):
             (many newspaper include images and video previews with
              identifical titles).
         ::param: display_links \
-            whether to display link targets (e.g. `[Python](https://www.python.org)`)
+            whether to display link targets (e.g.
+            `[Python](https://www.python.org)`)
         '''
         # setup config
         self.cfg_deduplicate_captions = deduplicate_captions
@@ -80,7 +82,7 @@ class Inscriptis(object):
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
-        self.invisible = []  # a list of attributes that are considered invisible
+        self.invisible = []  # attributes that are considered invisible
         self.last_caption = None
 
         # used if display_links is enabled
@@ -121,9 +123,11 @@ class Inscriptis(object):
             True, if a line has been writer, otherwise False
         '''
         # only break the line if there is any relevant content
-        if not force and (not self.current_line[-1].content or self.current_line[-1].content.isspace()):
-            self.current_line[-1].margin_before = max(self.current_line[-1].margin_before,
-                                                      self.current_tag[-1].margin_before)
+        if not force and (not self.current_line[-1].content or
+                          self.current_line[-1].content.isspace()):
+            self.current_line[-1].margin_before = \
+                max(self.current_line[-1].margin_before,
+                    self.current_tag[-1].margin_before)
             return False
 
         line = self.current_line[-1].get_text()
@@ -150,7 +154,8 @@ class Inscriptis(object):
             self.invisible.append(cur)
             return
 
-        self.next_line[-1].padding = self.current_line[-1].padding + cur.padding
+        self.next_line[-1].padding = self.current_line[-1].padding \
+            + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
             if not self.write_line():
@@ -171,7 +176,8 @@ class Inscriptis(object):
             self.invisible.pop()
             return
 
-        self.next_line[-1].padding = self.current_line[-1].padding - cur.padding
+        self.next_line[-1].padding = self.current_line[-1].padding \
+            - cur.padding
         self.current_line[-1].margin_after = max(
             self.current_line[-1].margin_after, cur.margin_after)
         # flush text after display:block elements
@@ -210,8 +216,9 @@ class Inscriptis(object):
 
     def start_img(self, attrs):
         image_text = attrs.get('alt', '') or attrs.get('title', '')
-        if image_text and not (self.cfg_deduplicate_captions and image_text == self.last_caption):
-            self.current_line[-1].content += '[{}]'.format(image_text)
+        if image_text and not (self.cfg_deduplicate_captions and
+                               image_text == self.last_caption):
+            self.current_line[-1].content += f'[{image_text}]'
             self.last_caption = image_text
 
     def start_a(self, attrs):
@@ -219,7 +226,7 @@ class Inscriptis(object):
         self.current_line[-1].content += '['
 
     def end_a(self):
-        self.current_line[-1].content += ']({})'.format(self.link_target)
+        self.current_line[-1].content += f']({self.link_target})'
 
     def start_ol(self, attrs):
         self.li_counter.append(1)
@@ -237,7 +244,7 @@ class Inscriptis(object):
             bullet = "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.current_line[-1].list_bullet = "{}. ".format(bullet)
+            self.current_line[-1].list_bullet = f"{bullet}. "
         else:
             self.current_line[-1].list_bullet = bullet
 

@@ -37,7 +37,8 @@ RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
 CSS_PROFILES = {'standard': DEFAULT_CSS,
                 'extended': DEFAULT_CSS.copy()}
-CSS_PROFILES['extended']['div'] = HtmlElement('div', display=Display.block, padding=2)
+CSS_PROFILES['extended']['div'] = HtmlElement('div', display=Display.block,
+                                              padding=2)
 CSS_PROFILES['extended']['span'] = HtmlElement('span', prefix=' ', suffix=' ')
 
 
@@ -67,7 +68,7 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
         return ''
 
     # select the CSS profile required for the selected indentation strategy.
-    if not indentation in CSS_PROFILES:
+    if indentation not in CSS_PROFILES:
         raise ValueError("Unsupported indentation profile:", indentation)
     css = CSS_PROFILES[indentation]
 

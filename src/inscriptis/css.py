@@ -3,10 +3,10 @@
 '''
 This module implements basic CSS support for inscriptis.
 
-- The :class:`HtmlElement` class encapsulates all CSS properties of a single HTML
-  element.
-- :class:`CssParse` parses CSS specifications and translates them into the corresponding
-  HtmlElements used by Inscriptis for rendering HTML pages.
+- The :class:`HtmlElement` class encapsulates all CSS properties of a single
+  HTML element.
+- :class:`CssParse` parses CSS specifications and translates them into the
+  corresponding HtmlElements used by Inscriptis for rendering HTML pages.
 '''
 from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace
@@ -17,14 +17,16 @@ class HtmlElement(object):
     The HtmlElement class stores the following CSS propierties of HTML
     elements:
 
-    - tag: tag name of the given HtmlElement
-    - prefix: specifies a prefix that to insert before the tag's content
-    - suffix: a suffix to append after the tag's content
-    - display: :class:`~inscriptis.html_properties.Display` strategy used for the content
-    - margin_before: vertical margin before the tag's content
-    - margin_after: vertical margin after the tag's content
-    - padding: horizontal padding before the tag's content
-    - whitespace: the whitespace handling strategy
+    - tag: tag name of the given HtmlElement.
+    - prefix: specifies a prefix that to insert before the tag's content.
+    - suffix: a suffix to append after the tag's content.
+    - display: :class:`~inscriptis.html_properties.Display` strategy used for
+      the content.
+    - margin_before: vertical margin before the tag's content.
+    - margin_after: vertical margin after the tag's content.
+    - padding: horizontal padding before the tag's content.
+    - whitespace: the :class:`~inscriptis.html_properties.Whitespace` handling
+      strategy.
     '''
 
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
@@ -52,21 +54,16 @@ class HtmlElement(object):
                            self.whitespace)
 
     def __str__(self):
-        return "<{tag} prefix={prefix}, suffix={suffix}, display={display}, " \
-               "margin_before={margin_before}, margin_after={margin_after}, " \
-               "padding={padding}, whitespace={whitespace}>".format(
-                   tag=self.tag,
-                   prefix=self.prefix,
-                   suffix=self.suffix,
-                   display=self.display,
-                   margin_before=self.margin_before,
-                   margin_after=self.margin_after,
-                   padding=self.padding,
-                   whitespace=self.whitespace)
+        return f'<{self.tag} prefix={self.prefix}, suffix={self.suffix}, ' \
+               f'display={self.display}, margin_before={self.margin_before}, ' \
+               f'margin_after={self.margin_after} padding={self.padding}, ' \
+               f'whitespace={self.whitespace}>'
+
 
 class CssParse(object):
     '''
-    Parses CSS specifications and translates them into the corresponding HtmlElements.
+    Parses CSS specifications and translates them into the corresponding
+    HtmlElements.
 
     The attribute `display: none`, for instance, is translated to
     `HtmlElement.display=Display.none`.
@@ -162,19 +159,29 @@ DEFAULT_CSS = {
     'title': HtmlElement('title', display=Display.none),
     'style': HtmlElement('style', display=Display.none),
 
-    'p': HtmlElement('p', display=Display.block, margin_before=1, margin_after=1),
-    'figure': HtmlElement('figure', display=Display.block, margin_before=1, margin_after=1),
+    'p': HtmlElement('p', display=Display.block, margin_before=1,
+                     margin_after=1),
+    'figure': HtmlElement('figure', display=Display.block, margin_before=1,
+                          margin_after=1),
 
 
-    'h1': HtmlElement('h1', display=Display.block, margin_before=1, margin_after=1),
-    'h2': HtmlElement('h2', display=Display.block, margin_before=1, margin_after=1),
-    'h3': HtmlElement('h3', display=Display.block, margin_before=1, margin_after=1),
-    'h4': HtmlElement('h4', display=Display.block, margin_before=1, margin_after=1),
-    'h5': HtmlElement('h5', display=Display.block, margin_before=1, margin_after=1),
-    'h6': HtmlElement('h6', display=Display.block, margin_before=1, margin_after=1),
+    'h1': HtmlElement('h1', display=Display.block, margin_before=1,
+                      margin_after=1),
+    'h2': HtmlElement('h2', display=Display.block, margin_before=1,
+                      margin_after=1),
+    'h3': HtmlElement('h3', display=Display.block, margin_before=1,
+                      margin_after=1),
+    'h4': HtmlElement('h4', display=Display.block, margin_before=1,
+                      margin_after=1),
+    'h5': HtmlElement('h5', display=Display.block, margin_before=1,
+                      margin_after=1),
+    'h6': HtmlElement('h6', display=Display.block, margin_before=1,
+                      margin_after=1),
 
-    'ul': HtmlElement('ul', display=Display.block, margin_before=0, margin_after=0, padding=4),
-    'ol': HtmlElement('ol', display=Display.block, margin_before=0, margin_after=0, padding=4),
+    'ul': HtmlElement('ul', display=Display.block, margin_before=0,
+                      margin_after=0, padding=4),
+    'ol': HtmlElement('ol', display=Display.block, margin_before=0,
+                      margin_after=0, padding=4),
     'li': HtmlElement('li', display=Display.block),
 
     'address': HtmlElement('address', display=Display.block),
