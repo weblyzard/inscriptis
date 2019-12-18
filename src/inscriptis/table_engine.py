@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-from itertools import chain
-try:
-    from itertools import zip_longest
-except ImportError:
-    from itertools import izip_longest as zip_longest
+from itertools import chain, zip_longest
+
 
 class TableCell:
     ''' A single table cell '''
@@ -14,14 +11,16 @@ class TableCell:
 
     def __init__(self, canvas, align, width=None, height=None):
         '''
-        ::param: canvas \
-            canvas to which the table cell is written
-        ::param: align \
-            the line's alignment using string.format's format specification
-                 * '<': left
-                 * '>': right
-                 * '^': center
-        ::param width: line width
+        Args:
+          canvas: canvas to which the table cell is written.
+          align: the line's alignment using string.format's format
+                 specification.
+
+                 - '<': left
+                 - '>': right
+                 - '^': center
+
+          width: line width
         '''
         self.canvas = canvas
         self.align = align
@@ -30,11 +29,16 @@ class TableCell:
 
     def get_format_spec(self):
         '''
-        The format specification according to the values of `align` and `width`
+        The format specification according to the values of `align` and
+        `width`.
         '''
-        return u"{{:{align}{width}}}".format(align=self.align, width=self.width)
+        return '{{:{self.align}{self.width}}}'.format(self=self)
 
     def get_cell_lines(self):
+        '''
+        Returns:
+          list -- A list of all the lines stores within the :class:`TableCell`.
+        '''
         format_spec = self.get_format_spec()
         # normalize the canvas
         self.canvas = list(chain(*[line.split('\n') for line in self.canvas]))
@@ -42,7 +46,8 @@ class TableCell:
             canvas = self.canvas + ((self.height - len(self.canvas)) * [''])
         else:
             canvas = self.canvas
-        return [format_spec.format(line) if self.width else line for line in canvas]
+        return [format_spec.format(line) if self.width else line
+                for line in canvas]
 
 
 class Table(object):
@@ -56,16 +61,23 @@ class Table(object):
         self.td_is_open = False
 
     def add_row(self):
+        '''
+        Adds an empty :class:`Row` to the table.
+        '''
         self.rows.append(Row())
 
     def add_cell(self, canvas, align='<'):
+        '''
+        Adds a new :class:`TableCell` to the table's last row. If no row
+        exists yet, a new row is created.
+        '''
         if not self.rows:
             self.add_row()
         self.rows[-1].columns.append(TableCell(canvas, align))
 
     def compute_column_width_and_height(self):
         '''
-        compute and set the column width for all colls in the table
+        Compute and set the column width and height for all colls in the table.
         '''
         # skip tables with no row
         if not self.rows:
@@ -73,7 +85,9 @@ class Table(object):
 
         # determine row height
         for row in self.rows:
-            max_row_height = max((len(cell.get_cell_lines()) for cell in row.columns)) if row.columns else 1
+            max_row_height = max((len(cell.get_cell_lines())
+                                  for cell in row.columns)) \
+                                  if row.columns else 1
             for cell in row.columns:
                 cell.height = max_row_height
 
@@ -82,8 +96,10 @@ class Table(object):
 
         for column_idx in range(max_columns):
             # determine max_column_width
-            row_cell_lines = [row.get_cell_lines(column_idx) for row in self.rows]
-            max_column_width = max((len(line) for line in chain(*row_cell_lines)))
+            row_cell_lines = [row.get_cell_lines(column_idx)
+                              for row in self.rows]
+            max_column_width = max((len(line)
+                                    for line in chain(*row_cell_lines)))
 
             # set column width in all rows
             for row in self.rows:
@@ -92,8 +108,8 @@ class Table(object):
 
     def get_text(self):
         '''
-            ::returns:
-            a rendered string representation of the given table
+        Returns:
+          A rendered string representation of the given table.
         '''
         self.compute_column_width_and_height()
         return '\n'.join((row.get_text() for row in self.rows))
@@ -108,17 +124,24 @@ class Row(object):
 
     def get_cell_lines(self, column_idx):
         '''
-            ''returns:
-            the lines of the cell specified by the column_idx or an empty list if the column does not exist
+        Computes the list of lines in the cell specified by the column_idx.
+
+        Args:
+          column_idx: The column index of the cell.
+        Returns:
+          list -- The list of lines in the cell specified by the column_idx or
+                  an empty list if the column does not exist.
         '''
-        return [] if column_idx >= len(self.columns) else self.columns[column_idx].get_cell_lines()
+        return [] if column_idx >= len(self.columns) \
+            else self.columns[column_idx].get_cell_lines()
 
     def get_text(self):
         '''
-            ::returns:
-            a rendered string representation of the given row
+        Returns:
+          str -- A rendered string representation of the given row.
         '''
-        row_lines = []
-        for line in zip_longest(*[column.get_cell_lines() for column in self.columns], fillvalue=' '):
-            row_lines.append('  '.join(line))
+        row_lines = ['  '.join(line)
+                     for line in zip_longest(*[column.get_cell_lines()
+                                               for column in self.columns],
+                                             fillvalue=' ')]
         return '\n'.join(row_lines)

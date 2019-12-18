@@ -13,3 +13,4 @@ benchmarking/
 .settings/
 .pytest_cache/
 .coverage
+_build/

@@ -1,45 +1,58 @@
 #!/usr/bin/env python
 # coding:utf-8
 '''
-Converts HTML to Text
+The HTML Engine is responsible for converting HTML to text.
 
 Guiding principles:
 
- a. break lines only if we encounter a block element
- b. paddings:
+ 1. break lines only if we encounter a block element
 '''
 from itertools import chain
+from html import unescape
 
 from inscriptis.css import DEFAULT_CSS, CssParse, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Line
 from inscriptis.table_engine import Table
 
-try:
-    # python 2 compatibility
-    from HTMLParser import HTMLParser
-    unescape = HTMLParser().unescape
-except ImportError:
-    from html import unescape
-
 
 class Inscriptis(object):
+    '''
+    The Inscriptis class translates an lxml HTML tree to the corresponding
+    text representation.
+
+    Args:
+      html_tree: the lxml HTML tree to convert.
+      display_images: whether to include image tiles/alt texts.
+      deduplicate_captions: whether to deduplicate captions such as image
+         titles (many newspaper include images and video previews with
+         identifical titles).
+      display_links: whether to display link targets
+         (e.g. `[Python](https://www.python.org)`).
+      css: an optional custom CSS definition or the
+         :data:`inscriptis.css.DEFAULT_CSS`.
+
+    Example::
+
+      from lxml.html import fromstring
+      from inscriptis.html_engine import Inscriptis
+
+      html_content = "<html><body><h1>Test</h1></body></html>"
+
+      # create an HTML tree from the HTML content.
+      html_tree = fromstring(html_content)
+
+      # transform the HTML tree to text.
+      parser = Inscriptis(html_tree)
+      text = parser.get_text()
+    '''
 
     UL_COUNTER = ('* ', '+ ', 'o ', '- ')
     UL_COUNTER_LEN = len(UL_COUNTER)
 
     DEFAULT_ELEMENT = HtmlElement()
 
-    def __init__(self, html_tree, display_images=False, deduplicate_captions=False, display_links=False, css=None):
-        '''
-        ::param: display_images \
-            whether to include image tiles/alt texts
-        ::param: deduplicate_captions \
-            whether to deduplicate captions such as image titles
-            (many newspaper include images and video previews with
-             identifical titles).
-        ::param: display_links \
-            whether to display link targets (e.g. `[Python](https://www.python.org)`)
-        '''
+    def __init__(self, html_tree, display_images=False,
+                 deduplicate_captions=False, display_links=False, css=None):
         # setup config
         self.cfg_deduplicate_captions = deduplicate_captions
         self.css = css if css else DEFAULT_CSS
@@ -80,7 +93,7 @@ class Inscriptis(object):
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
-        self.invisible = []  # a list of attributes that are considered invisible
+        self.invisible = []  # attributes that are considered invisible
         self.last_caption = None
 
         # used if display_links is enabled
@@ -107,8 +120,8 @@ class Inscriptis(object):
 
     def get_text(self):
         '''
-        ::returns:
-           a text representation of the parsed content
+        Returns:
+          str -- A text representation of the parsed content.
         '''
         return unescape('\n'.join(chain(*self.clean_text_lines))).rstrip()
 
@@ -117,13 +130,15 @@ class Inscriptis(object):
         Writes the current line to the buffer, provided that there is any
         data to write.
 
-        ::returns:
-            True, if a line has been writer, otherwise False
+        Returns:
+          bool -- True, if a line has been writer, otherwise False.
         '''
         # only break the line if there is any relevant content
-        if not force and (not self.current_line[-1].content or self.current_line[-1].content.isspace()):
-            self.current_line[-1].margin_before = max(self.current_line[-1].margin_before,
-                                                      self.current_tag[-1].margin_before)
+        if not force and (not self.current_line[-1].content or
+                          self.current_line[-1].content.isspace()):
+            self.current_line[-1].margin_before = \
+                max(self.current_line[-1].margin_before,
+                    self.current_tag[-1].margin_before)
             return False
 
         line = self.current_line[-1].get_text()
@@ -135,10 +150,21 @@ class Inscriptis(object):
     def write_line_verbatim(self, text):
         '''
         Writes the current buffer without any modifications.
+
+        Args:
+          text (str): the text to write.
         '''
         self.clean_text_lines[-1].append(text)
 
     def handle_starttag(self, tag, attrs):
+        '''
+        Handels HTML start tags.
+
+        Args:
+          tag (str): the HTML start tag to process.
+          attrs (dict): a dictionary of HTML attributes and their respective
+             values.
+        '''
         # use the css to handle tags known to it :)
 
         cur = self.css.get(tag, Inscriptis.DEFAULT_ELEMENT)
@@ -150,7 +176,8 @@ class Inscriptis(object):
             self.invisible.append(cur)
             return
 
-        self.next_line[-1].padding = self.current_line[-1].padding + cur.padding
+        self.next_line[-1].padding = self.current_line[-1].padding \
+            + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
             if not self.write_line():
@@ -166,12 +193,19 @@ class Inscriptis(object):
             handler(attrs)
 
     def handle_endtag(self, tag):
+        '''
+        Handels HTML end tags.
+
+        Args:
+          tag(str): the HTML end tag to process.
+        '''
         cur = self.current_tag.pop()
         if self.invisible:
             self.invisible.pop()
             return
 
-        self.next_line[-1].padding = self.current_line[-1].padding - cur.padding
+        self.next_line[-1].padding = self.current_line[-1].padding \
+            - cur.padding
         self.current_line[-1].margin_after = max(
             self.current_line[-1].margin_after, cur.margin_after)
         # flush text after display:block elements
@@ -186,6 +220,12 @@ class Inscriptis(object):
             handler()
 
     def handle_data(self, data):
+        '''
+        Handels text belonging to HTML tags.
+
+        Args:
+          data (str): The text to process.
+        '''
         if self.invisible:
             return
 
@@ -210,7 +250,8 @@ class Inscriptis(object):
 
     def start_img(self, attrs):
         image_text = attrs.get('alt', '') or attrs.get('title', '')
-        if image_text and not (self.cfg_deduplicate_captions and image_text == self.last_caption):
+        if image_text and not (self.cfg_deduplicate_captions and
+                               image_text == self.last_caption):
             self.current_line[-1].content += '[{}]'.format(image_text)
             self.last_caption = image_text
 
@@ -291,7 +332,7 @@ class Inscriptis(object):
     @staticmethod
     def get_bullet(index):
         '''
-        ::return:
-           the bullet that corresponds to the given index
+        Returns:
+          str -- The bullet that corresponds to the given index.
         '''
         return Inscriptis.UL_COUNTER[index % Inscriptis.UL_COUNTER_LEN]
