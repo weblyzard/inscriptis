@@ -32,7 +32,7 @@ class TableCell:
         The format specification according to the values of `align` and
         `width`.
         '''
-        return f'{{:{self.align}{self.width}}}'
+        return '{{:{self.align}{self.width}}}'.format(self=self)
 
     def get_cell_lines(self):
         '''

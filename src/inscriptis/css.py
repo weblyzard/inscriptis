@@ -55,11 +55,11 @@ class HtmlElement(object):
 
     def __str__(self):
         return (
-            f'<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
-            f'display={self.display}, margin_before={self.margin_before}, '
-            f'margin_after={self.margin_after} padding={self.padding}, '
-            f'whitespace={self.whitespace}>'
-        )
+            '<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
+            'display={self.display}, margin_before={self.margin_before}, '
+            'margin_after={self.margin_after} padding={self.padding}, '
+            'whitespace={self.whitespace}>'
+        ).format(self=self)
 
 
 class CssParse(object):
