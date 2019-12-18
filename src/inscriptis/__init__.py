@@ -10,7 +10,7 @@ Example::
    import urllib.request
    from inscriptis import get_text
 
-   url = "https://www.fhgr.ch"
+   url = 'https://www.fhgr.ch'
    html = urllib.request.urlopen(url).read().decode('utf-8')
 
    text = get_text(html)
@@ -26,12 +26,12 @@ from inscriptis.css import DEFAULT_CSS, HtmlElement
 from inscriptis.html_engine import Inscriptis
 from inscriptis.html_properties import Display
 
-__author__ = "Albert Weichselbraun, Fabian Odoni"
-__copyright__ = "2016-2019 Albert Weichselbraun, Fabian Odoni"
-__license__ = "GPL2"
-__version__ = "0.0.4.2"
-__email__ = "albert.weichselbraun@fhgr.ch, fabian.odoni@fhgr.ch"
-__status__ = "Prototype"
+__author__ = 'Albert Weichselbraun, Fabian Odoni'
+__author_email__ = 'albert.weichselbraun@fhgr.ch, fabian.odoni@fhgr.ch'
+__copyright__ = '2016-2019 Albert Weichselbraun, Fabian Odoni'
+__license__ = 'GPL2'
+__version__ = '0.0.5.0'
+__status__ = 'Prototype'
 
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
@@ -69,7 +69,7 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
 
     # select the CSS profile required for the selected indentation strategy.
     if indentation not in CSS_PROFILES:
-        raise ValueError("Unsupported indentation profile:", indentation)
+        raise ValueError('Unsupported indentation profile:', indentation)
     css = CSS_PROFILES[indentation]
 
     # strip XML declaration, if necessary

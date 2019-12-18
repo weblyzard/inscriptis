@@ -6,6 +6,7 @@ from setuptools import setup, find_packages
 from os import path
 
 init = open('src/inscriptis/__init__.py').read()
+
 (__version__, ) = re.findall(r"__version__.*\s*=\s*[']([^']+)[']", init)
 (__author__, ) = re.findall(r"__author__.*\s*=\s*[']([^']+)[']", init)
 (__author_email__, ) = re.findall(r"__author_email__.*\s*=\s*[']([^']+)[']",
@@ -17,7 +18,7 @@ init = open('src/inscriptis/__init__.py').read()
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README.md file
-with open(path.join(here, 'README.md')) as f:  # , encoding='utf-8'
+with open(path.join(here, 'README.rst')) as f:  # , encoding='utf-8'
     long_description = f.read()
 
 setup(
@@ -26,9 +27,9 @@ setup(
     version=__version__,
     description='inscriptis - HTML to text converter.',
     long_description=long_description,
-    long_description_content_type='text/markdown',
     author=__author__,
     author_email=__author_email__,
+    python_requires='>=3.5',
     classifiers=[
            'Development Status :: 4 - Beta',
            'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
