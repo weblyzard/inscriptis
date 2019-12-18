@@ -19,13 +19,6 @@ Example::
 
 '''
 
-import re
-from lxml.html import fromstring
-
-from inscriptis.css import DEFAULT_CSS, HtmlElement
-from inscriptis.html_engine import Inscriptis
-from inscriptis.html_properties import Display
-
 __author__ = 'Albert Weichselbraun, Fabian Odoni'
 __author_email__ = 'albert.weichselbraun@fhgr.ch, fabian.odoni@fhgr.ch'
 __copyright__ = '2016-2019 Albert Weichselbraun, Fabian Odoni'
@@ -33,13 +26,28 @@ __license__ = 'GPL2'
 __version__ = '0.0.5.0'
 __status__ = 'Prototype'
 
-RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
-CSS_PROFILES = {'standard': DEFAULT_CSS,
-                'extended': DEFAULT_CSS.copy()}
-CSS_PROFILES['extended']['div'] = HtmlElement('div', display=Display.block,
-                                              padding=2)
-CSS_PROFILES['extended']['span'] = HtmlElement('span', prefix=' ', suffix=' ')
+try:
+    import re
+    from lxml.html import fromstring
+
+    from inscriptis.css import DEFAULT_CSS, HtmlElement
+    from inscriptis.html_engine import Inscriptis
+    from inscriptis.html_properties import Display
+
+    RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
+
+    CSS_PROFILES = {'standard': DEFAULT_CSS,
+                    'extended': DEFAULT_CSS.copy()}
+    CSS_PROFILES['extended']['div'] = HtmlElement('div', display=Display.block,
+                                                  padding=2)
+    CSS_PROFILES['extended']['span'] = HtmlElement('span', prefix=' ',
+                                                   suffix=' ')
+
+except ImportError:
+    import warnings
+    warnings.warn(
+        "Missing dependencies - inscriptis has not been properly installed")
 
 
 def get_text(html_content, display_images=False, deduplicate_captions=False,
