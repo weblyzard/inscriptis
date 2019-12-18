@@ -72,4 +72,4 @@ class Line(object):
                         '\n' * self.margin_after))
 
     def __str__(self):
-        return f"<Line: '{self.get_text().strip()}'>"
+        return "<Line: '{}'>".format(self.get_text().strip())
