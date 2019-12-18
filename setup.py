@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import re
 from setuptools import setup, find_packages
 from os import path
 
 init = open('src/inscriptis/__init__.py').read()
-(__version__, ) = re.findall("__version__.*\s*=\s*[']([^']+)[']", init)
-(__author__, ) = re.findall("__author__.*\s*=\s*[']([^']+)[']", init)
-(__author_email__, ) = re.findall("__author_email__.*\s*=\s*[']([^']+)[']", init)
-(__author_email__, ) = re.findall("__author_email__.*\s*=\s*[']([^']+)[']", init)
-(__license__, ) = re.findall("__license__.*\s*=\s*[']([^']+)[']", init)
+(__version__, ) = re.findall(r"__version__.*\s*=\s*[']([^']+)[']", init)
+(__author__, ) = re.findall(r"__author__.*\s*=\s*[']([^']+)[']", init)
+(__author_email__, ) = re.findall(r"__author_email__.*\s*=\s*[']([^']+)[']",
+                                  init)
+(__author_email__, ) = re.findall(r"__author_email__.*\s*=\s*[']([^']+)[']",
+                                  init)
+(__license__, ) = re.findall(r"__license__.*\s*=\s*[']([^']+)[']", init)
 
 here = path.abspath(path.dirname(__file__))
 
