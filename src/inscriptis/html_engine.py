@@ -8,17 +8,11 @@ Guiding principles:
  1. break lines only if we encounter a block element
 '''
 from itertools import chain
+from html import unescape
 
 from inscriptis.css import DEFAULT_CSS, CssParse, HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace, Line
 from inscriptis.table_engine import Table
-
-try:
-    # python 2 compatibility
-    from HTMLParser import HTMLParser
-    unescape = HTMLParser().unescape
-except ImportError:
-    from html import unescape
 
 
 class Inscriptis(object):

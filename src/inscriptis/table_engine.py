@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-from itertools import chain
-try:
-    from itertools import zip_longest
-except ImportError:
-    from itertools import izip_longest as zip_longest
+from itertools import chain, zip_longest
 
 
 class TableCell:
