@@ -2,6 +2,9 @@
 inscriptis -- HTML to text conversion library, command line client and Web service
 ==================================================================================
 
+.. image:: https://img.shields.io/badge/Python-v3.5%2B-blue
+   :alt: Supported Python versions
+
 .. image:: https://badge.fury.io/py/inscriptis.svg
    :target: https://badge.fury.io/py/inscriptis
    :alt: PyPI version
@@ -14,10 +17,9 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
    :target: https://www.travis-ci.org/weblyzard/inscriptis
    :alt: Build status
 
-.. image:: https://inscriptis.readthedocs.io/en/latest/?badge=latest
-   :target: https://inscriptis.readthedocs.io/en/latest/
-   :alt: Documentation
-
+.. image:: https://readthedocs.org/projects/inscriptis/badge/?version=latest
+   :target: https://inscriptis.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 A python based HTML to text conversion library, command line client and Web service with support for **nested tables** and a **subset of CSS**.
 Please take a look at the `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_ document for a demonstration of inscriptis' conversion quality.
