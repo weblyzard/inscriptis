@@ -2,8 +2,8 @@
 inscriptis -- HTML to text conversion library, command line client and Web service
 ==================================================================================
 
-.. image:: https://img.shields.io/badge/Python-v3.5%2B-blue
-   :alt: Supported Python versions
+.. image:: https://img.shields.io/pypi/pyversions/inscriptis   
+   :alt: PyPI - Python Version
 
 .. image:: https://badge.fury.io/py/inscriptis.svg
    :target: https://badge.fury.io/py/inscriptis

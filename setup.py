@@ -35,7 +35,6 @@ setup(
            'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
            'Topic :: Text Processing',
            'Topic :: Text Processing :: Markup :: HTML',
-           'Programming Language :: Python :: 3',
            'Programming Language :: Python :: 3.5',
            'Programming Language :: Python :: 3.6',
            'Programming Language :: Python :: 3.7',
