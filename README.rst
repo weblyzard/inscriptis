@@ -39,7 +39,7 @@ Table of Contents
 
 
 Installation
-------------
+============
 
 At the command line::
 
@@ -57,7 +57,7 @@ If you want to install from the latest sources, you can do::
 
 
 Python library
---------------
+==============
 
 Embedding inscriptis into your code is easy, as outlined below::
    
@@ -72,13 +72,13 @@ Embedding inscriptis into your code is easy, as outlined below::
    print(text)
 
 Standalone command line client
-------------------------------
+==============================
 The command line client converts HTML files or text retrieved from Web pages to the
 corresponding text representation.
 
 
 Command line parameters
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 The inscript.py command line client supports the following parameters::
 
    usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-l] [-d] input
@@ -104,7 +104,7 @@ The inscript.py command line client supports the following parameters::
                            How to handle indentation (extended or standard; default: extended)
 
 Examples
-~~~~~~~~
+--------
 
 convert the given page to text and output the result to the screen::
 
@@ -121,24 +121,24 @@ convert text provided via stdin and save the output to output.txt::
 
 
 Web Service
------------
+===========
 
 The Flask Web Service translates HTML pages to the corresponding plain text. 
 
 Additional Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 * python3-flask
 
 Startup
-~~~~~~~
+-------
 Start the inscriptis Web service with the following command::
 
   $ export FLASK_APP="web-service.py"
   $ python3 -m flask run
 
 Usage
-~~~~~
+-----
 
 The Web services receives the HTML file in the request body and returns the corresponding text. The file's encoding needs to be specified 
 in the `Content-Type` header (`UTF-8` in the example below)::
@@ -146,9 +146,9 @@ in the `Content-Type` header (`UTF-8` in the example below)::
   $ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://localhost:5000/get_text
 
 Fine tuning
------------
+===========
 
-The following options are available for fine tuning the way inscriptis translates HTML to text.
+The following options are available for fine tuning inscriptis' HTML rendering:
 
 1. **More rigorous indentation:** call `inscriptis.get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in `inscript.py` and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
 
@@ -174,6 +174,6 @@ The following options are available for fine tuning the way inscriptis translate
    
 
 Changelog
----------
+=========
 
 A full list of changes can be found in the `release notes <https://github.com/weblyzard/inscriptis/releases>`_.

@@ -1,11 +1,17 @@
+===============================
 Inscriptis module documentation
 ===============================
 
 .. automodule:: inscriptis
    :members:
 
+Inscriptis HTML engine
+======================
+.. automodule:: inscriptis.html_engine
+   :members:
+
 Inscriptis CSS handling
------------------------
+=======================
 .. automodule:: inscriptis.css
    :members:
 
@@ -13,7 +19,7 @@ Inscriptis CSS handling
    :members:
 
 Inscriptis table engine
------------------------
+=======================
 .. automodule:: inscriptis.table_engine
    :members:
 

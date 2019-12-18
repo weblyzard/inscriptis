@@ -2,9 +2,12 @@
 # encoding: utf-8
 
 '''
-This module contains constants that handle
+This module provides the following properties for the
+:class:`inscriptis.css.HtmlElement`.
 
- 1. The Display
+ 1. :class:`Display` properites.
+ 2. :class:`WhiteSpace` properties.
+ 3. the :class:`Line` element that determines how a single line is rendered.
 '''
 
 
@@ -43,7 +46,7 @@ class Line(object):
     __slots__ = ('margin_before', 'margin_after', 'prefix', 'suffix',
                  'content', 'list_bullet', 'padding', 'align', 'width')
 
-    def __init__(self, align=None):
+    def __init__(self):
         self.margin_before = 0
         self.margin_after = 0
         self.prefix = ""
@@ -56,6 +59,10 @@ class Line(object):
         pass
 
     def get_text(self):
+        '''
+        Returns:
+          str -- The text representation of the current line.
+        '''
         return ''.join(('\n' * self.margin_before,
                         ' ' * (self.padding - len(self.list_bullet)),
                         self.list_bullet,

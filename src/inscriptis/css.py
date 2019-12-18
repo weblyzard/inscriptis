@@ -201,3 +201,10 @@ DEFAULT_CSS = {
     'q': HtmlElement('q', prefix='"', suffix='"'),
     'span': HtmlElement('span', ),
 }
+'''
+.. data:: DEFAULT_CSS
+
+   The default CSS definition which corresponds to the standard definition
+   of HTML elements.
+'''
+
