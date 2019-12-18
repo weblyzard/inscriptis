@@ -54,10 +54,12 @@ class HtmlElement(object):
                            self.whitespace)
 
     def __str__(self):
-        return f'<{self.tag} prefix={self.prefix}, suffix={self.suffix}, ' \
-               f'display={self.display}, margin_before={self.margin_before}, ' \
-               f'margin_after={self.margin_after} padding={self.padding}, ' \
-               f'whitespace={self.whitespace}>'
+        return (
+            f'<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
+            f'display={self.display}, margin_before={self.margin_before}, '
+            f'margin_after={self.margin_after} padding={self.padding}, '
+            f'whitespace={self.whitespace}>'
+        )
 
 
 class CssParse(object):
@@ -207,4 +209,3 @@ DEFAULT_CSS = {
    The default CSS definition which corresponds to the standard definition
    of HTML elements.
 '''
-
