@@ -33,7 +33,7 @@ try:
 
     from inscriptis.html_engine import Inscriptis
 
-except NameError:
+except ImportError:
     import warnings
     warnings.warn(
         "Missing dependencies - inscriptis has not been properly installed")
