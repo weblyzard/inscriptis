@@ -58,7 +58,6 @@ class Inscriptis(object):
         # setup config
         self.cfg_deduplicate_captions = deduplicate_captions
         self.css = css if css else CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
-        print(self.css)
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {

@@ -10,6 +10,7 @@ import sys
 from os.path import isfile
 
 from inscriptis import get_text
+from inscriptis.css_profiles import CSS_PROFILES
 
 
 def get_parser():
@@ -41,11 +42,13 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(-1)
 
+    css_profile = CSS_PROFILES['relaxed'] if args.indentation == 'extended' \
+        else CSS_PROFILES['strict']
     text = get_text(html_content,
                     display_images=args.display_image_captions,
                     deduplicate_captions=args.deduplicate_image_captions,
                     display_links=args.display_link_targets,
-                    indentation=args.indentation)
+                    css_profile=css_profile)
     if args.output:
         with open(args.output, 'w') as open_file:
             open_file.write(text)
