@@ -31,27 +31,19 @@ try:
     import re
     from lxml.html import fromstring
 
-    from inscriptis.css import DEFAULT_CSS, HtmlElement
     from inscriptis.html_engine import Inscriptis
-    from inscriptis.html_properties import Display
 
-    RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
-
-    CSS_PROFILES = {'standard': DEFAULT_CSS,
-                    'extended': DEFAULT_CSS.copy()}
-    CSS_PROFILES['extended']['div'] = HtmlElement('div', display=Display.block,
-                                                  padding=2)
-    CSS_PROFILES['extended']['span'] = HtmlElement('span', prefix=' ',
-                                                   suffix=' ')
-
-except ImportError:
+except NameError:
     import warnings
     warnings.warn(
         "Missing dependencies - inscriptis has not been properly installed")
 
 
+RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
+
+
 def get_text(html_content, display_images=False, deduplicate_captions=False,
-             display_links=False, indentation='extended'):
+             display_links=False, css_profile=None):
     '''
     Converts an HTML string to text, optionally including and deduplicating
     image captions, displaying link targets and using either the standard
@@ -63,10 +55,7 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
       display_images (bool): whether to include image captions in the output.
       deduplicate_captions (bool): whether to deduplicate image captions.
       display_links (bool): whether to display links in the text version.
-      indentation: either 'standard' (solely based on the css) or 'extended'
-          which intends divs and adds spaces between span tags. The extended
-          indentation strategy (default) usually yields better results for
-          later text extraction steps.
+      css_profile (dict): The CSS profile used for rendering.
 
     Returns:
       str -- The text representation of the HTML content.
@@ -74,11 +63,6 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
     html_content = html_content.strip()
     if not html_content:
         return ''
-
-    # select the CSS profile required for the selected indentation strategy.
-    if indentation not in CSS_PROFILES:
-        raise ValueError('Unsupported indentation profile:', indentation)
-    css = CSS_PROFILES[indentation]
 
     # strip XML declaration, if necessary
     if html_content.startswith('<?xml '):
@@ -89,5 +73,5 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
                         display_images=display_images,
                         deduplicate_captions=deduplicate_captions,
                         display_links=display_links,
-                        css=css)
+                        css=css_profile)
     return parser.get_text()

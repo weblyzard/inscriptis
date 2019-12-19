@@ -12,6 +12,7 @@ from os.path import dirname, join
 from glob import glob
 
 from inscriptis import get_text
+from inscriptis.css_profiles import CSS_PROFILES
 
 TESTCASE_PATTERN = join(dirname(__file__), 'html/*.txt')
 
@@ -26,12 +27,12 @@ def test_html_snippets(filter_str=''):
 
         with open(testcase_txt.replace(".txt", ".html")) as f:
             print(f.name)
-            html = u"<html><body>{}</body></html>".format(f.read())
+            html = "<html><body>{}</body></html>".format(f.read())
 
-        converted_txt = get_text(html, indentation='standard').rstrip()
+        converted_txt = get_text(html, css_profile=CSS_PROFILES['strict']).rstrip()
 
         if converted_txt != reference_txt:
-            print (u"File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(testcase_txt, html, reference_txt, converted_txt))
+            print ("File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(testcase_txt, html, reference_txt, converted_txt))
 
         assert converted_txt == reference_txt
 

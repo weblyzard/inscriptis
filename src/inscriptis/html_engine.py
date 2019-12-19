@@ -10,9 +10,12 @@ Guiding principles:
 from itertools import chain
 from html import unescape
 
-from inscriptis.css import DEFAULT_CSS, CssParse, HtmlElement
+from inscriptis.css import CssParse, HtmlElement
+from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.html_properties import Display, WhiteSpace, Line
 from inscriptis.table_engine import Table
+
+DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
 
 class Inscriptis(object):
@@ -28,8 +31,7 @@ class Inscriptis(object):
          identifical titles).
       display_links: whether to display link targets
          (e.g. `[Python](https://www.python.org)`).
-      css: an optional custom CSS definition or the
-         :data:`inscriptis.css.DEFAULT_CSS`.
+      css: an optional custom CSS definition.
 
     Example::
 
@@ -55,7 +57,8 @@ class Inscriptis(object):
                  deduplicate_captions=False, display_links=False, css=None):
         # setup config
         self.cfg_deduplicate_captions = deduplicate_captions
-        self.css = css if css else DEFAULT_CSS
+        self.css = css if css else CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
+        print(self.css)
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {

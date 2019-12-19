@@ -10,8 +10,10 @@ This module provides the following properties for the
  3. the :class:`Line` element that determines how a single line is rendered.
 '''
 
+from enum import Enum
 
-class Display(object):
+
+class Display(Enum):
     '''
     This class specifies whether content will be rendered as inline, block or
     none (i.e. not rendered).
@@ -21,7 +23,7 @@ class Display(object):
     none = 3
 
 
-class WhiteSpace(object):
+class WhiteSpace(Enum):
     '''
     This class specifies the whitespace handling used for an HTML element as
     outlined in the `Cascading Style Sheets <https://www.w3.org/TR/CSS1/>`_
@@ -54,9 +56,6 @@ class Line(object):
         self.content = ""
         self.list_bullet = ""
         self.padding = 0
-
-    def extract_pre_text(self):
-        pass
 
     def get_text(self):
         '''
