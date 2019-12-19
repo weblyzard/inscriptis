@@ -1,21 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
+import sys
 from setuptools import setup, find_packages
 from os import path
 
-init = open('src/inscriptis/__init__.py').read()
-
-(__version__, ) = re.findall(r"__version__.*\s*=\s*[']([^']+)[']", init)
-(__author__, ) = re.findall(r"__author__.*\s*=\s*[']([^']+)[']", init)
-(__author_email__, ) = re.findall(r"__author_email__.*\s*=\s*[']([^']+)[']",
-                                  init)
-(__author_email__, ) = re.findall(r"__author_email__.*\s*=\s*[']([^']+)[']",
-                                  init)
-(__license__, ) = re.findall(r"__license__.*\s*=\s*[']([^']+)[']", init)
-
 here = path.abspath(path.dirname(__file__))
+sys.path.insert(0, path.join(here, 'src'))
+
+from inscriptis import (__version__, __author__, __author_email__, __license__)
+
 
 # Get the long description from the README.md file
 with open(path.join(here, 'README.rst')) as f:  # , encoding='utf-8'

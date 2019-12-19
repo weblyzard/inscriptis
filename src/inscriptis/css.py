@@ -57,7 +57,7 @@ class HtmlElement(object):
         return (
             '<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
             'display={self.display}, margin_before={self.margin_before}, '
-            'margin_after={self.margin_after} padding={self.padding}, '
+            'margin_after={self.margin_after}, padding={self.padding}, '
             'whitespace={self.whitespace}>'
         ).format(self=self)
 
