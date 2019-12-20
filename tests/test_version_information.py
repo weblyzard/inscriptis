@@ -25,6 +25,7 @@ def test_package_metadata():
     saved_modules = {}
     with pytest.warns(UserWarning):
         # delete cached modules
+        saved = {}
         for module in list(sys.modules):
             if module.startswith('lxml') or module == 'inscriptis':
                 saved_modules[module] = sys.modules[module]
