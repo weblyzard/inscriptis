@@ -3,6 +3,7 @@
 import os
 import sys
 import pytest
+import glob
 
 
 def test_package_metadata():
@@ -25,6 +26,8 @@ def test_package_metadata():
         sys.path.append(os.getcwd())
         sys.path.append(os.path.join(os.getcwd(), '../src'))
         print(sys.path)
+        for path in sys.path:
+            print(path, ">>>", ", ".join(glob.glob(path + "/*")))
         from inscriptis import (__version__, __author__, __author_email__,
                                 __copyright__, __license__, __status__)
 
