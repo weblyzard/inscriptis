@@ -2,6 +2,7 @@
 
 import os
 import sys
+import pytest
 
 
 def test_package_metadata():
@@ -12,12 +13,18 @@ def test_package_metadata():
     # clear the python search path to verify whether we can import
     # inscriptis even if its dependencies are not available
     # (required for building the docs and setup.py)
-    syspath = sys.path.copy()
-    sys.path.clear()
-    sys.path.append(os.path.join(os.getcwd(), '../src'))
+    with pytest.warns(UserWarning):
+        syspath = sys.path.copy()
 
-    from inscriptis import (__version__, __author__, __author_email__,
-                            __copyright__, __license__, __status__)
+        # delete cached modules
+        for module in list(sys.modules):
+            if module.startswith('inscriptis') or module.startswith('lxml'):
+                del sys.modules[module]
+
+        sys.path.clear()
+        sys.path.append(os.path.join(os.getcwd(), '../src'))
+        from inscriptis import (__version__, __author__, __author_email__,
+                                __copyright__, __license__, __status__)
 
     assert __version__
     assert 'Albert' in __author__ and 'Fabian' in __author__
