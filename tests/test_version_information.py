@@ -2,9 +2,6 @@
 
 import sys
 import pytest
-from os import path
-
-here = path.abspath(path.dirname(__file__))
 
 
 def test_package_metadata():
@@ -17,9 +14,7 @@ def test_package_metadata():
     # (required for building the docs and setup.py)
     with pytest.warns(UserWarning):
         syspath = sys.path.copy()
-        sys.path.clear()
-        sys.path.append(here)
-        sys.path.append(path.join(here, '../src'))
+        sys.path = [path for path in sys.path if '/inscriptis/' in path]
 
         # delete cached modules
         saved = {}
@@ -28,9 +23,6 @@ def test_package_metadata():
                 saved[module] = sys.modules[module]
                 del sys.modules[module]
 
-        sys.path.clear()
-        sys.path.append(here)
-        sys.path.append(path.join(here, '../src'))
         from inscriptis import (__version__, __author__, __author_email__,
                                 __copyright__, __license__, __status__)
 
