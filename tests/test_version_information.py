@@ -17,15 +17,17 @@ def test_package_metadata():
     # (required for building the docs and setup.py)
     with pytest.warns(UserWarning):
         syspath = sys.path.copy()
-
-        # delete cached modules
-        for module in list(sys.modules):
-            if module == 'inscriptis' or module.startswith('lxml'):
-                del sys.modules[module]
-
         sys.path.clear()
         sys.path.append(here)
         sys.path.append(path.join(here, '../src'))
+
+        # delete cached modules
+        saved = {}
+        for module in list(sys.modules):
+            if module.startswith('lxml') or module == 'inscriptis':
+                saved[module] = sys.modules[module]
+                del sys.modules[module]
+
         from inscriptis import (__version__, __author__, __author_email__,
                                 __copyright__, __license__, __status__)
 
@@ -36,4 +38,5 @@ def test_package_metadata():
     assert 'GPL' in __license__
     assert __status__
 
+    sys.modules.update(saved)
     sys.path = syspath

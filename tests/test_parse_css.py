@@ -5,9 +5,9 @@
 Tests HtmlElement and the parsing of CSS style definitiosn
 '''
 
-from inscriptis.css import CssParse, HtmlElement
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.html_properties import Display, WhiteSpace
+from inscriptis.model.css import CssParse, HtmlElement
 
 
 def test_css_parsing():
