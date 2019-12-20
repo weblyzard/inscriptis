@@ -2,9 +2,15 @@
 
 import sys
 import pytest
-from os import path
+import importlib
 
-here = path.abspath(path.dirname(__file__))
+BLACKLISTED_MODULE = 'lxml'
+
+
+def secure_importer(name, globals=None, locals=None, fromlist=(), level=0):
+    if name.startswith(BLACKLISTED_MODULE):
+        raise ImportError("Cannot import module %s." % name)
+    return importlib.__import__(name, globals, locals, fromlist, level)
 
 
 def test_package_metadata():
@@ -15,22 +21,18 @@ def test_package_metadata():
     # clear the python search path to verify whether we can import
     # inscriptis even if its dependencies are not available
     # (required for building the docs and setup.py)
+    saved_importer = __builtins__['__import__']
+    saved_modules = {}
     with pytest.warns(UserWarning):
-        syspath = sys.path.copy()
-        sys.path.clear()
-        sys.path.append(here)
-        sys.path.append(path.join(here, '../src'))
-
         # delete cached modules
         saved = {}
         for module in list(sys.modules):
             if module.startswith('lxml') or module == 'inscriptis':
-                saved[module] = sys.modules[module]
+                saved_modules[module] = sys.modules[module]
                 del sys.modules[module]
 
-        sys.path.clear()
-        sys.path.append(here)
-        sys.path.append(path.join(here, '../src'))
+        # overwrite import mechanism
+        __builtins__['__import__'] = secure_importer
         from inscriptis import (__version__, __author__, __author_email__,
                                 __copyright__, __license__, __status__)
 
@@ -41,5 +43,5 @@ def test_package_metadata():
     assert 'GPL' in __license__
     assert __status__
 
-    sys.modules.update(saved)
-    sys.path = syspath
+    sys.modules.update(saved_modules)
+    __builtins__['__import__'] = saved_importer

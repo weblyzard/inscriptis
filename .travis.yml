@@ -6,7 +6,7 @@ python:
 
 install:
   - python setup.py install
-  - pip install pytest
+  - pip install 'pytest>=5.2'
   - pip install pytest-cov
   - pip install codecov
 
