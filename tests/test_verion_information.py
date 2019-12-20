@@ -20,7 +20,7 @@ def test_package_metadata():
 
         # delete cached modules
         for module in list(sys.modules):
-            if module.startswith('inscriptis') or module.startswith('lxml'):
+            if module == 'inscriptis' or module.startswith('lxml'):
                 del sys.modules[module]
 
         sys.path.clear()
