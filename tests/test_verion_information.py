@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
-import os
 import sys
 import pytest
+from os import path
+
+here = path.abspath(path.dirname(__file__))
 
 
 def test_package_metadata():
@@ -22,7 +24,8 @@ def test_package_metadata():
                 del sys.modules[module]
 
         sys.path.clear()
-        sys.path.append(os.path.join(os.getcwd(), '../src'))
+        sys.path.append(here)
+        sys.path.append(path.join(here, '../src'))
         from inscriptis import (__version__, __author__, __author_email__,
                                 __copyright__, __license__, __status__)
 
