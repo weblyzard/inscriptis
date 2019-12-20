@@ -10,16 +10,23 @@ Inscriptis HTML engine
 .. automodule:: inscriptis.html_engine
    :members:
 
-Inscriptis CSS handling
-=======================
-.. automodule:: inscriptis.css
-   :members:
-
+Inscriptis HTML properties
+==========================
 .. automodule:: inscriptis.html_properties
    :members:
 
-Inscriptis table engine
+Inscriptis CSS model
+====================
+.. automodule:: inscriptis.model.css
+   :members:
+
+Inscriptis canvas model
 =======================
-.. automodule:: inscriptis.table_engine
+.. automodule:: inscriptis.model.canvas
+   :members:
+
+Inscriptis table model
+======================
+.. automodule:: inscriptis.model.table
    :members:
 

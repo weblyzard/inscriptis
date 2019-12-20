@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 from itertools import chain, zip_longest
+from inscriptis.html_properties import HorizontalAlignment
 
 
 class TableCell:
@@ -13,14 +14,9 @@ class TableCell:
         '''
         Args:
           canvas: canvas to which the table cell is written.
-          align: the line's alignment using string.format's format
-                 specification.
-
-                 - '<': left
-                 - '>': right
-                 - '^': center
-
-          width: line width
+          align: the :class:`~inscriptis.html_properties.HorizontalAlignment`
+            of the given line.
+         width: line width
         '''
         self.canvas = canvas
         self.align = align
@@ -32,7 +28,7 @@ class TableCell:
         The format specification according to the values of `align` and
         `width`.
         '''
-        return '{{:{self.align}{self.width}}}'.format(self=self)
+        return '{{:{self.align.value}{self.width}}}'.format(self=self)
 
     def get_cell_lines(self):
         '''
@@ -48,6 +44,38 @@ class TableCell:
             canvas = self.canvas
         return [format_spec.format(line) if self.width else line
                 for line in canvas]
+
+
+class Row(object):
+    ''' A single row within a table '''
+    __slot__ = ('columns', )
+
+    def __init__(self):
+        self.columns = []
+
+    def get_cell_lines(self, column_idx):
+        '''
+        Computes the list of lines in the cell specified by the column_idx.
+
+        Args:
+          column_idx: The column index of the cell.
+        Returns:
+          list -- The list of lines in the cell specified by the column_idx or
+                  an empty list if the column does not exist.
+        '''
+        return [] if column_idx >= len(self.columns) \
+            else self.columns[column_idx].get_cell_lines()
+
+    def get_text(self):
+        '''
+        Returns:
+          str -- A rendered string representation of the given row.
+        '''
+        row_lines = ['  '.join(line)
+                     for line in zip_longest(*[column.get_cell_lines()
+                                               for column in self.columns],
+                                             fillvalue=' ')]
+        return '\n'.join(row_lines)
 
 
 class Table(object):
@@ -66,7 +94,7 @@ class Table(object):
         '''
         self.rows.append(Row())
 
-    def add_cell(self, canvas, align='<'):
+    def add_cell(self, canvas, align=HorizontalAlignment.left):
         '''
         Adds a new :class:`TableCell` to the table's last row. If no row
         exists yet, a new row is created.
@@ -113,35 +141,3 @@ class Table(object):
         '''
         self.compute_column_width_and_height()
         return '\n'.join((row.get_text() for row in self.rows))
-
-
-class Row(object):
-    ''' A single row within a table '''
-    __slot__ = ('columns', )
-
-    def __init__(self):
-        self.columns = []
-
-    def get_cell_lines(self, column_idx):
-        '''
-        Computes the list of lines in the cell specified by the column_idx.
-
-        Args:
-          column_idx: The column index of the cell.
-        Returns:
-          list -- The list of lines in the cell specified by the column_idx or
-                  an empty list if the column does not exist.
-        '''
-        return [] if column_idx >= len(self.columns) \
-            else self.columns[column_idx].get_cell_lines()
-
-    def get_text(self):
-        '''
-        Returns:
-          str -- A rendered string representation of the given row.
-        '''
-        row_lines = ['  '.join(line)
-                     for line in zip_longest(*[column.get_cell_lines()
-                                               for column in self.columns],
-                                             fillvalue=' ')]
-        return '\n'.join(row_lines)

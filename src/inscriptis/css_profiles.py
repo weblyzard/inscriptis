@@ -9,7 +9,7 @@ Standard CSS profiles shipped with inscriptis.
              preventing cases where two words stick together.
 '''
 
-from inscriptis.css import HtmlElement
+from inscriptis.model.css import HtmlElement
 from inscriptis.html_properties import Display
 
 STRICT_CSS_PROFILE = {

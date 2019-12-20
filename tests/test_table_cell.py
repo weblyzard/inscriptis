@@ -2,15 +2,18 @@
 # encoding: utf-8
 
 '''
-test the line formatting with different parameters such as width and alignment
+Tests the Table formatting with different parameters such as width and
+alignment
 '''
 
-from inscriptis.table_engine import TableCell
+from inscriptis.model.table import TableCell
+from inscriptis.html_properties import HorizontalAlignment
+
 
 def test_cell_formatting():
 
     canvas = []
-    cell = TableCell(canvas=canvas, align='<')
+    cell = TableCell(canvas=canvas, align=HorizontalAlignment.left)
     cell.width = 16
     canvas.append('Ehre sei Gott!')
 
@@ -18,7 +21,5 @@ def test_cell_formatting():
     assert cell.get_cell_lines() == ['Ehre sei Gott!  ']
 
     # right alignment
-    cell.align = '>'
+    cell.align = HorizontalAlignment.right
     assert cell.get_cell_lines() == ['  Ehre sei Gott!']
-
-

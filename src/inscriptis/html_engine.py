@@ -10,10 +10,11 @@ Guiding principles:
 from itertools import chain
 from html import unescape
 
-from inscriptis.css import CssParse, HtmlElement
 from inscriptis.css_profiles import CSS_PROFILES
-from inscriptis.html_properties import Display, WhiteSpace, Line
-from inscriptis.table_engine import Table
+from inscriptis.model.css import CssParse, HtmlElement
+from inscriptis.model.canvas import Line
+from inscriptis.model.table import Table
+from inscriptis.html_properties import Display, WhiteSpace
 
 DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
