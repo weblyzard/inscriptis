@@ -22,7 +22,9 @@ def test_package_metadata():
                 del sys.modules[module]
 
         sys.path.clear()
+        sys.path.append(os.getcwd())
         sys.path.append(os.path.join(os.getcwd(), '../src'))
+        print(sys.path)
         from inscriptis import (__version__, __author__, __author_email__,
                                 __copyright__, __license__, __status__)
 
