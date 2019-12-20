@@ -12,7 +12,7 @@ from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace
 
 
-class HtmlElement(object):
+class HtmlElement():
     '''
     The HtmlElement class stores the following CSS propierties of HTML
     elements:
@@ -62,7 +62,7 @@ class HtmlElement(object):
         ).format(self=self)
 
 
-class CssParse(object):
+class CssParse():
     '''
     Parses CSS specifications and translates them into the corresponding
     HtmlElements.

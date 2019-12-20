@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 # encoding: utf-8
+'''
+Classes for representing Tables, Rows and TableCells.
+'''
 
 from itertools import chain, zip_longest
 from inscriptis.html_properties import HorizontalAlignment
 
 
-class TableCell:
+class TableCell():
     ''' A single table cell '''
 
     __slots__ = ('canvas', 'align', 'width', 'height')
@@ -46,7 +49,7 @@ class TableCell:
                 for line in canvas]
 
 
-class Row(object):
+class Row():
     ''' A single row within a table '''
     __slot__ = ('columns', )
 
@@ -78,7 +81,7 @@ class Row(object):
         return '\n'.join(row_lines)
 
 
-class Table(object):
+class Table():
     ''' A HTML table. '''
 
     __slot__ = ('rows', 'td_is_open')

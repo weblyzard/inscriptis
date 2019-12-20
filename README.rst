@@ -160,6 +160,7 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       from lxml.html import fromstring
       from inscriptis.css_profiles import CSS_PROFILES, HtmlElement
       from inscriptis.html_properties import Display
+      from inscriptis.model.config import ParserConfig
       
       # create a custom CSS based on the default style sheet and change the rendering of `div` and `span` elements
       css = CSS_PROFILES['strict'].copy()
@@ -167,12 +168,9 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
       
       html_tree = fromstring(html)
-      # create a parser using the custom css
-      parser = Inscriptis(html_tree,
-                          display_images=display_images,
-                          deduplicate_captions=deduplicate_captions,
-                          display_links=display_links,
-                          css=css)
+      # create a parser using a custom css
+      config = ParserConfig(css=css)
+      parser = Inscriptis(html_tree, config)
       text = parser.get_text()
    
 
