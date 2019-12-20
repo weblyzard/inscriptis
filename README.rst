@@ -158,11 +158,11 @@ The following options are available for fine tuning inscriptis' HTML rendering:
 2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can override these definitions (and therefore change the rendering) as outlined below::
 
       from lxml.html import fromstring
-      from inscriptis.css import DEFAULT_CSS, HtmlElement
+      from inscriptis.css_profiles import CSS_PROFILES, HtmlElement
       from inscriptis.html_properties import Display
       
       # create a custom CSS based on the default style sheet and change the rendering of `div` and `span` elements
-      css = DEFAULT_CSS.copy()
+      css = CSS_PROFILES['strict'].copy()
       css['div'] = HtmlElement('div', display=Display.block, padding=2)
       css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
       
