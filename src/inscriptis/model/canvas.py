@@ -39,11 +39,22 @@ class Line(object):
         Returns:
           str -- The text representation of the current line.
         '''
+        # optional padding to add before every line
+        base_padding = ' ' * (self.padding)
+        text = []
+        for no, data in enumerate(self.content.split('\0')):
+            # handle content with
+            if no % 2 == 0:
+                text.extend(data.split())
+            # handle `WhiteSpace.pre` formatted content.
+            else:
+                text.append(data.replace('\n', '\n' + base_padding))
+
         return ''.join(('\n' * self.margin_before,
                         ' ' * (self.padding - len(self.list_bullet)),
                         self.list_bullet,
                         self.prefix,
-                        ' '.join(self.content.split()),
+                        ' '.join(text),
                         self.suffix,
                         '\n' * self.margin_after))
 

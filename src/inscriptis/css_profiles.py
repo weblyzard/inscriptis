@@ -10,7 +10,7 @@ Standard CSS profiles shipped with inscriptis.
 '''
 
 from inscriptis.model.css import HtmlElement
-from inscriptis.html_properties import Display
+from inscriptis.html_properties import Display, WhiteSpace
 
 STRICT_CSS_PROFILE = {
     'head': HtmlElement('head', display=Display.none),
@@ -61,6 +61,10 @@ STRICT_CSS_PROFILE = {
 
     'q': HtmlElement('q', prefix='"', suffix='"'),
     'span': HtmlElement('span', ),
+
+    # Handling of <pre>
+    'pre': HtmlElement('pre', display=Display.block,
+                       whitespace=WhiteSpace.pre),
 }
 
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
