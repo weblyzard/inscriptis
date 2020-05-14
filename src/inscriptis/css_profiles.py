@@ -13,6 +13,8 @@ from inscriptis.model.css import HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace
 
 STRICT_CSS_PROFILE = {
+    'body': HtmlElement('body', display=Display.inline,
+                        whitespace=WhiteSpace.normal),
     'head': HtmlElement('head', display=Display.none),
     'link': HtmlElement('link', display=Display.none),
     'meta': HtmlElement('meta', display=Display.none),
@@ -60,7 +62,7 @@ STRICT_CSS_PROFILE = {
     'blockquote': HtmlElement('blockquote', display=Display.block),
 
     'q': HtmlElement('q', prefix='"', suffix='"'),
-    'span': HtmlElement('span', ),
+    'span': HtmlElement('span', display=Display.inline),
 
     # Handling of <pre>
     'pre': HtmlElement('pre', display=Display.block,

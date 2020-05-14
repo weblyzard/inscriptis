@@ -32,9 +32,9 @@ class HtmlElement(object):
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
                  'margin_after', 'padding', 'whitespace')
 
-    def __init__(self, tag='/', prefix='', suffix='', display=Display.inline,
+    def __init__(self, tag='/', prefix='', suffix='', display=None,
                  margin_before=0, margin_after=0, padding=0,
-                 whitespace=WhiteSpace.normal):
+                 whitespace=None):
         self.tag = tag
         self.prefix = prefix
         self.suffix = suffix
@@ -43,6 +43,20 @@ class HtmlElement(object):
         self.margin_after = margin_after
         self.padding = padding
         self.whitespace = whitespace
+
+    def get_refined_html_element(self, new):
+        '''
+        Args:
+            new: The HtmlElement to be applied to the current context
+
+        Returns:
+            The refined element with the context applied.
+        '''
+        display = Display.none if self.display == Display.none else \
+            new.display or self.display
+        return HtmlElement(new.tag, new.prefix, new.suffix, display,
+                           new.margin_before, new.margin_after, new.padding,
+                           new.whitespace or self.whitespace)
 
     def clone(self):
         '''
@@ -126,14 +140,27 @@ class CssParse(object):
     @staticmethod
     def _attr_display(value, html_element):
         '''
-        Set the display value
+        Set the display value.
         '''
+        if html_element.display == Display.none:
+            return
+
         if value == 'block':
             html_element.display = Display.block
         elif value == 'none':
             html_element.display = Display.none
         else:
             html_element.display = Display.inline
+
+    @staticmethod
+    def _attr_white_space(value, html_element):
+        '''
+        Set the white-space value.
+        '''
+        if value in ('normal', 'nowrap'):
+            html_element.whitespace = WhiteSpace.normal
+        elif value in ('pre', 'pre-line', 'pre-wrap'):
+            html_element.whitespace = WhiteSpace.pre
 
     @staticmethod
     def _attr_margin_top(value, html_element):
