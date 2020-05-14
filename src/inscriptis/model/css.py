@@ -47,13 +47,12 @@ class HtmlElement(object):
     def get_refined_html_element(self, new):
         '''
         Args:
-            new: The HtmlElement to be applied to the current context
+            new: The new HtmlElement to be applied to the current context.
 
         Returns:
             The refined element with the context applied.
         '''
-        display = Display.none if self.display == Display.none else \
-            new.display or self.display
+        display = Display.none if self.display == Display.none else new.display
         return HtmlElement(new.tag, new.prefix, new.suffix, display,
                            new.margin_before, new.margin_after, new.padding,
                            new.whitespace or self.whitespace)
