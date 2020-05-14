@@ -62,7 +62,6 @@ STRICT_CSS_PROFILE = {
     'blockquote': HtmlElement('blockquote', display=Display.block),
 
     'q': HtmlElement('q', prefix='"', suffix='"'),
-    'span': HtmlElement('span', display=Display.inline),
 
     # Handling of <pre>
     'pre': HtmlElement('pre', display=Display.block,
@@ -72,7 +71,8 @@ STRICT_CSS_PROFILE = {
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
 RELAXED_CSS_PROFILE['div'] = HtmlElement('div', display=Display.block,
                                          padding=2)
-RELAXED_CSS_PROFILE['span'] = HtmlElement('span', prefix=' ', suffix=' ')
+RELAXED_CSS_PROFILE['span'] = HtmlElement('span', display=Display.inline,
+                                          prefix=' ', suffix=' ')
 
 
 CSS_PROFILES = {'strict': STRICT_CSS_PROFILE,

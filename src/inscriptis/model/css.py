@@ -32,7 +32,7 @@ class HtmlElement(object):
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
                  'margin_after', 'padding', 'whitespace')
 
-    def __init__(self, tag='/', prefix='', suffix='', display=None,
+    def __init__(self, tag='/', prefix='', suffix='', display=Display.inline,
                  margin_before=0, margin_after=0, padding=0,
                  whitespace=None):
         self.tag = tag
