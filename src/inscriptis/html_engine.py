@@ -10,29 +10,21 @@ Guiding principles:
 from itertools import chain
 from html import unescape
 
-from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.css import CssParse, HtmlElement
 from inscriptis.model.canvas import Line
+from inscriptis.model.config import ParserConfig
 from inscriptis.model.table import Table
 from inscriptis.html_properties import Display, WhiteSpace
 
-DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
-
-class Inscriptis(object):
+class Inscriptis():
     '''
     The Inscriptis class translates an lxml HTML tree to the corresponding
     text representation.
 
     Args:
       html_tree: the lxml HTML tree to convert.
-      display_images: whether to include image tiles/alt texts.
-      deduplicate_captions: whether to deduplicate captions such as image
-         titles (many newspaper include images and video previews with
-         identifical titles).
-      display_links: whether to display link targets
-         (e.g. `[Python](https://www.python.org)`).
-      css: an optional custom CSS definition.
+      config: an optional ParserConfig configuration object.
 
     Example::
 
@@ -54,11 +46,9 @@ class Inscriptis(object):
 
     DEFAULT_ELEMENT = HtmlElement()
 
-    def __init__(self, html_tree, display_images=False,
-                 deduplicate_captions=False, display_links=False, css=None):
-        # setup config
-        self.cfg_deduplicate_captions = deduplicate_captions
-        self.css = css if css else CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
+    def __init__(self, html_tree, config=None):
+        # use the default configuration, if no config object is provided
+        self.config = config or ParserConfig()
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {
@@ -70,8 +60,8 @@ class Inscriptis(object):
             'ol': self.start_ol,
             'li': self.start_li,
             'br': self.newline,
-            'a': self.start_a if display_links else None,
-            'img': self.start_img if display_images else None,
+            'a': self.start_a if self.config.parse_a() else None,
+            'img': self.start_img if self.config.display_images else None,
         }
         self.end_tag_handler_dict = {
             'table': self.end_table,
@@ -79,7 +69,7 @@ class Inscriptis(object):
             'ol': self.end_ol,
             'td': self.end_td,
             'th': self.end_td,
-            'a': self.end_a if display_links else None,
+            'a': self.end_a if self.config.parse_a() else None,
         }
 
         # instance variables
@@ -103,18 +93,24 @@ class Inscriptis(object):
         self.link_target = ''
 
         # crawl the html tree
-        self.crawl_tree(html_tree)
+        self._parse_html_tree(html_tree)
         if self.current_line[-1]:
-            self.write_line()
+            self._write_line()
 
-    def crawl_tree(self, tree):
+    def _parse_html_tree(self, tree):
+        '''
+        Parses the HTML tree.
+
+        Args:
+            tree: the HTML tree to parse.
+        '''
         if isinstance(tree.tag, str):
             self.handle_starttag(tree.tag, tree.attrib)
             if tree.text:
                 self.handle_data(tree.text)
 
             for node in tree:
-                self.crawl_tree(node)
+                self._parse_html_tree(node)
 
             self.handle_endtag(tree.tag)
 
@@ -128,7 +124,7 @@ class Inscriptis(object):
         '''
         return unescape('\n'.join(chain(*self.clean_text_lines))).rstrip()
 
-    def write_line(self, force=False):
+    def _write_line(self, force=False):
         '''
         Writes the current line to the buffer, provided that there is any
         data to write.
@@ -150,7 +146,7 @@ class Inscriptis(object):
         self.next_line[-1] = Line()
         return True
 
-    def write_line_verbatim(self, text):
+    def _write_line_verbatim(self, text):
         '''
         Writes the current buffer without any modifications.
 
@@ -170,7 +166,7 @@ class Inscriptis(object):
         '''
         # use the css to handle tags known to it :)
 
-        cur = self.css.get(tag, Inscriptis.DEFAULT_ELEMENT)
+        cur = self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT)
         if 'style' in attrs:
             cur = CssParse.get_style_attribute(
                 attrs['style'], html_element=cur)
@@ -183,7 +179,7 @@ class Inscriptis(object):
             + cur.padding
         # flush text before display:block elements
         if cur.display == Display.block:
-            if not self.write_line():
+            if not self._write_line():
                 self.current_line[-1].margin_before = max(
                     self.current_line[-1].margin_before, cur.margin_before)
                 self.current_line[-1].padding = self.next_line[-1].padding
@@ -215,7 +211,7 @@ class Inscriptis(object):
         if cur.display == Display.block:
             # propagate the new padding to the current line, if nothing has
             # been written
-            if not self.write_line():
+            if not self._write_line():
                 self.current_line[-1].padding = self.next_line[-1].padding
 
         handler = self.end_tag_handler_dict.get(tag, None)
@@ -253,17 +249,24 @@ class Inscriptis(object):
 
     def start_img(self, attrs):
         image_text = attrs.get('alt', '') or attrs.get('title', '')
-        if image_text and not (self.cfg_deduplicate_captions and
+        if image_text and not (self.config.deduplicate_captions and
                                image_text == self.last_caption):
             self.current_line[-1].content += '[{}]'.format(image_text)
             self.last_caption = image_text
 
     def start_a(self, attrs):
-        self.link_target = attrs.get('href', '')
-        self.current_line[-1].content += '['
+        self.link_target = ''
+        if self.config.display_links:
+            self.link_target = attrs.get('href', '')
+        if self.config.display_anchors:
+            self.link_target = self.link_target or attrs.get('name', '')
+
+        if self.link_target:
+            self.current_line[-1].content += '['
 
     def end_a(self):
-        self.current_line[-1].content += ']({})'.format(self.link_target)
+        if self.link_target:
+            self.current_line[-1].content += ']({})'.format(self.link_target)
 
     def start_ol(self, attrs):
         self.li_counter.append(1)
@@ -274,7 +277,7 @@ class Inscriptis(object):
         self.li_counter.pop()
 
     def start_li(self, attrs):
-        self.write_line()
+        self._write_line()
         if self.li_level > 0:
             bullet = self.li_counter[-1]
         else:
@@ -314,7 +317,7 @@ class Inscriptis(object):
     def end_td(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self.current_table[-1].td_is_open = False
-            self.write_line(force=True)
+            self._write_line(force=True)
             self.clean_text_lines.pop()
             self.current_line.pop()
             self.next_line.pop()
@@ -325,12 +328,12 @@ class Inscriptis(object):
     def end_table(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self.end_td()
-        self.write_line()
+        self._write_line()
         table = self.current_table.pop()
-        self.write_line_verbatim(table.get_text())
+        self._write_line_verbatim(table.get_text())
 
     def newline(self, attrs):
-        self.write_line(force=True)
+        self._write_line(force=True)
 
     @staticmethod
     def get_bullet(index):

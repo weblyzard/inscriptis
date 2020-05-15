@@ -8,7 +8,7 @@ Elements used for rendering (parts) of the canvas.
 '''
 
 
-class Line(object):
+class Line():
     '''
     This class represents a line to render.
 

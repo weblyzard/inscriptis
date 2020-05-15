@@ -8,22 +8,23 @@
 
 from inscriptis import get_text
 from inscriptis.css_profiles import CSS_PROFILES
+from inscriptis.model.config import ParserConfig
 
-css_profile = CSS_PROFILES['strict']
+config = ParserConfig(css=CSS_PROFILES['strict'])
 
 
 def test_divs():
     html = u'<body>Thomas<div>Anton</div>Maria</body>'
-    assert get_text(html, css_profile=css_profile) == u'Thomas\nAnton\nMaria'
+    assert get_text(html, config) == u'Thomas\nAnton\nMaria'
 
     html = u'<body>Thomas<div>Anna <b>läuft</b> weit weg.</div>'
-    assert get_text(html, css_profile=css_profile) == u'Thomas\nAnna läuft weit weg.'
+    assert get_text(html, config) == u'Thomas\nAnna läuft weit weg.'
 
     html = u'<body>Thomas <ul><li><div>Anton</div>Maria</ul></body>'
-    assert get_text(html, css_profile=css_profile) == u'Thomas\n  * Anton\n    Maria'
+    assert get_text(html, config) == u'Thomas\n  * Anton\n    Maria'
 
     html = u'<body>Thomas <ul><li>  <div>Anton</div>Maria</ul></body>'
-    assert get_text(html, css_profile=css_profile) == u'Thomas\n  * Anton\n    Maria'
+    assert get_text(html, config) == u'Thomas\n  * Anton\n    Maria'
 
     html = u'<body>Thomas <ul><li> a  <div>Anton</div>Maria</ul></body>'
-    assert get_text(html, css_profile=css_profile) == u'Thomas\n  * a\n    Anton\n    Maria'
+    assert get_text(html, config) == u'Thomas\n  * a\n    Anton\n    Maria'
