@@ -83,7 +83,7 @@ class Inscriptis(object):
         }
 
         # instance variables
-        self.current_tag = [HtmlElement()]
+        self.current_tag = [self.css['body']]
         self.current_line = [Line()]
         self.next_line = [Line()]
 
@@ -96,7 +96,6 @@ class Inscriptis(object):
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
-        self.invisible = []  # attributes that are considered invisible
         self.last_caption = None
 
         # used if display_links is enabled
@@ -170,14 +169,12 @@ class Inscriptis(object):
         '''
         # use the css to handle tags known to it :)
 
-        cur = self.css.get(tag, Inscriptis.DEFAULT_ELEMENT)
+        cur = self.current_tag[-1].get_refined_element(self.css.get(
+            tag, Inscriptis.DEFAULT_ELEMENT))
         if 'style' in attrs:
             cur = CssParse.get_style_attribute(
                 attrs['style'], html_element=cur)
         self.current_tag.append(cur)
-        if cur.display == Display.none or self.invisible:
-            self.invisible.append(cur)
-            return
 
         self.next_line[-1].padding = self.current_line[-1].padding \
             + cur.padding
@@ -203,10 +200,6 @@ class Inscriptis(object):
           tag(str): the HTML end tag to process.
         '''
         cur = self.current_tag.pop()
-        if self.invisible:
-            self.invisible.pop()
-            return
-
         self.next_line[-1].padding = self.current_line[-1].padding \
             - cur.padding
         self.current_line[-1].margin_after = max(
@@ -229,7 +222,7 @@ class Inscriptis(object):
         Args:
           data (str): The text to process.
         '''
-        if self.invisible:
+        if self.current_tag[-1].display == Display.none:
             return
 
         # protect pre areas

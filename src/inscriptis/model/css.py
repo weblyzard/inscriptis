@@ -32,9 +32,9 @@ class HtmlElement(object):
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
                  'margin_after', 'padding', 'whitespace')
 
-    def __init__(self, tag='/', prefix='', suffix='', display=Display.inline,
+    def __init__(self, tag='/', prefix='', suffix='', display=None,
                  margin_before=0, margin_after=0, padding=0,
-                 whitespace=WhiteSpace.normal):
+                 whitespace=None):
         self.tag = tag
         self.prefix = prefix
         self.suffix = suffix
@@ -43,6 +43,29 @@ class HtmlElement(object):
         self.margin_after = margin_after
         self.padding = padding
         self.whitespace = whitespace
+
+    def get_refined_element(self, html_element):
+        '''
+        Refines the current HtmlElement with the HtmlElement given one. This
+        ensures that properties such as display and white-space values are
+        inherited, unless new values are set in  the HtmlElement oto apply.
+
+        Args:
+            html_element (HtmlElement): the HTML Element to apply to the
+                current one.
+        Returns:
+            HtmlElement -- the refined HtmlElement
+        '''
+        display = html_element.display or self.display \
+            if self.display != Display.none \
+            else Display.none
+        return HtmlElement(html_element.tag, html_element.prefix,
+                           html_element.suffix,
+                           display,
+                           html_element.margin_before,
+                           html_element.margin_after,
+                           html_element.padding,
+                           html_element.whitespace or self.whitespace)
 
     def clone(self):
         '''
@@ -126,7 +149,7 @@ class CssParse(object):
     @staticmethod
     def _attr_display(value, html_element):
         '''
-        Set the display value
+        Set the display value.
         '''
         if value == 'block':
             html_element.display = Display.block
@@ -134,6 +157,16 @@ class CssParse(object):
             html_element.display = Display.none
         else:
             html_element.display = Display.inline
+
+    @staticmethod
+    def _attr_white_space(value, html_element):
+        '''
+        Set the white-space value.
+        '''
+        if value == 'normal':
+            html_element.whitespace = WhiteSpace.normal
+        elif value == 'pre':
+            html_element.whitespace = WhiteSpace.pre
 
     @staticmethod
     def _attr_margin_top(value, html_element):
