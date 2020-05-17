@@ -19,7 +19,7 @@ from inscriptis.html_properties import Display, WhiteSpace
 DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
 
-class Inscriptis(object):
+class Inscriptis():
     '''
     The Inscriptis class translates an lxml HTML tree to the corresponding
     text representation.
@@ -169,8 +169,8 @@ class Inscriptis(object):
         '''
         # use the css to handle tags known to it :)
 
-        cur = self.current_tag[-1].get_refined_element(self.css.get(
-            tag, Inscriptis.DEFAULT_ELEMENT))
+        cur = self.current_tag[-1].get_refined_html_element(
+            self.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
         if 'style' in attrs:
             cur = CssParse.get_style_attribute(
                 attrs['style'], html_element=cur)

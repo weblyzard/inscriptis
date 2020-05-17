@@ -12,7 +12,7 @@ from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace
 
 
-class HtmlElement(object):
+class HtmlElement():
     '''
     The HtmlElement class stores the following CSS propierties of HTML
     elements:
@@ -44,28 +44,18 @@ class HtmlElement(object):
         self.padding = padding
         self.whitespace = whitespace
 
-    def get_refined_element(self, html_element):
+    def get_refined_html_element(self, new):
         '''
-        Refines the current HtmlElement with the HtmlElement given one. This
-        ensures that properties such as display and white-space values are
-        inherited, unless new values are set in  the HtmlElement oto apply.
-
         Args:
-            html_element (HtmlElement): the HTML Element to apply to the
-                current one.
+            new: The new HtmlElement to be applied to the current context.
+
         Returns:
-            HtmlElement -- the refined HtmlElement
+            The refined element with the context applied.
         '''
-        display = html_element.display or self.display \
-            if self.display != Display.none \
-            else Display.none
-        return HtmlElement(html_element.tag, html_element.prefix,
-                           html_element.suffix,
-                           display,
-                           html_element.margin_before,
-                           html_element.margin_after,
-                           html_element.padding,
-                           html_element.whitespace or self.whitespace)
+        display = Display.none if self.display == Display.none else new.display
+        return HtmlElement(new.tag, new.prefix, new.suffix, display,
+                           new.margin_before, new.margin_after, new.padding,
+                           new.whitespace or self.whitespace)
 
     def clone(self):
         '''
@@ -85,7 +75,7 @@ class HtmlElement(object):
         ).format(self=self)
 
 
-class CssParse(object):
+class CssParse():
     '''
     Parses CSS specifications and translates them into the corresponding
     HtmlElements.
@@ -115,7 +105,7 @@ class CssParse(object):
             key, value = (s.strip() for s in style_directive.split(':', 1))
 
             try:
-                apply_style = getattr(CssParse, "_attr_" +
+                apply_style = getattr(CssParse, "attr_" +
                                       key.replace('-webkit-', '')
                                       .replace("-", "_"))
                 apply_style(value, custome_html_element)
@@ -134,9 +124,9 @@ class CssParse(object):
         Returns:
             int -- the length in em's.
         '''
-        m = CssParse.RE_UNIT.search(length)
-        value = float(m.group(1))
-        unit = m.group(2)
+        _m = CssParse.RE_UNIT.search(length)
+        value = float(_m.group(1))
+        unit = _m.group(2)
 
         if unit not in ('em', 'qem', 'rem'):
             return int(round(value/8))
@@ -147,10 +137,13 @@ class CssParse(object):
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def _attr_display(value, html_element):
+    def attr_display(value, html_element):
         '''
         Set the display value.
         '''
+        if html_element.display == Display.none:
+            return
+
         if value == 'block':
             html_element.display = Display.block
         elif value == 'none':
@@ -159,28 +152,37 @@ class CssParse(object):
             html_element.display = Display.inline
 
     @staticmethod
-    def _attr_white_space(value, html_element):
+    def attr_white_space(value, html_element):
         '''
         Set the white-space value.
         '''
-        if value == 'normal':
+        if value in ('normal', 'nowrap'):
             html_element.whitespace = WhiteSpace.normal
-        elif value == 'pre':
+        elif value in ('pre', 'pre-line', 'pre-wrap'):
             html_element.whitespace = WhiteSpace.pre
 
     @staticmethod
-    def _attr_margin_top(value, html_element):
+    def attr_margin_top(value, html_element):
+        '''
+        Sets the top margin for the given HTML element.
+        '''
         html_element.margin_before = CssParse._get_em(value)
 
     @staticmethod
-    def _attr_margin_bottom(value, html_element):
+    def attr_margin_bottom(value, html_element):
+        '''
+        Sets the bottom margin for the given HTML element.
+        '''
         html_element.margin_after = CssParse._get_em(value)
 
     @staticmethod
-    def _attr_padding_left(value, html_element):
+    def attr_padding_left(value, html_element):
+        '''
+        Sets the left padding for the given HTML element.
+        '''
         html_element.padding = CssParse._get_em(value)
 
     # register aliases
-    _attr_margin_before = _attr_margin_top
-    _attr_margin_after = _attr_margin_bottom
-    _attr_padding_start = _attr_padding_left
+    attr_margin_before = attr_margin_top
+    attr_margin_after = attr_margin_bottom
+    attr_padding_start = attr_padding_left

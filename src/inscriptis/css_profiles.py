@@ -3,7 +3,7 @@
 '''
 Standard CSS profiles shipped with inscriptis.
 
-- `strict`: this profile corrisponds to the defaults used by Firefox
+- `strict`: this profile corresponds to the defaults used by Firefox
 - `relaxed`: this profile is more suited for text analytics, since it ensures
              that whitespaces are inserted between span and div elements
              preventing cases where two words stick together.
@@ -26,7 +26,6 @@ STRICT_CSS_PROFILE = {
                      margin_after=1),
     'figure': HtmlElement('figure', display=Display.block, margin_before=1,
                           margin_after=1),
-
 
     'h1': HtmlElement('h1', display=Display.block, margin_before=1,
                       margin_after=1),
@@ -62,7 +61,6 @@ STRICT_CSS_PROFILE = {
     'blockquote': HtmlElement('blockquote', display=Display.block),
 
     'q': HtmlElement('q', prefix='"', suffix='"'),
-    'span': HtmlElement('span', display=Display.inline),
 
     # Handling of <pre>
     'pre': HtmlElement('pre', display=Display.block,
@@ -72,7 +70,8 @@ STRICT_CSS_PROFILE = {
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
 RELAXED_CSS_PROFILE['div'] = HtmlElement('div', display=Display.block,
                                          padding=2)
-RELAXED_CSS_PROFILE['span'] = HtmlElement('span', prefix=' ', suffix=' ')
+RELAXED_CSS_PROFILE['span'] = HtmlElement('span', display=Display.inline,
+                                          prefix=' ', suffix=' ')
 
 
 CSS_PROFILES = {'strict': STRICT_CSS_PROFILE,
