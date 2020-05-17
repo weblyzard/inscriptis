@@ -6,8 +6,12 @@ Inscriptis Web Service
 
 from flask import request, Response, Flask
 from inscriptis import get_text
+from inscriptis.css_profiles import CSS_PROFILES
+from inscriptis.model.config import ParserConfig
 
 app = Flask(__name__)
+config = ParserConfig(css=CSS_PROFILES['relaxed'], display_images=True,
+                      deduplicate_captions=True, display_links=False)
 
 
 @app.route("/")
@@ -23,10 +27,7 @@ def get_text_call():
     else:
         encoding = 'UTF-8'
     html_content = request.data.decode(encoding, errors='ignore')
-    text = get_text(html_content,
-                    display_images=True,
-                    deduplicate_captions=True,
-                    display_links=False)
+    text = get_text(html_content, config)
     return Response(text, mimetype='text/plain')
 
 

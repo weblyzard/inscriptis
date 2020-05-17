@@ -42,8 +42,7 @@ except ImportError:
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
 
-def get_text(html_content, display_images=False, deduplicate_captions=False,
-             display_links=False, css_profile=None):
+def get_text(html_content, config=None):
     '''
     Converts an HTML string to text, optionally including and deduplicating
     image captions, displaying link targets and using either the standard
@@ -52,10 +51,7 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
 
     Args:
       html_content (str): the HTML string to be converted to text.
-      display_images (bool): whether to include image captions in the output.
-      deduplicate_captions (bool): whether to deduplicate image captions.
-      display_links (bool): whether to display links in the text version.
-      css_profile (dict): The CSS profile used for rendering.
+      config: An optional ParserConfig object.
 
     Returns:
       str -- The text representation of the HTML content.
@@ -69,9 +65,5 @@ def get_text(html_content, display_images=False, deduplicate_captions=False,
         html_content = RE_STRIP_XML_DECLARATION.sub('', html_content, count=1)
 
     html_tree = fromstring(html_content)
-    parser = Inscriptis(html_tree,
-                        display_images=display_images,
-                        deduplicate_captions=deduplicate_captions,
-                        display_links=display_links,
-                        css=css_profile)
+    parser = Inscriptis(html_tree, config)
     return parser.get_text()

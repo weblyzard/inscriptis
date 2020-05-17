@@ -84,27 +84,36 @@ Command line parameters
 -----------------------
 The inscript.py command line client supports the following parameters::
 
-   usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-l] [-d] input
+   usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a]
+                      [--indentation INDENTATION] [-v]
+                      [input]
    
    Converts HTML from file or url to a clean text version
    
    positional arguments:
-     input                 Html input either from a file or an url (default:stdin)
+     input                 Html input either from a file or an url
+                           (default:stdin)
    
    optional arguments:
      -h, --help            show this help message and exit
      -o OUTPUT, --output OUTPUT
                            Output file (default:stdout).
      -e ENCODING, --encoding ENCODING
-                           Content encoding for files (default:utf-8)
+                           Content encoding for reading and writing files
+                           (default:utf-8)
      -i, --display-image-captions
                            Display image captions (default:false).
-     -l, --display-link-targets
-                           Display link targets (default:false).
      -d, --deduplicate-image-captions
                            Deduplicate image captions (default:false).
-     --indentation
-                           How to handle indentation (extended or standard; default: extended)
+     -l, --display-link-targets
+                           Display link targets (default:false).
+     -a, --display-anchor-urls
+                           Deduplicate image captions (default:false).
+     --indentation INDENTATION
+                           How to handle indentation (extended or strict;
+                           default: extended).
+     -v, --version         display version information
+   
 
 Examples
 --------
@@ -160,6 +169,7 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       from lxml.html import fromstring
       from inscriptis.css_profiles import CSS_PROFILES, HtmlElement
       from inscriptis.html_properties import Display
+      from inscriptis.model.config import ParserConfig
       
       # create a custom CSS based on the default style sheet and change the rendering of `div` and `span` elements
       css = CSS_PROFILES['strict'].copy()
@@ -167,12 +177,9 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
       
       html_tree = fromstring(html)
-      # create a parser using the custom css
-      parser = Inscriptis(html_tree,
-                          display_images=display_images,
-                          deduplicate_captions=deduplicate_captions,
-                          display_links=display_links,
-                          css=css)
+      # create a parser using a custom css
+      config = ParserConfig(css=css)
+      parser = Inscriptis(html_tree, config)
       text = parser.get_text()
    
 
@@ -180,3 +187,4 @@ Changelog
 =========
 
 A full list of changes can be found in the `release notes <https://github.com/weblyzard/inscriptis/releases>`_.
+
