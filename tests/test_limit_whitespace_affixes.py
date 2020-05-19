@@ -26,5 +26,3 @@ def <span>hallo</span>():
         '\n' \
         'def hallo():\n' \
         '   print("echo")'
-
-
