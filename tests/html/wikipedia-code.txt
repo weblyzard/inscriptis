@@ -1,0 +1,17 @@
+
+Pythons Schlüsselwort lambda könnte manche Anhänger der funktionalen Programmierung fehlleiten. Solche lambda-Blöcke in Python können nur Ausdrücke enthalten, aber keine Anweisungen. Damit werden solche Anweisungen generell nicht verwendet, um eine Funktion zurückzugeben. Die übliche Vorgehensweise ist stattdessen, den Namen einer lokalen Funktion zurückzugeben. Das folgende Beispiel zeigt dies anhand einer einfachen Funktion nach den Ideen von Haskell Brooks Curry:
+
+def add_and_print_maker(x):
+    def temp(y):
+        print("{} + {} = {}".format(x, y, x + y))
+
+    return temp
+
+
+Damit ist auch Currying auf einfache Art möglich, um generische Funktionsobjekte auf problemspezifische herunterzubrechen. Hier ein einfaches Beispiel:
+
+def curry(func, known_argument):
+    return lambda unknown_argument: func(unknown_argument, known_argument)
+
+
+Wird die curry-Funktion aufgerufen, erwartet diese eine Funktion mit zwei notwendigen Parametern sowie die Parameterbelegung für den zweiten Parameter dieser Funktion. Der Rückgabewert von curry ist eine Funktion, die das Gleiche tut wie func, aber nur noch einen Parameter benötigt.

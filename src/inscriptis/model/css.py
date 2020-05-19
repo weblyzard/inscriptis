@@ -27,14 +27,17 @@ class HtmlElement():
     - padding: horizontal padding before the tag's content.
     - whitespace: the :class:`~inscriptis.html_properties.Whitespace` handling
       strategy.
+    - limit_whitespace_affixes: limit printing of whitespace affixes to
+      elements with `normal` whitepsace handling.
     '''
 
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
-                 'margin_after', 'padding', 'whitespace')
+                 'margin_after', 'padding', 'whitespace',
+                 'limit_whitespace_affixes')
 
     def __init__(self, tag='/', prefix='', suffix='', display=None,
                  margin_before=0, margin_after=0, padding=0,
-                 whitespace=None):
+                 whitespace=None, limit_whitespace_affixes=False):
         self.tag = tag
         self.prefix = prefix
         self.suffix = suffix
@@ -43,6 +46,7 @@ class HtmlElement():
         self.margin_after = margin_after
         self.padding = padding
         self.whitespace = whitespace
+        self.limit_whitespace_affixes = limit_whitespace_affixes
 
     def get_refined_html_element(self, new):
         '''
@@ -53,9 +57,20 @@ class HtmlElement():
             The refined element with the context applied.
         '''
         display = Display.none if self.display == Display.none else new.display
-        return HtmlElement(new.tag, new.prefix, new.suffix, display,
+        whitespace = new.whitespace or self.whitespace
+
+        # do not display whitespace only affixes in Whitespace.pre areas
+        # if `limit_whitespace_affixes` is set.
+        prefix = new.prefix
+        suffix = new.suffix
+        if new.limit_whitespace_affixes and whitespace == WhiteSpace.pre:
+            if prefix.isspace():
+                prefix = ''
+            if suffix.isspace():
+                suffix = ''
+        return HtmlElement(new.tag, prefix, suffix, display,
                            new.margin_before, new.margin_after, new.padding,
-                           new.whitespace or self.whitespace)
+                           whitespace)
 
     def clone(self):
         '''
