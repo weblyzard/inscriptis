@@ -4,10 +4,11 @@
 Inscriptis command line client.
 '''
 
-import requests
 import argparse
 import sys
 from os.path import isfile
+
+import requests
 
 from inscriptis import __version__, __copyright__, __license__
 from inscriptis import get_text

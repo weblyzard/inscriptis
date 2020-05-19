@@ -52,28 +52,28 @@ class Inscriptis():
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {
-            'table': self.start_table,
-            'tr': self.start_tr,
-            'td': self.start_td,
-            'th': self.start_td,
-            'ul': self.start_ul,
-            'ol': self.start_ol,
-            'li': self.start_li,
-            'br': self.newline,
-            'a': self.start_a if self.config.parse_a() else None,
-            'img': self.start_img if self.config.display_images else None,
+            'table': self._start_table,
+            'tr': self._start_tr,
+            'td': self._start_td,
+            'th': self._start_td,
+            'ul': self._start_ul,
+            'ol': self._start_ol,
+            'li': self._start_li,
+            'br': self._newline,
+            'a': self._start_a if self.config.parse_a() else None,
+            'img': self._start_img if self.config.display_images else None,
         }
         self.end_tag_handler_dict = {
-            'table': self.end_table,
-            'ul': self.end_ul,
-            'ol': self.end_ol,
-            'td': self.end_td,
-            'th': self.end_td,
-            'a': self.end_a if self.config.parse_a() else None,
+            'table': self._end_table,
+            'ul': self._end_ul,
+            'ol': self._end_ol,
+            'td': self._end_td,
+            'th': self._end_td,
+            'a': self._end_a if self.config.parse_a() else None,
         }
 
         # instance variables
-        self.current_tag = [HtmlElement()]
+        self.current_tag = [self.config.css['body']]
         self.current_line = [Line()]
         self.next_line = [Line()]
 
@@ -86,7 +86,6 @@ class Inscriptis():
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
-        self.invisible = []  # attributes that are considered invisible
         self.last_caption = None
 
         # used if display_links is enabled
@@ -166,14 +165,12 @@ class Inscriptis():
         '''
         # use the css to handle tags known to it :)
 
-        cur = self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT)
+        cur = self.current_tag[-1].get_refined_html_element(
+            self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
         if 'style' in attrs:
             cur = CssParse.get_style_attribute(
                 attrs['style'], html_element=cur)
         self.current_tag.append(cur)
-        if cur.display == Display.none or self.invisible:
-            self.invisible.append(cur)
-            return
 
         self.next_line[-1].padding = self.current_line[-1].padding \
             + cur.padding
@@ -199,10 +196,6 @@ class Inscriptis():
           tag(str): the HTML end tag to process.
         '''
         cur = self.current_tag.pop()
-        if self.invisible:
-            self.invisible.pop()
-            return
-
         self.next_line[-1].padding = self.current_line[-1].padding \
             - cur.padding
         self.current_line[-1].margin_after = max(
@@ -225,7 +218,7 @@ class Inscriptis():
         Args:
           data (str): The text to process.
         '''
-        if self.invisible:
+        if self.current_tag[-1].display == Display.none:
             return
 
         # protect pre areas
@@ -239,22 +232,22 @@ class Inscriptis():
         # or to a standard line
         self.current_line[-1].content += data
 
-    def start_ul(self, attrs):
+    def _start_ul(self, attrs):
         self.li_level += 1
         self.li_counter.append(Inscriptis.get_bullet(self.li_level - 1))
 
-    def end_ul(self):
+    def _end_ul(self):
         self.li_level -= 1
         self.li_counter.pop()
 
-    def start_img(self, attrs):
+    def _start_img(self, attrs):
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.config.deduplicate_captions and
                                image_text == self.last_caption):
             self.current_line[-1].content += '[{}]'.format(image_text)
             self.last_caption = image_text
 
-    def start_a(self, attrs):
+    def _start_a(self, attrs):
         self.link_target = ''
         if self.config.display_links:
             self.link_target = attrs.get('href', '')
@@ -264,19 +257,19 @@ class Inscriptis():
         if self.link_target:
             self.current_line[-1].content += '['
 
-    def end_a(self):
+    def _end_a(self):
         if self.link_target:
             self.current_line[-1].content += ']({})'.format(self.link_target)
 
-    def start_ol(self, attrs):
+    def _start_ol(self, attrs):
         self.li_counter.append(1)
         self.li_level += 1
 
-    def end_ol(self):
+    def _end_ol(self):
         self.li_level -= 1
         self.li_counter.pop()
 
-    def start_li(self, attrs):
+    def _start_li(self, attrs):
         self._write_line()
         if self.li_level > 0:
             bullet = self.li_counter[-1]
@@ -288,24 +281,24 @@ class Inscriptis():
         else:
             self.current_line[-1].list_bullet = bullet
 
-    def start_table(self, attrs):
+    def _start_table(self, attrs):
         self.current_table.append(Table())
 
-    def start_tr(self, attrs):
+    def _start_tr(self, attrs):
         if self.current_table:
             # check whether we need to cleanup a <td> tag that has not been
             # closed yet
             if self.current_table[-1].td_is_open:
-                self.end_td()
+                self._end_td()
 
             self.current_table[-1].add_row()
 
-    def start_td(self, attrs):
+    def _start_td(self, attrs):
         if self.current_table:
             # check whether we need to cleanup a <td> tag that has not been
             # closed yet
             if self.current_table[-1].td_is_open:
-                self.end_td()
+                self._end_td()
 
             # open td tag
             self.clean_text_lines.append([])
@@ -314,7 +307,7 @@ class Inscriptis():
             self.current_table[-1].add_cell(self.clean_text_lines[-1])
             self.current_table[-1].td_is_open = True
 
-    def end_td(self):
+    def _end_td(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self.current_table[-1].td_is_open = False
             self._write_line(force=True)
@@ -322,17 +315,17 @@ class Inscriptis():
             self.current_line.pop()
             self.next_line.pop()
 
-    def end_tr(self):
+    def _end_tr(self):
         pass
 
-    def end_table(self):
+    def _end_table(self):
         if self.current_table and self.current_table[-1].td_is_open:
-            self.end_td()
+            self._end_td()
         self._write_line()
         table = self.current_table.pop()
         self._write_line_verbatim(table.get_text())
 
-    def newline(self, attrs):
+    def _newline(self, attrs):
         self._write_line(force=True)
 
     @staticmethod

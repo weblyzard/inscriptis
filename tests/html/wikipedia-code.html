@@ -1,0 +1,14 @@
+<p>Pythons Schlüsselwort <code>lambda</code> könnte manche Anhänger der funktionalen Programmierung fehlleiten. Solche <code>lambda</code>-Blöcke in Python können nur Ausdrücke enthalten, aber keine Anweisungen. Damit werden solche Anweisungen generell nicht verwendet, um eine Funktion zurückzugeben. Die übliche Vorgehensweise ist stattdessen, den Namen einer lokalen Funktion zurückzugeben. Das folgende Beispiel zeigt dies anhand einer einfachen Funktion nach den Ideen von <a href="/wiki/Haskell_Brooks_Curry" title="Haskell Brooks Curry">Haskell Brooks Curry</a>:
+</p>
+<div class="mw-highlight mw-highlight-lang-python mw-content-ltr" dir="ltr"><pre><span></span><span class="k">def</span> <span class="nf">add_and_print_maker</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">temp</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> + </span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">temp</span>
+</pre></div>
+<p>Damit ist auch <a href="/wiki/Currying" title="Currying">Currying</a> auf einfache Art möglich, um generische Funktionsobjekte auf problemspezifische herunterzubrechen. Hier ein einfaches Beispiel:
+</p>
+<div class="mw-highlight mw-highlight-lang-python mw-content-ltr" dir="ltr"><pre><span></span><span class="k">def</span> <span class="nf">curry</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">known_argument</span><span class="p">):</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">unknown_argument</span><span class="p">:</span> <span class="n">func</span><span class="p">(</span><span class="n">unknown_argument</span><span class="p">,</span> <span class="n">known_argument</span><span class="p">)</span>
+</pre></div>
+<p>Wird die <code>curry</code>-Funktion aufgerufen, erwartet diese eine Funktion mit zwei notwendigen Parametern sowie die Parameterbelegung für den zweiten Parameter dieser Funktion. Der Rückgabewert von <code>curry</code> ist eine Funktion, die das Gleiche tut wie <code>func</code>, aber nur noch einen Parameter benötigt.
