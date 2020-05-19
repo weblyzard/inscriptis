@@ -73,7 +73,7 @@ class Inscriptis():
         }
 
         # instance variables
-        self.current_tag = [self.css['body']]
+        self.current_tag = [self.config.css['body']]
         self.current_line = [Line()]
         self.next_line = [Line()]
 
@@ -166,7 +166,7 @@ class Inscriptis():
         # use the css to handle tags known to it :)
 
         cur = self.current_tag[-1].get_refined_html_element(
-            self.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
+            self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
         if 'style' in attrs:
             cur = CssParse.get_style_attribute(
                 attrs['style'], html_element=cur)
