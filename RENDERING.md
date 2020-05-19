@@ -12,6 +12,7 @@ Since inscriptis is often used for natural language processing, we do not insert
 
 1. [Wikipedia table](#Wikipedia-table)
 2. [Nested tables](#Nested-tables)
+3. [Whitespace handling](#Whitespace-handling) (e.g. formatting of `<pre>` tags and `<code>` blocks)
 
 ### Wikipedia table
 A table taken from the English Wikipedia page for [Chur](https://en.wikipedia.org/wiki/Chur).
@@ -173,4 +174,71 @@ Second
    red      green
        blue
 ```
+### Whitespace handling
 
+Code examples taken from [Python (programming language)](https://en.wikipedia.org/wiki/Python_(programming_language) on Wikipedia.
+
+* Firefox (screenshot)
+<img src="https://github.com/weblyzard/inscriptis/raw/master/img/wikipedia-python-example.png" align="left" alt="Python code example rendered by Mozilla Firefox" />
+
+* inscriptis
+```
+  Python programming examples [ edit ]
+
+
+  Hello world program:
+
+    print('Hello, world!')
+    
+
+  Program to calculate the factorial of a positive integer:
+
+    n = int(input('Type a number, and its factorial will be printed: '))
+    
+    if n < 0:
+        raise ValueError('You must enter a positive integer')
+    
+    fact = 1
+    i = 2
+    while i <= n:
+        fact *= i
+        i += 1
+    
+    print(fact)
+    
+
+  Libraries [ edit ]
+
+
+  Python's large standard library, commonly cited as one of its greatest strengths,[99] provides tools suited to many tasks. For Internet-facing applications, many standard formats and protocols such as MIME and HTTP are supported. It includes modules for creating graphical user interfaces, connecting to relational databases, generating pseudorandom numbers, arithmetic with arbitrary-precision decimals,[100] manipulating regular expressions, and unit testing.
+```
+
+* lynx
+```
+Python programming examples[edit]                                                                                                                                                                     
+                                                                                                                                                                                                      
+   Hello world program:                                                                                                                                                                               
+                                                                                                                                                                                                      
+print('Hello, world!')                                                                                                                                                                                
+                                                                                                                                                                                                      
+   Program to calculate the factorial of a positive integer:                                                                                                                                          
+                                                                                                                                                                                                      
+n = int(input('Type a number, and its factorial will be printed: '))                                                                                                                                  
+                                                                                                                                                                                                      
+if n < 0:                                                                                                                                                                                             
+    raise ValueError('You must enter a positive integer')                                                                                                                                             
+                                                                                                                                                                                                      
+fact = 1                                                                                                                                                                                              
+i = 2                                                                                                                                                                                                 
+while i <= n:                                                                                                                                                                                         
+    fact *= i                                                                                                                                                                                         
+    i += 1                                                                                                                                                                                            
+                                                                                                                                                                                                      
+print(fact)                                                                                                                                                                                           
+                                                                                                                                                                                                      
+Libraries[edit]                                                                                                                                                                                       
+                                                                                                                                                                                                      
+   Python's large standard library, commonly cited as one of its greatest strengths,^[99] provides tools suited to many tasks. For Internet-facing applications, many standard formats and            
+   protocols such as MIME and HTTP are supported. It includes modules for creating graphical user interfaces, connecting to relational databases, generating pseudorandom numbers, arithmetic         
+   with arbitrary-precision decimals,^[100] manipulating regular expressions, and unit testing.                                                                                                       
+```
