@@ -67,12 +67,12 @@ Embedding inscriptis into your code is easy, as outlined below::
    import urllib.request
    from inscriptis import get_text
    
-   url = "http://www.informationscience.ch"
+   url = "https://www.informationscience.ch"
    html = urllib.request.urlopen(url).read().decode('utf-8')
    
    text = get_text(html)
-   
    print(text)
+
 
 Standalone command line client
 ==============================
@@ -155,7 +155,12 @@ Usage
 The Web services receives the HTML file in the request body and returns the corresponding text. The file's encoding needs to be specified 
 in the `Content-Type` header (`UTF-8` in the example below)::
 
-  $ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" -d @test.html  http://localhost:5000/get_text
+  $ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" --data-binary @test.html  http://localhost:5000/get_text
+
+The service also supports a version call::
+
+  $ curl http://localhost:5000/version
+
 
 Fine tuning
 ===========
@@ -187,4 +192,3 @@ Changelog
 =========
 
 A full list of changes can be found in the `release notes <https://github.com/weblyzard/inscriptis/releases>`_.
-
