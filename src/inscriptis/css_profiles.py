@@ -65,6 +65,12 @@ STRICT_CSS_PROFILE = {
     # Handling of <pre>
     'pre': HtmlElement('pre', display=Display.block,
                        whitespace=WhiteSpace.pre),
+    'xmp': HtmlElement('xmp', display=Display.block,
+                       whitespace=WhiteSpace.pre),
+    'listing': HtmlElement('listing', display=Display.block,
+                           whitespace=WhiteSpace.pre),
+    'plaintext': HtmlElement('plaintext', display=Display.block,
+                             whitespace=WhiteSpace.pre),
 }
 
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
