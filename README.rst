@@ -10,6 +10,10 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
    :target: https://badge.fury.io/py/inscriptis
    :alt: PyPI version
 
+.. image:: https://api.codeclimate.com/v1/badges/f8ed73f8a764f2bc4eba/maintainability
+   :target: https://codeclimate.com/github/weblyzard/inscriptis/maintainability
+   :alt: Maintainability
+
 .. image:: https://codecov.io/gh/weblyzard/inscriptis/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/weblyzard/inscriptis/
    :alt: Coverage
