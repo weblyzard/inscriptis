@@ -20,6 +20,7 @@ from time import time
 # Import inscriptis (using the version in the project directory rather than
 # any installed module versions).
 #
+LYNX_BIN = '/usr/bin/lynx'
 BENCHMARKING_ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(BENCHMARKING_ROOT, '../src')
 sys.path.insert(0, os.path.abspath(SRC_DIR))
@@ -142,7 +143,7 @@ class LynxHtmlConverter(AbstractHtmlConverter):
 
     def __init__(self):
         try:
-            subprocess.call(['lynx', '-dump \'www.google.com\''],
+            subprocess.call([LYNX_BIN, '-dump \'www.google.com\''],
                             stdout=subprocess.PIPE)
             self.available = True
         except OSError:
@@ -160,7 +161,7 @@ class LynxHtmlConverter(AbstractHtmlConverter):
         text = ''
         lynx_args = '-stdin -width=20000 -force_html -nocolor -dump -nolist ' \
                     '-nobold -display_charset=utf8'
-        cmd = ['/usr/bin/lynx', ] + lynx_args.split(' ')
+        cmd = [LYNX_BIN, ] + lynx_args.split(' ')
         lynx = subprocess.Popen(cmd, stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE)
         lynx.stdin.write(html.encode('utf8'))
