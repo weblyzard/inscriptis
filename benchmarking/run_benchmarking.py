@@ -278,6 +278,10 @@ def benchmark():
         os.makedirs(CACHE_DIR)
 
     for source in sources:
+        if not (source.startswith("http://") or source.startswith("https://")):
+            print("Invalid URL: ", source)
+            continue
+
         source_name = get_fname(source)
         source_cache_path = os.path.join(CACHE_DIR, source_name)
         if os.path.exists(source_cache_path):
