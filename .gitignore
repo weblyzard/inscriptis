@@ -3,10 +3,10 @@
 *.egg-info
 __pycache__/
 benchmarking_results/
+html_cache/
 .tox
 build/
 dist/
-benchmarking/
 .cache/
 .project
 .pydevproject
