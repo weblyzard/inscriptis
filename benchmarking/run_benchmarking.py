@@ -12,7 +12,7 @@ import signal
 import subprocess
 import sys
 import threading
-import urllib
+import urllib.request
 
 from time import time
 
@@ -278,19 +278,16 @@ def benchmark():
         os.makedirs(CACHE_DIR)
 
     for source in sources:
-        if not (source.startswith("http://") or source.startswith("https://")):
-            print("Invalid URL: ", source)
-            continue
-
         source_name = get_fname(source)
         source_cache_path = os.path.join(CACHE_DIR, source_name)
         if os.path.exists(source_cache_path):
             html = open(source_cache_path).read()
         else:
+            req = urllib.request.Request(source)
             try:
-                html = urllib.request.urlopen(source).read().decode('utf-8')
+                html = urllib.request.urlopen(req).read().decode('utf-8')
             except UnicodeDecodeError:
-                html = urllib.request.urlopen(source).read().decode('latin1')
+                html = urllib.request.urlopen(req).read().decode('latin1')
             open(source_cache_path, 'w').write(html)
 
         with open(os.path.join(benchmarking_results_dir,

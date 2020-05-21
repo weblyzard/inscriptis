@@ -2,7 +2,7 @@ https://www.watson.de
 https://www.watson.ch/Digital%20&%20Games/Android/134350872-Der-Monster-Akku-in-diesem-Smartphone-h%C3%A4lt-bis-15-Tage
 https://www.heise.de
 https://www.heise.de/newsticker/meldung/Fairphone-2-im-Test-Das-erste-modulare-Smartphone-3043417.html
-https://www.nzz.de
+http://www.nzz.de
 https://www.nzz.ch/mobilitaet/auto-mobil/bekenntnis-zum-stromauto-ld.3630
 https://de.wikipedia.org/wiki/Wikipedia:Hauptseite
 https://de.wikipedia.org/wiki/Python_(Programmiersprache)
