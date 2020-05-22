@@ -1,25 +1,15 @@
-FROM python:3.6
-MAINTAINER Fabian Odoni <fabian.odoni@htwchur.ch>
-
-RUN apt-get update --quiet &&\
-    apt-get install --quiet --yes --no-install-recommends \
-        ca-certificates \
-        cron \
-        curl \
-        git \
-        less \
-        nano \
-    ;
+FROM python:3
+LABEL maintainer="albert.weichselbraun@fhgr.ch"
 
 RUN mkdir /inscriptis
-
 COPY ./ /inscriptis/
 
 WORKDIR /inscriptis
-RUN pip3 install --upgrade pip &&\
-    pip3 install Flask &&\
-    python3 setup.py install
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir Flask
+RUN python setup.py install
 
 # RUN export FLASK_APP="web-service.py"
 # CMD ["python3", "-m", "flask", "run"]
+EXPOSE 5000
 CMD ["python3", "scripts/web-service.py"]
