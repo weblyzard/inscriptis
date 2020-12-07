@@ -116,9 +116,9 @@ class Table():
 
         # determine row height
         for row in self.rows:
-            max_row_height = max((len(cell.get_cell_lines())
-                                  for cell in row.columns)) \
-                                  if row.columns else 1
+            max_row_height = (max((len(cell.get_cell_lines())
+                                   for cell in row.columns))
+                              if row.columns else 1)
             for cell in row.columns:
                 cell.height = max_row_height
 

@@ -4,7 +4,7 @@
 '''
 Elements used for rendering (parts) of the canvas.
 
- 1. the :class:`Line` determines how a single line is rendered.
+The :class:`Line` determines how a single line is rendered.
 '''
 
 
