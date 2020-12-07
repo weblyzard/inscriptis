@@ -4,7 +4,7 @@
 '''
 Elements used for rendering (parts) of the canvas.
 
- 1. the :class:`Line` determines how a single line is rendered.
+The :class:`Line` determines how a single line is rendered.
 '''
 
 
@@ -66,4 +66,4 @@ class Line():
                         '\n' * self.margin_after))
 
     def __str__(self):
-        return "<Line: '{}'>".format(self.get_text())
+        return "<Line: '{0}'>".format(self.get_text())

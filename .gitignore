@@ -14,3 +14,4 @@ dist/
 .pytest_cache/
 .coverage
 _build/
+.mypy_cache/

@@ -132,8 +132,8 @@ class Inscriptis():
           bool -- True, if a line has been writer, otherwise False.
         '''
         # only break the line if there is any relevant content
-        if not force and (not self.current_line[-1].content or
-                          self.current_line[-1].content.isspace()):
+        if not force and (not self.current_line[-1].content
+                          or self.current_line[-1].content.isspace()):
             self.current_line[-1].margin_before = \
                 max(self.current_line[-1].margin_before,
                     self.current_tag[-1].margin_before)
@@ -242,9 +242,9 @@ class Inscriptis():
 
     def _start_img(self, attrs):
         image_text = attrs.get('alt', '') or attrs.get('title', '')
-        if image_text and not (self.config.deduplicate_captions and
-                               image_text == self.last_caption):
-            self.current_line[-1].content += '[{}]'.format(image_text)
+        if image_text and not (self.config.deduplicate_captions
+                               and image_text == self.last_caption):
+            self.current_line[-1].content += '[{0}]'.format(image_text)
             self.last_caption = image_text
 
     def _start_a(self, attrs):
@@ -259,7 +259,7 @@ class Inscriptis():
 
     def _end_a(self):
         if self.link_target:
-            self.current_line[-1].content += ']({})'.format(self.link_target)
+            self.current_line[-1].content += ']({0})'.format(self.link_target)
 
     def _start_ol(self, attrs):
         self.li_counter.append(1)
@@ -277,7 +277,7 @@ class Inscriptis():
             bullet = "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.current_line[-1].list_bullet = "{}. ".format(bullet)
+            self.current_line[-1].list_bullet = "{0}. ".format(bullet)
         else:
             self.current_line[-1].list_bullet = bullet
 

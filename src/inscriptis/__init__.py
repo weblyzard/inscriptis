@@ -23,7 +23,7 @@ __author__ = 'Albert Weichselbraun, Fabian Odoni'
 __author_email__ = 'albert.weichselbraun@fhgr.ch, fabian.odoni@fhgr.ch'
 __copyright__ = '2016-2020 Albert Weichselbraun, Fabian Odoni'
 __license__ = 'GPL2'
-__version__ = '1.1'
+__version__ = '1.1.1'
 __status__ = 'Prototype'
 
 

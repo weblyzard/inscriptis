@@ -120,8 +120,8 @@ class CssParse():
             key, value = (s.strip() for s in style_directive.split(':', 1))
 
             try:
-                apply_style = getattr(CssParse, "attr_" +
-                                      key.replace('-webkit-', '')
+                apply_style = getattr(CssParse, "attr_"
+                                      + key.replace('-webkit-', '')
                                       .replace("-", "_"))
                 apply_style(value, custome_html_element)
             except AttributeError:
@@ -144,7 +144,7 @@ class CssParse():
         unit = _m.group(2)
 
         if unit not in ('em', 'qem', 'rem'):
-            return int(round(value/8))
+            return int(round(value / 8))
         return int(round(value))
 
     # ------------------------------------------------------------------------
