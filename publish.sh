@@ -31,6 +31,6 @@ case "$1" in
 		docker tag ${IMAGE_NAME}:${VERSION} docker.pkg.github.com/weblyzard/inscriptis/${IMAGE_NAME}:${VERSION}
 
 		# Step 3: Publish
-		#docker push docker.pkg.github.com/weblyzard/inscriptis/${IMAGE_NAME}:${VERSION}
+		docker push docker.pkg.github.com/weblyzard/inscriptis/${IMAGE_NAME}:${VERSION}
 		;;
 esac
