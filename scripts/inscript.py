@@ -6,7 +6,7 @@ Inscriptis command line client.
 
 import argparse
 import sys
-from os.path import isfile
+from pathlib import Path
 
 import requests
 
@@ -56,23 +56,24 @@ if __name__ == "__main__":
 
     if args.version:
         print('Inscript HTML to text conversion '
-              '(based on the inscriptis library version {})'.format(
+              '(based on the inscriptis library version {0})'.format(
                   __version__))
         print('Copyright (C)', __copyright__)
         print('\nInscript comes with ABSOLUTELY NO WARRANTY.')
         print('This is free software and you are welcome to redistribute it '
-              'under the terms of the {}.'.format(__license__))
+              'under the terms of the {0}.'.format(__license__))
         sys.exit(0)
 
     if not args.input:
         html_content = sys.stdin.read()
-    elif isfile(args.input):
-        with open(args.input, encoding=args.encoding, errors='ignore') as f:
+    elif Path(args.input).is_file():
+        with Path(args.input).open(encoding=args.encoding,
+                                   errors='ignore') as f:
             html_content = f.read()
     elif args.input.startswith("http://") or args.input.startswith("https://"):
         html_content = requests.get(args.input).text
     else:
-        print("ERROR: Cannot open input file '{}'.\n".format(args.input))
+        print("ERROR: Cannot open input file '{0}'.\n".format(args.input))
         parser.print_help()
         sys.exit(-1)
 
@@ -85,7 +86,7 @@ if __name__ == "__main__":
                           display_anchors=args.display_anchor_urls)
     text = get_text(html_content, config)
     if args.output:
-        with open(args.output, 'w', encoding=args.encoding) as open_file:
+        with Path(args.output).open('w', encoding=args.encoding) as open_file:
             open_file.write(text)
     else:
         print(text)
