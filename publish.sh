@@ -8,7 +8,7 @@
 # - https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
 # - https://packaging.python.org/guides/making-a-pypi-friendly-readme/
 
-VERSION=`grep -Po "\b__version__ = '\K[^']+" src/inscriptis/__init__.py`
+VERSION=$(grep -Po "\b__version__ = '\K[^']+" src/inscriptis/__init__.py)
 IMAGE_NAME=inscriptis-web-service
 
 case "$1" in
@@ -24,7 +24,7 @@ case "$1" in
 		;;
 	docker)
 		echo "Publishing ${IMAGE_NAME} in version ${VERSION}"
-		cat ../github-token.txt | docker login docker.pkg.github.com -u AlbertWeichselbraun --password-stdin
+		docker login docker.pkg.github.com -u AlbertWeichselbraun --password-stdin < ../github-token.txt
 		docker build -t ${IMAGE_NAME}:${VERSION} .
 
 		# Step 2: Tag
