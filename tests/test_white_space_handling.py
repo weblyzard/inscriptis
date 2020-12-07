@@ -19,7 +19,6 @@ def test_white_space():
 
     html = (u'<body><span style="white-space: nowrap"><i>1</i>2\n3</span>'
             u'</body>')
-    print(get_text(html))
     assert get_text(html, config) == u'12 3'
 
     html = (u'<body><span style="white-space: pre"><i>1</i>2\n3</span>'
