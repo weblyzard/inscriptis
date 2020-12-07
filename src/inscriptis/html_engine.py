@@ -244,7 +244,7 @@ class Inscriptis():
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.config.deduplicate_captions and
                                image_text == self.last_caption):
-            self.current_line[-1].content += '[{}]'.format(image_text)
+            self.current_line[-1].content += '[{0}]'.format(image_text)
             self.last_caption = image_text
 
     def _start_a(self, attrs):
@@ -259,7 +259,7 @@ class Inscriptis():
 
     def _end_a(self):
         if self.link_target:
-            self.current_line[-1].content += ']({})'.format(self.link_target)
+            self.current_line[-1].content += ']({0})'.format(self.link_target)
 
     def _start_ol(self, attrs):
         self.li_counter.append(1)
@@ -277,7 +277,7 @@ class Inscriptis():
             bullet = "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.current_line[-1].list_bullet = "{}. ".format(bullet)
+            self.current_line[-1].list_bullet = "{0}. ".format(bullet)
         else:
             self.current_line[-1].list_bullet = bullet
 

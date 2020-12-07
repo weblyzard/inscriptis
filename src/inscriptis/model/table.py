@@ -123,7 +123,7 @@ class Table():
                 cell.height = max_row_height
 
         # determine maximum number of columns
-        max_columns = max([len(row.columns) for row in self.rows])
+        max_columns = max((len(row.columns) for row in self.rows))
 
         for column_idx in range(max_columns):
             # determine max_column_width

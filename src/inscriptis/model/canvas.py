@@ -66,4 +66,4 @@ class Line():
                         '\n' * self.margin_after))
 
     def __str__(self):
-        return "<Line: '{}'>".format(self.get_text())
+        return "<Line: '{0}'>".format(self.get_text())
