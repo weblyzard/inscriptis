@@ -67,3 +67,6 @@ class Line():
 
     def __str__(self):
         return "<Line: '{0}'>".format(self.get_text())
+
+    def __repr__(self):
+        return str(self)
