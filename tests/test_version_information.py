@@ -34,14 +34,13 @@ def test_package_metadata():
         # overwrite import mechanism
         __builtins__['__import__'] = secure_importer
         from inscriptis import (__version__, __author__, __author_email__,
-                                __copyright__, __license__, __status__)
+                                __copyright__, __license__)
 
     assert __version__
     assert 'Albert' in __author__ and 'Fabian' in __author__
     assert '@fhgr' in __author_email__
     assert 'Albert' in __copyright__ and 'Fabian' in __copyright__
-    assert 'GPL' in __license__
-    assert __status__
+    assert 'Apache' in __license__
 
     sys.modules.update(saved_modules)
     __builtins__['__import__'] = saved_importer
