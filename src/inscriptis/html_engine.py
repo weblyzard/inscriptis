@@ -131,7 +131,7 @@ class Inscriptis():
         Returns:
           bool -- True, if a line has been writer, otherwise False.
         '''
-        # only break the line if there is any relevant content
+        # only write the line if it contains relevant content
         if not force and (not self.current_line[-1].content
                           or self.current_line[-1].content.isspace()):
             self.current_line[-1].margin_before = \
@@ -177,8 +177,9 @@ class Inscriptis():
         # flush text before display:block elements
         if cur.display == Display.block:
             if not self._write_line():
-                self.current_line[-1].margin_before = max(
-                    self.current_line[-1].margin_before, cur.margin_before)
+                self.current_line[-1].margin_before = 0 \
+                    if not self.clean_text_lines[0] else max(
+                        self.current_line[-1].margin_before, cur.margin_before)
                 self.current_line[-1].padding = self.next_line[-1].padding
             else:
                 self.current_line[-1].margin_after = max(

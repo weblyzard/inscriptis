@@ -1,4 +1,3 @@
-
 Pythons Schlüsselwort lambda könnte manche Anhänger der funktionalen Programmierung fehlleiten. Solche lambda-Blöcke in Python können nur Ausdrücke enthalten, aber keine Anweisungen. Damit werden solche Anweisungen generell nicht verwendet, um eine Funktion zurückzugeben. Die übliche Vorgehensweise ist stattdessen, den Namen einer lokalen Funktion zurückzugeben. Das folgende Beispiel zeigt dies anhand einer einfachen Funktion nach den Ideen von Haskell Brooks Curry:
 
 def add_and_print_maker(x):
