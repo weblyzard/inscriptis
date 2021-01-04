@@ -23,6 +23,7 @@ def test_cell_formatting():
     # string representation
     assert str(line) == \
         "<Line: 'Ehre sei Gott!'>"
+    assert repr(line) == str(line)
 
     # add margins
     line.margin_before = 1
