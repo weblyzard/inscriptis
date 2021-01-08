@@ -29,6 +29,8 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
 A python based HTML to text conversion library, command line client and Web service with support for **nested tables** and a **subset of CSS**.
 Please take a look at the `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_ document for a demonstration of inscriptis' conversion quality.
 
+A Java port of inscriptis is availabe `here <https://github.com/x28/inscriptis-java>`_.
+
 Documentation
 =============
 
