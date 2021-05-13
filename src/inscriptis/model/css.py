@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
-'''
+"""
 This module implements basic CSS support for inscriptis.
 
 - The :class:`HtmlElement` class encapsulates all CSS properties of a single
   HTML element.
 - :class:`CssParse` parses CSS specifications and translates them into the
   corresponding HtmlElements used by Inscriptis for rendering HTML pages.
-'''
+"""
 from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace
 
 
-class HtmlElement():
-    '''
-    The HtmlElement class stores the following CSS propierties of HTML
+class HtmlElement:
+    """
+    The HtmlElement class stores the following CSS properties of HTML
     elements:
 
     - tag: tag name of the given HtmlElement.
@@ -28,8 +28,8 @@ class HtmlElement():
     - whitespace: the :class:`~inscriptis.html_properties.Whitespace` handling
       strategy.
     - limit_whitespace_affixes: limit printing of whitespace affixes to
-      elements with `normal` whitepsace handling.
-    '''
+      elements with `normal` whitespace handling.
+    """
 
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
                  'margin_after', 'padding', 'whitespace',
@@ -49,13 +49,13 @@ class HtmlElement():
         self.limit_whitespace_affixes = limit_whitespace_affixes
 
     def get_refined_html_element(self, new):
-        '''
+        """
         Args:
             new: The new HtmlElement to be applied to the current context.
 
         Returns:
             The refined element with the context applied.
-        '''
+        """
         display = Display.none if self.display == Display.none else new.display
         whitespace = new.whitespace or self.whitespace
 
@@ -73,10 +73,10 @@ class HtmlElement():
                            whitespace)
 
     def clone(self):
-        '''
+        """
         Returns:
            a clone of the current HtmlElement
-        '''
+        """
         return HtmlElement(self.tag, self.prefix, self.suffix, self.display,
                            self.margin_before, self.margin_after, self.padding,
                            self.whitespace)
@@ -90,30 +90,30 @@ class HtmlElement():
         ).format(self=self)
 
 
-class CssParse():
-    '''
+class CssParse:
+    """
     Parses CSS specifications and translates them into the corresponding
     HtmlElements.
 
     The attribute `display: none`, for instance, is translated to
     `HtmlElement.display=Display.none`.
-    '''
+    """
     # used to separate value and unit from each other
     RE_UNIT = re_compile(r'([\-0-9\.]+)(\w+)')
 
     @staticmethod
     def get_style_attribute(style_attribute, html_element):
-        '''
+        """
         Args:
-          style_directive: The attribute value of the given style sheet.
+          style_attribute: The attribute value of the given style sheet.
                            Example: display: none
           html_element: The HtmlElement to which the given style is applied.
 
         Returns:
           An HtmlElement that merges the given element with the style
           attributes specified.
-        '''
-        custome_html_element = html_element.clone()
+        """
+        custom_html_element = html_element.clone()
         for style_directive in style_attribute.lower().split(';'):
             if ':' not in style_directive:
                 continue
@@ -123,22 +123,22 @@ class CssParse():
                 apply_style = getattr(CssParse, "attr_"
                                       + key.replace('-webkit-', '')
                                       .replace("-", "_"))
-                apply_style(value, custome_html_element)
+                apply_style(value, custom_html_element)
             except AttributeError:
                 pass
 
-        return custome_html_element
+        return custom_html_element
 
     @staticmethod
     def _get_em(length):
-        '''
+        """
         Args:
           length (str): the length (e.g. 2em, 2px, etc.) as specified in the
                         CSS.
 
         Returns:
             int -- the length in em's.
-        '''
+        """
         _m = CssParse.RE_UNIT.search(length)
         value = float(_m.group(1))
         unit = _m.group(2)
@@ -153,9 +153,9 @@ class CssParse():
 
     @staticmethod
     def attr_display(value, html_element):
-        '''
+        """
         Set the display value.
-        '''
+        """
         if html_element.display == Display.none:
             return
 
@@ -168,9 +168,9 @@ class CssParse():
 
     @staticmethod
     def attr_white_space(value, html_element):
-        '''
+        """
         Set the white-space value.
-        '''
+        """
         if value in ('normal', 'nowrap'):
             html_element.whitespace = WhiteSpace.normal
         elif value in ('pre', 'pre-line', 'pre-wrap'):
@@ -178,23 +178,23 @@ class CssParse():
 
     @staticmethod
     def attr_margin_top(value, html_element):
-        '''
+        """
         Sets the top margin for the given HTML element.
-        '''
+        """
         html_element.margin_before = CssParse._get_em(value)
 
     @staticmethod
     def attr_margin_bottom(value, html_element):
-        '''
+        """
         Sets the bottom margin for the given HTML element.
-        '''
+        """
         html_element.margin_after = CssParse._get_em(value)
 
     @staticmethod
     def attr_padding_left(value, html_element):
-        '''
+        """
         Sets the left padding for the given HTML element.
-        '''
+        """
         html_element.padding = CssParse._get_em(value)
 
     # register aliases

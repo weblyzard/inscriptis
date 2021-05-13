@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-'''
+"""
 Elements used for rendering (parts) of the canvas.
 
 The :class:`Line` determines how a single line is rendered.
-'''
+"""
 
 
-class Line():
-    '''
+class Line:
+    """
     This class represents a line to render.
 
     Args:
@@ -21,7 +21,7 @@ class Line():
         padding: horizontal padding
         align: determines the alignment of the line (not used yet)
         width: total width of the line in characters (not used yet)
-    '''
+    """
     __slots__ = ('margin_before', 'margin_after', 'prefix', 'suffix',
                  'content', 'list_bullet', 'padding', 'align', 'width')
 
@@ -35,10 +35,10 @@ class Line():
         self.padding = 0
 
     def get_text(self):
-        '''
+        """
         Returns:
           str -- The text representation of the current line.
-        '''
+        """
         if '\0' not in self.content:
             # standard text without any `WhiteSpace.pre` formatted text.
             text = self.content.split()
@@ -47,7 +47,7 @@ class Line():
             self.content = self.content.replace('\0\0', '')
             text = []
             # optional padding to add before every line
-            base_padding = ' ' * (self.padding)
+            base_padding = ' ' * self.padding
 
             for no, data in enumerate(self.content.split('\0')):
                 # handle standard content
