@@ -29,6 +29,8 @@ def test_html_snippets(filter_str=''):
         converted_txt = get_text(html, ParserConfig(
             css=CSS_PROFILES['strict'])).rstrip()
 
+        reference_txt = '\n'.join([line + "<" for line in reference_txt.split("\n")])
+        converted_txt = '\n'.join([line + "<" for line in converted_txt.split("\n")])
         if converted_txt != reference_txt:
             print("File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}"
                   .format(testcase_txt, html, reference_txt, converted_txt))

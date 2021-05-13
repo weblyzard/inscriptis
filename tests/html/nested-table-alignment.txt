@@ -1,0 +1,7 @@
+column with nested table  column 2  column 3
+nested  table                               
+11      12                Tom       Joe     
+21      22                                  
+31      32                                  
+                                            
+last                      line

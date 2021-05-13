@@ -9,7 +9,7 @@ This module implements basic CSS support for inscriptis.
   corresponding HtmlElements used by Inscriptis for rendering HTML pages.
 """
 from re import compile as re_compile
-from inscriptis.html_properties import Display, WhiteSpace
+from inscriptis.html_properties import Display, WhiteSpace, HorizontalAlignment, VerticalAlignment
 
 
 class HtmlElement:
@@ -33,11 +33,12 @@ class HtmlElement:
 
     __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
                  'margin_after', 'padding', 'whitespace',
-                 'limit_whitespace_affixes')
+                 'limit_whitespace_affixes', 'align', 'valign')
 
     def __init__(self, tag='/', prefix='', suffix='', display=None,
                  margin_before=0, margin_after=0, padding=0,
-                 whitespace=None, limit_whitespace_affixes=False):
+                 whitespace=None, limit_whitespace_affixes=False,
+                 align=HorizontalAlignment.left, valign=VerticalAlignment.middle):
         self.tag = tag
         self.prefix = prefix
         self.suffix = suffix
@@ -47,6 +48,8 @@ class HtmlElement:
         self.padding = padding
         self.whitespace = whitespace
         self.limit_whitespace_affixes = limit_whitespace_affixes
+        self.align = align
+        self.valign = valign
 
     def get_refined_html_element(self, new):
         """
@@ -196,6 +199,20 @@ class CssParse:
         Sets the left padding for the given HTML element.
         """
         html_element.padding = CssParse._get_em(value)
+
+    @staticmethod
+    def attr_align(value, html_element):
+        try:
+            html_element.align = HorizontalAlignment[value]
+        except KeyError:
+            pass
+
+    @staticmethod
+    def attr_valign(value, html_element):
+        try:
+            html_element.valign = VerticalAlignment[value]
+        except KeyError:
+            pass
 
     # register aliases
     attr_margin_before = attr_margin_top

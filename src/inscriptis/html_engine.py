@@ -305,7 +305,9 @@ class Inscriptis():
             self.clean_text_lines.append([])
             self.current_line.append(Line())
             self.next_line.append(Line())
-            self.current_table[-1].add_cell(self.clean_text_lines[-1])
+            self.current_table[-1].add_cell(self.clean_text_lines[-1],
+                                            align=self.current_tag[-1].align,
+                                            valign=self.current_tag[-1].valign)
             self.current_table[-1].td_is_open = True
 
     def _end_td(self):
