@@ -5,20 +5,19 @@
 Tests HtmlElement and the parsing of CSS style definitiosn
 """
 
+from copy import copy
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.html_properties import Display, WhiteSpace
 from inscriptis.model.css import CssParse, HtmlElement
 
 
 def test_css_parsing():
-    css = CSS_PROFILES['strict'].copy()
-    html_element = CssParse.attr_style('padding_left: 8px; '
-                                                'display: block', css['div'])
+    html_element = copy(CSS_PROFILES['strict']['div'])
+    CssParse.attr_style('padding_left: 8px; display: block', html_element)
     assert html_element.padding == 1
     assert html_element.display == Display.block
 
-    html_element = CssParse.attr_style('margin_before: 8em; '
-                                                'display: inline', css['div'])
+    CssParse.attr_style('margin_before: 8em; display: inline', html_element)
     assert html_element.margin_before == 8
     assert html_element.display == Display.inline
 

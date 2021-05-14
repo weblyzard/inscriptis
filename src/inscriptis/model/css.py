@@ -105,16 +105,13 @@ class CssParse:
     @staticmethod
     def attr_style(style_attribute, html_element):
         """
+        Applies the provided style attributes to the given html_element.
+
         Args:
           style_attribute: The attribute value of the given style sheet.
                            Example: display: none
           html_element: The HtmlElement to which the given style is applied.
-
-        Returns:
-          An HtmlElement that merges the given element with the style
-          attributes specified.
         """
-        # custom_html_element = html_element.clone()
         for style_directive in style_attribute.lower().split(';'):
             if ':' not in style_directive:
                 continue
@@ -127,8 +124,6 @@ class CssParse:
                 apply_style(value, html_element)
             except AttributeError:
                 pass
-
-        return html_element
 
     @staticmethod
     def _get_em(length):
@@ -155,7 +150,7 @@ class CssParse:
     @staticmethod
     def attr_display(value, html_element):
         """
-        Set the display value.
+        Apply the given display value.
         """
         if html_element.display == Display.none:
             return
@@ -170,7 +165,7 @@ class CssParse:
     @staticmethod
     def attr_white_space(value, html_element):
         """
-        Set the white-space value.
+        Apply the given white-space value.
         """
         if value in ('normal', 'nowrap'):
             html_element.whitespace = WhiteSpace.normal
@@ -180,26 +175,29 @@ class CssParse:
     @staticmethod
     def attr_margin_top(value, html_element):
         """
-        Sets the top margin for the given HTML element.
+        Apply the given top margin.
         """
         html_element.margin_before = CssParse._get_em(value)
 
     @staticmethod
     def attr_margin_bottom(value, html_element):
         """
-        Sets the bottom margin for the given HTML element.
+        Apply the provided bottom margin.
         """
         html_element.margin_after = CssParse._get_em(value)
 
     @staticmethod
     def attr_padding_left(value, html_element):
         """
-        Sets the left padding for the given HTML element.
+        Apply the given left padding.
         """
         html_element.padding = CssParse._get_em(value)
 
     @staticmethod
     def attr_text_align(value, html_element):
+        """
+        Apply the given text alignment.
+        """
         try:
             html_element.align = HorizontalAlignment[value]
         except KeyError:
@@ -207,6 +205,9 @@ class CssParse:
 
     @staticmethod
     def attr_vertical_align(value, html_element):
+        """
+        Apply the given vertical alignment.
+        """
         try:
             html_element.valign = VerticalAlignment[value]
         except KeyError:
