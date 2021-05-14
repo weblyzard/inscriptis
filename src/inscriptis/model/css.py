@@ -8,6 +8,7 @@ This module implements basic CSS support for inscriptis.
 - :class:`CssParse` parses CSS specifications and translates them into the
   corresponding HtmlElements used by Inscriptis for rendering HTML pages.
 """
+from copy import copy
 from re import compile as re_compile
 from inscriptis.html_properties import Display, WhiteSpace, HorizontalAlignment, VerticalAlignment
 
@@ -59,37 +60,34 @@ class HtmlElement:
         Returns:
             The refined element with the context applied.
         """
-        display = Display.none if self.display == Display.none else new.display
-        whitespace = new.whitespace or self.whitespace
+        refined_element = copy(new)
+
+        # inherit display:none attributes
+        if self.display == Display.none:
+            refined_element.display = Display.none
+
+        # no whitespace set => inherit
+        refined_element.whitespace = refined_element.whitespace \
+                                     or self.whitespace
 
         # do not display whitespace only affixes in Whitespace.pre areas
         # if `limit_whitespace_affixes` is set.
-        prefix = new.prefix
-        suffix = new.suffix
-        if new.limit_whitespace_affixes and whitespace == WhiteSpace.pre:
-            if prefix.isspace():
-                prefix = ''
-            if suffix.isspace():
-                suffix = ''
-        return HtmlElement(new.tag, prefix, suffix, display,
-                           new.margin_before, new.margin_after, new.padding,
-                           whitespace)
+        if (refined_element.limit_whitespace_affixes
+                and self.whitespace == WhiteSpace.pre):
+            if refined_element.prefix.isspace():
+                refined_element.prefix = ''
+            if refined_element.suffix.isspace():
+                refined_element.suffix = ''
 
-    def clone(self):
-        """
-        Returns:
-           a clone of the current HtmlElement
-        """
-        return HtmlElement(self.tag, self.prefix, self.suffix, self.display,
-                           self.margin_before, self.margin_after, self.padding,
-                           self.whitespace)
+        return refined_element
 
     def __str__(self):
         return (
             '<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
             'display={self.display}, margin_before={self.margin_before}, '
             'margin_after={self.margin_after}, padding={self.padding}, '
-            'whitespace={self.whitespace}>'
+            'whitespace={self.whitespace}, align={self.align}, '
+            'valign={self.valign}>'
         ).format(self=self)
 
 
@@ -102,10 +100,10 @@ class CssParse:
     `HtmlElement.display=Display.none`.
     """
     # used to separate value and unit from each other
-    RE_UNIT = re_compile(r'([\-0-9\.]+)(\w+)')
+    RE_UNIT = re_compile(r'(-?[0-9.]+)(\w+)')
 
     @staticmethod
-    def get_style_attribute(style_attribute, html_element):
+    def attr_style(style_attribute, html_element):
         """
         Args:
           style_attribute: The attribute value of the given style sheet.
@@ -116,7 +114,7 @@ class CssParse:
           An HtmlElement that merges the given element with the style
           attributes specified.
         """
-        custom_html_element = html_element.clone()
+        # custom_html_element = html_element.clone()
         for style_directive in style_attribute.lower().split(';'):
             if ':' not in style_directive:
                 continue
@@ -126,11 +124,11 @@ class CssParse:
                 apply_style = getattr(CssParse, "attr_"
                                       + key.replace('-webkit-', '')
                                       .replace("-", "_"))
-                apply_style(value, custom_html_element)
+                apply_style(value, html_element)
             except AttributeError:
                 pass
 
-        return custom_html_element
+        return html_element
 
     @staticmethod
     def _get_em(length):
@@ -201,14 +199,14 @@ class CssParse:
         html_element.padding = CssParse._get_em(value)
 
     @staticmethod
-    def attr_align(value, html_element):
+    def attr_text_align(value, html_element):
         try:
             html_element.align = HorizontalAlignment[value]
         except KeyError:
             pass
 
     @staticmethod
-    def attr_valign(value, html_element):
+    def attr_vertical_align(value, html_element):
         try:
             html_element.valign = VerticalAlignment[value]
         except KeyError:

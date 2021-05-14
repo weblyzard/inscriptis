@@ -12,12 +12,12 @@ from inscriptis.model.css import CssParse, HtmlElement
 
 def test_css_parsing():
     css = CSS_PROFILES['strict'].copy()
-    html_element = CssParse.get_style_attribute('padding_left: 8px; '
+    html_element = CssParse.attr_style('padding_left: 8px; '
                                                 'display: block', css['div'])
     assert html_element.padding == 1
     assert html_element.display == Display.block
 
-    html_element = CssParse.get_style_attribute('margin_before: 8em; '
+    html_element = CssParse.attr_style('margin_before: 8em; '
                                                 'display: inline', css['div'])
     assert html_element.margin_before == 8
     assert html_element.display == Display.inline
@@ -32,4 +32,6 @@ def test_html_element_str():
     assert str(html_element) == ('<div prefix=, suffix=, '
                                  'display=Display.inline, margin_before=0, '
                                  'margin_after=0, padding=0, '
-                                 'whitespace=WhiteSpace.pre>')
+                                 'whitespace=WhiteSpace.pre, '
+                                 'align=HorizontalAlignment.left, '
+                                 'valign=VerticalAlignment.middle>')

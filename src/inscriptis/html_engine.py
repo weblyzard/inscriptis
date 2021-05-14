@@ -10,7 +10,8 @@ Guiding principles:
 from itertools import chain
 from html import unescape
 
-from inscriptis.model.css import CssParse, HtmlElement
+from inscriptis.model.attribute import apply_attributes
+from inscriptis.model.css import HtmlElement
 from inscriptis.model.canvas import Line
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.table import Table
@@ -156,7 +157,7 @@ class Inscriptis():
 
     def handle_starttag(self, tag, attrs):
         """
-        Handels HTML start tags.
+        Handles HTML start tags.
 
         Args:
           tag (str): the HTML start tag to process.
@@ -167,9 +168,7 @@ class Inscriptis():
 
         cur = self.current_tag[-1].get_refined_html_element(
             self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
-        if 'style' in attrs:
-            cur = CssParse.get_style_attribute(
-                attrs['style'], html_element=cur)
+        apply_attributes(attrs, html_element=cur)
         self.current_tag.append(cur)
 
         self.next_line[-1].padding = self.current_line[-1].padding \
