@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-'''
+"""
 Tests inscriptis' parsing of CSS style definitions.
-'''
+"""
 
 from inscriptis.model.css import CssParse, HtmlElement
 

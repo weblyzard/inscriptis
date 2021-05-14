@@ -14,10 +14,10 @@ def secure_importer(name, globals=None, locals=None, fromlist=(), level=0):
 
 
 def test_package_metadata():
-    '''
+    """
     verify that the package metadata is available, even if no dependencies
     are installed.
-    '''
+    """
     # clear the python search path to verify whether we can import
     # inscriptis even if its dependencies are not available
     # (required for building the docs and setup.py)

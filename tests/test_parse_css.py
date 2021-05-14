@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-'''
+"""
 Tests HtmlElement and the parsing of CSS style definitiosn
-'''
+"""
 
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.html_properties import Display, WhiteSpace

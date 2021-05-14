@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-'''
+"""
 Tests the rendering of a single table line.
-'''
+"""
 
 from inscriptis.model.canvas import Line
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-'''
+"""
 Tests different HTML to text conversion options.
-'''
+"""
 
 from inscriptis import get_text
 from inscriptis.model.config import ParserConfig
