@@ -14,8 +14,8 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
    :target: https://codecov.io/gh/weblyzard/inscriptis/
    :alt: Coverage
 
-.. image:: https://www.travis-ci.org/weblyzard/inscriptis.png?branch=master
-   :target: https://www.travis-ci.org/weblyzard/inscriptis
+.. image:: https://github.com/weblyzard/inscriptis/actions/workflows/python-package.yml/badge.svg
+   :target: https://github.com/weblyzard/inscriptis/actions/workflows/python-package.yml
    :alt: Build status
 
 .. image:: https://readthedocs.org/projects/inscriptis/badge/?version=latest

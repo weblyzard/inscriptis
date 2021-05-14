@@ -1,4 +1,4 @@
-name: inscriptis
+name: build
 
 on:
   push:
