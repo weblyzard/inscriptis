@@ -10,7 +10,7 @@ from inscriptis.model.css import CssParse
 
 HTML_ATTRIBUTE_MAPPING = {
     'style': CssParse.attr_style,
-    'align': CssParse.attr_text_align,
+    'align': CssParse.attr_horizontal_align,
     'valign': CssParse.attr_vertical_align
 }
 

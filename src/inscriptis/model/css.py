@@ -194,7 +194,7 @@ class CssParse:
         html_element.padding = CssParse._get_em(value)
 
     @staticmethod
-    def attr_text_align(value, html_element):
+    def attr_horizontal_align(value, html_element):
         """
         Apply the given text alignment.
         """
