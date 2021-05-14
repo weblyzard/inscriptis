@@ -1,24 +1,25 @@
 #!/usr/bin/env python
 # coding:utf-8
-'''
+"""
 The HTML Engine is responsible for converting HTML to text.
 
 Guiding principles:
 
  1. break lines only if we encounter a block element
-'''
+"""
 from itertools import chain
 from html import unescape
 
-from inscriptis.model.css import CssParse, HtmlElement
+from inscriptis.model.attribute import apply_attributes
+from inscriptis.model.css import HtmlElement
 from inscriptis.model.canvas import Line
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.table import Table
 from inscriptis.html_properties import Display, WhiteSpace
 
 
-class Inscriptis():
-    '''
+class Inscriptis:
+    """
     The Inscriptis class translates an lxml HTML tree to the corresponding
     text representation.
 
@@ -39,7 +40,7 @@ class Inscriptis():
       # transform the HTML tree to text.
       parser = Inscriptis(html_tree)
       text = parser.get_text()
-    '''
+    """
 
     UL_COUNTER = ('* ', '+ ', 'o ', '- ')
     UL_COUNTER_LEN = len(UL_COUNTER)
@@ -97,12 +98,12 @@ class Inscriptis():
             self._write_line()
 
     def _parse_html_tree(self, tree):
-        '''
+        """
         Parses the HTML tree.
 
         Args:
             tree: the HTML tree to parse.
-        '''
+        """
         if isinstance(tree.tag, str):
             self.handle_starttag(tree.tag, tree.attrib)
             if tree.text:
@@ -117,20 +118,20 @@ class Inscriptis():
             self.handle_data(tree.tail)
 
     def get_text(self):
-        '''
+        """
         Returns:
           str -- A text representation of the parsed content.
-        '''
+        """
         return unescape('\n'.join(chain(*self.clean_text_lines))).rstrip()
 
     def _write_line(self, force=False):
-        '''
+        """
         Writes the current line to the buffer, provided that there is any
         data to write.
 
         Returns:
           bool -- True, if a line has been writer, otherwise False.
-        '''
+        """
         # only write the line if it contains relevant content
         if not force and (not self.current_line[-1].content
                           or self.current_line[-1].content.isspace()):
@@ -146,30 +147,28 @@ class Inscriptis():
         return True
 
     def _write_line_verbatim(self, text):
-        '''
+        """
         Writes the current buffer without any modifications.
 
         Args:
           text (str): the text to write.
-        '''
+        """
         self.clean_text_lines[-1].append(text)
 
     def handle_starttag(self, tag, attrs):
-        '''
-        Handels HTML start tags.
+        """
+        Handles HTML start tags.
 
         Args:
           tag (str): the HTML start tag to process.
           attrs (dict): a dictionary of HTML attributes and their respective
              values.
-        '''
+        """
         # use the css to handle tags known to it :)
 
         cur = self.current_tag[-1].get_refined_html_element(
             self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
-        if 'style' in attrs:
-            cur = CssParse.get_style_attribute(
-                attrs['style'], html_element=cur)
+        apply_attributes(attrs, html_element=cur)
         self.current_tag.append(cur)
 
         self.next_line[-1].padding = self.current_line[-1].padding \
@@ -190,12 +189,12 @@ class Inscriptis():
             handler(attrs)
 
     def handle_endtag(self, tag):
-        '''
-        Handels HTML end tags.
+        """
+        Handles HTML end tags.
 
         Args:
           tag(str): the HTML end tag to process.
-        '''
+        """
         cur = self.current_tag.pop()
         self.next_line[-1].padding = self.current_line[-1].padding \
             - cur.padding
@@ -213,12 +212,12 @@ class Inscriptis():
             handler()
 
     def handle_data(self, data):
-        '''
-        Handels text belonging to HTML tags.
+        """
+        Handles text belonging to HTML tags.
 
         Args:
           data (str): The text to process.
-        '''
+        """
         if self.current_tag[-1].display == Display.none:
             return
 
@@ -305,7 +304,9 @@ class Inscriptis():
             self.clean_text_lines.append([])
             self.current_line.append(Line())
             self.next_line.append(Line())
-            self.current_table[-1].add_cell(self.clean_text_lines[-1])
+            self.current_table[-1].add_cell(self.clean_text_lines[-1],
+                                            align=self.current_tag[-1].align,
+                                            valign=self.current_tag[-1].valign)
             self.current_table[-1].td_is_open = True
 
     def _end_td(self):
@@ -331,8 +332,8 @@ class Inscriptis():
 
     @staticmethod
     def get_bullet(index):
-        '''
+        """
         Returns:
           str -- The bullet that corresponds to the given index.
-        '''
+        """
         return Inscriptis.UL_COUNTER[index % Inscriptis.UL_COUNTER_LEN]

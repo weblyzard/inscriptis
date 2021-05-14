@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-''' ensures that two successive <a>text</a> contain
+""" ensures that two successive <a>text</a> contain
     a space between each other, if there is a linebreak
     or space between the tags.
-'''
+"""
 from os.path import dirname, join
 from glob import glob
 
@@ -29,6 +29,8 @@ def test_html_snippets(filter_str=''):
         converted_txt = get_text(html, ParserConfig(
             css=CSS_PROFILES['strict'])).rstrip()
 
+        reference_txt = '\n'.join([line + "<" for line in reference_txt.split("\n")])
+        converted_txt = '\n'.join([line + "<" for line in converted_txt.split("\n")])
         if converted_txt != reference_txt:
             print("File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}"
                   .format(testcase_txt, html, reference_txt, converted_txt))

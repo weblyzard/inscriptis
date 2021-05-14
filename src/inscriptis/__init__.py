@@ -1,5 +1,5 @@
-'''
-Inscripits parses HTML content and converts it into a text representation.
+"""
+Inscriptis parses HTML content and converts it into a text representation.
 Among others it provides support for
 
 - nested HTML tables and
@@ -17,7 +17,7 @@ Example::
 
    print(text)
 
-'''
+"""
 
 __author__ = 'Albert Weichselbraun, Fabian Odoni'
 __author_email__ = 'albert.weichselbraun@fhgr.ch, fabian.odoni@fhgr.ch'
@@ -42,7 +42,7 @@ RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
 
 def get_text(html_content, config=None):
-    '''
+    """
     Converts an HTML string to text, optionally including and deduplicating
     image captions, displaying link targets and using either the standard
     or extended indentation strategy.
@@ -54,7 +54,7 @@ def get_text(html_content, config=None):
 
     Returns:
       str -- The text representation of the HTML content.
-    '''
+    """
     html_content = html_content.strip()
     if not html_content:
         return ''

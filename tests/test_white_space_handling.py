@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-'''
+"""
 Tests different white-space handling.
-'''
+"""
 
 from inscriptis import get_text
 from inscriptis.css_profiles import CSS_PROFILES

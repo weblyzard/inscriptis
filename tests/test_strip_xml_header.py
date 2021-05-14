@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-''' ensures that xml declaration headers are corectly stripped'''
+""" ensures that xml declaration headers are correctly stripped"""
 
 from inscriptis import get_text
 

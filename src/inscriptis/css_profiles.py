@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # coding: utf-8
-'''
+"""
 Standard CSS profiles shipped with inscriptis.
 
 - `strict`: this profile corresponds to the defaults used by Firefox
 - `relaxed`: this profile is more suited for text analytics, since it ensures
              that whitespaces are inserted between span and div elements
              preventing cases where two words stick together.
-'''
+"""
 
 from inscriptis.model.css import HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace
