@@ -58,7 +58,7 @@ class TableCell:
             if self.valign == VerticalAlignment.bottom:
                 rows = ((self.height - len(rows)) * empty_line) + rows
             elif self.valign == VerticalAlignment.middle:
-                rows = ((self.height - len(rows)-1)//2) * empty_line + rows
+                rows = ((self.height - len(rows) - 1) // 2) * empty_line + rows
                 rows = rows + ((self.height - len(rows)) * empty_line)
             else:
                 rows = rows + ((self.height - len(rows)) * empty_line)
@@ -114,18 +114,21 @@ class Table:
         """
         self.rows.append(Row())
 
-    def add_cell(self, canvas, align=HorizontalAlignment.left, valign=VerticalAlignment.top):
+    def add_cell(self, canvas, align=HorizontalAlignment.left,
+                 valign=VerticalAlignment.top):
         """
         Adds a new :class:`TableCell` to the table's last row. If no row
         exists yet, a new row is created.
         """
         if not self.rows:
             self.add_row()
-        self.rows[-1].columns.append(TableCell(canvas, align, valign))
+        self.rows[-1].columns.append(
+            TableCell(canvas, align, valign))
 
     def compute_column_width_and_height(self):
         """
-        Compute and set the column width and height for all columns in the table.
+        Compute and set the column width and height for all columns in the
+        table.
         """
         # skip tables with no row
         if not self.rows:

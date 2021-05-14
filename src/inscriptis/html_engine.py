@@ -18,7 +18,7 @@ from inscriptis.model.table import Table
 from inscriptis.html_properties import Display, WhiteSpace
 
 
-class Inscriptis():
+class Inscriptis:
     """
     The Inscriptis class translates an lxml HTML tree to the corresponding
     text representation.

@@ -7,7 +7,8 @@ Tests HtmlElement and the parsing of CSS style definitiosn
 
 from copy import copy
 from inscriptis.css_profiles import CSS_PROFILES
-from inscriptis.html_properties import Display, WhiteSpace
+from inscriptis.html_properties import (Display, WhiteSpace, VerticalAlignment,
+                                        HorizontalAlignment)
 from inscriptis.model.css import CssParse, HtmlElement
 
 
@@ -34,3 +35,23 @@ def test_html_element_str():
                                  'whitespace=WhiteSpace.pre, '
                                  'align=HorizontalAlignment.left, '
                                  'valign=VerticalAlignment.middle>')
+
+
+def test_parse_vertical_align():
+    html_element = HtmlElement()
+    CssParse.attr_vertical_align('top', html_element)
+    assert html_element.valign == VerticalAlignment.top
+
+    # invalid value
+    CssParse.attr_vertical_align('unknown', html_element)
+    assert html_element.valign == VerticalAlignment.top
+
+def test_parse_horizontal_align():
+    html_element = HtmlElement()
+    CssParse.attr_horizontal_align('center', html_element)
+    assert html_element.align == HorizontalAlignment.center
+
+    # invalid value
+    CssParse.attr_horizontal_align('unknown', html_element)
+    assert html_element.align == HorizontalAlignment.center
+

@@ -10,7 +10,8 @@ This module implements basic CSS support for inscriptis.
 """
 from copy import copy
 from re import compile as re_compile
-from inscriptis.html_properties import Display, WhiteSpace, HorizontalAlignment, VerticalAlignment
+from inscriptis.html_properties import (Display, WhiteSpace,
+                                        HorizontalAlignment, VerticalAlignment)
 
 
 class HtmlElement:
@@ -39,7 +40,8 @@ class HtmlElement:
     def __init__(self, tag='/', prefix='', suffix='', display=None,
                  margin_before=0, margin_after=0, padding=0,
                  whitespace=None, limit_whitespace_affixes=False,
-                 align=HorizontalAlignment.left, valign=VerticalAlignment.middle):
+                 align=HorizontalAlignment.left,
+                 valign=VerticalAlignment.middle):
         self.tag = tag
         self.prefix = prefix
         self.suffix = suffix
@@ -68,7 +70,7 @@ class HtmlElement:
 
         # no whitespace set => inherit
         refined_element.whitespace = refined_element.whitespace \
-                                     or self.whitespace
+            or self.whitespace
 
         # do not display whitespace only affixes in Whitespace.pre areas
         # if `limit_whitespace_affixes` is set.
