@@ -54,4 +54,3 @@ def test_parse_horizontal_align():
     # invalid value
     CssParse.attr_horizontal_align('unknown', html_element)
     assert html_element.align == HorizontalAlignment.center
-

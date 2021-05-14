@@ -54,7 +54,3 @@ def test_vertical_cell_formatting():
                                      'Ehre sei Gott!  ',
                                      '                ',
                                      '                ']
-
-
-
-
