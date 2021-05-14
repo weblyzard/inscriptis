@@ -198,7 +198,7 @@ class CssParse:
     @staticmethod
     def attr_horizontal_align(value, html_element):
         """
-        Apply the given text alignment.
+        Apply the provided horizontal alignment.
         """
         try:
             html_element.align = HorizontalAlignment[value]
