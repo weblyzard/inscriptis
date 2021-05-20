@@ -10,6 +10,7 @@ Guiding principles:
 from itertools import chain
 from html import unescape
 
+from inscriptis.annotation.helper import AnnotationHelper
 from inscriptis.model.attribute import apply_attributes
 from inscriptis.model.css import HtmlElement
 from inscriptis.model.canvas import Line
@@ -50,6 +51,7 @@ class Inscriptis:
     def __init__(self, html_tree, config=None):
         # use the default configuration, if no config object is provided
         self.config = config or ParserConfig()
+        self.annotations = AnnotationHelper()
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {
