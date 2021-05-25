@@ -16,3 +16,4 @@ dist/
 _build/
 .mypy_cache/
 .idea/
+venv/

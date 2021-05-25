@@ -106,15 +106,18 @@ class Inscriptis:
         Args:
             tree: the HTML tree to parse.
         """
-        if isinstance(tree.tag, str):
-            self.handle_starttag(tree.tag, tree.attrib)
-            if tree.text:
-                self.handle_data(tree.text)
+        # ignore comments
+        if not isinstance(tree.tag, str):
+            return
 
-            for node in tree:
-                self._parse_html_tree(node)
+        self.handle_starttag(tree.tag, tree.attrib)
+        if tree.text:
+            self.handle_data(tree.text)
 
-            self.handle_endtag(tree.tag)
+        for node in tree:
+            self._parse_html_tree(node)
+
+        self.handle_endtag(tree.tag)
 
         if tree.tail:
             self.handle_data(tree.tail)
