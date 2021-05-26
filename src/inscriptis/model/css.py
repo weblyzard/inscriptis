@@ -14,21 +14,6 @@ from inscriptis.html_properties import (Display, WhiteSpace,
                                         HorizontalAlignment, VerticalAlignment)
 
 
-class Canvas:
-    """
-    The Canvas on which we write our HTML page.
-    """
-
-    def __init__(self):
-        self.content = []
-
-    def write(self, text):
-        self.content.append(text)
-
-    def get_text(self):
-        return ''.join(self.content)
-
-
 class HtmlElement:
     """
     The HtmlElement class stores the following CSS properties of HTML
@@ -50,9 +35,10 @@ class HtmlElement:
 
     __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
                  'margin_before', 'margin_after', 'padding', 'list_bullet',
-                 'whitespace', 'limit_whitespace_affixes', 'align', 'valign')
+                 'whitespace', 'limit_whitespace_affixes', 'align', 'valign',
+                 'is_empty')
 
-    def __init__(self, tag='/', prefix='', suffix='', display=None,
+    def __init__(self, tag='/', prefix='', suffix='', display=Display.inline,
                  margin_before=0, margin_after=0, padding=0, list_bullet='',
                  whitespace=None, limit_whitespace_affixes=False,
                  align=HorizontalAlignment.left,
@@ -70,29 +56,58 @@ class HtmlElement:
         self.limit_whitespace_affixes = limit_whitespace_affixes
         self.align = align
         self.valign = valign
+        self.is_empty = True       # whether this is an empty element
+
+    def write(self, text):
+        """
+        Writes the given HTML text.
+        """
+        # print(self.display, ">>>" + str(text) + "<<<")
+        if not (text and not text.isspace()):
+            return
+
+        self.is_empty = False
+        HtmlElement.WRITER[self.display](self, text)
+
+    def write_tail(self, text):
+        if not (text and not text.isspace()):
+            return
+
+        if self.display == Display.block and text:
+            self.canvas.write_block(self, '\n' * self.margin_after + ' ' * self.padding)
+        self.write_inline_text(text)
 
     def set_canvas(self, canvas):
         self.canvas = canvas
         return self
 
-    def write_floating_text(self, text):
+    def write_inline_text(self, text):
         """
         Writes floating HTML text. All whitespaces are collapsed.
         Args:
             text: the text to write
         """
-        if not (text and not text.isspace()):
-            return
-        self.canvas.write(''.join(('\n' * self.margin_before,
-                                   ' ' * (self.padding - len(self.list_bullet)),
-                                   self.list_bullet,
-                                   self.prefix,
-                                   ' '.join(text.split()),
-                                   self.suffix,
-                                   '\n' * self.margin_after)))
+        self.canvas.write_inline(self,
+                                 ''.join((self.prefix, text, self.suffix)))
 
-    @staticmethod
-    def write_display_none(text):
+    def write_block_text(self, text):
+        """
+        Writes floating HTML text. All whitespaces are collapsed.
+        Args:
+            text: the text to write
+        """
+        self.canvas.write_block(self, ''.join(
+            (
+                '\n' * self.margin_before,
+                ' ' * (self.padding - len(self.list_bullet)),
+                self.list_bullet,
+                self.prefix,
+                text.lstrip(),
+                self.suffix
+            )
+        ))
+
+    def write_display_none(self, text):
         return
 
     def write_verbatim_text(self, text):
@@ -115,7 +130,9 @@ class HtmlElement:
             The refined element with the context applied.
         """
         refined_element = copy(new)
-        refined_element.canvas = new.canvas
+        refined_element.canvas = self.canvas
+        if self.is_empty:
+            refined_element.list_bullet = self.list_bullet
 
         # inherit `display:none` attributes and ignore further refinements
         if self.display == Display.none:
@@ -148,11 +165,18 @@ class HtmlElement:
                                                self.margin_after)
         return refined_element
 
+    WRITER = {
+        Display.block: write_block_text,
+        Display.inline: write_inline_text,
+        Display.none: write_display_none
+    }
+
     def __str__(self):
         return (
             '<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
             'display={self.display}, margin_before={self.margin_before}, '
             'margin_after={self.margin_after}, padding={self.padding}, '
+            'list_bullet={self.list_bullet}, '
             'whitespace={self.whitespace}, align={self.align}, '
             'valign={self.valign}>'
         ).format(self=self)

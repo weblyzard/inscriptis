@@ -7,13 +7,10 @@ Guiding principles:
 
  1. break lines only if we encounter a block element
 """
-from itertools import chain
-from html import unescape
-
 from inscriptis.annotation.helper import AnnotationHelper
 from inscriptis.model.attribute import apply_attributes
 from inscriptis.model.css import HtmlElement
-from inscriptis.model.canvas import Line
+from inscriptis.model.canvas import Line, Canvas
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.table import Table
 from inscriptis.html_properties import Display, WhiteSpace
@@ -77,7 +74,7 @@ class Inscriptis:
 
         # instance variables
         self.canvas = Canvas()
-        self.current_tag = [self.config.css['body'].set_canvas(self.canvas)]
+        self.tags = [self.config.css['body'].set_canvas(self.canvas)]
         self.current_line = [Line()]
         self.next_line = [Line()]
 
@@ -97,8 +94,6 @@ class Inscriptis:
 
         # crawl the html tree
         self._parse_html_tree(html_tree)
-        if self.current_line[-1]:
-            self._write_line()
 
     def _parse_html_tree(self, tree):
         """
@@ -111,21 +106,23 @@ class Inscriptis:
         if not isinstance(tree.tag, str):
             return
 
-        current_tag = self.handle_starttag(tree.tag, tree.attrib)
-        current_tag.write(tree.text)
+        self.handle_starttag(tree.tag, tree.attrib)
+        self.tags[-1].write(tree.text)
 
         for node in tree:
             self._parse_html_tree(node)
 
         self.handle_endtag(tree.tag)
-        current_tag.write(tree.tail)
+        self.tags[-1].write_tail(tree.tail)
+        self.tags.pop()
 
     def get_text(self):
         """
         Returns:
           str -- A text representation of the parsed content.
         """
-        return unescape('\n'.join(chain(*self.clean_text_lines))).rstrip()
+        print(">>>" + self.canvas.get_text().rstrip() + "<<<")
+        return self.canvas.get_text().rstrip()
 
     def handle_starttag(self, tag, attrs):
         """
@@ -138,9 +135,10 @@ class Inscriptis:
         """
         # use the css to handle tags known to it :)
 
-        cur = self.current_tag[-1].get_refined_html_element(
+        cur = self.tags[-1].get_refined_html_element(
             apply_attributes(attrs, html_element=self.config.css.get(
                 tag, Inscriptis.DEFAULT_ELEMENT)))
+        self.tags.append(cur)
 
         #self.next_line[-1].padding = self.current_line[-1].padding \
         #    + cur.padding
@@ -159,7 +157,6 @@ class Inscriptis:
         handler = self.start_tag_handler_dict.get(tag, None)
         if handler:
             handler(attrs)
-        return cur
 
     def handle_endtag(self, tag):
         """
@@ -184,7 +181,7 @@ class Inscriptis:
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.config.deduplicate_captions
                                and image_text == self.last_caption):
-            self.current_tag[-1].write_text('[{0}]'.format(image_text))
+            self.tags[-1].write_text('[{0}]'.format(image_text))
             self.last_caption = image_text
 
     def _start_a(self, attrs):
@@ -195,11 +192,11 @@ class Inscriptis:
             self.link_target = self.link_target or attrs.get('name', '')
 
         if self.link_target:
-            self.current_tag[-1].write_text('[')
+            self.tags[-1].write_text('[')
 
     def _end_a(self):
         if self.link_target:
-            self.current_tag[-1].write_text(']({0})'.format(self.link_target))
+            self.tags[-1].write_text(']({0})'.format(self.link_target))
 
     def _start_ol(self, attrs):
         self.li_counter.append(1)
@@ -210,16 +207,17 @@ class Inscriptis:
         self.li_counter.pop()
 
     def _start_li(self, attrs):
-        self._write_line()
         if self.li_level > 0:
             bullet = self.li_counter[-1]
         else:
             bullet = "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.current_tag[-1].list_bullet = "{0}. ".format(bullet)
+            self.tags[-1].list_bullet = "{0}. ".format(bullet)
         else:
-            self.current_tag[-1].list_bullet = bullet
+            self.tags[-1].list_bullet = bullet
+
+        self.tags[-1].write('')
 
     def _start_table(self, attrs):
         self.current_table.append(Table())
@@ -245,8 +243,8 @@ class Inscriptis:
             self.current_line.append(Line())
             self.next_line.append(Line())
             self.current_table[-1].add_cell(self.clean_text_lines[-1],
-                                            align=self.current_tag[-1].align,
-                                            valign=self.current_tag[-1].valign)
+                                            align=self.tags[-1].align,
+                                            valign=self.tags[-1].valign)
             self.current_table[-1].td_is_open = True
 
     def _end_td(self):
@@ -268,7 +266,7 @@ class Inscriptis:
         self._write_line_verbatim(table.get_text())
 
     def _newline(self, attrs):
-        self.current_tag[-1].write_verbatim_text('\n')
+        self.tags[-1].write_verbatim_text('\n')
 
     @staticmethod
     def get_bullet(index):

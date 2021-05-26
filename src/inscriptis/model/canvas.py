@@ -6,6 +6,40 @@ Elements used for rendering (parts) of the canvas.
 
 The :class:`Line` determines how a single line is rendered.
 """
+from html import unescape
+
+from inscriptis.model.css import HtmlElement
+
+
+class Canvas:
+    """
+    The Canvas on which we write our HTML page.
+    """
+
+    def __init__(self):
+        self.blocks = []
+        self.indent = ''
+        self.head = ''
+        self.tail = ''
+
+    def write_block(self, tag: HtmlElement, text: str):
+        self.flush_inline()
+        self.head = text
+
+    def write_inline(self, tag: HtmlElement, text: str):
+        self.tail += text
+
+    def flush_inline(self):
+        if self.head or self.tail:
+            self.blocks.append(self.head + ' '.join(self.tail.split()))
+            self.indent = ''
+            self.head = ''
+            self.tail = ''
+
+    def get_text(self):
+        self.flush_inline()
+        return unescape('\n'.join((block.rstrip() for block in self.blocks)))
+        # return text if not text.startswith('\n') else text[1:]
 
 
 class Line:
