@@ -76,7 +76,8 @@ class Inscriptis:
         }
 
         # instance variables
-        self.current_tag = [self.config.css['body']]
+        self.canvas = Canvas()
+        self.current_tag = [self.config.css['body'].set_canvas(self.canvas)]
         self.current_line = [Line()]
         self.next_line = [Line()]
 
@@ -110,17 +111,14 @@ class Inscriptis:
         if not isinstance(tree.tag, str):
             return
 
-        self.handle_starttag(tree.tag, tree.attrib)
-        if tree.text:
-            self.handle_data(tree.text)
+        current_tag = self.handle_starttag(tree.tag, tree.attrib)
+        current_tag.write(tree.text)
 
         for node in tree:
             self._parse_html_tree(node)
 
         self.handle_endtag(tree.tag)
-
-        if tree.tail:
-            self.handle_data(tree.tail)
+        current_tag.write(tree.tail)
 
     def get_text(self):
         """
@@ -128,37 +126,6 @@ class Inscriptis:
           str -- A text representation of the parsed content.
         """
         return unescape('\n'.join(chain(*self.clean_text_lines))).rstrip()
-
-    def _write_line(self, force=False):
-        """
-        Writes the current line to the buffer, provided that there is any
-        data to write.
-
-        Returns:
-          bool -- True, if a line has been writer, otherwise False.
-        """
-        # only write the line if it contains relevant content
-        if not force and (not self.current_line[-1].content
-                          or self.current_line[-1].content.isspace()):
-            self.current_line[-1].margin_before = \
-                max(self.current_line[-1].margin_before,
-                    self.current_tag[-1].margin_before)
-            return False
-
-        line = self.current_line[-1].get_text()
-        self.clean_text_lines[-1].append(line)
-        self.current_line[-1] = self.next_line[-1]
-        self.next_line[-1] = Line()
-        return True
-
-    def _write_line_verbatim(self, text):
-        """
-        Writes the current buffer without any modifications.
-
-        Args:
-          text (str): the text to write.
-        """
-        self.clean_text_lines[-1].append(text)
 
     def handle_starttag(self, tag, attrs):
         """
@@ -172,26 +139,27 @@ class Inscriptis:
         # use the css to handle tags known to it :)
 
         cur = self.current_tag[-1].get_refined_html_element(
-            self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
-        apply_attributes(attrs, html_element=cur)
-        self.current_tag.append(cur)
+            apply_attributes(attrs, html_element=self.config.css.get(
+                tag, Inscriptis.DEFAULT_ELEMENT)))
 
-        self.next_line[-1].padding = self.current_line[-1].padding \
-            + cur.padding
+        #self.next_line[-1].padding = self.current_line[-1].padding \
+        #    + cur.padding
+
         # flush text before display:block elements
-        if cur.display == Display.block:
-            if not self._write_line():
-                self.current_line[-1].margin_before = 0 \
-                    if not self.clean_text_lines[0] else max(
-                        self.current_line[-1].margin_before, cur.margin_before)
-                self.current_line[-1].padding = self.next_line[-1].padding
-            else:
-                self.current_line[-1].margin_after = max(
-                    self.current_line[-1].margin_after, cur.margin_after)
+        #if cur.display == Display.block:
+        #    if not self._write_line():
+        #        self.current_line[-1].margin_before = 0 \
+        #            if not self.clean_text_lines[0] else max(
+        #                self.current_line[-1].margin_before, cur.margin_before)
+        #        self.current_line[-1].padding = self.next_line[-1].padding
+        #    else:
+        #        self.current_line[-1].margin_after = max(
+        #            self.current_line[-1].margin_after, cur.margin_after)
 
         handler = self.start_tag_handler_dict.get(tag, None)
         if handler:
             handler(attrs)
+        return cur
 
     def handle_endtag(self, tag):
         """
@@ -200,42 +168,9 @@ class Inscriptis:
         Args:
           tag(str): the HTML end tag to process.
         """
-        cur = self.current_tag.pop()
-        self.next_line[-1].padding = self.current_line[-1].padding \
-            - cur.padding
-        self.current_line[-1].margin_after = max(
-            self.current_line[-1].margin_after, cur.margin_after)
-        # flush text after display:block elements
-        if cur.display == Display.block:
-            # propagate the new padding to the current line, if nothing has
-            # been written
-            if not self._write_line():
-                self.current_line[-1].padding = self.next_line[-1].padding
-
         handler = self.end_tag_handler_dict.get(tag, None)
         if handler:
             handler()
-
-    def handle_data(self, data):
-        """
-        Handles text belonging to HTML tags.
-
-        Args:
-          data (str): The text to process.
-        """
-        if self.current_tag[-1].display == Display.none:
-            return
-
-        # protect pre areas
-        if self.current_tag[-1].whitespace == WhiteSpace.pre:
-            data = '\0' + data + '\0'
-
-        # add prefix, if present
-        data = self.current_tag[-1].prefix + data + self.current_tag[-1].suffix
-
-        # determine whether to add this content to a table column
-        # or to a standard line
-        self.current_line[-1].content += data
 
     def _start_ul(self, attrs):
         self.li_level += 1
@@ -249,7 +184,7 @@ class Inscriptis:
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.config.deduplicate_captions
                                and image_text == self.last_caption):
-            self.current_line[-1].content += '[{0}]'.format(image_text)
+            self.current_tag[-1].write_text('[{0}]'.format(image_text))
             self.last_caption = image_text
 
     def _start_a(self, attrs):
@@ -260,11 +195,11 @@ class Inscriptis:
             self.link_target = self.link_target or attrs.get('name', '')
 
         if self.link_target:
-            self.current_line[-1].content += '['
+            self.current_tag[-1].write_text('[')
 
     def _end_a(self):
         if self.link_target:
-            self.current_line[-1].content += ']({0})'.format(self.link_target)
+            self.current_tag[-1].write_text(']({0})'.format(self.link_target))
 
     def _start_ol(self, attrs):
         self.li_counter.append(1)
@@ -282,9 +217,9 @@ class Inscriptis:
             bullet = "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.current_line[-1].list_bullet = "{0}. ".format(bullet)
+            self.current_tag[-1].list_bullet = "{0}. ".format(bullet)
         else:
-            self.current_line[-1].list_bullet = bullet
+            self.current_tag[-1].list_bullet = bullet
 
     def _start_table(self, attrs):
         self.current_table.append(Table())
@@ -333,7 +268,7 @@ class Inscriptis:
         self._write_line_verbatim(table.get_text())
 
     def _newline(self, attrs):
-        self._write_line(force=True)
+        self.current_tag[-1].write_verbatim_text('\n')
 
     @staticmethod
     def get_bullet(index):

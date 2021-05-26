@@ -14,6 +14,21 @@ from inscriptis.html_properties import (Display, WhiteSpace,
                                         HorizontalAlignment, VerticalAlignment)
 
 
+class Canvas:
+    """
+    The Canvas on which we write our HTML page.
+    """
+
+    def __init__(self):
+        self.content = []
+
+    def write(self, text):
+        self.content.append(text)
+
+    def get_text(self):
+        return ''.join(self.content)
+
+
 class HtmlElement:
     """
     The HtmlElement class stores the following CSS properties of HTML
@@ -33,15 +48,16 @@ class HtmlElement:
       elements with `normal` whitespace handling.
     """
 
-    __slots__ = ('tag', 'prefix', 'suffix', 'display', 'margin_before',
-                 'margin_after', 'padding', 'whitespace',
-                 'limit_whitespace_affixes', 'align', 'valign')
+    __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
+                 'margin_before', 'margin_after', 'padding', 'list_bullet',
+                 'whitespace', 'limit_whitespace_affixes', 'align', 'valign')
 
     def __init__(self, tag='/', prefix='', suffix='', display=None,
-                 margin_before=0, margin_after=0, padding=0,
+                 margin_before=0, margin_after=0, padding=0, list_bullet='',
                  whitespace=None, limit_whitespace_affixes=False,
                  align=HorizontalAlignment.left,
                  valign=VerticalAlignment.middle):
+        self.canvas = None
         self.tag = tag
         self.prefix = prefix
         self.suffix = suffix
@@ -49,10 +65,46 @@ class HtmlElement:
         self.margin_before = margin_before
         self.margin_after = margin_after
         self.padding = padding
+        self.list_bullet = list_bullet
         self.whitespace = whitespace
         self.limit_whitespace_affixes = limit_whitespace_affixes
         self.align = align
         self.valign = valign
+
+    def set_canvas(self, canvas):
+        self.canvas = canvas
+        return self
+
+    def write_floating_text(self, text):
+        """
+        Writes floating HTML text. All whitespaces are collapsed.
+        Args:
+            text: the text to write
+        """
+        if not (text and not text.isspace()):
+            return
+        self.canvas.write(''.join(('\n' * self.margin_before,
+                                   ' ' * (self.padding - len(self.list_bullet)),
+                                   self.list_bullet,
+                                   self.prefix,
+                                   ' '.join(text.split()),
+                                   self.suffix,
+                                   '\n' * self.margin_after)))
+
+    @staticmethod
+    def write_display_none(text):
+        return
+
+    def write_verbatim_text(self, text):
+        """
+        Writes the given text verbatim to the canvas.
+        Args:
+            text: the text to write
+        """
+        if not text:
+            return
+        base_padding = ' ' * self.padding
+        self.canvas.write(text.replace('\n', '\n' + base_padding))
 
     def get_refined_html_element(self, new):
         """
@@ -63,14 +115,16 @@ class HtmlElement:
             The refined element with the context applied.
         """
         refined_element = copy(new)
+        refined_element.canvas = new.canvas
 
-        # inherit display:none attributes
+        # inherit `display:none` attributes and ignore further refinements
         if self.display == Display.none:
             refined_element.display = Display.none
+            return refined_element
 
         # no whitespace set => inherit
         refined_element.whitespace = refined_element.whitespace \
-            or self.whitespace
+                                     or self.whitespace
 
         # do not display whitespace only affixes in Whitespace.pre areas
         # if `limit_whitespace_affixes` is set.
@@ -81,6 +135,17 @@ class HtmlElement:
             if refined_element.suffix.isspace():
                 refined_element.suffix = ''
 
+        # total padding = current padding + the padding the refined element
+        # introduces
+        refined_element.padding += self.padding
+
+        # `Display.block` requires adjusting the `margin_before' and
+        # `margin_after` attributes
+        if refined_element.display == Display.block:
+            refined_element.margin_before = max(refined_element.margin_before,
+                                                self.margin_before)
+            refined_element.margin_after = max(refined_element.margin_after,
+                                               self.margin_after)
         return refined_element
 
     def __str__(self):
