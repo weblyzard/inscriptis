@@ -28,10 +28,11 @@ def test_html_element_str():
     Tests the string representation of an HtmlElement.
     '''
     html_element = HtmlElement('div', '', '', Display.inline, 0, 0, 0,
-                               WhiteSpace.pre)
+                               '', WhiteSpace.pre)
     assert str(html_element) == ('<div prefix=, suffix=, '
                                  'display=Display.inline, margin_before=0, '
                                  'margin_after=0, padding=0, '
+                                 'list_bullet=, '
                                  'whitespace=WhiteSpace.pre, '
                                  'align=HorizontalAlignment.left, '
                                  'valign=VerticalAlignment.middle>')
