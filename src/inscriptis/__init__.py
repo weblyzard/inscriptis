@@ -32,10 +32,10 @@ try:
 
     from inscriptis.html_engine import Inscriptis
 
-except ImportError:
+except ImportError as e:
     import warnings
     warnings.warn(
-        "Missing dependencies - inscriptis has not been properly installed")
+        "Missing dependencies - inscriptis has not been properly installed:", e)
 
 
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
