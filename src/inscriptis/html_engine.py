@@ -7,13 +7,14 @@ Guiding principles:
 
  1. break lines only if we encounter a block element
 """
+from copy import copy
+
 from inscriptis.annotation.helper import AnnotationHelper
 from inscriptis.model.attribute import apply_attributes
 from inscriptis.model.css import HtmlElement
 from inscriptis.model.canvas import Line, Canvas
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.table import Table
-from inscriptis.html_properties import Display, WhiteSpace
 
 
 class Inscriptis:
@@ -136,8 +137,8 @@ class Inscriptis:
         # use the css to handle tags known to it :)
 
         cur = self.tags[-1].get_refined_html_element(
-            apply_attributes(attrs, html_element=self.config.css.get(
-                tag, Inscriptis.DEFAULT_ELEMENT)))
+            apply_attributes(attrs, html_element=copy(self.config.css.get(
+                tag, Inscriptis.DEFAULT_ELEMENT))))
         self.tags.append(cur)
 
         #self.next_line[-1].padding = self.current_line[-1].padding \

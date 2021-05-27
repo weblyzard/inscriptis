@@ -16,8 +16,6 @@ from inscriptis.model.css import HtmlElement
 TextSnippet = namedtuple("TextSnippet", "text whitespace")
 
 
-
-
 class Canvas:
     """
     The Canvas on which we write our HTML page.
@@ -37,6 +35,7 @@ class Canvas:
         self.current_block.append(TextSnippet(text, whitespace=WhiteSpace.pre))
 
     def write_inline(self, tag: HtmlElement, text: str):
+        print("***", tag, text)
         self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
 
     @staticmethod
@@ -82,7 +81,6 @@ class Canvas:
     def get_text(self):
         self.flush_inline()
         return unescape('\n'.join((block.rstrip() for block in self.blocks)))
-        # return text if not text.startswith('\n') else text[1:]
 
 
 class Line:

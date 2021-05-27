@@ -8,7 +8,6 @@ This module implements basic CSS support for inscriptis.
 - :class:`CssParse` parses CSS specifications and translates them into the
   corresponding HtmlElements used by Inscriptis for rendering HTML pages.
 """
-from copy import copy
 from re import compile as re_compile
 from inscriptis.html_properties import (Display, WhiteSpace,
                                         HorizontalAlignment, VerticalAlignment)
@@ -38,7 +37,7 @@ class HtmlElement:
                  'whitespace', 'limit_whitespace_affixes', 'align', 'valign',
                  'is_empty')
 
-    def __init__(self, tag='/', prefix='', suffix='', display=Display.inline,
+    def __init__(self, tag='default', prefix='', suffix='', display=Display.inline,
                  margin_before=0, margin_after=0, padding=0, list_bullet='',
                  whitespace=None, limit_whitespace_affixes=False,
                  align=HorizontalAlignment.left,
@@ -62,7 +61,6 @@ class HtmlElement:
         """
         Writes the given HTML text.
         """
-        # print(self.display, ">>>" + str(text) + "<<<")
         if not (text and not text.isspace()):
             return
 
@@ -129,41 +127,42 @@ class HtmlElement:
         Returns:
             The refined element with the context applied.
         """
-        refined_element = copy(new)
-        refined_element.canvas = self.canvas
+        new.canvas = self.canvas
         if self.is_empty:
-            refined_element.list_bullet = self.list_bullet
+            new.list_bullet = self.list_bullet
 
         # inherit `display:none` attributes and ignore further refinements
         if self.display == Display.none:
-            refined_element.display = Display.none
-            return refined_element
+            new.display = Display.none
+            return new
 
         # no whitespace set => inherit
-        refined_element.whitespace = refined_element.whitespace \
-                                     or self.whitespace
+        new.whitespace = new.whitespace or self.whitespace
 
         # do not display whitespace only affixes in Whitespace.pre areas
         # if `limit_whitespace_affixes` is set.
-        if (refined_element.limit_whitespace_affixes
+        if (new.limit_whitespace_affixes
                 and self.whitespace == WhiteSpace.pre):
-            if refined_element.prefix.isspace():
-                refined_element.prefix = ''
-            if refined_element.suffix.isspace():
-                refined_element.suffix = ''
+            if new.prefix.isspace():
+                new.prefix = ''
+            if new.suffix.isspace():
+                new.suffix = ''
 
         # total padding = current padding + the padding the refined element
         # introduces
-        refined_element.padding += self.padding
+        new.padding += self.padding
 
         # `Display.block` requires adjusting the `margin_before' and
         # `margin_after` attributes
-        if refined_element.display == Display.block:
-            refined_element.margin_before = max(refined_element.margin_before,
-                                                self.margin_before)
-            refined_element.margin_after = max(refined_element.margin_after,
-                                               self.margin_after)
-        return refined_element
+        if new.display == Display.block:
+            if self.tag == 'body':
+                new.margin_before = 0
+            else:
+                new.margin_before = max(new.margin_before,
+                                        self.margin_before)
+            new.margin_after = max(new.margin_after,
+                                   self.margin_after)
+        return new
 
     WRITER = {
         Display.block: write_block_text,

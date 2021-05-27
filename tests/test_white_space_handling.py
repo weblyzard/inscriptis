@@ -33,6 +33,7 @@ def test_white_space():
             u'</body>')
     assert get_text(html, config) == u'12\n3'
 
+
 def test_borderline_cases():
     """
     testing of borderline cases based on the behavior found in Firefox and
@@ -40,32 +41,31 @@ def test_borderline_cases():
     """
     # change of whitespace handling between terms; no whitespace
     # between the terms
-    html = u'Hallo<span style="white-space: pre">echo</span> versus'
+    html = u'<body>Hallo<span style="white-space: pre">echo</span> versus'
     assert get_text(html, config) == u'Halloecho versus'
 
     # change of whitespace handling between terms; one whitespace
     # between the terms; option 1
-    html = u'Hallo<span style="white-space: pre"> echo</span> versus'
+    html = u'<body>Hallo<span style="white-space: pre"> echo</span> versus'
     assert get_text(html, config) == u'Hallo echo versus'
 
     # change of whitespace handling between terms; one whitespace
     # between the terms; option 2
-    html = u'Hallo <span style="white-space: pre">echo</span> versus'
+    html = u'<body>Hallo <span style="white-space: pre">echo</span> versus'
     assert get_text(html, config) == u'Hallo echo versus'
-
 
     # change of whitespace handling between terms; two whitespaces
     # between the terms
-    html = u'Hallo <span style="white-space: pre"> echo</span> versus'
+    html = u'<body>Hallo <span style="white-space: pre"> echo</span> versus'
     assert get_text(html, config) == u'Hallo  echo versus'
 
     # change of whitespace handling between terms; multiple whitespaces
     # between the terms
-    html = u'Hallo   <span style="white-space: pre"> echo</span> versus'
+    html = u'<body>Hallo   <span style="white-space: pre"> echo</span> versus'
     assert get_text(html, config) == u'Hallo  echo versus'
 
     # change of whitespace handling between terms; multiple whitespaces
     # between the terms
-    html = u'Hallo   <span style="white-space: pre">   echo</span> versus'
+    html = u'<body>Hallo   <span style="white-space: pre">   echo</span> versus'
     assert get_text(html, config) == u'Hallo    echo versus'
 
