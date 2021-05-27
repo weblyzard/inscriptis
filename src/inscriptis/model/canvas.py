@@ -6,9 +6,14 @@ Elements used for rendering (parts) of the canvas.
 
 The :class:`Line` determines how a single line is rendered.
 """
+from collections import namedtuple
+from enum import Enum
 from html import unescape
 
+from inscriptis.html_properties import WhiteSpace
 from inscriptis.model.css import HtmlElement
+
+TextSnippet = namedtuple("TextSnippet", "text whitespace")
 
 
 class Canvas:
@@ -17,24 +22,36 @@ class Canvas:
     """
 
     def __init__(self):
+        """
+        Contains the completed blocks. Each block spawns at least a line
+        """
         self.blocks = []
-        self.indent = ''
-        self.head = ''
-        self.tail = ''
+        self.current_block = []
 
     def write_block(self, tag: HtmlElement, text: str):
         self.flush_inline()
-        self.head = text
+        self.current_block.append(TextSnippet(text, whitespace=0))
 
     def write_inline(self, tag: HtmlElement, text: str):
-        self.tail += text
+        if tag.whitespace == WhiteSpace.pre:
+            self.current_block.append(TextSnippet(text, whitespace=0))
+        else:
+            space_handling = 1 + 2 * text[0].isspace() + 4 * (text[-1].isspace() and len(text) > 1)
+            self.current_block.append(TextSnippet(text, whitespace=space_handling))
+
+    @staticmethod
+    def normalize_text(text_snippet):
+        return ''.join((' ' if (text_snippet.whitespace & 2) else '',
+                        ' '.join(text_snippet.text.split()),
+                        ' ' if (text_snippet.whitespace & 4) else ''))
 
     def flush_inline(self):
-        if self.head or self.tail:
-            self.blocks.append(self.head + ' '.join(self.tail.split()))
-            self.indent = ''
-            self.head = ''
-            self.tail = ''
+        if self.current_block:
+            print(self.current_block)
+            block = ''.join((self.normalize_text(b) if b.whitespace else b.text
+                             for b in self.current_block))
+            self.blocks.append(block)
+            self.current_block = []
 
     def get_text(self):
         self.flush_inline()
