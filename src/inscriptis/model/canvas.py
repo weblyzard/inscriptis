@@ -35,11 +35,10 @@ class Canvas:
         self.current_block.append(TextSnippet(text, whitespace=WhiteSpace.pre))
 
     def write_inline(self, tag: HtmlElement, text: str):
-        print("***", tag, text)
         self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
 
     @staticmethod
-    def normalize(snippets: list[TextSnippet]):
+    def _normalize(snippets: list[TextSnippet]):
         """Normalizes a list of TextSnippets to a single line
 
         Args:
@@ -74,7 +73,7 @@ class Canvas:
     def flush_inline(self):
         if self.current_block:
             print(self.current_block)
-            block = self.normalize(self.current_block)
+            block = self._normalize(self.current_block)
             self.blocks.append(block)
             self.current_block = []
 

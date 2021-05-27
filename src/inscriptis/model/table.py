@@ -6,6 +6,7 @@ Classes for representing Tables, Rows and TableCells.
 
 from itertools import chain, zip_longest
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
+from inscriptis.model.canvas import Canvas
 
 
 class TableCell:
@@ -13,7 +14,7 @@ class TableCell:
 
     __slots__ = ('canvas', 'align', 'valign', 'width', 'height')
 
-    def __init__(self, canvas, align, valign, width=None, height=None):
+    def __init__(self, canvas: Canvas, align: HorizontalAlignment, valign: VerticalAlignment, width=None, height=None):
         """
         Args:
           canvas: canvas to which the table cell is written.
@@ -41,16 +42,16 @@ class TableCell:
         """
         format_spec = self.get_format_spec()
         # normalize the canvas
-        self.canvas = list(chain(*[line.split('\n') for line in self.canvas]))
+        self.canvas.blocks = list(chain(*[line.split('\n') for line in self.canvas.blocks]))
 
         if self.height and False:
-            canvas = self.canvas + ((self.height - len(self.canvas)) * [''])
+            blocks = self.canvas.blocks + ((self.height - len(self.canvas.blocks)) * [''])
         else:
-            canvas = self.canvas
+            blocks = self.canvas.blocks
 
         # horizontal alignment
         rows = [format_spec.format(line) if self.width else line
-                for line in canvas]
+                for line in blocks]
 
         # vertical alignment
         if self.height and len(rows) < self.height:

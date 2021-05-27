@@ -67,16 +67,28 @@ class HtmlElement:
         self.is_empty = False
         HtmlElement.WRITER[self.display](self, text)
 
-    def write_tail(self, text):
+    def write_tail(self, text, is_close_block):
+        """
+        Writes the tail text of an element.
+
+        Args:
+            text: the text to write
+            is_close_block: whether the given text follows the end of a block
+                            elements.
+        """
         if not text:
             return
 
-        if self.display == Display.block and text:
+        if self.display == Display.block and is_close_block:
             self.canvas.write_block(self, '\n' * self.margin_after + ' ' * self.padding)
         self.write_inline_text(text)
 
     def set_canvas(self, canvas):
         self.canvas = canvas
+        return self
+
+    def set_tag(self, tag):
+        self.tag = tag
         return self
 
     def write_inline_text(self, text):
@@ -118,6 +130,12 @@ class HtmlElement:
             return
         base_padding = ' ' * self.padding
         self.canvas.write_block(self, text.replace('\n', '\n' + base_padding))
+
+    def close_block(self):
+        """
+        Closes a block in the canvas
+        """
+        self.canvas.flush_inline()
 
     def get_refined_html_element(self, new):
         """

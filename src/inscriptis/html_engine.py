@@ -10,6 +10,7 @@ Guiding principles:
 from copy import copy
 
 from inscriptis.annotation.helper import AnnotationHelper
+from inscriptis.html_properties import Display
 from inscriptis.model.attribute import apply_attributes
 from inscriptis.model.css import HtmlElement
 from inscriptis.model.canvas import Line, Canvas
@@ -76,14 +77,14 @@ class Inscriptis:
         # instance variables
         self.canvas = Canvas()
         self.tags = [self.config.css['body'].set_canvas(self.canvas)]
-        self.current_line = [Line()]
-        self.next_line = [Line()]
+        # self.current_line = [Line()]
+        # self.next_line = [Line()]
 
         # the canvases used for displaying text
         # clean_text_line[0] refers to the root canvas; tables write into child
         # canvases that are created for every table line and merged with the
         # root canvas at the end of a table
-        self.clean_text_lines = [[]]
+        # self.clean_text_lines = [[]]
 
         self.current_table = []
         self.li_counter = []
@@ -114,15 +115,16 @@ class Inscriptis:
             self._parse_html_tree(node)
 
         self.handle_endtag(tree.tag)
-        self.tags[-1].write_tail(tree.tail)
-        self.tags.pop()
+        prev = self.tags.pop()
+
+        # write the tail text to the element's container
+        self.tags[-1].write_tail(tree.tail, is_close_block=(prev.display == Display.block))
 
     def get_text(self):
         """
         Returns:
           str -- A text representation of the parsed content.
         """
-        print(">>>" + self.canvas.get_text().rstrip() + "<<<")
         return self.canvas.get_text().rstrip()
 
     def handle_starttag(self, tag, attrs):
@@ -138,7 +140,7 @@ class Inscriptis:
 
         cur = self.tags[-1].get_refined_html_element(
             apply_attributes(attrs, html_element=copy(self.config.css.get(
-                tag, Inscriptis.DEFAULT_ELEMENT))))
+                tag, Inscriptis.DEFAULT_ELEMENT))).set_tag(tag))
         self.tags.append(cur)
 
         #self.next_line[-1].padding = self.current_line[-1].padding \
@@ -221,6 +223,7 @@ class Inscriptis:
         self.tags[-1].write('')
 
     def _start_table(self, attrs):
+        self.tags[-1].set_canvas(Canvas())
         self.current_table.append(Table())
 
     def _start_tr(self, attrs):
@@ -240,10 +243,11 @@ class Inscriptis:
                 self._end_td()
 
             # open td tag
-            self.clean_text_lines.append([])
-            self.current_line.append(Line())
-            self.next_line.append(Line())
-            self.current_table[-1].add_cell(self.clean_text_lines[-1],
+            # self.clean_text_lines.append([])
+            # self.current_line.append(Line())
+            # self.next_line.append(Line())
+            canvas = self.tags[-1].set_canvas(Canvas()).canvas
+            self.current_table[-1].add_cell(canvas,
                                             align=self.tags[-1].align,
                                             valign=self.tags[-1].valign)
             self.current_table[-1].td_is_open = True
@@ -251,10 +255,11 @@ class Inscriptis:
     def _end_td(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self.current_table[-1].td_is_open = False
-            self._write_line(force=True)
-            self.clean_text_lines.pop()
-            self.current_line.pop()
-            self.next_line.pop()
+            self.tags[-1].close_block()
+            # self._write_line(force=True)
+            # self.clean_text_lines.pop()
+            # self.current_line.pop()
+            # self.next_line.pop()
 
     def _end_tr(self):
         pass
@@ -262,9 +267,9 @@ class Inscriptis:
     def _end_table(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self._end_td()
-        self._write_line()
+        # self._write_line()
         table = self.current_table.pop()
-        self._write_line_verbatim(table.get_text())
+        self.tags[-2].write_verbatim_text(table.get_text())
 
     def _newline(self, attrs):
         self.tags[-1].write_verbatim_text('\n')

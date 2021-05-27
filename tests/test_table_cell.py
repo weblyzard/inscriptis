@@ -6,17 +6,18 @@ Tests the Table formatting with different parameters such as width and
 alignment
 """
 
+from inscriptis.model.canvas import Canvas
 from inscriptis.model.table import TableCell
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 
 
 def test_horizontal_cell_formatting():
 
-    canvas = []
+    canvas = Canvas()
     cell = TableCell(canvas=canvas, align=HorizontalAlignment.left,
                      valign=VerticalAlignment.top)
     cell.width = 16
-    canvas.append('Ehre sei Gott!')
+    canvas.blocks.append('Ehre sei Gott!')
 
     # left alignment
     assert cell.get_cell_lines() == ['Ehre sei Gott!  ']
@@ -27,12 +28,12 @@ def test_horizontal_cell_formatting():
 
 
 def test_vertical_cell_formatting():
-    canvas = []
+    canvas = Canvas()
     cell = TableCell(canvas=canvas, align=HorizontalAlignment.left,
                      valign=VerticalAlignment.top)
     cell.width = 16
     cell.height = 4
-    canvas.append('Ehre sei Gott!')
+    canvas.blocks.append('Ehre sei Gott!')
 
     # default top alignment
     assert cell.get_cell_lines() == ['Ehre sei Gott!  ',
