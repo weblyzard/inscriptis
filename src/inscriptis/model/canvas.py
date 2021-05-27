@@ -16,10 +16,14 @@ from inscriptis.model.css import HtmlElement
 TextSnippet = namedtuple("TextSnippet", "text whitespace")
 
 
+
+
 class Canvas:
     """
     The Canvas on which we write our HTML page.
     """
+
+    __slots__ = ('blocks', 'current_block')
 
     def __init__(self):
         """
@@ -30,26 +34,48 @@ class Canvas:
 
     def write_block(self, tag: HtmlElement, text: str):
         self.flush_inline()
-        self.current_block.append(TextSnippet(text, whitespace=0))
+        self.current_block.append(TextSnippet(text, whitespace=WhiteSpace.pre))
 
     def write_inline(self, tag: HtmlElement, text: str):
-        if tag.whitespace == WhiteSpace.pre:
-            self.current_block.append(TextSnippet(text, whitespace=0))
-        else:
-            space_handling = 1 + 2 * text[0].isspace() + 4 * (text[-1].isspace() and len(text) > 1)
-            self.current_block.append(TextSnippet(text, whitespace=space_handling))
+        self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
 
     @staticmethod
-    def normalize_text(text_snippet):
-        return ''.join((' ' if (text_snippet.whitespace & 2) else '',
-                        ' '.join(text_snippet.text.split()),
-                        ' ' if (text_snippet.whitespace & 4) else ''))
+    def normalize(snippets: list[TextSnippet]):
+        """Normalizes a list of TextSnippets to a single line
+
+        Args:
+            snippets: a list of TextSnippets
+
+        Returns:
+            the normalized string
+        """
+        result = []
+        previous_isspace = False
+        for snippet in snippets:
+            # handling of pre formatted text
+            if snippet.whitespace == WhiteSpace.pre:
+                result.append(snippet.text)
+                previous_isspace = None
+                continue
+
+            for ch in snippet.text:
+                if not ch.isspace():
+                    result.append(ch)
+                    previous_isspace = False
+                    continue
+
+                if previous_isspace or not result:
+                    continue
+                else:
+                    result.append(' ')
+                    previous_isspace = True
+
+        return ''.join(result)
 
     def flush_inline(self):
         if self.current_block:
             print(self.current_block)
-            block = ''.join((self.normalize_text(b) if b.whitespace else b.text
-                             for b in self.current_block))
+            block = self.normalize(self.current_block)
             self.blocks.append(block)
             self.current_block = []
 

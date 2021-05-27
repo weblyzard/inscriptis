@@ -32,3 +32,40 @@ def test_white_space():
     html = (u'<body><span style="white-space: pre-wrap"><i>1</i>2\n3</span>'
             u'</body>')
     assert get_text(html, config) == u'12\n3'
+
+def test_borderline_cases():
+    """
+    testing of borderline cases based on the behavior found in Firefox and
+    Google Chrome.
+    """
+    # change of whitespace handling between terms; no whitespace
+    # between the terms
+    html = u'Hallo<span style="white-space: pre">echo</span> versus'
+    assert get_text(html, config) == u'Halloecho versus'
+
+    # change of whitespace handling between terms; one whitespace
+    # between the terms; option 1
+    html = u'Hallo<span style="white-space: pre"> echo</span> versus'
+    assert get_text(html, config) == u'Hallo echo versus'
+
+    # change of whitespace handling between terms; one whitespace
+    # between the terms; option 2
+    html = u'Hallo <span style="white-space: pre">echo</span> versus'
+    assert get_text(html, config) == u'Hallo echo versus'
+
+
+    # change of whitespace handling between terms; two whitespaces
+    # between the terms
+    html = u'Hallo <span style="white-space: pre"> echo</span> versus'
+    assert get_text(html, config) == u'Hallo  echo versus'
+
+    # change of whitespace handling between terms; multiple whitespaces
+    # between the terms
+    html = u'Hallo   <span style="white-space: pre"> echo</span> versus'
+    assert get_text(html, config) == u'Hallo  echo versus'
+
+    # change of whitespace handling between terms; multiple whitespaces
+    # between the terms
+    html = u'Hallo   <span style="white-space: pre">   echo</span> versus'
+    assert get_text(html, config) == u'Hallo    echo versus'
+

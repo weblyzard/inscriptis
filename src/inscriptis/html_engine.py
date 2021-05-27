@@ -181,7 +181,7 @@ class Inscriptis:
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.config.deduplicate_captions
                                and image_text == self.last_caption):
-            self.tags[-1].write_text('[{0}]'.format(image_text))
+            self.tags[-1].write('[{0}]'.format(image_text))
             self.last_caption = image_text
 
     def _start_a(self, attrs):
@@ -192,11 +192,11 @@ class Inscriptis:
             self.link_target = self.link_target or attrs.get('name', '')
 
         if self.link_target:
-            self.tags[-1].write_text('[')
+            self.tags[-1].write('[')
 
     def _end_a(self):
         if self.link_target:
-            self.tags[-1].write_text(']({0})'.format(self.link_target))
+            self.tags[-1].write(']({0})'.format(self.link_target))
 
     def _start_ol(self, attrs):
         self.li_counter.append(1)
