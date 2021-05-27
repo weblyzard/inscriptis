@@ -70,7 +70,7 @@ class HtmlElement:
         HtmlElement.WRITER[self.display](self, text)
 
     def write_tail(self, text):
-        if not (text and not text.isspace()):
+        if not text:
             return
 
         if self.display == Display.block and text:
@@ -119,7 +119,7 @@ class HtmlElement:
         if not text:
             return
         base_padding = ' ' * self.padding
-        self.canvas.write(text.replace('\n', '\n' + base_padding))
+        self.canvas.write_block(self, text.replace('\n', '\n' + base_padding))
 
     def get_refined_html_element(self, new):
         """
