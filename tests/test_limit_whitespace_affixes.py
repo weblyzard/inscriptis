@@ -9,7 +9,7 @@ from inscriptis import get_text
 from inscriptis.css_profiles import RELAXED_CSS_PROFILE
 from inscriptis.html_properties import Display, WhiteSpace
 from inscriptis.model.config import ParserConfig
-from inscriptis.model.css import HtmlElement
+from inscriptis.model.html_element import HtmlElement
 
 
 def test_html_element_refinement():

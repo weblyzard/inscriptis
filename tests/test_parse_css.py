@@ -9,7 +9,8 @@ from copy import copy
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.html_properties import (Display, WhiteSpace, VerticalAlignment,
                                         HorizontalAlignment)
-from inscriptis.model.css import CssParse, HtmlElement
+from inscriptis.model.css import CssParse
+from inscriptis.model.html_element import HtmlElement
 
 
 def test_css_parsing():

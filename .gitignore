@@ -17,3 +17,5 @@ _build/
 .mypy_cache/
 .idea/
 venv/
+tests/converted.txt
+tests/reference.txt

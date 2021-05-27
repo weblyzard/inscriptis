@@ -9,12 +9,12 @@ Standard CSS profiles shipped with inscriptis.
              preventing cases where two words stick together.
 """
 
-from inscriptis.model.css import HtmlElement
+from inscriptis.model.html_element import HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace
 
 STRICT_CSS_PROFILE = {
     'body': HtmlElement('body', display=Display.inline,
-                        whitespace=WhiteSpace.normal),
+                        whitespace=WhiteSpace.normal, margin_after=100),
     'head': HtmlElement('head', display=Display.none),
     'link': HtmlElement('link', display=Display.none),
     'meta': HtmlElement('meta', display=Display.none),

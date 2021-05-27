@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-""" ensures that two successive <a>text</a> contain
+''' ensures that two successive <a>text</a> contain
     a space between each other, if there is a linebreak
     or space between the tags.
-"""
+'''
 from os.path import dirname, join
 from glob import glob
 
@@ -22,18 +22,20 @@ def test_html_snippets(filter_str=''):
         with open(testcase_txt) as f:
             reference_txt = f.read().rstrip()
 
-        with open(testcase_txt.replace(".txt", ".html")) as f:
+        with open(testcase_txt.replace('.txt', '.html')) as f:
             print(f.name)
-            html = "<html><body>{}</body></html>".format(f.read())
+            html = '<html><body>{}</body></html>'.format(f.read())
 
         converted_txt = get_text(html, ParserConfig(
             css=CSS_PROFILES['strict'])).rstrip()
 
-        reference_txt = '\n'.join([line + "<" for line in reference_txt.split("\n")])
-        converted_txt = '\n'.join([line + "<" for line in converted_txt.split("\n")])
         if converted_txt != reference_txt:
-            print("File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}"
+            print('File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}'
                   .format(testcase_txt, html, reference_txt, converted_txt))
+            print('HTML file:', testcase_txt.replace('.txt', '.html'))
+            print("Visualize differences with `vimdiff reference.txt converted.txt`")
+            open("reference.txt", "w").write(reference_txt)
+            open("converted.txt", "w").write(converted_txt)
 
         assert converted_txt == reference_txt
 

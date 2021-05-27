@@ -12,8 +12,8 @@ from copy import copy
 from inscriptis.annotation.helper import AnnotationHelper
 from inscriptis.html_properties import Display
 from inscriptis.model.attribute import apply_attributes
-from inscriptis.model.css import HtmlElement
-from inscriptis.model.canvas import Line, Canvas
+from inscriptis.model.html_element import HtmlElement
+from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.table import Table
 
@@ -77,14 +77,6 @@ class Inscriptis:
         # instance variables
         self.canvas = Canvas()
         self.tags = [self.config.css['body'].set_canvas(self.canvas)]
-        # self.current_line = [Line()]
-        # self.next_line = [Line()]
-
-        # the canvases used for displaying text
-        # clean_text_line[0] refers to the root canvas; tables write into child
-        # canvases that are created for every table line and merged with the
-        # root canvas at the end of a table
-        # self.clean_text_lines = [[]]
 
         self.current_table = []
         self.li_counter = []

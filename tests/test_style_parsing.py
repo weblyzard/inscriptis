@@ -4,7 +4,8 @@
 Tests inscriptis' parsing of CSS style definitions.
 """
 
-from inscriptis.model.css import CssParse, HtmlElement
+from inscriptis.model.css import CssParse
+from inscriptis.model.html_element import HtmlElement
 
 
 def test_style_unit_parsing():
