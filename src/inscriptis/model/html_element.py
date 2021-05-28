@@ -13,7 +13,7 @@ class HtmlElement:
       the content.
     - margin_before: vertical margin before the tag's content.
     - margin_after: vertical margin after the tag's content.
-    - padding: horizontal padding before the tag's content.
+    - padding_inline: horizontal padding_inline before the tag's content.
     - whitespace: the :class:`~inscriptis.html_properties.Whitespace` handling
       strategy.
     - limit_whitespace_affixes: limit printing of whitespace affixes to
@@ -21,12 +21,12 @@ class HtmlElement:
     """
 
     __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
-                 'margin_before', 'margin_after', 'padding', 'list_bullet',
+                 'margin_before', 'margin_after', 'padding_inline', 'list_bullet',
                  'whitespace', 'limit_whitespace_affixes', 'align', 'valign',
                  'is_empty', 'previous_margin_after')
 
     def __init__(self, tag='default', prefix='', suffix='', display=Display.inline,
-                 margin_before=0, margin_after=0, padding=0, list_bullet='',
+                 margin_before=0, margin_after=0, padding_inline=0, list_bullet='',
                  whitespace=None, limit_whitespace_affixes=False,
                  align=HorizontalAlignment.left,
                  valign=VerticalAlignment.middle):
@@ -37,7 +37,7 @@ class HtmlElement:
         self.display = display
         self.margin_before = margin_before
         self.margin_after = margin_after
-        self.padding = padding
+        self.padding_inline = padding_inline
         self.list_bullet = list_bullet
         self.whitespace = whitespace
         self.limit_whitespace_affixes = limit_whitespace_affixes
@@ -50,11 +50,12 @@ class HtmlElement:
         """
         Writes the given HTML text.
         """
-        if not (text and not text.isspace()):
+        if not text or self.display == Display.none:
             return
 
+        self.canvas.write(self, ''.join(
+            (self.prefix, text, self.suffix)))
         self.is_empty = False
-        HtmlElement.WRITER[self.display](self, text)
 
     def write_tail(self, text):
         """
@@ -65,11 +66,7 @@ class HtmlElement:
         """
         if not text:
             return
-
-        # if self.display == Display.block and is_close_block:
-        #     print("AFTER")
-        #     self.canvas.write_block(self, '\n' * self.margin_after + ' ' * self.padding)
-        self.write_inline_text(text)
+        self.write(text)
 
     def set_canvas(self, canvas):
         self.canvas = canvas
@@ -79,33 +76,7 @@ class HtmlElement:
         self.tag = tag
         return self
 
-    def write_inline_text(self, text):
-        """
-        Writes floating HTML text. All whitespaces are collapsed.
-        Args:
-            text: the text to write
-        """
-        self.canvas.write_inline(self,
-                                 ''.join((self.prefix, text, self.suffix)))
-
-    def write_block_text(self, text):
-        """
-        Writes floating HTML text. All whitespaces are collapsed.
-        Args:
-            text: the text to write
-        """
-        self.canvas.write_block(self, ''.join(
-            (
-                self.prefix,
-                text.lstrip(),
-                self.suffix
-            )
-        ))
-
-    def write_display_none(self, text):
-        return
-
-    def write_verbatim_text(self, text):
+    def write_verbatim_text(self, tag, text):
         """
         Writes the given text verbatim to the canvas.
         Args:
@@ -113,8 +84,17 @@ class HtmlElement:
         """
         if not text:
             return
-        base_padding = ' ' * self.padding
-        self.canvas.write_block(self, text.replace('\n', '\n' + base_padding))
+
+        if tag.display == Display.block:
+            self.canvas.open_block(tag)
+        tag.whitespace = WhiteSpace.pre
+        self.canvas.write(tag, text)
+
+        if tag.display == Display.block:
+            self.canvas.close_block(tag)
+
+        #base_padding = ' ' * self.padding_inline
+        #self.canvas.write(self, text.replace('\n', '\n' + base_padding))
 
     def close_block(self):
         """
@@ -137,8 +117,6 @@ class HtmlElement:
             The refined element with the context applied.
         """
         new.canvas = self.canvas
-        if self.is_empty:
-            new.list_bullet = self.list_bullet
 
         # inherit `display:none` attributes and ignore further refinements
         if self.display == Display.none:
@@ -157,25 +135,15 @@ class HtmlElement:
             if new.suffix.isspace():
                 new.suffix = ''
 
-        # total padding = current padding + the padding the refined element
-        # introduces
-        new.padding += self.padding
-
         if new.display == Display.block and self.display == Display.block:
             new.previous_margin_after = self.margin_after
         return new
-
-    WRITER = {
-        Display.block: write_block_text,
-        Display.inline: write_inline_text,
-        Display.none: write_display_none
-    }
 
     def __str__(self):
         return (
             '<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
             'display={self.display}, margin_before={self.margin_before}, '
-            'margin_after={self.margin_after}, padding={self.padding}, '
+            'margin_after={self.margin_after}, padding_inline={self.padding_inline}, '
             'list_bullet={self.list_bullet}, '
             'whitespace={self.whitespace}, align={self.align}, '
             'valign={self.valign}>'

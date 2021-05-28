@@ -111,9 +111,9 @@ class CssParse:
     @staticmethod
     def attr_padding_left(value, html_element):
         """
-        Apply the given left padding.
+        Apply the given left padding_inline.
         """
-        html_element.padding = CssParse._get_em(value)
+        html_element.padding_inline = CssParse._get_em(value)
 
     @staticmethod
     def attr_horizontal_align(value, html_element):

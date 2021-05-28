@@ -15,36 +15,73 @@ from inscriptis.model.html_element import HtmlElement
 
 TextSnippet = namedtuple("TextSnippet", "text whitespace")
 
+class Prefix:
+
+    __slots__ = ('_padding_inline', '_bullet')
+
+    def __init__(self, padding_inline, bullet):
+        self._padding_inline = padding_inline
+        self._bullet = bullet
+
+    @property
+    def padding(self):
+        """
+        Returns the padding for the given prefix.
+        """
+        return ' ' * self._padding_inline
+
+    @property
+    def bullet(self):
+        b = self._bullet
+        self._bullet = ''
+        return b
+
+    def __str__(self):
+        return '"' + ' ' * (self._padding_inline - len(self._bullet)) + self._bullet + '"'
+
+    __repr__ = __str__
+
+
 
 class Canvas:
     """
     The text Canvas on which Inscriptis writes the HMTL page.
     """
 
-    __slots__ = ('blocks', 'current_block', 'prefix', 'margin')
+    __slots__ = ('blocks', 'current_block', 'prefixes', 'margin')
 
     def __init__(self):
         """
         Contains the completed blocks. Each block spawns at least a line
         """
-        self.prefix = []
+        self.prefixes = [Prefix(0, '')]
         self.blocks = []
         self.current_block = []
         self.margin = 1000  # margin to the previous block
 
-    def write_block(self, tag: HtmlElement, text: str):
+    def open_block(self, tag: HtmlElement):
+        """
+        Opens an HTML block element.
+        """
+        # print("OPPPPPPPPPPPPPPPPPPPPPPPPPPEN", tag)
         self._flush_inline()
+        self.prefixes.append(Prefix(tag.padding_inline, tag.list_bullet))
 
         # write the block margin
         required_margin = max(tag.previous_margin_after, tag.margin_before)
         if required_margin > self.margin:
             self.blocks.append('\n' * (required_margin - self.margin - 1))
+            self.margin = required_margin
         # print("\n\n", self.blocks, "\n", "WRITE: Required / current", tag, required_margin, self.margin)
 
-        # write block content (considering its padding)
-        self.prefix = [' ' * (tag.padding - len(tag.list_bullet)),
-                       tag.list_bullet]
+
+    def write(self, tag: HtmlElement, text: str):
+        """
+        Writes the given block.
+        """
+        # print("|", self.current_block, "<<<<<", text, ">>>>",)
         self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
+        # print(")))))))", self.current_block)
 
     def close_block(self, tag: HtmlElement):
         """
@@ -54,24 +91,31 @@ class Canvas:
             tag: the HTML Block element to close
         """
         self._flush_inline()
+        self.prefixes.pop()
         if tag.margin_after > self.margin:
             self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
-            # print("\n\n", self.blocks, "\n", "CLOSE: Required / current", tag, tag.margin_after, self.margin)
             self.margin = tag.margin_after
+        # print("\n\n", self.blocks, "\n", "CLOSE: Required / current", tag, tag.margin_after, self.margin)
 
     def write_newline(self):
         self._flush_inline()
         self.blocks.append('')
 
-    def write_inline(self, tag: HtmlElement, text: str):
-        self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
-
     def get_text(self):
         """
         Provide a text representation of the current block
         """
+        # print("\n\n\nGET\n\n\n")
         self._flush_inline()
         return unescape('\n'.join((block.rstrip(' ') for block in self.blocks)))
+
+    def _flush_inline(self):
+        normalized_block = self._normalize(self.current_block)
+        if normalized_block:
+            print(".......................", self.current_block)
+            self.blocks.append(normalized_block)
+            self.current_block = []
+            self.margin = 0
 
     def _normalize(self, snippets: list[TextSnippet]):
         """Normalizes a list of TextSnippets to a single line
@@ -82,19 +126,16 @@ class Canvas:
         Returns:
             the normalized string representing the TextSnippets in the line
         """
-        result = self.prefix
-        # only keep the padding for further lines (i.e., remove bullets)
-        self.prefix = [' ' * sum(map(len, self.prefix))]
+        result = []
         previous_isspace = True
         for snippet in snippets:
             # handling of pre formatted text
             if snippet.whitespace == WhiteSpace.pre:
-                for line in snippet.text.split("\n"):
-                    result.append(snippet.text)
-                    result.extend(self.prefix)
-                previous_isspace = result[-1].isspace()
+                result.extend(snippet.text)
+                previous_isspace = (result[-1] == '\n')
                 continue
 
+            # handling of inline text
             for ch in snippet.text:
                 if not ch.isspace():
                     result.append(ch)
@@ -107,12 +148,18 @@ class Canvas:
                     result.append(' ')
                     previous_isspace = True
 
-        return ''.join(result)
+        # does the textblock yield a result?
+        block = ''.join(result)
+        if not block:
+            return
 
-    def _flush_inline(self):
-        normalized_block = self._normalize(self.current_block)
-        if normalized_block:
-            print(".......................", self.current_block)
-            self.blocks.append(normalized_block)
-            self.current_block = []
-            self.margin = 0
+        subsequent_prefix = ''.join((p.padding for p in self.prefixes))
+        bullet = ''.join((p.bullet for p in self.prefixes))
+        if bullet:
+            first_prefix = subsequent_prefix[:-len(bullet)] + bullet
+        else:
+            first_prefix = subsequent_prefix
+
+        if block and first_prefix:
+            block = first_prefix + block.replace('\n', '\n' + subsequent_prefix)
+        return block

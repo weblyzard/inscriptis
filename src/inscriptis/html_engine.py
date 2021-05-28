@@ -101,6 +101,9 @@ class Inscriptis:
             return
 
         self.handle_starttag(tree.tag, tree.attrib)
+        cur = self.tags[-1]
+        if cur.display == Display.block:
+            cur.canvas.open_block(cur)
         self.tags[-1].write(tree.text)
 
         for node in tree:
@@ -137,8 +140,8 @@ class Inscriptis:
                 tag, Inscriptis.DEFAULT_ELEMENT))).set_tag(tag))
         self.tags.append(cur)
 
-        #self.next_line[-1].padding = self.current_line[-1].padding \
-        #    + cur.padding
+        #self.next_line[-1].padding_inline = self.current_line[-1].padding_inline \
+        #    + cur.padding_inline
 
         # flush text before display:block elements
         #if cur.display == Display.block:
@@ -146,7 +149,7 @@ class Inscriptis:
         #        self.current_line[-1].margin_before = 0 \
         #            if not self.clean_text_lines[0] else max(
         #                self.current_line[-1].margin_before, cur.margin_before)
-        #        self.current_line[-1].padding = self.next_line[-1].padding
+        #        self.current_line[-1].padding_inline = self.next_line[-1].padding_inline
         #    else:
         #        self.current_line[-1].margin_after = max(
         #            self.current_line[-1].margin_after, cur.margin_after)
@@ -263,7 +266,7 @@ class Inscriptis:
             self._end_td()
         # self._write_line()
         table = self.current_table.pop()
-        self.tags[-2].write_verbatim_text(table.get_text())
+        self.tags[-2].write_verbatim_text(self.tags[-2], table.get_text())
 
     def _newline(self, attrs):
         self.tags[-1].canvas.write_newline()

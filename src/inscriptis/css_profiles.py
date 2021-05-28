@@ -42,9 +42,9 @@ STRICT_CSS_PROFILE = {
                       margin_after=1),
 
     'ul': HtmlElement('ul', display=Display.block, margin_before=0,
-                      margin_after=0, padding=4),
+                      margin_after=0, padding_inline=4),
     'ol': HtmlElement('ol', display=Display.block, margin_before=0,
-                      margin_after=0, padding=4),
+                      margin_after=0, padding_inline=4),
     'li': HtmlElement('li', display=Display.block),
 
     'address': HtmlElement('address', display=Display.block),
@@ -76,7 +76,7 @@ STRICT_CSS_PROFILE = {
 
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
 RELAXED_CSS_PROFILE['div'] = HtmlElement('div', display=Display.block,
-                                         padding=2)
+                                         padding_inline=2)
 RELAXED_CSS_PROFILE['span'] = HtmlElement('span', display=Display.inline,
                                           prefix=' ', suffix=' ',
                                           limit_whitespace_affixes=True)

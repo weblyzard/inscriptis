@@ -19,7 +19,7 @@ def test_margin_before():
 
     html = '<html><body>first<p>' \
            'second</p></body></html>'
-    assert get_text(html) == 'first\nsecond'
+    assert get_text(html) == 'first\n\nsecond'
 
 
 def test_br():
