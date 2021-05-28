@@ -266,6 +266,9 @@ class Inscriptis:
             self._end_td()
         # self._write_line()
         table = self.current_table.pop()
+        # last tag before the table: self.tags[-2]
+        # table tag: self.tags[-1]
+        self.tags[-2].write_verbatim_text(self.tags[-2], self.tags[-1].canvas.get_text())
         self.tags[-2].write_verbatim_text(self.tags[-2], table.get_text())
 
     def _newline(self, attrs):

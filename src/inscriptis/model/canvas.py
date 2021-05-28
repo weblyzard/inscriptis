@@ -98,8 +98,8 @@ class Canvas:
         # print("\n\n", self.blocks, "\n", "CLOSE: Required / current", tag, tag.margin_after, self.margin)
 
     def write_newline(self):
-        self._flush_inline()
-        self.blocks.append('')
+        if not self._flush_inline():
+            self.blocks.append('')
 
     def get_text(self):
         """
@@ -112,10 +112,12 @@ class Canvas:
     def _flush_inline(self):
         normalized_block = self._normalize(self.current_block)
         if normalized_block:
-            print(".......................", self.current_block)
+            # print(".......................", self.current_block)
             self.blocks.append(normalized_block)
             self.current_block = []
             self.margin = 0
+            return True
+        return False
 
     def _normalize(self, snippets: list[TextSnippet]):
         """Normalizes a list of TextSnippets to a single line

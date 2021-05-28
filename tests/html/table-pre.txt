@@ -9,5 +9,4 @@ for a in range(10):  for (int a=0; a<10; a++) {
    print(b)             System.out.println(b); 
                      }                         
                                                
-                                               
 3.8                  14

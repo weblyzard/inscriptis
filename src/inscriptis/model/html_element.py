@@ -148,3 +148,5 @@ class HtmlElement:
             'whitespace={self.whitespace}, align={self.align}, '
             'valign={self.valign}>'
         ).format(self=self)
+
+    __repr__ = __str__
