@@ -23,7 +23,7 @@ class HtmlElement:
     __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
                  'margin_before', 'margin_after', 'padding', 'list_bullet',
                  'whitespace', 'limit_whitespace_affixes', 'align', 'valign',
-                 'is_empty')
+                 'is_empty', 'previous_margin_after')
 
     def __init__(self, tag='default', prefix='', suffix='', display=Display.inline,
                  margin_before=0, margin_after=0, padding=0, list_bullet='',
@@ -43,7 +43,8 @@ class HtmlElement:
         self.limit_whitespace_affixes = limit_whitespace_affixes
         self.align = align
         self.valign = valign
-        self.is_empty = True       # whether this is an empty element
+        self.is_empty = True            # whether this is an empty element
+        self.previous_margin_after = 0
 
     def write(self, text):
         """
@@ -55,21 +56,19 @@ class HtmlElement:
         self.is_empty = False
         HtmlElement.WRITER[self.display](self, text)
 
-    def write_tail(self, text, is_close_block):
+    def write_tail(self, text):
         """
         Writes the tail text of an element.
 
         Args:
             text: the text to write
-            is_close_block: whether the given text follows the end of a block
-                            elements.
         """
         if not text:
             return
 
-        if self.display == Display.block and is_close_block:
-            print("AFTER")
-            self.canvas.write_block(self, '\n' * self.margin_after + ' ' * self.padding)
+        # if self.display == Display.block and is_close_block:
+        #     print("AFTER")
+        #     self.canvas.write_block(self, '\n' * self.margin_after + ' ' * self.padding)
         self.write_inline_text(text)
 
     def set_canvas(self, canvas):
@@ -95,8 +94,6 @@ class HtmlElement:
         Args:
             text: the text to write
         """
-        self.canvas.flush_inline()
-        self.canvas.blocks.append('\n' * self.margin_before)
         self.canvas.write_block(self, ''.join(
             (
                 self.prefix,
@@ -123,7 +120,7 @@ class HtmlElement:
         """
         Closes a block in the canvas
         """
-        self.canvas.flush_inline()
+        self.canvas.close_block(self)
 
     def get_refined_html_element(self, new):
         """
@@ -164,16 +161,8 @@ class HtmlElement:
         # introduces
         new.padding += self.padding
 
-        # `Display.block` requires adjusting the `margin_before' and
-        # `margin_after` attributes
-        if new.display == Display.block:
-            if self.tag == 'body':
-                new.margin_before = 0
-            else:
-                new.margin_before = max(new.margin_before,
-                                        self.margin_before)
-            new.margin_after = max(new.margin_after,
-                                   self.margin_after)
+        if new.display == Display.block and self.display == Display.block:
+            new.previous_margin_after = self.margin_after
         return new
 
     WRITER = {

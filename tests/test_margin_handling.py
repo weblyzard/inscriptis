@@ -19,14 +19,14 @@ def test_margin_handling():
                      </div>
                      sei Gott
                </body>'''
-    assert get_text(html, config) == u'Hallo\nEcho\n\n\nMecho\n\nsei Gott'
+    assert get_text(html, config) == u'Hallo\n\nEcho\n\n\nMecho\n\nsei Gott'
 
     html = u'''<body>Hallo
                      <div style="margin-top: 1em; margin-bottom: 1em">Echo</div>
                          <div style="margin-top: 2em">Mecho</div>
                      sei Gott
                </body>'''
-    assert get_text(html, config) == u'Hallo\nEcho\n\n\nMecho\nsei Gott'
+    assert get_text(html, config) == u'Hallo\n\nEcho\n\n\nMecho\nsei Gott'
 
     html = u'''<body>Hallo
                      <div style="margin-top: 1em; margin-bottom: 1em">

@@ -108,9 +108,11 @@ class Inscriptis:
 
         self.handle_endtag(tree.tag)
         prev = self.tags.pop()
+        if prev.display == Display.block:
+            prev.close_block()
 
         # write the tail text to the element's container
-        self.tags[-1].write_tail(tree.tail, is_close_block=(prev.display == Display.block))
+        self.tags[-1].write_tail(tree.tail)
 
     def get_text(self):
         """
@@ -264,7 +266,7 @@ class Inscriptis:
         self.tags[-2].write_verbatim_text(table.get_text())
 
     def _newline(self, attrs):
-        self.tags[-1].write_verbatim_text('\n')
+        self.tags[-1].canvas.write_newline()
 
     @staticmethod
     def get_bullet(index):

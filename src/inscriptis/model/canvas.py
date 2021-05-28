@@ -18,10 +18,10 @@ TextSnippet = namedtuple("TextSnippet", "text whitespace")
 
 class Canvas:
     """
-    The Canvas on which we write our HTML page.
+    The text Canvas on which Inscriptis writes the HMTL page.
     """
 
-    __slots__ = ('blocks', 'current_block', 'prefix')
+    __slots__ = ('blocks', 'current_block', 'prefix', 'margin')
 
     def __init__(self):
         """
@@ -30,15 +30,48 @@ class Canvas:
         self.prefix = []
         self.blocks = []
         self.current_block = []
+        self.margin = 1000  # margin to the previous block
 
     def write_block(self, tag: HtmlElement, text: str):
-        self.flush_inline()
+        self._flush_inline()
+
+        # write the block margin
+        required_margin = max(tag.previous_margin_after, tag.margin_before)
+        if required_margin > self.margin:
+            self.blocks.append('\n' * (required_margin - self.margin - 1))
+        print("WRITE: Required / current", tag, required_margin, self.margin, self.blocks)
+
+        # write block content (considering its padding)
         self.prefix = [' ' * (tag.padding - len(tag.list_bullet)),
                        tag.list_bullet]
-        self.current_block.append(TextSnippet(text, whitespace=WhiteSpace.pre))
+        self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
+
+    def close_block(self, tag: HtmlElement):
+        """
+        Closes the given HtmlElement by writing its bottom margin.
+
+        Args:
+            tag: the HTML Block element to close
+        """
+        self._flush_inline()
+        if tag.margin_after > self.margin:
+            self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
+            # print("CLOSE: After / current", tag, tag.margin_after, self.margin, self.blocks)
+            self.margin = tag.margin_after
+
+    def write_newline(self):
+        self._flush_inline()
+        self.blocks.append('')
 
     def write_inline(self, tag: HtmlElement, text: str):
         self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
+
+    def get_text(self):
+        """
+        Provide a text representation of the current block
+        """
+        self._flush_inline()
+        return unescape('\n'.join((block.rstrip() for block in self.blocks)))
 
     def _normalize(self, snippets: list[TextSnippet]):
         """Normalizes a list of TextSnippets to a single line
@@ -47,17 +80,19 @@ class Canvas:
             snippets: a list of TextSnippets
 
         Returns:
-            the normalized string
+            the normalized string representing the TextSnippets in the line
         """
-        result = self.prefix.copy()
-        previous_isspace = False
+        result = self.prefix
+        # only keep the padding for further lines (i.e., remove bullets)
+        self.prefix = [' ' * sum(map(len, self.prefix))]
+        previous_isspace = True
         for snippet in snippets:
             # handling of pre formatted text
             if snippet.whitespace == WhiteSpace.pre:
                 for line in snippet.text.split("\n"):
                     result.append(snippet.text)
                     result.extend(self.prefix)
-                previous_isspace = None
+                previous_isspace = result[-1].isspace()
                 continue
 
             for ch in snippet.text:
@@ -74,13 +109,10 @@ class Canvas:
 
         return ''.join(result)
 
-    def flush_inline(self):
+    def _flush_inline(self):
         if self.current_block:
-            print(self.current_block)
+            print(".......................", self.current_block)
             block = self._normalize(self.current_block)
             self.blocks.append(block)
             self.current_block = []
-
-    def get_text(self):
-        self.flush_inline()
-        return unescape('\n'.join((block.rstrip() for block in self.blocks)))
+            self.margin = 0

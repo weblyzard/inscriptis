@@ -14,7 +14,7 @@ from inscriptis.html_properties import Display, WhiteSpace
 
 STRICT_CSS_PROFILE = {
     'body': HtmlElement('body', display=Display.inline,
-                        whitespace=WhiteSpace.normal, margin_after=100),
+                        whitespace=WhiteSpace.normal),
     'head': HtmlElement('head', display=Display.none),
     'link': HtmlElement('link', display=Display.none),
     'meta': HtmlElement('meta', display=Display.none),
