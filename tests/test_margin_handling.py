@@ -34,4 +34,4 @@ def test_margin_handling():
                     </div>
                     sei Gott
                </body>'''
-    assert get_text(html, config) == u'Hallo\n\n\nEhre\nsei Gott'
+    assert get_text(html, config) == u'Hallo\n\n\nEhre\n\nsei Gott'

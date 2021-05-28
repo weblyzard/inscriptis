@@ -39,7 +39,7 @@ class Canvas:
         required_margin = max(tag.previous_margin_after, tag.margin_before)
         if required_margin > self.margin:
             self.blocks.append('\n' * (required_margin - self.margin - 1))
-        print("WRITE: Required / current", tag, required_margin, self.margin, self.blocks)
+        # print("\n\n", self.blocks, "\n", "WRITE: Required / current", tag, required_margin, self.margin)
 
         # write block content (considering its padding)
         self.prefix = [' ' * (tag.padding - len(tag.list_bullet)),
@@ -56,7 +56,7 @@ class Canvas:
         self._flush_inline()
         if tag.margin_after > self.margin:
             self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
-            # print("CLOSE: After / current", tag, tag.margin_after, self.margin, self.blocks)
+            # print("\n\n", self.blocks, "\n", "CLOSE: Required / current", tag, tag.margin_after, self.margin)
             self.margin = tag.margin_after
 
     def write_newline(self):
@@ -71,7 +71,7 @@ class Canvas:
         Provide a text representation of the current block
         """
         self._flush_inline()
-        return unescape('\n'.join((block.rstrip() for block in self.blocks)))
+        return unescape('\n'.join((block.rstrip(' ') for block in self.blocks)))
 
     def _normalize(self, snippets: list[TextSnippet]):
         """Normalizes a list of TextSnippets to a single line
@@ -110,9 +110,9 @@ class Canvas:
         return ''.join(result)
 
     def _flush_inline(self):
-        if self.current_block:
+        normalized_block = self._normalize(self.current_block)
+        if normalized_block:
             print(".......................", self.current_block)
-            block = self._normalize(self.current_block)
-            self.blocks.append(block)
+            self.blocks.append(normalized_block)
             self.current_block = []
             self.margin = 0
