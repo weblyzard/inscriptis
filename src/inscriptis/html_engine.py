@@ -140,20 +140,6 @@ class Inscriptis:
                 tag, Inscriptis.DEFAULT_ELEMENT))).set_tag(tag))
         self.tags.append(cur)
 
-        #self.next_line[-1].padding_inline = self.current_line[-1].padding_inline \
-        #    + cur.padding_inline
-
-        # flush text before display:block elements
-        #if cur.display == Display.block:
-        #    if not self._write_line():
-        #        self.current_line[-1].margin_before = 0 \
-        #            if not self.clean_text_lines[0] else max(
-        #                self.current_line[-1].margin_before, cur.margin_before)
-        #        self.current_line[-1].padding_inline = self.next_line[-1].padding_inline
-        #    else:
-        #        self.current_line[-1].margin_after = max(
-        #            self.current_line[-1].margin_after, cur.margin_after)
-
         handler = self.start_tag_handler_dict.get(tag, None)
         if handler:
             handler(attrs)
@@ -240,9 +226,6 @@ class Inscriptis:
                 self._end_td()
 
             # open td tag
-            # self.clean_text_lines.append([])
-            # self.current_line.append(Line())
-            # self.next_line.append(Line())
             canvas = self.tags[-1].set_canvas(Canvas()).canvas
             self.current_table[-1].add_cell(canvas,
                                             align=self.tags[-1].align,
@@ -253,10 +236,6 @@ class Inscriptis:
         if self.current_table and self.current_table[-1].td_is_open:
             self.current_table[-1].td_is_open = False
             self.tags[-1].close_block()
-            # self._write_line(force=True)
-            # self.clean_text_lines.pop()
-            # self.current_line.pop()
-            # self.next_line.pop()
 
     def _end_tr(self):
         pass
