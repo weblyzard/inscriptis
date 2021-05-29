@@ -150,8 +150,11 @@ class Table:
             # determine max_column_width
             row_cell_lines = [row.get_cell_lines(column_idx)
                               for row in self.rows]
-            max_column_width = max((len(line)
-                                    for line in chain(*row_cell_lines)))
+            try:
+                max_column_width = max((len(line)
+                                        for line in chain(*row_cell_lines)))
+            except ValueError:
+                max_column_width = 0
 
             # set column width in all rows
             for row in self.rows:

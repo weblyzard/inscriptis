@@ -268,7 +268,8 @@ class Inscriptis:
         table = self.current_table.pop()
         # last tag before the table: self.tags[-2]
         # table tag: self.tags[-1]
-        out_of_table_text = self.tags[-1].canvas.get_text()
+        print(".....", self.tags[-1].canvas.blocks, self.tags[-1].canvas.current_block)
+        out_of_table_text = self.tags[-1].canvas.get_text().strip()
         if out_of_table_text:
             self.tags[-2].write_verbatim_text(self.tags[-2], out_of_table_text + '\n')
         self.tags[-2].write_verbatim_text(self.tags[-2], table.get_text())
