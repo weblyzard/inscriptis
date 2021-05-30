@@ -2,10 +2,6 @@
 # coding:utf-8
 """
 The HTML Engine is responsible for converting HTML to text.
-
-Guiding principles:
-
- 1. break lines only if we encounter a block element
 """
 from copy import copy
 
@@ -23,12 +19,12 @@ class Inscriptis:
     The Inscriptis class translates an lxml HTML tree to the corresponding
     text representation.
 
-    Args:
+    Arguments:
       html_tree: the lxml HTML tree to convert.
       config: an optional ParserConfig configuration object.
 
     Example::
-
+    
       from lxml.html import fromstring
       from inscriptis.html_engine import Inscriptis
 
@@ -257,7 +253,7 @@ class Inscriptis:
         self.tags[-1].canvas.write_newline()
 
     @staticmethod
-    def get_bullet(index):
+    def get_bullet(index) -> str:
         """
         Returns:
           str -- The bullet that corresponds to the given index.

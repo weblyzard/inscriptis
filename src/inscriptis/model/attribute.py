@@ -5,8 +5,10 @@
 This class handles HTML attributes such as `align`, and `valign` by
 mapping them to the corresponding functions in the CssParse class.
 """
+from typing import Dict
 
 from inscriptis.model.css import CssParse
+from inscriptis.model.html_element import HtmlElement
 
 HTML_ATTRIBUTE_MAPPING = {
     'style': CssParse.attr_style,
@@ -15,9 +17,8 @@ HTML_ATTRIBUTE_MAPPING = {
 }
 
 
-def apply_attributes(attributes, html_element):
+def apply_attributes(attributes: Dict[str, str], html_element: HtmlElement):
     """
-
     Applies the attributes to the given HTML element.
 
     Args:
