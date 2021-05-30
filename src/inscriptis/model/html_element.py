@@ -1,4 +1,5 @@
-from inscriptis.html_properties import Display, HorizontalAlignment, VerticalAlignment, WhiteSpace
+from inscriptis.html_properties import Display, HorizontalAlignment, \
+    VerticalAlignment, WhiteSpace
 
 
 class HtmlElement:
@@ -21,12 +22,14 @@ class HtmlElement:
     """
 
     __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
-                 'margin_before', 'margin_after', 'padding_inline', 'list_bullet',
-                 'whitespace', 'limit_whitespace_affixes', 'align', 'valign',
-                 'is_empty', 'previous_margin_after')
+                 'margin_before', 'margin_after', 'padding_inline',
+                 'list_bullet', 'whitespace', 'limit_whitespace_affixes',
+                 'align', 'valign', 'previous_margin_after')
 
-    def __init__(self, tag='default', prefix='', suffix='', display=Display.inline,
-                 margin_before=0, margin_after=0, padding_inline=0, list_bullet='',
+    def __init__(self, tag='default', prefix='', suffix='',
+                 display=Display.inline,
+                 margin_before=0, margin_after=0, padding_inline=0,
+                 list_bullet='',
                  whitespace=None, limit_whitespace_affixes=False,
                  align=HorizontalAlignment.left,
                  valign=VerticalAlignment.middle):
@@ -43,10 +46,9 @@ class HtmlElement:
         self.limit_whitespace_affixes = limit_whitespace_affixes
         self.align = align
         self.valign = valign
-        self.is_empty = True            # whether this is an empty element
         self.previous_margin_after = 0
 
-    def write(self, text):
+    def write(self, text: str):
         """
         Writes the given HTML text.
         """
@@ -55,28 +57,27 @@ class HtmlElement:
 
         self.canvas.write(self, ''.join(
             (self.prefix, text, self.suffix)))
-        self.is_empty = False
 
-    def write_tail(self, text):
+    def write_tail(self, text: str):
         """
         Writes the tail text of an element.
 
         Args:
             text: the text to write
         """
-        if not text:
+        if not text or self.display == Display.none:
             return
         self.write(text)
 
-    def set_canvas(self, canvas):
+    def set_canvas(self, canvas) -> 'HtmlElement':
         self.canvas = canvas
         return self
 
-    def set_tag(self, tag):
+    def set_tag(self, tag: str) -> 'HtmlElement':
         self.tag = tag
         return self
 
-    def write_verbatim_text(self, tag, text):
+    def write_verbatim_text(self, text: str):
         """
         Writes the given text verbatim to the canvas.
         Args:
@@ -85,13 +86,13 @@ class HtmlElement:
         if not text:
             return
 
-        if tag.display == Display.block:
-            self.canvas.open_block(tag)
+        if self.display == Display.block:
+            self.canvas.open_block(self)
 
-        self.canvas.write(tag, text, whitespace=WhiteSpace.pre)
+        self.canvas.write(self, text, whitespace=WhiteSpace.pre)
 
-        if tag.display == Display.block:
-            self.canvas.close_block(tag)
+        if self.display == Display.block:
+            self.canvas.close_block(self)
 
     def close_block(self):
         """
@@ -99,7 +100,7 @@ class HtmlElement:
         """
         self.canvas.close_block(self)
 
-    def get_refined_html_element(self, new):
+    def get_refined_html_element(self, new) -> 'HtmlElement':
         """
         Computes the new HTML element based on the previous one.
 
@@ -140,7 +141,8 @@ class HtmlElement:
         return (
             '<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
             'display={self.display}, margin_before={self.margin_before}, '
-            'margin_after={self.margin_after}, padding_inline={self.padding_inline}, '
+            'margin_after={self.margin_after}, '
+            'padding_inline={self.padding_inline}, '
             'list_bullet={self.list_bullet}, '
             'whitespace={self.whitespace}, align={self.align}, '
             'valign={self.valign}>'

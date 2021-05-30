@@ -10,12 +10,26 @@ is serialized.
 from collections import namedtuple
 from html import unescape
 
+from typing import List, Optional
+
 from inscriptis.html_properties import WhiteSpace
 from inscriptis.model.html_element import HtmlElement
 
 TextSnippet = namedtuple("TextSnippet", "text whitespace")
 
+
 class Prefix:
+    """Class Prefix manages paddings and bullets that prefix an HTML block.
+
+    Note:
+        In Inscriptis an HTML block corresponds to a line in the final output,
+        since new blocks (Display.block) trigger line breaks while inline
+        content (Display.normal) does not.
+
+    Arguments:
+        padding_inline: the number of characters used for padding an HTML block.
+        bullet: an optional bullet used for padding the HTML block.
+    """
 
     __slots__ = ('_padding_inline', '_bullet')
 
@@ -24,28 +38,44 @@ class Prefix:
         self._bullet = bullet
 
     @property
-    def padding(self):
+    def padding(self) -> str:
         """
-        Returns the padding for the given prefix.
+        Returns:
+             the padding for the given prefix.
         """
         return ' ' * self._padding_inline
 
     @property
-    def bullet(self):
+    def bullet(self) -> str:
+        """
+        Returns:
+            The bullet of the given prefix. Once a bullet is consumed it is
+            set to ''.
+        """
         b = self._bullet
         self._bullet = ''
         return b
 
     def __str__(self):
-        return '"' + ' ' * (self._padding_inline - len(self._bullet)) + self._bullet + '"'
+        return '"' + ' ' * (self._padding_inline - len(self._bullet)) \
+               + self._bullet + '"'
 
     __repr__ = __str__
 
 
-
 class Canvas:
     """
-    The text Canvas on which Inscriptis writes the HMTL page.
+    The text Canvas on which Inscriptis writes the HTML page.
+
+    Attributes:
+        prefixes: the list of prefixes (i.e., indentation and bullets) to be
+                  considered when writing the block.
+        margin: the current margin to the previous block (this is required to
+                ensure that the `margin_after` and `margin_before` constraints
+                of HTML block elements are met).
+        current_block: A list of TextSnippets that will be consolidated into a
+                       block, once the current block is completed.
+        blocks: a list of finished blocks (i.e., text lines)
     """
 
     __slots__ = ('blocks', 'current_block', 'prefixes', 'margin')
@@ -55,9 +85,9 @@ class Canvas:
         Contains the completed blocks. Each block spawns at least a line
         """
         self.prefixes = [Prefix(0, '')]
-        self.blocks = []
-        self.current_block = []
         self.margin = 1000  # margin to the previous block
+        self.current_block = []
+        self.blocks = []
 
     def open_block(self, tag: HtmlElement):
         """
@@ -72,12 +102,12 @@ class Canvas:
             self.blocks.append('\n' * (required_margin - self.margin - 1))
             self.margin = required_margin
 
-    def write(self, tag: HtmlElement, text: str, whitespace=None):
+    def write(self, tag: HtmlElement, text: str, whitespace: WhiteSpace = None):
         """
         Writes the given block.
         """
-        self.current_block.append(TextSnippet(text,
-                                              whitespace=whitespace or tag.whitespace))
+        self.current_block.append(TextSnippet(
+            text, whitespace=whitespace or tag.whitespace))
 
     def close_block(self, tag: HtmlElement):
         """
@@ -96,14 +126,23 @@ class Canvas:
         if not self._flush_inline():
             self.blocks.append('')
 
-    def get_text(self):
+    def get_text(self) -> str:
         """
         Provide a text representation of the current block
         """
         self._flush_inline()
         return unescape('\n'.join((block.rstrip(' ') for block in self.blocks)))
 
-    def _flush_inline(self):
+    def _flush_inline(self) -> bool:
+        """
+        Attempts to flush the content in self.current_block into a new block
+        which is added to self.blocks.
+
+        If self.current_block does not contain any content (or only whitespaces)
+        no changes are made.
+
+        Returns: True if the attempt was successful, False otherwise.
+        """
         normalized_block = self._normalize(self.current_block)
         if normalized_block:
             self.blocks.append(normalized_block)
@@ -112,14 +151,20 @@ class Canvas:
             return True
         return False
 
-    def _normalize(self, snippets: list[TextSnippet]):
+    def _normalize(self, snippets: List[TextSnippet]) -> Optional[str]:
         """Normalizes a list of TextSnippets to a single line
+
+        Strategy:
+        - pre-formatted text (WhiteSpace.pre) is added "as is".
+        - for inline content (WhiteSpace.normal) all whitespaces are collapsed
+        - finally, the prefix (padding + bullets) is added to the content.
 
         Args:
             snippets: a list of TextSnippets
 
         Returns:
-            the normalized string representing the TextSnippets in the line
+            the normalized string representing the TextSnippets in the line or
+            None if the list does not contain any content.
         """
         result = []
         previous_isspace = True
@@ -143,7 +188,7 @@ class Canvas:
                     result.append(' ')
                     previous_isspace = True
 
-        # does the textblock yield a result?
+        # does the text block yield a result?
         block = ''.join(result)
         if not block:
             return

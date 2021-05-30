@@ -14,7 +14,8 @@ class TableCell:
 
     __slots__ = ('canvas', 'align', 'valign', 'width', 'height')
 
-    def __init__(self, canvas: Canvas, align: HorizontalAlignment, valign: VerticalAlignment, width=None, height=None):
+    def __init__(self, canvas: Canvas, align: HorizontalAlignment,
+                 valign: VerticalAlignment, width=None, height=None):
         """
         Args:
           canvas: canvas to which the table cell is written.
@@ -42,10 +43,12 @@ class TableCell:
         """
         format_spec = self.get_format_spec()
         # normalize the canvas
-        self.canvas.blocks = list(chain(*[line.split('\n') for line in self.canvas.blocks]))
+        self.canvas.blocks = list(chain(*[line.split('\n')
+                                          for line in self.canvas.blocks]))
 
         if self.height and False:
-            blocks = self.canvas.blocks + ((self.height - len(self.canvas.blocks)) * [''])
+            blocks = self.canvas.blocks + ((self.height
+                                            - len(self.canvas.blocks)) * [''])
         else:
             blocks = self.canvas.blocks
 

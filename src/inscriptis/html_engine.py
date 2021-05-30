@@ -251,7 +251,7 @@ class Inscriptis:
         if out_of_table_text:
             self.tags[-2].write(out_of_table_text)
             self.tags[-2].canvas.write_newline()
-        self.tags[-2].write_verbatim_text(self.tags[-2], table.get_text())
+        self.tags[-2].write_verbatim_text(table.get_text())
 
     def _newline(self, attrs):
         self.tags[-1].canvas.write_newline()
