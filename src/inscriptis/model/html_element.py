@@ -87,14 +87,11 @@ class HtmlElement:
 
         if tag.display == Display.block:
             self.canvas.open_block(tag)
-        tag.whitespace = WhiteSpace.pre
-        self.canvas.write(tag, text)
+
+        self.canvas.write(tag, text, whitespace=WhiteSpace.pre)
 
         if tag.display == Display.block:
             self.canvas.close_block(tag)
-
-        #base_padding = ' ' * self.padding_inline
-        #self.canvas.write(self, text.replace('\n', '\n' + base_padding))
 
     def close_block(self):
         """

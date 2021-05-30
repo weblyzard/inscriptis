@@ -63,7 +63,6 @@ class Canvas:
         """
         Opens an HTML block element.
         """
-        # print("OPPPPPPPPPPPPPPPPPPPPPPPPPPEN", tag)
         self._flush_inline()
         self.prefixes.append(Prefix(tag.padding_inline, tag.list_bullet))
 
@@ -72,16 +71,13 @@ class Canvas:
         if required_margin > self.margin:
             self.blocks.append('\n' * (required_margin - self.margin - 1))
             self.margin = required_margin
-        # print("\n\n", self.blocks, "\n", "WRITE: Required / current", tag, required_margin, self.margin)
 
-
-    def write(self, tag: HtmlElement, text: str):
+    def write(self, tag: HtmlElement, text: str, whitespace=None):
         """
         Writes the given block.
         """
-        # print("|", self.current_block, "<<<<<", text, ">>>>",)
-        self.current_block.append(TextSnippet(text, whitespace=tag.whitespace))
-        # print(")))))))", self.current_block)
+        self.current_block.append(TextSnippet(text,
+                                              whitespace=whitespace or tag.whitespace))
 
     def close_block(self, tag: HtmlElement):
         """
@@ -95,7 +91,6 @@ class Canvas:
         if tag.margin_after > self.margin:
             self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
             self.margin = tag.margin_after
-        # print("\n\n", self.blocks, "\n", "CLOSE: Required / current", tag, tag.margin_after, self.margin)
 
     def write_newline(self):
         if not self._flush_inline():
@@ -105,14 +100,12 @@ class Canvas:
         """
         Provide a text representation of the current block
         """
-        # print("\n\n\nGET\n\n\n")
         self._flush_inline()
         return unescape('\n'.join((block.rstrip(' ') for block in self.blocks)))
 
     def _flush_inline(self):
         normalized_block = self._normalize(self.current_block)
         if normalized_block:
-            # print(".......................", self.current_block)
             self.blocks.append(normalized_block)
             self.current_block = []
             self.margin = 0

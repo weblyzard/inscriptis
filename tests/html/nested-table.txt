@@ -1,5 +1,4 @@
 column with nested table  column 2  column 3
 nested  table             Tom       Joe     
 1       2                                   
-                                            
 last                      line
