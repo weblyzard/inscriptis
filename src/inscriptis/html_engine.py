@@ -24,7 +24,7 @@ class Inscriptis:
       config: an optional ParserConfig configuration object.
 
     Example::
-    
+
       from lxml.html import fromstring
       from inscriptis.html_engine import Inscriptis
 
@@ -192,10 +192,10 @@ class Inscriptis:
         if self.li_level > 0:
             bullet = self.li_counter[-1]
         else:
-            bullet = "* "
+            bullet = '* '
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.tags[-1].list_bullet = "{0}. ".format(bullet)
+            self.tags[-1].list_bullet = '{0}. '.format(bullet)
         else:
             self.tags[-1].list_bullet = bullet
 
@@ -239,7 +239,6 @@ class Inscriptis:
     def _end_table(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self._end_td()
-        # self._write_line()
         table = self.current_table.pop()
         # last tag before the table: self.tags[-2]
         # table tag: self.tags[-1]

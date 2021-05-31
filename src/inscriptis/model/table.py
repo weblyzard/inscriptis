@@ -43,14 +43,8 @@ class TableCell:
         """
         format_spec = self.get_format_spec()
         # normalize the canvas
-        self.canvas.blocks = list(chain(*[line.split('\n')
-                                          for line in self.canvas.blocks]))
-
-        if self.height and False:
-            blocks = self.canvas.blocks + ((self.height
-                                            - len(self.canvas.blocks)) * [''])
-        else:
-            blocks = self.canvas.blocks
+        blocks = list(chain(*[line.split('\n')
+                              for line in self.canvas.blocks]))
 
         # horizontal alignment
         rows = [format_spec.format(line) if self.width else line

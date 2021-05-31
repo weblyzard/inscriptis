@@ -18,7 +18,7 @@ with here.joinpath(Path('README.rst')).open() as f:  # , encoding='utf-8'
 
 setup(
     # Metadata
-    name="inscriptis",
+    name='inscriptis',
     version=__version__,
     description='inscriptis - HTML to text converter.',
     long_description=long_description,

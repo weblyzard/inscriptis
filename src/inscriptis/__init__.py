@@ -35,7 +35,8 @@ try:
 except ImportError as e:
     import warnings
     warnings.warn(
-        "Missing dependencies - inscriptis has not been properly installed:" + str(e))
+        'Missing dependencies - inscriptis has not been properly installed:'
+        + str(e))
 
 
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')

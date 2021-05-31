@@ -8,6 +8,7 @@ This module implements basic CSS support for inscriptis.
 - :class:`CssParse` parses CSS specifications and translates them into the
   corresponding HtmlElements used by Inscriptis for rendering HTML pages.
 """
+from contextlib import suppress
 from re import compile as re_compile
 from inscriptis.html_properties import (Display, WhiteSpace,
                                         HorizontalAlignment, VerticalAlignment)
@@ -40,9 +41,9 @@ class CssParse:
             key, value = (s.strip() for s in style_directive.split(':', 1))
 
             try:
-                apply_style = getattr(CssParse, "attr_"
+                apply_style = getattr(CssParse, 'attr_'
                                       + key.replace('-webkit-', '')
-                                      .replace("-", "_"))
+                                      .replace('-', '_'))
                 apply_style(value, html_element)
             except AttributeError:
                 pass
@@ -120,20 +121,16 @@ class CssParse:
         """
         Apply the provided horizontal alignment.
         """
-        try:
+        with suppress(KeyError):
             html_element.align = HorizontalAlignment[value]
-        except KeyError:
-            pass
 
     @staticmethod
     def attr_vertical_align(value, html_element):
         """
         Apply the given vertical alignment.
         """
-        try:
+        with suppress(KeyError):
             html_element.valign = VerticalAlignment[value]
-        except KeyError:
-            pass
 
     # register aliases
     attr_margin_before = attr_margin_top

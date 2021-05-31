@@ -15,7 +15,7 @@ from typing import List, Optional
 from inscriptis.html_properties import WhiteSpace
 from inscriptis.model.html_element import HtmlElement
 
-TextSnippet = namedtuple("TextSnippet", "text whitespace")
+TextSnippet = namedtuple('TextSnippet', 'text whitespace')
 
 
 class Prefix:
@@ -27,7 +27,8 @@ class Prefix:
         content (Display.normal) does not.
 
     Arguments:
-        padding_inline: the number of characters used for padding an HTML block.
+        padding_inline: the number of characters used for padding an HTML
+                        block.
         bullet: an optional bullet used for padding the HTML block.
     """
 
@@ -102,7 +103,8 @@ class Canvas:
             self.blocks.append('\n' * (required_margin - self.margin - 1))
             self.margin = required_margin
 
-    def write(self, tag: HtmlElement, text: str, whitespace: WhiteSpace = None):
+    def write(self, tag: HtmlElement, text: str,
+              whitespace: WhiteSpace = None):
         """
         Writes the given block.
         """
@@ -131,15 +133,16 @@ class Canvas:
         Provide a text representation of the current block
         """
         self._flush_inline()
-        return unescape('\n'.join((block.rstrip(' ') for block in self.blocks)))
+        return unescape('\n'.join((block.rstrip(' ')
+                                   for block in self.blocks)))
 
     def _flush_inline(self) -> bool:
         """
         Attempts to flush the content in self.current_block into a new block
         which is added to self.blocks.
 
-        If self.current_block does not contain any content (or only whitespaces)
-        no changes are made.
+        If self.current_block does not contain any content (or only
+        whitespaces) no changes are made.
 
         Returns: True if the attempt was successful, False otherwise.
         """
@@ -201,5 +204,6 @@ class Canvas:
             first_prefix = subsequent_prefix
 
         if block and first_prefix:
-            block = first_prefix + block.replace('\n', '\n' + subsequent_prefix)
+            block = first_prefix + block.replace('\n',
+                                                 '\n' + subsequent_prefix)
         return block

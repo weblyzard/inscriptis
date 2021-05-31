@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding:utf-8
-'''
+"""
 Inscriptis command line client.
-'''
+"""
 
 import argparse
 import sys
@@ -50,7 +50,7 @@ def get_parser():
     return parser
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = get_parser()
     args = parser.parse_args()
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
         with Path(args.input).open(encoding=args.encoding,
                                    errors='ignore') as f:
             html_content = f.read()
-    elif args.input.startswith("http://") or args.input.startswith("https://"):
+    elif args.input.startswith('http://') or args.input.startswith('https://'):
         html_content = requests.get(args.input).text
     else:
         print("ERROR: Cannot open input file '{0}'.\n".format(args.input))
