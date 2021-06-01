@@ -12,6 +12,7 @@ from html import unescape
 
 from typing import List, Optional
 
+from inscriptis.annotation import Annotation
 from inscriptis.html_properties import WhiteSpace
 from inscriptis.model.html_element import HtmlElement
 
@@ -76,10 +77,19 @@ class Canvas:
                 of HTML block elements are met).
         current_block: A list of TextSnippets that will be consolidated into a
                        block, once the current block is completed.
+        current_annotations: A list of annotations to maintain for
+                             current_block
         blocks: a list of finished blocks (i.e., text lines)
+        annotations: the list of completed annotations
+        annotation_counter: a counter used for enumerating all annotations
+                            we encounter.
+        idx: the overal character index
+        current_idx: the character index within the current block
     """
 
-    __slots__ = ('blocks', 'current_block', 'prefixes', 'margin')
+    __slots__ = ('annotations', 'blocks', 'current_annotations',
+                 'current_block', 'prefixes', 'margin', 'annotation_counter',
+                 'current_idx', 'idx')
 
     def __init__(self):
         """
@@ -88,7 +98,12 @@ class Canvas:
         self.prefixes = [Prefix(0, '')]
         self.margin = 1000  # margin to the previous block
         self.current_block = []
+        self.current_annotations = []
         self.blocks = []
+        self.idx = 0
+        self.current_idx = 0
+        self.annotations = []
+        self.annotation_counter = {}
 
     def open_block(self, tag: HtmlElement):
         """
@@ -102,6 +117,7 @@ class Canvas:
         if required_margin > self.margin:
             self.blocks.append('\n' * (required_margin - self.margin - 1))
             self.margin = required_margin
+            self.current_idx += len(self.blocks[-1])
 
     def write(self, tag: HtmlElement, text: str,
               whitespace: WhiteSpace = None):
@@ -110,6 +126,15 @@ class Canvas:
         """
         self.current_block.append(TextSnippet(
             text, whitespace=whitespace or tag.whitespace))
+        # annotate content, if required
+        text_len = len(text)
+
+        if tag.annotation:
+            for annotation in tag.annotation:
+                self.current_annotations.append(
+                    Annotation(self.current_idx, self.current_idx + text_len,
+                               text, annotation))
+        self.current_idx += text_len
 
     def close_block(self, tag: HtmlElement):
         """
@@ -123,10 +148,12 @@ class Canvas:
         if tag.margin_after > self.margin:
             self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
             self.margin = tag.margin_after
+            self.current_idx += len(self.blocks[-1])
 
     def write_newline(self):
         if not self._flush_inline():
             self.blocks.append('')
+            self.idx += 1
 
     def get_text(self) -> str:
         """
@@ -149,9 +176,14 @@ class Canvas:
         normalized_block = self._normalize(self.current_block)
         if normalized_block:
             self.blocks.append(normalized_block)
+            self.idx += len(self.blocks[-1]) + 1   # +1 for the newline
             self.current_block = []
             self.margin = 0
             return True
+        # only retain the last list element, if multiple blocks solely contain
+        # collapsable whitespaces (i.e., normalize_block yields False).
+        elif len(self.current_block) > 1:
+            self.current_block = [self.current_block[-1]]
         return False
 
     def _normalize(self, snippets: List[TextSnippet]) -> Optional[str]:
@@ -169,30 +201,36 @@ class Canvas:
             the normalized string representing the TextSnippets in the line or
             None if the list does not contain any content.
         """
-        result = []
+        content = []
+        mapping = []
+        Mapping = namedtuple('Mapping', 'idx delta')
+        idx = 0
         previous_isspace = True
         for snippet in snippets:
             # handling of pre formatted text
             if snippet.whitespace == WhiteSpace.pre:
-                result.extend(snippet.text)
-                previous_isspace = (result[-1] == '\n')
+                content.extend(snippet.text)
+                idx += len(snippet.text)
+                previous_isspace = (content[-1] == '\n')
                 continue
 
             # handling of inline text
-            for ch in snippet.text:
+            for i, ch in enumerate(snippet.text, idx):
                 if not ch.isspace():
-                    result.append(ch)
+                    content.append(ch)
+                    idx += 1
                     previous_isspace = False
                     continue
 
-                if previous_isspace or not result:
+                if previous_isspace or not content:
                     continue
                 else:
-                    result.append(' ')
+                    content.append(' ')
+                    idx += 1
                     previous_isspace = True
 
         # does the text block yield a result?
-        block = ''.join(result)
+        block = ''.join(content)
         if not block:
             return
 

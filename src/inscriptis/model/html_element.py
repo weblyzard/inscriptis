@@ -24,7 +24,7 @@ class HtmlElement:
     __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
                  'margin_before', 'margin_after', 'padding_inline',
                  'list_bullet', 'whitespace', 'limit_whitespace_affixes',
-                 'align', 'valign', 'previous_margin_after')
+                 'align', 'valign', 'previous_margin_after', 'annotation')
 
     def __init__(self, tag='default', prefix='', suffix='',
                  display=Display.inline,
@@ -32,7 +32,8 @@ class HtmlElement:
                  list_bullet='',
                  whitespace=None, limit_whitespace_affixes=False,
                  align=HorizontalAlignment.left,
-                 valign=VerticalAlignment.middle):
+                 valign=VerticalAlignment.middle,
+                 annotation=None):
         self.canvas = None
         self.tag = tag
         self.prefix = prefix
@@ -47,6 +48,7 @@ class HtmlElement:
         self.align = align
         self.valign = valign
         self.previous_margin_after = 0
+        self.annotation = annotation
 
     def write(self, text: str):
         """
