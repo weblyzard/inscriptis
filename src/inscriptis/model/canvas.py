@@ -8,6 +8,7 @@ The :class:`Canvas` represents the drawing board to which the HTML page
 is serialized.
 """
 from collections import namedtuple
+from contextlib import suppress
 from html import unescape
 
 from typing import List, Optional
@@ -27,42 +28,62 @@ class Prefix:
         since new blocks (Display.block) trigger line breaks while inline
         content (Display.normal) does not.
 
-    Arguments:
-        padding_inline: the number of characters used for padding an HTML
-                        block.
-        bullet: an optional bullet used for padding the HTML block.
+    Class variables:
+        padding_inline: the number of characters used for padding_inline an
+                        HTML block.
+        bullet: an optional bullet used for padding_inline the HTML block.
     """
 
-    __slots__ = ('_padding_inline', '_bullet')
+    __slots__ = ('current_padding', 'last_used_bullet', 'paddings', 'bullets',
+                 'consumed')
 
-    def __init__(self, padding_inline, bullet):
-        self._padding_inline = padding_inline
-        self._bullet = bullet
+    def __init__(self):
+        self.current_padding = 0
+        self.paddings = []
+        self.bullets = []
+        self.last_used_bullet = None
+        self.consumed = False
 
-    @property
-    def padding(self) -> str:
+    def register_prefix(self, padding_inline, bullet):
         """
-        Returns:
-             the padding for the given prefix.
+        Registers the given prefix.
+        Args:
+            padding_inline: the number of characters used for padding_inline
+            bullet: an optional bullet.
         """
-        return ' ' * self._padding_inline
+        self.current_padding += padding_inline
+        self.paddings.append(padding_inline)
+        if bullet:
+            self.bullets.append(bullet)
 
-    @property
-    def bullet(self) -> str:
+    def remove_last_prefix(self):
         """
-        Returns:
-            The bullet of the given prefix. Once a bullet is consumed it is
-            set to ''.
+        Remotes the last prefix from the list.
         """
-        b = self._bullet
-        self._bullet = ''
-        return b
+        with suppress(IndexError):
+            self.current_padding -= self.paddings.pop()
+            del self.bullets[-1]
 
-    def __str__(self):
-        return '"' + ' ' * (self._padding_inline - len(self._bullet)) \
-               + self._bullet + '"'
+    def restore(self):
+        """
+        Restores the last_used_bullet, if present so that the iterator
+        behaves like before.
+        """
+        if self.last_used_bullet:
+            self.bullets.append(self.last_used_bullet)
+            self.last_used_bullet = None
 
-    __repr__ = __str__
+    def __iter__(self):
+        self.consumed = False
+        return self
+
+    def __next__(self):
+        if self.bullets and not self.consumed:
+            self.consumed = True
+            self.last_used_bullet = self.bullets.pop(0)
+            return ' ' * (self.current_padding - len(self.last_used_bullet)) \
+                   + self.last_used_bullet
+        return ' ' * self.current_padding
 
 
 class Canvas:
@@ -83,7 +104,7 @@ class Canvas:
         annotations: the list of completed annotations
         annotation_counter: a counter used for enumerating all annotations
                             we encounter.
-        idx: the overal character index
+        idx: the overall character index
         current_idx: the character index within the current block
     """
 
@@ -95,7 +116,7 @@ class Canvas:
         """
         Contains the completed blocks. Each block spawns at least a line
         """
-        self.prefixes = [Prefix(0, '')]
+        self.prefixes = Prefix()
         self.margin = 1000  # margin to the previous block
         self.current_block = []
         self.current_annotations = []
@@ -110,7 +131,7 @@ class Canvas:
         Opens an HTML block element.
         """
         self._flush_inline()
-        self.prefixes.append(Prefix(tag.padding_inline, tag.list_bullet))
+        self.prefixes.register_prefix(tag.padding_inline, tag.list_bullet)
 
         # write the block margin
         required_margin = max(tag.previous_margin_after, tag.margin_before)
@@ -144,7 +165,7 @@ class Canvas:
             tag: the HTML Block element to close
         """
         self._flush_inline()
-        self.prefixes.pop()
+        self.prefixes.remove_last_prefix()
         if tag.margin_after > self.margin:
             self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
             self.margin = tag.margin_after
@@ -192,7 +213,8 @@ class Canvas:
         Strategy:
         - pre-formatted text (WhiteSpace.pre) is added "as is".
         - for inline content (WhiteSpace.normal) all whitespaces are collapsed
-        - finally, the prefix (padding + bullets) is added to the content.
+        - finally, the prefix (padding_inline + bullets) is added to the
+          content.
 
         Args:
             snippets: a list of TextSnippets
@@ -202,8 +224,7 @@ class Canvas:
             None if the list does not contain any content.
         """
         content = []
-        mapping = []
-        Mapping = namedtuple('Mapping', 'idx delta')
+        collapsed_whitespace_idx = []
         idx = 0
         previous_isspace = True
         for snippet in snippets:
@@ -215,31 +236,32 @@ class Canvas:
                 continue
 
             # handling of inline text
-            for i, ch in enumerate(snippet.text, idx):
+            for idx, ch in enumerate(snippet.text, idx):
                 if not ch.isspace():
                     content.append(ch)
-                    idx += 1
                     previous_isspace = False
                     continue
 
                 if previous_isspace or not content:
+                    collapsed_whitespace_idx.append(idx)
                     continue
                 else:
                     content.append(' ')
-                    idx += 1
                     previous_isspace = True
+            idx += 1
 
         # does the text block yield a result?
         block = ''.join(content)
         if not block:
             return
 
-        subsequent_prefix = ''.join((p.padding for p in self.prefixes))
-        bullet = ''.join((p.bullet for p in self.prefixes))
-        if bullet:
-            first_prefix = subsequent_prefix[:-len(bullet)] + bullet
-        else:
-            first_prefix = subsequent_prefix
+        for no, prefix in enumerate(self.prefixes):
+            if no == 0:
+                first_prefix = prefix
+            elif no == 1:
+                subsequent_prefix = prefix
+            else:
+                break
 
         if block and first_prefix:
             block = first_prefix + block.replace('\n',
