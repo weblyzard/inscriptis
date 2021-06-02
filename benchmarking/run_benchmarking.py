@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
-'''
+"""
 Runs a benchmarking suite to compare speed
 and output of different implementations.
-'''
-
+"""
+import argparse
 from datetime import datetime
 import operator
 import os
@@ -55,25 +55,25 @@ TRIES = 7
 OUTFILE = 'speed_comparisons.txt'
 
 
-class AbstractHtmlConverter():
-    '''
+class AbstractHtmlConverter:
+    """
     An abstract HTML convert class.
-    '''
+    """
 
     def get_text(self, html):
-        '''
+        """
         Returns:
             a text representation of the given HTML snippet.
-        '''
+        """
         raise NotImplementedError
 
     def benchmark(self, html):
-        '''
+        """
         Benchmarks the classes HTML to text converter.
 
         Returns:
             A tuple of the required time and the obtained text representation.
-        '''
+        """
         start_time = time()
         for _ in range(TRIES):
             text = self.get_text(html)
@@ -81,9 +81,9 @@ class AbstractHtmlConverter():
 
 
 class BeautifulSoupHtmlConverter(AbstractHtmlConverter):
-    '''
+    """
     Converts HTML to text using BeautifulSoup.
-    '''
+    """
     name = 'BeautifulSoup'
 
     def __init__(self):
@@ -103,10 +103,10 @@ class BeautifulSoupHtmlConverter(AbstractHtmlConverter):
         return result
 
 
-class JustextHtmlConverter(AbstractHtmlConverter):
-    '''
+class JustextConverter(AbstractHtmlConverter):
+    """
     Converts HTML to text using Justtext.
-    '''
+    """
     name = 'Justtext'
 
     def __init__(self):
@@ -119,9 +119,9 @@ class JustextHtmlConverter(AbstractHtmlConverter):
 
 
 class Html2TextConverter(AbstractHtmlConverter):
-    '''
+    """
     Converts HTML to text using Html2Text.
-    '''
+    """
     name = 'Html2Text'
 
     def __init__(self):
@@ -135,11 +135,11 @@ class Html2TextConverter(AbstractHtmlConverter):
         return ''.join(result)
 
 
-class LynxHtmlConverter(AbstractHtmlConverter):
-    '''
+class LynxConverter(AbstractHtmlConverter):
+    """
     Converts HTML to text using lynx.
-    '''
-    name = 'lynx'
+    """
+    name = 'Lynx'
 
     def __init__(self):
         try:
@@ -174,9 +174,9 @@ class LynxHtmlConverter(AbstractHtmlConverter):
 
 
 class InscriptisHtmlConverter(AbstractHtmlConverter):
-    '''
+    """
     Converts HTML to text using Inscriptis.
-    '''
+    """
     name = 'Inscriptis'
 
     def __init__(self):
@@ -188,15 +188,15 @@ class InscriptisHtmlConverter(AbstractHtmlConverter):
 
 timestamp = str(datetime.now()).replace(' ', '_').replace(':', '-')\
                                                  .split('.')[0]
-benchmarking_results_dir = os.path.join(BENCHMARKING_ROOT,
-                                        'benchmarking_results', timestamp)
-CACHE_DIR = os.path.join(BENCHMARKING_ROOT, 'html_cache')
+DEFAULT_RESULT_DIR = os.path.join(BENCHMARKING_ROOT, 'benchmarking_results',
+                                  timestamp)
+DEFAULT_CACHE_DIR = os.path.join(BENCHMARKING_ROOT, 'html_cache')
 
 
-def save_to_file(algorithm, url, data):
-    '''
+def save_to_file(algorithm, url, data, benchmarking_results_dir):
+    """
     Saves a benchmarking result to the given file.
-    '''
+    """
     result_file = os.path.join(benchmarking_results_dir,
                                '{}_{}.txt'.format(algorithm, url))
     with open(result_file, 'w') as output_file:
@@ -204,9 +204,9 @@ def save_to_file(algorithm, url, data):
 
 
 def get_speed_table(times):
-    '''
+    """
     Provides the table which compares the conversion speed.
-    '''
+    """
     fastest = 999999
     for key, value in times.items():
         if value < fastest:
@@ -241,10 +241,10 @@ def get_speed_table(times):
     return result
 
 
-def get_fname(url):
-    '''
+def get_fname(url) -> str:
+    """
     Transforms a URL to a file name.
-    '''
+    """
     trash = (('http://', ''),
              ('https://', ''),
              ('/', '-'),
@@ -257,29 +257,55 @@ def get_fname(url):
 
 
 CONVERTER = (BeautifulSoupHtmlConverter(),
-             JustextHtmlConverter(),
+             JustextConverter(),
              Html2TextConverter(),
-             LynxHtmlConverter(),
+             LynxConverter(),
              InscriptisHtmlConverter())
 
 
+def parse_args():
+    """
+    Parse optional benchmarking arguments.
+    """
+    parser = argparse.ArgumentParser(description='Inscriptis benchmarking '
+                                     'suite')
+    parser.add_argument('converter', type=str, nargs='*',
+                        help='The list of converters to benchmark (options:'
+                             'BeautifulSoup, Justext, Html2Text, Lynx, '
+                             'Inscriptis; default: all)')
+    parser.add_argument('-u', '--benchmarking-urls',
+                        default=os.path.join(BENCHMARKING_ROOT,
+                                             'url_list.txt'),
+                        help='A list of URLs to use in the benchmark.')
+    parser.add_argument('-r', '--benchmarking-results',
+                        default=DEFAULT_RESULT_DIR,
+                        help='Optional directory for saving the benchmarking '
+                        'results.')
+    parser.add_argument('-c', '--cache', default=DEFAULT_CACHE_DIR,
+                        help='Optional cache directory for the retrieved Web '
+                        'pages.')
+    return parser.parse_args()
+
+
 def benchmark():
-    '''
+    """
     Runs the benchmark.
-    '''
+    """
+    args = parse_args()
+
     # These are a few predefined urls the script will
-    with open(os.path.join(BENCHMARKING_ROOT, 'url_list.txt')) as url_list:
+    with open(args.benchmarking_urls) as url_list:
         sources = [url.strip() for url in url_list]
 
-    if not os.path.exists(benchmarking_results_dir):
-        os.makedirs(benchmarking_results_dir)
+    if not os.path.exists(args.benchmarking_results):
+        os.makedirs(args.benchmarking_results)
 
-    if not os.path.exists(CACHE_DIR):
-        os.makedirs(CACHE_DIR)
+    if not os.path.exists(args.cache):
+        os.makedirs(args.cache)
 
     for source in sources:
         source_name = get_fname(source)
-        source_cache_path = os.path.join(CACHE_DIR, source_name)
+        source_cache_path = os.path.join(args.cache, source_name)
         if os.path.exists(source_cache_path):
             html = open(source_cache_path).read()
         else:
@@ -290,26 +316,28 @@ def benchmark():
                 html = urllib.request.urlopen(req).read().decode('latin1')
             open(source_cache_path, 'w').write(html)
 
-        with open(os.path.join(benchmarking_results_dir,
+        with open(os.path.join(args.benchmarking_results,
                                'speed_comparisons.txt'), 'a') as output_file:
             output_file.write('\nURL: {}\n'.format(source_name))
         print('\nURL: {}'.format(source_name))
 
         times = {}
         for converter in CONVERTER:
-            if converter.available:
+            if converter.available and not args.converter or converter.name \
+                    in args.converter:
                 time_required, text = converter.benchmark(html)
                 times[converter.name] = time_required
-                save_to_file(converter.name, source_name, text)
+                save_to_file(converter.name, source_name, text,
+                             args.benchmarking_results)
 
         speed_table = get_speed_table(times)
         print(speed_table)
 
-        with open(os.path.join(benchmarking_results_dir,
+        with open(os.path.join(args.benchmarking_results,
                                OUTFILE), 'a') as output_file:
             output_file.write(speed_table + '\n')
 
-    with open(os.path.join(benchmarking_results_dir,
+    with open(os.path.join(args.benchmarking_results,
                            OUTFILE), 'a') as output_file:
         output_file.write('\n')
 
