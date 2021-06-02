@@ -16,6 +16,8 @@ class Block:
         prefix: prefix used within the current block.
     """
 
+    __slots__ = ('idx', 'prefix', 'content', 'collapsable_whitespace')
+
     def __init__(self, idx, prefix):
         self.idx = idx
         self.prefix = prefix
@@ -51,7 +53,8 @@ class Block:
                 self.collapsable_whitespace = True
 
         if normalized_text:
-            text = ''.join((next(self.prefix), *normalized_text))
+            text = ''.join((next(self.prefix), *normalized_text)) if not \
+                self.content else ''.join(normalized_text)
             self.content += text
             self.idx += len(text)
         return Span(start, self.idx)
@@ -66,7 +69,6 @@ class Block:
         start = self.idx
         text = ''.join((next(self.prefix),
                         text.replace('\n', '\n' + next(self.prefix))))
-        print("~~~~", text, "~~~")
         self.content += text
         self.idx += len(text)
         self.collapsable_whitespace = False
@@ -80,4 +82,5 @@ class Block:
         Returns:
             A new block that follows the current one.
         """
+        self.prefix.consumed = False
         return Block(idx=self.idx+1, prefix=self.prefix)

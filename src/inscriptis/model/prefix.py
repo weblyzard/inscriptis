@@ -7,17 +7,7 @@ Elements used for rendering (parts) of the canvas.
 The :class:`Canvas` represents the drawing board to which the HTML page
 is serialized.
 """
-from collections import namedtuple
 from contextlib import suppress
-from html import unescape
-
-from typing import List, Optional
-
-from inscriptis.annotation import Annotation
-from inscriptis.html_properties import WhiteSpace
-from inscriptis.model.html_element import HtmlElement
-
-TextSnippet = namedtuple('TextSnippet', 'text whitespace')
 
 
 class Prefix:

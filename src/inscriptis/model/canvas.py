@@ -21,8 +21,6 @@ class Canvas:
     The text Canvas on which Inscriptis writes the HTML page.
 
     Attributes:
-        prefixes: the list of prefixes (i.e., indentation and bullets) to be
-                  considered when writing the block.
         margin: the current margin to the previous block (this is required to
                 ensure that the `margin_after` and `margin_before` constraints
                 of HTML block elements are met).
@@ -34,16 +32,15 @@ class Canvas:
                             we encounter.
     """
 
-    __slots__ = ('annotations', 'blocks', 'current_block', 'prefixes',
+    __slots__ = ('annotations', 'blocks', 'current_block',
                  'margin', 'annotation_counter')
 
     def __init__(self):
         """
         Contains the completed blocks. Each block spawns at least a line
         """
-        self.prefixes = Prefix()
         self.margin = 1000  # margin to the previous block
-        self.current_block = Block(0, self.prefixes)
+        self.current_block = Block(0, Prefix())
         self.blocks = []
         self.annotations = []
         self.annotation_counter = {}
@@ -53,7 +50,8 @@ class Canvas:
         Opens an HTML block element.
         """
         self._flush_inline()
-        self.prefixes.register_prefix(tag.padding_inline, tag.list_bullet)
+        self.current_block.prefix.register_prefix(tag.padding_inline,
+                                                  tag.list_bullet)
 
         # write the block margin
         required_margin = max(tag.previous_margin_after, tag.margin_before)
@@ -81,7 +79,7 @@ class Canvas:
             tag: the HTML Block element to close
         """
         self._flush_inline()
-        self.prefixes.remove_last_prefix()
+        self.current_block.prefix.remove_last_prefix()
         if tag.margin_after > self.margin:
             self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
             self.margin = tag.margin_after
