@@ -44,6 +44,22 @@ class Block:
         """
         start = self.idx
         normalized_text = []
+
+        # leading space
+        # content = ''
+        # if text[0].isspace() and not self.collapsable_whitespace:
+        #     content += ' '
+        #     self.collapsable_whitespace = True
+        #
+        # cleaned_content = ''.join(text.split())
+        # self.collapsable_whitespace = bool(cleaned_content)
+        # content += cleaned_content
+        #
+        # # trailing space
+        # if text[-1].isspace() and len(text) > 1:
+        #     content += ' '
+        #     self.collapsable_whitespace = True
+
         for ch in text:
             if not ch.isspace():
                 normalized_text.append(ch)
@@ -57,6 +73,7 @@ class Block:
                 self.content else ''.join(normalized_text)
             self.content += text
             self.idx += len(text)
+
         return Span(start, self.idx)
 
     def merge_pre_text(self, text: str) -> Span:
