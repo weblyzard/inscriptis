@@ -83,4 +83,4 @@ class Block:
             A new block that follows the current one.
         """
         self.prefix.consumed = False
-        return Block(idx=self.idx+1, prefix=self.prefix)
+        return Block(idx=self.idx + 1, prefix=self.prefix)
