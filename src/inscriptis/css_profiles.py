@@ -21,7 +21,7 @@ STRICT_CSS_PROFILE = {
     'script': HtmlElement('script', display=Display.none),
     'title': HtmlElement('title', display=Display.none),
     'style': HtmlElement('style', display=Display.none),
-    'table': HtmlElement('table'),
+    'table': HtmlElement('table', annotation=('table', )),
 
     'p': HtmlElement('p', display=Display.block, margin_before=1,
                      margin_after=1),
@@ -75,6 +75,8 @@ STRICT_CSS_PROFILE = {
 
     # annotation only elements
     'b': HtmlElement('b', annotation=('emphasis', ))
+    'strong': HtmlElement('strong', annotation=('emphasis', ))
+    'i': HtmlElement('i', annotation=('emphasis',))
 
 }
 
