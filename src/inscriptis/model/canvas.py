@@ -56,7 +56,9 @@ class Canvas:
         # write the block margin
         required_margin = max(tag.previous_margin_after, tag.margin_before)
         if required_margin > self.margin:
-            self.blocks.append('\n' * (required_margin - self.margin - 1))
+            required_newlines = required_margin - self.margin
+            self.current_block.idx += required_newlines
+            self.blocks.append('\n' * (required_newlines - 1))
             self.margin = required_margin
 
     def write(self, tag: HtmlElement, text: str,
@@ -81,7 +83,9 @@ class Canvas:
         self._flush_inline()
         self.current_block.prefix.remove_last_prefix()
         if tag.margin_after > self.margin:
-            self.blocks.append('\n' * (tag.margin_after - self.margin - 1))
+            required_newlines = tag.margin_after - self.margin
+            self.current_block.idx += required_newlines
+            self.blocks.append('\n' * (required_newlines - 1))
             self.margin = tag.margin_after
 
     def write_newline(self):

@@ -71,7 +71,7 @@ Python library
 Embedding inscriptis into your code is easy, as outlined below::
    
    import urllib.request
-   from inscriptis import get_text
+   from inscriptis.engine import get_text
    
    url = "https://www.informationscience.ch"
    html = urllib.request.urlopen(url).read().decode('utf-8')
@@ -173,7 +173,7 @@ Fine tuning
 
 The following options are available for fine tuning inscriptis' HTML rendering:
 
-1. **More rigorous indentation:** call `inscriptis.get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in `inscript.py` and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
+1. **More rigorous indentation:** call `inscriptis.engine.get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in `inscript.py` and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
 
 2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can override these definitions (and therefore change the rendering) as outlined below::
 

@@ -23,18 +23,17 @@ def test_package_metadata():
     # (required for building the docs and setup.py)
     saved_importer = __builtins__['__import__']
     saved_modules = {}
-    with pytest.warns(UserWarning):
-        # delete cached modules
-        saved = {}
-        for module in list(sys.modules):
-            if module.startswith('lxml') or module == 'inscriptis':
-                saved_modules[module] = sys.modules[module]
-                del sys.modules[module]
+    # delete cached modules
+    saved = {}
+    for module in list(sys.modules):
+        if module.startswith('lxml') or module == 'inscriptis':
+            saved_modules[module] = sys.modules[module]
+            del sys.modules[module]
 
-        # overwrite import mechanism
-        __builtins__['__import__'] = secure_importer
-        from inscriptis import (__version__, __author__, __author_email__,
-                                __copyright__, __license__)
+    # overwrite import mechanism
+    __builtins__['__import__'] = secure_importer
+    from inscriptis import (__version__, __author__, __author_email__,
+                            __copyright__, __license__)
 
     assert __version__
     assert 'Albert' in __author__ and 'Fabian' in __author__
