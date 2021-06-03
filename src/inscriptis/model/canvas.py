@@ -10,7 +10,7 @@ is serialized.
 from html import unescape
 
 from inscriptis.annotation import Annotation
-from inscriptis.html_properties import WhiteSpace
+from inscriptis.html_properties import WhiteSpace, Display
 from inscriptis.model.block import Block
 from inscriptis.model.html_element import HtmlElement
 from inscriptis.model.prefix import Prefix
@@ -34,7 +34,7 @@ class Canvas:
                   the content returned by the canvas (required for tables).
     """
 
-    __slots__ = ('annotations', 'blocks', 'current_block',
+    __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
                  'margin', 'annotation_counter', 'verbatim')
 
     def __init__(self, verbatim=False):
@@ -46,6 +46,7 @@ class Canvas:
         self.blocks = []
         self.annotations = []
         self.annotation_counter = {}
+        self.block_annotations = {}
 
     def open_block(self, tag: HtmlElement):
         """
@@ -63,6 +64,9 @@ class Canvas:
             self.blocks.append('\n' * (required_newlines - 1))
             self.margin = required_margin
 
+        if tag.annotation:
+            self.block_annotations[tag] = self.current_block.idx
+
     def write(self, tag: HtmlElement, text: str,
               whitespace: WhiteSpace = None):
         """
@@ -70,10 +74,11 @@ class Canvas:
         """
         span = self.current_block.merge(text, whitespace or tag.whitespace)
 
-        if tag.annotation and span.start != span.end:
+        if tag.annotation and tag.display != Display.block \
+                and span.start != span.end:
             for annotation in tag.annotation:
                 self.annotations.append(
-                    Annotation(span.start, span.end, text, annotation))
+                    Annotation(span.start, span.end, annotation))
 
     def close_block(self, tag: HtmlElement):
         """
@@ -82,8 +87,18 @@ class Canvas:
         Args:
             tag: the HTML Block element to close
         """
-        self._flush_inline()
+
+        flushed = self._flush_inline()
         self.current_block.prefix.remove_last_prefix()
+
+        if tag in self.block_annotations:
+            start_idx = self.block_annotations.pop(tag)
+            end_idx = self.current_block.idx if not flushed \
+                else self.current_block.idx - 1
+            for annotation in tag.annotation:
+                self.annotations.append(
+                    Annotation(start_idx, end_idx, annotation))
+
         if tag.margin_after > self.margin:
             required_newlines = tag.margin_after - self.margin
             self.current_block.idx += required_newlines
