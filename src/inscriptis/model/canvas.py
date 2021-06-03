@@ -115,7 +115,6 @@ class Canvas:
         if not self.current_block.is_empty():
             self.blocks.append(self.current_block.content)
             self.current_block = self.current_block.new_block()
-            # print("FLUSH", self.annotations[-1] if self.annotations else '')
             self.margin = 0
             return True
 
