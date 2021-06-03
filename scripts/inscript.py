@@ -11,7 +11,7 @@ from pathlib import Path
 import requests
 
 from inscriptis import __version__, __copyright__, __license__
-from inscriptis import get_text
+from inscriptis import get_text, get_jsonl
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
@@ -41,6 +41,8 @@ def get_parser():
     parser.add_argument('-a', '--display-anchor-urls',
                         action='store_true', default=False,
                         help='Deduplicate image captions (default:false).')
+    parser.add_argument('-f', '--output-format', default='text',
+                        help='Output format (text or JSONL); default: text).')
     parser.add_argument('--indentation', default='extended',
                         help='How to handle indentation (extended or strict;'
                              ' default: extended).')
@@ -84,9 +86,10 @@ if __name__ == '__main__':
                           deduplicate_captions=args.deduplicate_image_captions,
                           display_links=args.display_link_targets,
                           display_anchors=args.display_anchor_urls)
-    text = get_text(html_content, config)
+    output = get_text(html_content, config) if args.output_format == 'text' \
+        else get_jsonl(html_content, config)
     if args.output:
         with Path(args.output).open('w', encoding=args.encoding) as open_file:
-            open_file.write(text)
+            open_file.write(output)
     else:
-        print(text)
+        print(output)

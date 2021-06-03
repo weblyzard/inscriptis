@@ -4,7 +4,9 @@
 The HTML Engine is responsible for converting HTML to text.
 """
 from copy import copy
+from typing import List
 
+from inscriptis.annotation import Annotation
 from inscriptis.annotation.helper import AnnotationHelper
 from inscriptis.html_properties import Display
 from inscriptis.model.attribute import apply_attributes
@@ -113,12 +115,19 @@ class Inscriptis:
         # write the tail text to the element's container
         self.tags[-1].write_tail(tree.tail)
 
-    def get_text(self):
+    def get_text(self) -> str:
         """
         Returns:
           str -- A text representation of the parsed content.
         """
         return self.canvas.get_text().rstrip()
+
+    def get_annotations(self) -> List[Annotation]:
+        """
+        Returns:
+            A list of annotations extracted from the parsed content.
+        """
+        return self.canvas.annotations
 
     def handle_starttag(self, tag, attrs):
         """
