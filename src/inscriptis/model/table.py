@@ -47,6 +47,7 @@ class TableCell:
                               for line in self.canvas.blocks]))
 
         # horizontal alignment
+        print(">>>", format_spec, list(blocks))
         rows = [format_spec.format(line) if self.width else line
                 for line in blocks]
 

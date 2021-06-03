@@ -211,7 +211,7 @@ class Inscriptis:
         self.tags[-1].write('')
 
     def _start_table(self, attrs):
-        self.tags[-1].set_canvas(Canvas())
+        self.tags[-1].set_canvas(Canvas(verbatim=True))
         self.current_table.append(Table())
 
     def _start_tr(self, attrs):
@@ -231,7 +231,7 @@ class Inscriptis:
                 self._end_td()
 
             # open td tag
-            canvas = self.tags[-1].set_canvas(Canvas()).canvas
+            canvas = self.tags[-1].set_canvas(Canvas(verbatim=True)).canvas
             self.current_table[-1].add_cell(canvas,
                                             align=self.tags[-1].align,
                                             valign=self.tags[-1].valign)
