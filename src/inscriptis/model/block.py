@@ -16,12 +16,12 @@ class Block:
         prefix: prefix used within the current block.
     """
 
-    __slots__ = ('idx', 'prefix', 'content', 'collapsable_whitespace')
+    __slots__ = ('idx', 'prefix', '_content', 'collapsable_whitespace')
 
     def __init__(self, idx, prefix):
         self.idx = idx
         self.prefix = prefix
-        self.content = ''
+        self._content = ''
         self.collapsable_whitespace = True
 
     def merge(self, text: str, whitespace: WhiteSpace) -> Span:
@@ -45,21 +45,6 @@ class Block:
         start = self.idx
         normalized_text = []
 
-        # leading space
-        # content = ''
-        # if text[0].isspace() and not self.collapsable_whitespace:
-        #     content += ' '
-        #     self.collapsable_whitespace = True
-        #
-        # cleaned_content = ''.join(text.split())
-        # self.collapsable_whitespace = bool(cleaned_content)
-        # content += cleaned_content
-        #
-        # # trailing space
-        # if text[-1].isspace() and len(text) > 1:
-        #     content += ' '
-        #     self.collapsable_whitespace = True
-
         for ch in text:
             if not ch.isspace():
                 normalized_text.append(ch)
@@ -70,8 +55,8 @@ class Block:
 
         if normalized_text:
             text = ''.join((next(self.prefix), *normalized_text)) if not \
-                self.content else ''.join(normalized_text)
-            self.content += text
+                self._content else ''.join(normalized_text)
+            self._content += text
             self.idx += len(text)
 
         return Span(start, self.idx)
@@ -86,13 +71,20 @@ class Block:
         start = self.idx
         text = ''.join((next(self.prefix),
                         text.replace('\n', '\n' + next(self.prefix))))
-        self.content += text
+        self._content += text
         self.idx += len(text)
         self.collapsable_whitespace = False
         return Span(start, self.idx)
 
     def is_empty(self):
         return len(self.content) == 0
+
+    @property
+    def content(self):
+        while self._content.endswith(' '):
+            self._content = self._content[:-1]
+            self.idx -= 1
+        return self._content
 
     def new_block(self) -> 'Block':
         """

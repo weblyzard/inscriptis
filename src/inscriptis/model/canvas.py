@@ -56,9 +56,9 @@ class Canvas:
         # write the block margin
         required_margin = max(tag.previous_margin_after, tag.margin_before)
         if required_margin > self.margin:
-            required_newlines = required_margin - self.margin - 1
+            required_newlines = required_margin - self.margin
             self.current_block.idx += required_newlines
-            self.blocks.append('\n' * required_newlines)
+            self.blocks.append('\n' * (required_newlines - 1))
             self.margin = required_margin
 
     def write(self, tag: HtmlElement, text: str,
@@ -98,8 +98,7 @@ class Canvas:
         Provide a text representation of the current block
         """
         self._flush_inline()
-        return unescape('\n'.join((block.rstrip(' ')
-                                   for block in self.blocks)))
+        return unescape('\n'.join(self.blocks))
 
     def _flush_inline(self) -> bool:
         """
@@ -114,6 +113,7 @@ class Canvas:
         if not self.current_block.is_empty():
             self.blocks.append(self.current_block.content)
             self.current_block = self.current_block.new_block()
+            # print("FLUSH", self.annotations[-1] if self.annotations else '')
             self.margin = 0
             return True
 

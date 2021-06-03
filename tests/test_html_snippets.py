@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-''' ensures that two successive <a>text</a> contain
-    a space between each other, if there is a linebreak
-    or space between the tags.
-'''
+"""
+Test HTML snippets in the project's HTML directory. The corresponding .txt file
+contains the reference conversion.
+"""
 from os.path import dirname, join
 from glob import glob
 
@@ -33,7 +33,8 @@ def test_html_snippets(filter_str=''):
             print('File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}'
                   .format(testcase_txt, html, reference_txt, converted_txt))
             print('HTML file:', testcase_txt.replace('.txt', '.html'))
-            print("Visualize differences with `vimdiff reference.txt converted.txt`")
+            print("Visualize differences with `vimdiff reference.txt "
+                  "converted.txt`")
             open("reference.txt", "w").write(reference_txt)
             open("converted.txt", "w").write(converted_txt)
 

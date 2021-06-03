@@ -1,0 +1,9 @@
+[
+  ["heading", "Inhaltsverzeichnis"],
+  ["emphasis", "marker"],
+  ["emphasis", "marker2"],
+  ["emphasis", "marker3"],
+  ["emphasis", "marker31"],
+  ["heading", "End of enumeration"],
+  ["emphasis", "emphasized text portion"]
+]
