@@ -7,7 +7,6 @@ from copy import copy
 from typing import List
 
 from inscriptis.annotation import Annotation
-from inscriptis.annotation.helper import AnnotationHelper
 from inscriptis.html_properties import Display
 from inscriptis.model.attribute import apply_attributes
 from inscriptis.model.html_element import HtmlElement
@@ -48,7 +47,6 @@ class Inscriptis:
     def __init__(self, html_tree, config=None):
         # use the default configuration, if no config object is provided
         self.config = config or ParserConfig()
-        self.annotations = AnnotationHelper()
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {
