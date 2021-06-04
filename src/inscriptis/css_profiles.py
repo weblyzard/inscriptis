@@ -74,8 +74,8 @@ STRICT_CSS_PROFILE = {
                              whitespace=WhiteSpace.pre),
 
     # annotation only elements
-    'b': HtmlElement('b', annotation=('emphasis', ))
-    'strong': HtmlElement('strong', annotation=('emphasis', ))
+    'b': HtmlElement('b', annotation=('emphasis', )),
+    'strong': HtmlElement('strong', annotation=('emphasis', )),
     'i': HtmlElement('i', annotation=('emphasis',))
 
 }

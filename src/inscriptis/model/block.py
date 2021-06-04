@@ -84,7 +84,10 @@ class Block:
 
     @property
     def content(self):
-        while self._content.endswith(' ') and not self.verbatim:
+        if not self.collapsable_whitespace:
+            return self._content
+
+        while self._content.endswith(' '):
             self._content = self._content[:-1]
             self.idx -= 1
         return self._content
