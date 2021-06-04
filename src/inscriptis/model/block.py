@@ -14,16 +14,13 @@ class Block:
     Args
         idx: the current block's start index.
         prefix: prefix used within the current block.
-        verbatim: do not strip whitespaces from returned content.
     """
 
-    __slots__ = ('idx', 'prefix', '_content', 'collapsable_whitespace',
-                 'verbatim')
+    __slots__ = ('idx', 'prefix', '_content', 'collapsable_whitespace')
 
-    def __init__(self, idx, prefix, verbatim=False):
+    def __init__(self, idx, prefix):
         self.idx = idx
         self.prefix = prefix
-        self.verbatim = verbatim
         self._content = ''
         self.collapsable_whitespace = True
 
@@ -98,5 +95,4 @@ class Block:
             A new block that follows the current one.
         """
         self.prefix.consumed = False
-        return Block(idx=self.idx + 1, prefix=self.prefix,
-                     verbatim=self.verbatim)
+        return Block(idx=self.idx + 1, prefix=self.prefix)

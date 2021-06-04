@@ -30,19 +30,17 @@ class Canvas:
         annotations: the list of completed annotations
         annotation_counter: a counter used for enumerating all annotations
                             we encounter.
-        verbatim: indicates that we do not strip trailing whitespaces from
-                  the content returned by the canvas (required for tables).
     """
 
     __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
-                 'margin', 'annotation_counter', 'verbatim')
+                 'margin', 'annotation_counter')
 
-    def __init__(self, verbatim=False):
+    def __init__(self):
         """
         Contains the completed blocks. Each block spawns at least a line
         """
         self.margin = 1000  # margin to the previous block
-        self.current_block = Block(0, Prefix(), verbatim)
+        self.current_block = Block(0, Prefix())
         self.blocks = []
         self.annotations = []
         self.annotation_counter = {}
