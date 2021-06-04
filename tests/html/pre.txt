@@ -16,5 +16,5 @@ A pre block within an enumeration
        print(a)
        b *= a
        print(b)
-
+    
   * Echo
