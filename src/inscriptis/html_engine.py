@@ -137,7 +137,6 @@ class Inscriptis:
              values.
         """
         # use the css to handle tags known to it :)
-
         cur = self.tags[-1].get_refined_html_element(
             apply_attributes(attrs, html_element=copy(self.config.css.get(
                 tag, Inscriptis.DEFAULT_ELEMENT))).set_tag(tag))
