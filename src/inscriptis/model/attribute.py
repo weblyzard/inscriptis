@@ -42,8 +42,8 @@ class Attribute:
             attributes: the list of attributes
             html_element: the HTML element for which the attributes are parsed
         """
-        supported_attributes = filter(lambda t: t[0] in self.attribute_mapping,
-                                      attributes.items())
+        supported_attributes = ((name, val) for name, val in attributes.items()
+                                if name in self.attribute_mapping)
         for attr_name, attr_value in supported_attributes:
             self.attribute_mapping[attr_name](attr_value, html_element)
         return html_element

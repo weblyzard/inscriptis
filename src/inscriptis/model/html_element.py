@@ -33,7 +33,7 @@ class HtmlElement:
                  whitespace=None, limit_whitespace_affixes=False,
                  align=HorizontalAlignment.left,
                  valign=VerticalAlignment.middle,
-                 annotation=None):
+                 annotation=()):
         self.canvas = None
         self.tag = tag
         self.prefix = prefix

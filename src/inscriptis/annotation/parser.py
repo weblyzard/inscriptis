@@ -16,29 +16,31 @@ Example:
         "#class=short-description]": ["description"]
     }
 """
+from inscriptis.model.html_element import HtmlElement
 
 class ApplyAnnotation:
     """
     Applies an Annotation to the given attribute
     """
     def __init__(self, annotations: tuple, match_tag: str = None,
-                 match_value : str =None)
+                 match_value: str = None):
         self.annotations = annotations
         if not match_tag and not match_value:
             self.apply = self.apply_all
         elif match_tag and match_value:
             self.apply = self.apply_matching
-            self.matcher = lambda value, tag: self.tag == tag and self.value in values.split()
+            self.matcher = lambda value, tag: self.tag == tag and \
+                                              self.value in value.split()
         elif match_tag:
             self.apply = self.apply_matching
             self.matcher = lambda value, tag: self.tag == tag
-        else
+        else:
             self.apply = self.apply_matching
             self.matcher = lambda value, tag: self.value in value.split()
 
     def apply_all(self, attr_value: str, html_element: HtmlElement):
         """
-        Applies the annotations to html_elments.
+        Applies the annotations to HtmlElements.
         """
         html_element.annotations += self.annotations
 
@@ -49,20 +51,6 @@ class ApplyAnnotation:
         if self.matcher(attr_value, html_element.tag):
             html_element.annotation += self.annotations
 
-
-
-class AttributeMatchers:
-    """
-    Checks whether an annotation matches a certain tag.
-    """
-
-    def __init__(self, match_attr=None, match_value=None):
-        self.match_attr = match_attr
-        if not match_value:
-            self.matcher = lambda tag, value: True
-        else:
-            self.match_value = match_value
-            self.matcher = lambda tag, value: self.match_value in value.split()
 
 class AnnotationModel:
 
