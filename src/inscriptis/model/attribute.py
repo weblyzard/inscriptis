@@ -5,6 +5,7 @@
 This class handles HTML attributes such as `align`, and `valign` by
 mapping them to the corresponding functions in the CssParse class.
 """
+from copy import copy
 from typing import Dict, Callable
 
 from inscriptis.model.css import CssParse
@@ -22,16 +23,20 @@ class Attribute:
     Applies attributes and annotations to the given HTML element.
 
     Args
-        attribute_mapping: a mapping of attribute to the corresponding CSS
-                           parsing functions responsible for parsing it.
         annotations: an optional mapping of attributes to the corresponding
                      annotations.
+
+    Note: The current implementation allows annotation attributes to
+          override attributes in the ATTRIBUTE_MAP. Given the typical
+          separation of attributes referring to layout (e.g., style, etc.) and
+          structure (e.g., id, class) this is currently not considered.
     """
-    def __init__(self, attribute_mapping: Dict[str, Callable] = ATTRIBUTE_MAP,
-                 annotations: Dict[str, Callable] = None):
+    
+    def __init__(self, annotations: Dict[str, Callable] = None):
         if annotations:
-            attribute_mapping.update(annotations)
-        self.attribute_mapping = attribute_mapping
+            self.attribute_mapping = copy(ATTRIBUTE_MAP).update(annotations)
+        else:
+            self.attribute_mapping = ATTRIBUTE_MAP
 
     def apply_attributes(self, attributes: Dict[str, str],
                          html_element: HtmlElement) -> HtmlElement:

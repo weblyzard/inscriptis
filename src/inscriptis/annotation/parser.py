@@ -16,12 +16,18 @@ Example:
         "#class=short-description]": ["description"]
     }
 """
+from collections import defaultdict
+from typing import Dict
+
+from inscriptis.html_engine import Inscriptis
 from inscriptis.model.html_element import HtmlElement
+
 
 class ApplyAnnotation:
     """
     Applies an Annotation to the given attribute
     """
+
     def __init__(self, annotations: tuple, match_tag: str = None,
                  match_value: str = None):
         self.annotations = annotations
@@ -29,20 +35,20 @@ class ApplyAnnotation:
             self.apply = self.apply_all
         elif match_tag and match_value:
             self.apply = self.apply_matching
-            self.matcher = lambda value, tag: self.tag == tag and \
-                                              self.value in value.split()
+            self.matcher = lambda value, tag: match_tag == tag and \
+                                              match_value in value.split()
         elif match_tag:
             self.apply = self.apply_matching
-            self.matcher = lambda value, tag: self.tag == tag
+            self.matcher = lambda value, tag: match_tag == tag
         else:
             self.apply = self.apply_matching
-            self.matcher = lambda value, tag: self.value in value.split()
+            self.matcher = lambda value, tag: match_value in value.split()
 
-    def apply_all(self, attr_value: str, html_element: HtmlElement):
+    def apply_all(self, _: str, html_element: HtmlElement):
         """
         Applies the annotations to HtmlElements.
         """
-        html_element.annotations += self.annotations
+        html_element.annotation += self.annotations
 
     def apply_matching(self, attr_value: str, html_element: HtmlElement):
         """
@@ -54,10 +60,12 @@ class ApplyAnnotation:
 
 class AnnotationModel:
 
-    def __init__(self, tags, attrs, values):
-        self.tags = {}
-        self.attrs = {}
-        self.values = {}
+    def __init__(self, css_profile: Dict[str, tuple], tags: Dict[str, tuple],
+                 attrs: Dict[str, ApplyAnnotation]):
+        for tag, annotations in tags.items():
+            html_element = css_profile.get(tag, Inscriptis.DEFAULT_ELEMENT)
+            html_element.annotation += annotations
+        self.attrs = attrs
 
     @staticmethod
     def parse(model: dict) -> 'AnnotationModel':
@@ -68,6 +76,17 @@ class AnnotationModel:
         Returns:
             the AnnotationModel matching the input dictionary.
         """
-        for key, annotation in model.items():
+        tags = defaultdict(list)
+        attrs = []
+        for key, annotations in model.items():
             if '#' in key:
-                pass
+                tag, attr = key.split('#')
+                if '=' in attr:
+                    attr, value = key.split('=')
+                else:
+                    value = None
+                attrs.append(ApplyAnnotation(annotations, attr, value))
+            else:
+                tags[key].append(annotations)
+
+        return AnnotationModel(tuple(tags), attr)
