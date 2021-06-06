@@ -6,6 +6,8 @@ from pathlib import Path
 from setuptools import setup, find_packages
 from os import path
 
+from Cython.Build import cythonize
+
 here = Path(path.dirname(__file__)).resolve()
 sys.path.insert(0, path.join(str(here), 'src'))
 
@@ -56,5 +58,8 @@ setup(
     install_requires=[
         'lxml',
         'requests'
-    ]
+    ],
+
+    # Cythonize
+    ext_modules=cythonize("src/inscriptis/model/*.py", language_level=3)
 )
