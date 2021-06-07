@@ -6,6 +6,7 @@ Inscriptis command line client.
 
 import argparse
 import sys
+from json import load
 from pathlib import Path
 
 import requests
@@ -43,6 +44,9 @@ def get_parser():
                         help='Deduplicate image captions (default:false).')
     parser.add_argument('-f', '--output-format', default='text',
                         help='Output format (text or JSONL); default: text).')
+    parser.add_argument('-r', '--annotation-rules', default=None,
+                        help='Path to an optional JSON file containing rules '
+                             'for annotating the retrieved text.')
     parser.add_argument('--indentation', default='extended',
                         help='How to handle indentation (extended or strict;'
                              ' default: extended).')
@@ -79,13 +83,24 @@ if __name__ == '__main__':
         parser.print_help()
         sys.exit(-1)
 
+    if args.annotation_rules:
+        try:
+            annotation_rules = load(open(args.annotation_rules))
+        except IOError:
+            print("ERROR: Cannot open annotation rule file '{0}'.".format(
+                args.annotation_rules
+            ))
+    else:
+        annotation_rules = None
+
     css_profile = CSS_PROFILES['relaxed'] if args.indentation == 'extended' \
         else CSS_PROFILES['strict']
     config = ParserConfig(css=css_profile,
                           display_images=args.display_image_captions,
                           deduplicate_captions=args.deduplicate_image_captions,
                           display_links=args.display_link_targets,
-                          display_anchors=args.display_anchor_urls)
+                          display_anchors=args.display_anchor_urls,
+                          annotation_rules=annotation_rules)
     output = get_text(html_content, config) if args.output_format == 'text' \
         else get_jsonl(html_content, config)
     if args.output:

@@ -59,15 +59,15 @@ class ApplyAnnotation:
 
 class AnnotationModel:
 
-    def __init__(self, css_profile: Dict[str, tuple], tags: Dict[str, tuple],
-                 attrs: Dict[str, ApplyAnnotation]):
+    def __init__(self, css_profile, model: dict):
+        tags, self.css_attr = self._parse(model)
         for tag, annotations in tags.items():
             html_element = css_profile.get(tag, DEFAULT_HTML_ELEMENT)
-            html_element.annotation += annotations
-        self.attrs = attrs
+            html_element.annotation += tuple(annotations)
+        self.css = css_profile
 
     @staticmethod
-    def parse(model: dict) -> 'AnnotationModel':
+    def _parse(model: dict) -> 'AnnotationModel':
         """
         Parses a model dictionary and returns the corresponding
         AnnotationModel.
@@ -84,8 +84,8 @@ class AnnotationModel:
                     attr, value = key.split('=')
                 else:
                     value = None
-                attrs.append(ApplyAnnotation(annotations, attr, value))
+                attrs.append(ApplyAnnotation(annotations, attr, value).apply)
             else:
-                tags[key].append(annotations)
+                tags[key].extend(annotations)
 
-        return AnnotationModel(tuple(tags), attr)
+        return tags, attrs

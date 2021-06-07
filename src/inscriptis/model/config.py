@@ -35,17 +35,15 @@ class ParserConfig:
         self.deduplicate_captions = deduplicate_captions
         self.display_links = display_links
         self.display_anchors = display_anchors
-        css = css or CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
+        self.css = css or CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
+        self.attribute_handler = Attribute()
         if annotation_rules:
-            annotation_model = AnnotationModel.parse(css,
-                                                     annotation_rules)
+            annotation_model = AnnotationModel(self.css, annotation_rules)
             # css with annotation support
             self.css = annotation_model.css
             # attribute handler with annotation support
-            self.attribute_handler = Attribute(annotation_model.css_attr)
-        else:
-            self.css = css
-            self.attribute_handler = Attribute()
+            self.attribute_handler.merge_attribute_map(
+                annotation_model.css_attr)
 
     def parse_a(self):
         """

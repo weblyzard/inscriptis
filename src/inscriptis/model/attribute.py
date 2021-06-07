@@ -11,11 +11,25 @@ from typing import Dict, Callable
 from inscriptis.model.css import CssParse
 from inscriptis.model.html_element import HtmlElement
 
-ATTRIBUTE_MAP = {
+DEFAULT_ATTRIBUTE_MAP = {
     'style': CssParse.attr_style,
     'align': CssParse.attr_horizontal_align,
     'valign': CssParse.attr_vertical_align
 }
+
+
+def merge_function(func1, func2, *args):
+    """
+    Merges two functions with the same arguments into a single one.
+
+    Args:
+        func1: the first function
+        func2: the second function
+    """
+    def merged(*args):
+        func1(*args)
+        func2(*args)
+    return merged
 
 
 class Attribute:
@@ -31,12 +45,9 @@ class Attribute:
           separation of attributes referring to layout (e.g., style, etc.) and
           structure (e.g., id, class) this is currently not considered.
     """
-    
-    def __init__(self, annotations: Dict[str, Callable] = None):
-        if annotations:
-            self.attribute_mapping = copy(ATTRIBUTE_MAP).update(annotations)
-        else:
-            self.attribute_mapping = ATTRIBUTE_MAP
+
+    def __init__(self):
+        self.attribute_mapping = DEFAULT_ATTRIBUTE_MAP
 
     def apply_attributes(self, attributes: Dict[str, str],
                          html_element: HtmlElement) -> HtmlElement:
@@ -52,3 +63,9 @@ class Attribute:
         for attr_name, attr_value in supported_attributes:
             self.attribute_mapping[attr_name](attr_value, html_element)
         return html_element
+
+    def merge_attribute_map(self, annotations: Dict[str, Callable] = None):
+        attributes = copy(self.attribute_mapping)
+        for attr, func in attributes.items():
+            attributes[attr] = func if attr not in attributes \
+                else merge_function(attributes[attr], func)
