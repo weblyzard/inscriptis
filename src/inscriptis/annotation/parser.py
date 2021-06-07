@@ -16,9 +16,8 @@ Example:
         "#class=short-description]": ["description"]
     }
 """
-from copy import copy
 from collections import defaultdict
-
+from copy import copy
 
 from inscriptis.model.html_element import HtmlElement, DEFAULT_HTML_ELEMENT
 
@@ -91,5 +90,4 @@ class AnnotationModel:
                                              tag, value))
             else:
                 tags[key].extend(annotations)
-        print(tags)
         return tags, attrs

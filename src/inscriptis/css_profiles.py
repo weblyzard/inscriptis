@@ -21,7 +21,6 @@ STRICT_CSS_PROFILE = {
     'script': HtmlElement(display=Display.none),
     'title': HtmlElement(display=Display.none),
     'style': HtmlElement(display=Display.none),
-    'table': HtmlElement(annotation=('table', )),
 
     'p': HtmlElement(display=Display.block, margin_before=1,
                      margin_after=1),

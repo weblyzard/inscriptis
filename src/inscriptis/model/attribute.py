@@ -41,7 +41,6 @@ class Attribute:
         annotations: an optional mapping of attributes to the corresponding
                      annotations.
     """
-
     def __init__(self):
         self.attribute_mapping = DEFAULT_ATTRIBUTE_MAP
 

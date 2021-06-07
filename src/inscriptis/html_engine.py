@@ -206,11 +206,11 @@ class Inscriptis:
 
         self.tags[-1].write('')
 
-    def _start_table(self, attrs):
+    def _start_table(self, _):
         self.tags[-1].set_canvas(Canvas())
         self.current_table.append(Table())
 
-    def _start_tr(self, attrs):
+    def _start_tr(self, _):
         if self.current_table:
             # check whether we need to cleanup a <td> tag that has not been
             # closed yet
@@ -247,11 +247,22 @@ class Inscriptis:
         table = self.current_table.pop()
         # last tag before the table: self.tags[-2]
         # table tag: self.tags[-1]
+        for t in self.tags:
+            print(t, t.canvas.annotations)
+
         out_of_table_text = self.tags[-1].canvas.get_text().strip()
         if out_of_table_text:
             self.tags[-2].write(out_of_table_text)
             self.tags[-2].canvas.write_newline()
+
+        start_idx = self.tags[-2].canvas.current_block.idx
         self.tags[-2].write_verbatim_text(table.get_text())
+
+        if self.tags[-1].annotation:
+            end_idx = self.tags[-2].canvas.current_block.idx
+            for a in self.tags[-1].annotation:
+                self.tags[-2].canvas.annotations.append(Annotation(
+                    start_idx, end_idx, a))
 
     def _newline(self, attrs):
         self.tags[-1].canvas.write_newline()
