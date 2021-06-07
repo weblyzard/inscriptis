@@ -6,8 +6,9 @@ This class handles HTML attributes such as `align`, and `valign` by
 mapping them to the corresponding functions in the CssParse class.
 """
 from copy import copy
-from typing import Dict, Callable
+from typing import Dict, Callable, List
 
+from inscriptis.annotation.parser import ApplyAnnotation
 from inscriptis.model.css import CssParse
 from inscriptis.model.html_element import HtmlElement
 
@@ -18,7 +19,7 @@ DEFAULT_ATTRIBUTE_MAP = {
 }
 
 
-def merge_function(func1, func2, *args):
+def merge_function(func1, func2):
     """
     Merges two functions with the same arguments into a single one.
 
@@ -39,11 +40,6 @@ class Attribute:
     Args
         annotations: an optional mapping of attributes to the corresponding
                      annotations.
-
-    Note: The current implementation allows annotation attributes to
-          override attributes in the ATTRIBUTE_MAP. Given the typical
-          separation of attributes referring to layout (e.g., style, etc.) and
-          structure (e.g., id, class) this is currently not considered.
     """
 
     def __init__(self):
@@ -64,8 +60,9 @@ class Attribute:
             self.attribute_mapping[attr_name](attr_value, html_element)
         return html_element
 
-    def merge_attribute_map(self, annotations: Dict[str, Callable] = None):
+    def merge_attribute_map(self, annotations: List[ApplyAnnotation] = None):
         attributes = copy(self.attribute_mapping)
-        for attr, func in attributes.items():
-            attributes[attr] = func if attr not in attributes \
-                else merge_function(attributes[attr], func)
+        for a in annotations:
+            attributes[a.attr] = a.apply if a.attr not in attributes \
+                else merge_function(attributes[a.attr], a.apply)
+        self.attribute_mapping = attributes

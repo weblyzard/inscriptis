@@ -3,6 +3,8 @@
 Provides configuration objects for the Inscriptis HTML 2 text parser.
 """
 
+from copy import deepcopy
+
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.annotation.parser import AnnotationModel
 from inscriptis.model.attribute import Attribute
@@ -38,7 +40,10 @@ class ParserConfig:
         self.css = css or CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
         self.attribute_handler = Attribute()
         if annotation_rules:
-            annotation_model = AnnotationModel(self.css, annotation_rules)
+            # ensure that we do not modify the original model or its
+            # members.
+            annotation_model = AnnotationModel(deepcopy(self.css),
+                                               annotation_rules)
             # css with annotation support
             self.css = annotation_model.css
             # attribute handler with annotation support

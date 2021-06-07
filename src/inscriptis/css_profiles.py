@@ -29,15 +29,15 @@ STRICT_CSS_PROFILE = {
                           margin_after=1),
 
     'h1': HtmlElement(display=Display.block, margin_before=1,
-                      margin_after=1, annotation=('heading', )),
+                      margin_after=1),
     'h2': HtmlElement(display=Display.block, margin_before=1,
-                      margin_after=1, annotation=('heading', )),
+                      margin_after=1),
     'h3': HtmlElement(display=Display.block, margin_before=1,
-                      margin_after=1, annotation=('heading', )),
+                      margin_after=1),
     'h4': HtmlElement(display=Display.block, margin_before=1,
-                      margin_after=1, annotation=('heading', )),
+                      margin_after=1),
     'h5': HtmlElement(display=Display.block, margin_before=1,
-                      margin_after=1, annotation=('heading', )),
+                      margin_after=1),
     'h6': HtmlElement(display=Display.block, margin_before=1,
                       margin_after=1),
 
@@ -73,10 +73,6 @@ STRICT_CSS_PROFILE = {
     'plaintext': HtmlElement(display=Display.block,
                              whitespace=WhiteSpace.pre),
 
-    # annotation only elements
-    'b': HtmlElement(annotation=('emphasis', )),
-    'strong': HtmlElement('strong', annotation=('emphasis', )),
-    'i': HtmlElement(annotation=('emphasis',))
 }
 
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()

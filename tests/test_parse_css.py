@@ -36,7 +36,8 @@ def test_html_element_str():
                                  'list_bullet=, '
                                  'whitespace=WhiteSpace.pre, '
                                  'align=HorizontalAlignment.left, '
-                                 'valign=VerticalAlignment.middle>')
+                                 'valign=VerticalAlignment.middle, '
+                                 'annotation=()>')
 
 
 def test_parse_vertical_align():
@@ -47,6 +48,7 @@ def test_parse_vertical_align():
     # invalid value
     CssParse.attr_vertical_align('unknown', html_element)
     assert html_element.valign == VerticalAlignment.top
+
 
 def test_parse_horizontal_align():
     html_element = HtmlElement()

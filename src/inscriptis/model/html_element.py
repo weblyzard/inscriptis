@@ -147,7 +147,7 @@ class HtmlElement:
             'padding_inline={self.padding_inline}, '
             'list_bullet={self.list_bullet}, '
             'whitespace={self.whitespace}, align={self.align}, '
-            'valign={self.valign}>'
+            'valign={self.valign}, annotation={self.annotation}>'
         ).format(self=self)
 
     __repr__ = __str__

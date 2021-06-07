@@ -27,7 +27,11 @@ def test_html_annotations(filter_str=''):
             html = '<html><body>{}</body></html>'.format(f.read())
 
         result = loads(get_jsonl(html, ParserConfig(
-            css=CSS_PROFILES['strict'])))
+            css=CSS_PROFILES['strict'],
+            annotation_rules={'h1': ('heading', ),
+                              'h2': ('heading', ),
+                              'h3': ('heading', ),
+                              'b': ('emphasis', )})))
         converted = [[a[2], result['text'][a[0]:a[1]]]
                      for a in result['label']]
 

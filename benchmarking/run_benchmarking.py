@@ -181,9 +181,12 @@ class InscriptisHtmlConverter(AbstractHtmlConverter):
 
     def __init__(self):
         self.available = 'inscriptis' in sys.modules
+        if self.available:
+            from inscriptis.engine import get_text
+            self.get_text = get_text
 
     def get_text(self, html):
-        return inscriptis.get_text(html)
+        return self.get_text(html)
 
 
 timestamp = str(datetime.now()).replace(' ', '_').replace(':', '-')\

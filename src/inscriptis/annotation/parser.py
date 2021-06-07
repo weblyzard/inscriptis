@@ -16,8 +16,9 @@ Example:
         "#class=short-description]": ["description"]
     }
 """
+from copy import copy
 from collections import defaultdict
-from typing import Dict
+
 
 from inscriptis.model.html_element import HtmlElement, DEFAULT_HTML_ELEMENT
 
@@ -27,9 +28,10 @@ class ApplyAnnotation:
     Applies an Annotation to the given attribute
     """
 
-    def __init__(self, annotations: tuple, match_tag: str = None,
+    def __init__(self, annotations: tuple, attr: str, match_tag: str = None,
                  match_value: str = None):
-        self.annotations = annotations
+        self.annotations = tuple(annotations)
+        self.attr = attr
         if not match_tag and not match_value:
             self.apply = self.apply_all
         elif match_tag and match_value:
@@ -62,8 +64,9 @@ class AnnotationModel:
     def __init__(self, css_profile, model: dict):
         tags, self.css_attr = self._parse(model)
         for tag, annotations in tags.items():
-            html_element = css_profile.get(tag, DEFAULT_HTML_ELEMENT)
-            html_element.annotation += tuple(annotations)
+            if tag not in css_profile:
+                css_profile[tag] = copy(DEFAULT_HTML_ELEMENT)
+            css_profile[tag].annotation += tuple(annotations)
         self.css = css_profile
 
     @staticmethod
@@ -81,11 +84,12 @@ class AnnotationModel:
             if '#' in key:
                 tag, attr = key.split('#')
                 if '=' in attr:
-                    attr, value = key.split('=')
+                    attr, value = attr.split('=')
                 else:
                     value = None
-                attrs.append(ApplyAnnotation(annotations, attr, value).apply)
+                attrs.append(ApplyAnnotation(annotations, attr,
+                                             tag, value))
             else:
                 tags[key].extend(annotations)
-
+        print(tags)
         return tags, attrs
