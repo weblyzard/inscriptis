@@ -151,3 +151,9 @@ class HtmlElement:
         ).format(self=self)
 
     __repr__ = __str__
+
+
+"""
+An empty default HTML element.
+"""
+DEFAULT_HTML_ELEMENT = HtmlElement()

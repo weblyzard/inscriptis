@@ -8,8 +8,7 @@ from typing import List
 
 from inscriptis.annotation import Annotation
 from inscriptis.html_properties import Display
-from inscriptis.model.attribute import apply_attributes
-from inscriptis.model.html_element import HtmlElement
+from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.table import Table
@@ -42,9 +41,7 @@ class Inscriptis:
     UL_COUNTER = ('* ', '+ ', 'o ', '- ')
     UL_COUNTER_LEN = len(UL_COUNTER)
 
-    DEFAULT_ELEMENT = HtmlElement()
-
-    def __init__(self, html_tree, config=None):
+    def __init__(self, html_tree, config: ParserConfig = None):
         # use the default configuration, if no config object is provided
         self.config = config or ParserConfig()
 
@@ -72,8 +69,10 @@ class Inscriptis:
 
         # instance variables
         self.canvas = Canvas()
-        self.tags = [self.config.css['body'].set_canvas(self.canvas)]
+        self.css = self.config.css
+        self.apply_attributes = self.config.attribute_handler.apply_attributes
 
+        self.tags = [self.css['body'].set_canvas(self.canvas)]
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
@@ -138,8 +137,8 @@ class Inscriptis:
         """
         # use the css to handle tags known to it :)
         cur = self.tags[-1].get_refined_html_element(
-            apply_attributes(attrs, html_element=copy(self.config.css.get(
-                tag, Inscriptis.DEFAULT_ELEMENT))).set_tag(tag))
+            self.apply_attributes(attrs, html_element=copy(self.css.get(
+                tag, DEFAULT_HTML_ELEMENT))).set_tag(tag))
         self.tags.append(cur)
 
         handler = self.start_tag_handler_dict.get(tag, None)

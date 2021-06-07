@@ -5,6 +5,7 @@ Provides configuration objects for the Inscriptis HTML 2 text parser.
 
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.annotation.parser import AnnotationModel
+from inscriptis.model.attribute import Attribute
 
 DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
@@ -34,15 +35,17 @@ class ParserConfig:
         self.deduplicate_captions = deduplicate_captions
         self.display_links = display_links
         self.display_anchors = display_anchors
+        css = css or CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
         if annotation_rules:
-            annotation_model = AnnotationModel.parse(css_profile,
+            annotation_model = AnnotationModel.parse(css,
                                                      annotation_rules)
+            # css with annotation support
             self.css = annotation_model.css
+            # attribute handler with annotation support
             self.attribute_handler = Attribute(annotation_model.css_attr)
         else:
-            self.css = css or CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
+            self.css = css
             self.attribute_handler = Attribute()
-
 
     def parse_a(self):
         """

@@ -19,8 +19,7 @@ Example:
 from collections import defaultdict
 from typing import Dict
 
-from inscriptis.html_engine import Inscriptis
-from inscriptis.model.html_element import HtmlElement
+from inscriptis.model.html_element import HtmlElement, DEFAULT_HTML_ELEMENT
 
 
 class ApplyAnnotation:
@@ -63,7 +62,7 @@ class AnnotationModel:
     def __init__(self, css_profile: Dict[str, tuple], tags: Dict[str, tuple],
                  attrs: Dict[str, ApplyAnnotation]):
         for tag, annotations in tags.items():
-            html_element = css_profile.get(tag, Inscriptis.DEFAULT_ELEMENT)
+            html_element = css_profile.get(tag, DEFAULT_HTML_ELEMENT)
             html_element.annotation += annotations
         self.attrs = attrs
 
