@@ -31,7 +31,8 @@ def test_html_annotations(filter_str=''):
             annotation_rules={'h1': ('heading', ),
                               'h2': ('heading', ),
                               'h3': ('heading', ),
-                              'b': ('emphasis', )})))
+                              'b': ('emphasis', ),
+                              'table': ('table', )})))
         converted = [[a[2], result['text'][a[0]:a[1]]]
                      for a in result['label']]
 

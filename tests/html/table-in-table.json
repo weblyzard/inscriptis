@@ -1,0 +1,9 @@
+[
+  ["heading", "Single"],
+  ["heading", "First"],
+  ["table", "    red        green\n         blue       \n    red        green\n"],
+  ["heading", "Second"],
+  ["table", "         blue       \n    red        green\n         blue       \n"],
+  ["heading", "nested"],
+  ["table", "    red        green       blue              blue       \n         blue         red        green  red        green\n    red        green       blue              blue       \n         blue         red        green       blue       \n    red        green       blue         red        green\n         blue         red        green       blue       \n    red        green       blue              blue       \n         blue         red        green  red        green\n    red        green       blue              blue"]
+]
