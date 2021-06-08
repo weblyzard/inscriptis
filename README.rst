@@ -207,7 +207,7 @@ Output:
    {"text": "  Chur\n\n  Chur is the capital and largest town of the Swiss
              canton of the Grisons and lies in the Grisonian Rhine Valley.",
     "label": [[0, 6, "heading"], [8, 14, "emphasis"]],
-    "tag": "<heading>  Chur</heading>\n\n<emphasis>  Chur</emphasis> is the
+    "tag": "<heading>Chur</heading>\n\n<emphasis>Chur</emphasis> is the
            capital and largest town of the Swiss canton of the Grisons and
            lies in the Grisonian Rhine Valley."}
 
