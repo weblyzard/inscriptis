@@ -6,13 +6,13 @@ Inscriptis command line client.
 
 import argparse
 import sys
-from json import load
+from json import load, dumps
 from pathlib import Path
 
 import requests
 
 from inscriptis import __version__, __copyright__, __license__
-from inscriptis.engine import get_text, get_jsonl
+from inscriptis.engine import get_text, get_annotated_text
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                           display_anchors=args.display_anchor_urls,
                           annotation_rules=annotation_rules)
     output = get_text(html_content, config) if args.output_format == 'text' \
-        else get_jsonl(html_content, config)
+        else dumps(get_annotated_text(html_content, config))
     if args.output:
         with Path(args.output).open('w', encoding=args.encoding) as open_file:
             open_file.write(output)

@@ -51,7 +51,7 @@ def get_text(html_content: str, config: ParserConfig = None) -> str:
         else ''
 
 
-def get_jsonl(html_content: str, config: ParserConfig = None) -> str:
+def get_annotated_text(html_content: str, config: ParserConfig = None) -> str:
     """
     Provide a JSONL string containing a text representation of the given
     HTML content and the corresponding annotations.
@@ -72,5 +72,5 @@ def get_jsonl(html_content: str, config: ParserConfig = None) -> str:
     inscriptis = Inscriptis(html_tree, config)
     labels = [(a.start, a.end, a.metadata)
               for a in inscriptis.get_annotations()]
-    return dumps({'text': inscriptis.get_text(),
-                  'label': labels})
+    return {'text': inscriptis.get_text(),
+            'label': labels}

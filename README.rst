@@ -26,10 +26,10 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
    :target: https://badge.fury.io/py/inscriptis
    :alt: PyPI version
 
-A python based HTML to text conversion library, command line client and Web service with support for **nested tables** and a **subset of CSS**.
+A python based HTML to text conversion library, command line client and Web service with support for **nested tables**, a **subset of CSS** and optinal support for providing an **annotated output**.
 Please take a look at the `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_ document for a demonstration of inscriptis' conversion quality.
 
-A Java port of inscriptis is availabe `here <https://github.com/x28/inscriptis-java>`_.
+A Java port of inscriptis 1.x is available `here <https://github.com/x28/inscriptis-java>`_.
 
 Documentation
 =============
@@ -43,7 +43,9 @@ Table of Contents
 2. `Python library`_
 3. `Standalone command line client`_
 4. `Web service`_
-5. `Fine tuning`_
+5. `Advanced topics`_
+    - `Annotated text`_
+    - `Fine tuning`_
 6. `Changelog`_
 
 
@@ -68,12 +70,14 @@ If you want to install from the latest sources, you can do::
 Python library
 ==============
 
-Embedding inscriptis into your code is easy, as outlined below::
+Embedding inscriptis into your code is easy, as outlined below:
+
+.. code-block:: python
    
    import urllib.request
    from inscriptis.engine import get_text
    
-   url = "https://www.informationscience.ch"
+   url = "https://www.fhgr.ch"
    html = urllib.request.urlopen(url).read().decode('utf-8')
    
    text = get_text(html)
@@ -90,23 +94,21 @@ Command line parameters
 -----------------------
 The inscript.py command line client supports the following parameters::
 
-   usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a]
-                      [--indentation INDENTATION] [-v]
-                      [input]
+   usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] 
+                      [-f OUTPUT_FORMAT] [-r ANNOTATION_RULES] [--indentation INDENTATION] 
+                      [-v] [input]
    
    Converts HTML from file or url to a clean text version
    
    positional arguments:
-     input                 Html input either from a file or an url
-                           (default:stdin)
+     input                 Html input either from a file or an url (default:stdin)
    
    optional arguments:
      -h, --help            show this help message and exit
      -o OUTPUT, --output OUTPUT
                            Output file (default:stdout).
      -e ENCODING, --encoding ENCODING
-                           Content encoding for reading and writing files
-                           (default:utf-8)
+                           Content encoding for reading and writing files (default:utf-8)
      -i, --display-image-captions
                            Display image captions (default:false).
      -d, --deduplicate-image-captions
@@ -115,9 +117,12 @@ The inscript.py command line client supports the following parameters::
                            Display link targets (default:false).
      -a, --display-anchor-urls
                            Deduplicate image captions (default:false).
+     -f OUTPUT_FORMAT, --output-format OUTPUT_FORMAT
+                           Output format (text or JSONL); default: text).
+     -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
+                           Path to an optional JSON file containing rules for annotating the retrieved text.
      --indentation INDENTATION
-                           How to handle indentation (extended or strict;
-                           default: extended).
+                           How to handle indentation (extended or strict; default: extended).
      -v, --version         display version information
    
 
@@ -132,9 +137,13 @@ convert the file to text and save the output to output.txt::
 
   $ inscript.py fhgr.html -o fhgr.txt
    
-convert text provided via stdin and save the output to output.txt::
+convert HTML provided via stdin and save the output to output.txt::
 
   $ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt 
+
+convert and annotate HTML from a Web page using the provided annotation rules::
+
+  $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json -f output.jsonl
 
 
 
@@ -168,21 +177,94 @@ The service also supports a version call::
   $ curl http://localhost:5000/version
 
 
+Advanced topics
+===============
+
+Annotated text
+--------------
+Inscriptis can provide annotations alongside the extracted text which allows
+downstream components to draw upon semantics that have only been available in
+the original HTML file.
+
+The extracted text and annotations can be exported in different formats,
+including the popular JSONL format which is used by `doccano <https://github.com/doccano/doccano>`_.
+
+Example output:
+
+.. code-block:: json
+
+   {"text": "Chur\n\nChur is the capital and largest town of the Swiss canton
+             of the Grisons and lies in the Grisonian Rhine Valley."
+    "label": [[0, 4, "heading"], [0, 4, "h1"], [6, 10, "emphasis"]]}
+
+The output above is produced, if inscriptis is run with the following
+annotation rules:
+
+.. code-block:: json
+
+   {
+    "h1": ["heading", "h1"],
+    "h2": ["heading", "h2"],
+    "b": ["emphasis"],
+    "div#class=toc": ["table-of-contents"],
+    "#class=FactBox": ["fact-box"],
+    "#cite": ["citation"]
+   }
+
+The dictionary maps an HTML tag and/or attribute to the annotations
+inscriptis should provide for them. In the example above, for instance, the tag
+`h1` yields the annotations `heading` and `h1`, a `div` tag with a
+`class` that contains the value `toc` results in the annotation
+`table-of-contents`, and all tags with a `cite` attribute are annotated with
+`citation`.
+
+The following code demonstrates how inscriptis' annotation capabilities can
+be used within a program:
+
+.. code-block:: python
+
+  import urllib.request
+  from inscriptis.engine import get_annotated_text
+
+  url = "https://www.fhgr.ch"
+  html = urllib.request.urlopen(url).read().decode('utf-8')
+
+  rules = {'h1': ['heading', 'h1'],
+           'h2': ['heading', 'h2'],
+           'b': ['emphasis'],
+           'table': ['table']
+          }
+
+  output = get_annotated_text(html, ParserConfig(annotation_rules=rules)
+  print("Text:", output['text'])
+  print("Annotations:", output['label'])
+
 Fine tuning
-===========
+-----------
 
 The following options are available for fine tuning inscriptis' HTML rendering:
 
-1. **More rigorous indentation:** call `inscriptis.engine.get_text()` with the parameter `indentation='extended'` to also use indentation for tags such as `<div>` and `<span>` that do not provide indentation in their standard definition. This strategy is the default in `inscript.py` and many other tools such as lynx. If you do not want extended indentation you can use the parameter `indentation='standard'` instead.
+1. **More rigorous indentation:** call `inscriptis.engine.get_text()` with the
+   parameter `indentation='extended'` to also use indentation for tags such as
+   `<div>` and `<span>` that do not provide indentation in their standard
+   definition. This strategy is the default in `inscript.py` and many other
+   tools such as lynx. If you do not want extended indentation you can use the
+   parameter `indentation='standard'` instead.
 
-2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can override these definitions (and therefore change the rendering) as outlined below::
+2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions
+   that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can
+   override these definitions (and therefore change the rendering) as outlined
+   below:
+
+.. code-block:: python
 
       from lxml.html import fromstring
       from inscriptis.css_profiles import CSS_PROFILES, HtmlElement
       from inscriptis.html_properties import Display
       from inscriptis.model.config import ParserConfig
       
-      # create a custom CSS based on the default style sheet and change the rendering of `div` and `span` elements
+      # create a custom CSS based on the default style sheet and change the
+      # rendering of `div` and `span` elements
       css = CSS_PROFILES['strict'].copy()
       css['div'] = HtmlElement('div', display=Display.block, padding=2)
       css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
