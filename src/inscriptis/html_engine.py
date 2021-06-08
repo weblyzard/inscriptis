@@ -72,7 +72,7 @@ class Inscriptis:
         self.css = self.config.css
         self.apply_attributes = self.config.attribute_handler.apply_attributes
 
-        self.tags = [self.css['body'].set_canvas(self.canvas), self.css['body'].set_canvas(self.canvas)]
+        self.tags = [self.css['body'].set_canvas(self.canvas)]
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
@@ -156,7 +156,7 @@ class Inscriptis:
         if handler:
             handler()
 
-    def _start_ul(self, attrs):
+    def _start_ul(self, _):
         self.li_level += 1
         self.li_counter.append(Inscriptis.get_bullet(self.li_level - 1))
 
@@ -185,7 +185,7 @@ class Inscriptis:
         if self.link_target:
             self.tags[-1].write(']({0})'.format(self.link_target))
 
-    def _start_ol(self, attrs):
+    def _start_ol(self, _):
         self.li_counter.append(1)
         self.li_level += 1
 
@@ -193,7 +193,7 @@ class Inscriptis:
         self.li_level -= 1
         self.li_counter.pop()
 
-    def _start_li(self, attrs):
+    def _start_li(self, _):
         if self.li_level > 0:
             bullet = self.li_counter[-1]
         else:
@@ -219,7 +219,7 @@ class Inscriptis:
 
             self.current_table[-1].add_row()
 
-    def _start_td(self, attrs):
+    def _start_td(self, _):
         if self.current_table:
             # check whether we need to cleanup a <td> tag that has not been
             # closed yet
@@ -264,7 +264,7 @@ class Inscriptis:
                 self.tags[-2].canvas.annotations.append(Annotation(
                     start_idx, end_idx, a))
 
-    def _newline(self, attrs):
+    def _newline(self, _):
         self.tags[-1].canvas.write_newline()
 
     @staticmethod
