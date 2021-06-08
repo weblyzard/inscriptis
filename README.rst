@@ -90,20 +90,22 @@ Command line parameters
 The inscript.py command line client supports the following parameters::
 
    usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] 
-                      [-f OUTPUT_FORMAT] [-r ANNOTATION_RULES] [--indentation INDENTATION] 
-                      [-v] [input]
+                      [-f OUTPUT_FORMAT] [-r ANNOTATION_RULES]
+                      [--indentation INDENTATION] [-v] [input]
    
    Converts HTML from file or url to a clean text version
    
    positional arguments:
-     input                 Html input either from a file or an url (default:stdin)
+     input                 Html input either from a file or an url
+                           (default:stdin)
    
    optional arguments:
      -h, --help            show this help message and exit
      -o OUTPUT, --output OUTPUT
                            Output file (default:stdout).
      -e ENCODING, --encoding ENCODING
-                           Content encoding for reading and writing files (default:utf-8)
+                           Content encoding for reading and writing files
+                           (default:utf-8)
      -i, --display-image-captions
                            Display image captions (default:false).
      -d, --deduplicate-image-captions
@@ -115,9 +117,11 @@ The inscript.py command line client supports the following parameters::
      -f OUTPUT_FORMAT, --output-format OUTPUT_FORMAT
                            Output format (text or JSONL); default: text).
      -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
-                           Path to an optional JSON file containing rules for annotating the retrieved text.
+                           Path to an optional JSON file containing rules for
+                           annotating the retrieved text.
      --indentation INDENTATION
-                           How to handle indentation (extended or strict; default: extended).
+                           How to handle indentation (extended or strict;
+                           default: extended).
      -v, --version         display version information
    
 
@@ -166,7 +170,8 @@ The Web services receives the HTML file in the request body and returns the
 corresponding text. The file's encoding needs to be specified
 in the `Content-Type` header (`UTF-8` in the example below)::
 
-  $ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" --data-binary @test.html  http://localhost:5000/get_text
+  $ curl -X POST  -H "Content-Type: text/html; encoding=UTF8"  \
+          --data-binary @test.html  http://localhost:5000/get_text
 
 The service also supports a version call::
 
