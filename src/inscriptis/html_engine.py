@@ -72,7 +72,7 @@ class Inscriptis:
         self.css = self.config.css
         self.apply_attributes = self.config.attribute_handler.apply_attributes
 
-        self.tags = [self.css['body'].set_canvas(self.canvas)]
+        self.tags = [self.css['body'].set_canvas(self.canvas), self.css['body'].set_canvas(self.canvas)]
         self.current_table = []
         self.li_counter = []
         self.li_level = 0
@@ -117,7 +117,7 @@ class Inscriptis:
         Returns:
           str -- A text representation of the parsed content.
         """
-        return self.canvas.get_text().rstrip()
+        return self.canvas.get_text()
 
     def get_annotations(self) -> List[Annotation]:
         """
@@ -247,8 +247,8 @@ class Inscriptis:
         table = self.current_table.pop()
         # last tag before the table: self.tags[-2]
         # table tag: self.tags[-1]
-        for t in self.tags:
-            print(t, t.canvas.annotations)
+        # for t in self.tags:
+        #    print(t, t.canvas.annotations)
 
         out_of_table_text = self.tags[-1].canvas.get_text().strip()
         if out_of_table_text:

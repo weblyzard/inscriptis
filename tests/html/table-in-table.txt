@@ -10,7 +10,7 @@ Second
 
      blue       
 red        green
-     blue
+     blue      
 
 Nested
 

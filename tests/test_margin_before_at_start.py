@@ -15,11 +15,11 @@ def test_content():
 
 def test_margin_before():
     html = '<html><body><p>first</p></body></html>'
-    assert get_text(html) == 'first'
+    assert get_text(html) == 'first\n'
 
     html = '<html><body>first<p>' \
            'second</p></body></html>'
-    assert get_text(html) == 'first\n\nsecond'
+    assert get_text(html) == 'first\n\nsecond\n'
 
 
 def test_br():

@@ -7,5 +7,6 @@
     "b": ["emphasis"],
     "div#class=toc": ["table-of-contents"],
     "#class=FactBox": ["fact-box"],
-    "#class=shortdescription]": ["description"]
+    "#class=shortdescription]": ["description"],
+    "table": ["table"]
 }

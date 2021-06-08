@@ -17,6 +17,22 @@ from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
 
+def get_postprocessor(name):
+    """
+    Returns the postprocessor (if available) for the given name
+    Args:
+        name: the name of the postprocessor
+
+    Returns:
+        The matching postprocessing function
+    """
+    print("...<>.")
+    pp_class = name.capitalize() + "Extractor"
+    mod = __import__('inscriptis.annotation.output.' + name,
+                     fromlist=[pp_class])
+    return getattr(mod, pp_class)()
+
+
 def get_parser():
     """ Parses the arguments if script is run directly via console """
     parser = argparse.ArgumentParser(
@@ -47,6 +63,10 @@ def get_parser():
     parser.add_argument('-r', '--annotation-rules', default=None,
                         help='Path to an optional JSON file containing rules '
                              'for annotating the retrieved text.')
+    parser.add_argument('-p', '--postprocessor', type=get_postprocessor,
+                        default=lambda x: x,
+                        help='Optional component for postprocessing the '
+                             'result (surface). ')
     parser.add_argument('--indentation', default='extended',
                         help='How to handle indentation (extended or strict;'
                              ' default: extended).')
@@ -63,7 +83,7 @@ if __name__ == '__main__':
     if args.version:
         print('Inscript HTML to text conversion '
               '(based on the inscriptis library version {0})'.format(
-                  __version__))
+            __version__))
         print('Copyright (C)', __copyright__)
         print('\nInscript comes with ABSOLUTELY NO WARRANTY.')
         print('This is free software and you are welcome to redistribute it '
@@ -90,6 +110,7 @@ if __name__ == '__main__':
             print("ERROR: Cannot open annotation rule file '{0}'.".format(
                 args.annotation_rules
             ))
+            sys.exit(-1)
     else:
         annotation_rules = None
 
@@ -101,8 +122,12 @@ if __name__ == '__main__':
                           display_links=args.display_link_targets,
                           display_anchors=args.display_anchor_urls,
                           annotation_rules=annotation_rules)
-    output = get_text(html_content, config) if args.output_format == 'text' \
-        else dumps(get_annotated_text(html_content, config))
+    if args.output_format == 'text':
+        output = get_text(html_content, config)
+    else:
+        output = dumps(args.postprocessor(
+            get_annotated_text(html_content, config)))
+
     if args.output:
         with Path(args.output).open('w', encoding=args.encoding) as open_file:
             open_file.write(output)

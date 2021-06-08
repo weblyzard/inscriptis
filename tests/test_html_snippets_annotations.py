@@ -10,6 +10,7 @@ from glob import glob
 from inscriptis.engine import get_annotated_text
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
+from inscriptis.annotation.output.surface import SurfaceExtractor
 
 TESTCASE_PATTERN = os.path.join(os.path.dirname(__file__), 'html/*.json')
 
@@ -32,9 +33,11 @@ def test_html_annotations(filter_str=''):
                               'h2': ('heading', ),
                               'h3': ('heading', ),
                               'b': ('emphasis', ),
-                              'table': ('table', )}))
+                              'table': ('table', )
+                              }))
         converted = [[a[2], result['text'][a[0]:a[1]]]
                      for a in result['label']]
+        print(">>>", SurfaceExtractor()(result)['surface_form'])
 
         print("Reference:")
         print(reference_annotations)
