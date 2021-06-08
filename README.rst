@@ -26,28 +26,26 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
    :target: https://badge.fury.io/py/inscriptis
    :alt: PyPI version
 
-A python based HTML to text conversion library, command line client and Web service with support for **nested tables**, a **subset of CSS** and optinal support for providing an **annotated output**.
-Please take a look at the `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_ document for a demonstration of inscriptis' conversion quality.
+A python based HTML to text conversion library, command line client and Web
+service with support for **nested tables**, a **subset of CSS** and optional
+support for providing an **annotated output**.
+Please take a look at the
+`Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_
+document for a demonstration of inscriptis' conversion quality.
 
-A Java port of inscriptis 1.x is available `here <https://github.com/x28/inscriptis-java>`_.
+A Java port of inscriptis 1.x is available
+`here <https://github.com/x28/inscriptis-java>`_.
 
 Documentation
 =============
 
-The full documentation is built automatically and published on `Read the Docs <https://inscriptis.readthedocs.org/en/latest/>`_.
+The full documentation is built automatically and published on
+`Read the Docs <https://inscriptis.readthedocs.org/en/latest/>`_.
 
 Table of Contents
 =================
 
-1. `Installation`_
-2. `Python library`_
-3. `Standalone command line client`_
-4. `Web service`_
-5. `Advanced topics`_
-    - `Annotated text`_
-    - `Fine tuning`_
-6. `Changelog`_
-
+.. contents:: Table of Contents
 
 Installation
 ============
@@ -86,8 +84,8 @@ Embedding inscriptis into your code is easy, as outlined below:
 
 Standalone command line client
 ==============================
-The command line client converts HTML files or text retrieved from Web pages to the
-corresponding text representation.
+The command line client converts HTML files or text retrieved from Web pages to
+the corresponding text representation.
 
 
 Command line parameters
@@ -167,7 +165,8 @@ Start the inscriptis Web service with the following command::
 Usage
 -----
 
-The Web services receives the HTML file in the request body and returns the corresponding text. The file's encoding needs to be specified 
+The Web services receives the HTML file in the request body and returns the
+corresponding text. The file's encoding needs to be specified
 in the `Content-Type` header (`UTF-8` in the example below)::
 
   $ curl -X POST  -H "Content-Type: text/html; encoding=UTF8" --data-binary @test.html  http://localhost:5000/get_text
@@ -187,14 +186,15 @@ downstream components to draw upon semantics that have only been available in
 the original HTML file.
 
 The extracted text and annotations can be exported in different formats,
-including the popular JSONL format which is used by `doccano <https://github.com/doccano/doccano>`_.
+including the popular JSONL format which is used by
+`doccano <https://github.com/doccano/doccano>`_.
 
 Example output:
 
 .. code-block:: json
 
    {"text": "Chur\n\nChur is the capital and largest town of the Swiss canton
-             of the Grisons and lies in the Grisonian Rhine Valley."
+             of the Grisons and lies in the Grisonian Rhine Valley.",
     "label": [[0, 4, "heading"], [0, 4, "h1"], [6, 10, "emphasis"]]}
 
 The output above is produced, if inscriptis is run with the following
@@ -279,4 +279,5 @@ The following options are available for fine tuning inscriptis' HTML rendering:
 Changelog
 =========
 
-A full list of changes can be found in the `release notes <https://github.com/weblyzard/inscriptis/releases>`_.
+A full list of changes can be found in the
+`release notes <https://github.com/weblyzard/inscriptis/releases>`_.
