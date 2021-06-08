@@ -12,6 +12,7 @@ from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
 TESTCASE_PATTERN = os.path.join(os.path.dirname(__file__), 'html/*.json')
+TESTCASE_PATTERN = os.path.join(os.path.dirname(__file__), 'html/nested-table.json')
 
 
 def test_html_annotations(filter_str=''):
@@ -32,7 +33,8 @@ def test_html_annotations(filter_str=''):
                               'h2': ('heading', ),
                               'h3': ('heading', ),
                               'b': ('emphasis', ),
-                              'table': ('table', )
+                              'table': ('table', ),
+                              'td': ('cell', ),
                               }))
         converted = [[a[2], result['text'][a[0]:a[1]]]
                      for a in result['label']]

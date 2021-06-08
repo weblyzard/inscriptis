@@ -247,8 +247,6 @@ class Inscriptis:
         table = self.current_table.pop()
         # last tag before the table: self.tags[-2]
         # table tag: self.tags[-1]
-        # for t in self.tags:
-        #    print(t, t.canvas.annotations)
 
         out_of_table_text = self.tags[-1].canvas.get_text().strip()
         if out_of_table_text:
@@ -258,11 +256,17 @@ class Inscriptis:
         start_idx = self.tags[-2].canvas.current_block.idx
         self.tags[-2].write_verbatim_text(table.get_text())
 
+        # transfer annotations from the current tag
         if self.tags[-1].annotation:
             end_idx = self.tags[-2].canvas.current_block.idx
             for a in self.tags[-1].annotation:
                 self.tags[-2].canvas.annotations.append(Annotation(
                     start_idx, end_idx, a))
+        #
+        # for no, t in enumerate(reversed(self.tags)):
+        #     if not t.canvas.annotations:
+        #         continue
+        #     print(no, ">", t, "~~~~~~~~~~", t.canvas.annotations)
 
     def _newline(self, _):
         self.tags[-1].canvas.write_newline()

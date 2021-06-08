@@ -77,6 +77,7 @@ class Canvas:
             for annotation in tag.annotation:
                 self.annotations.append(
                     Annotation(span.start, span.end, annotation))
+            # print("___", tag, span, self.annotations)
 
     def close_block(self, tag: HtmlElement):
         """
