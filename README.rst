@@ -215,7 +215,7 @@ Output:
 
 Currently, inscriptis supports the following postprocessors:
 
-- surface: returns an additional mapping between the annotation's surface form text and its label::
+- surface: returns an additional mapping between the annotation's surface form and its label::
 
     ['heading': 'Chur', 'emphasis': 'Chur']
 
