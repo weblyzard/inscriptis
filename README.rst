@@ -36,16 +36,13 @@ document for a demonstration of inscriptis' conversion quality.
 A Java port of inscriptis 1.x is available
 `here <https://github.com/x28/inscriptis-java>`_.
 
-Documentation
-=============
-
-The full documentation is built automatically and published on
+The following document provides a short introduction to Inscriptis. The full
+documentation is built automatically and published on
 `Read the Docs <https://inscriptis.readthedocs.org/en/latest/>`_.
 
-Table of Contents
-=================
 
 .. contents:: Table of Contents
+
 
 Installation
 ============
