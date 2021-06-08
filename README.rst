@@ -128,6 +128,8 @@ The inscript.py command line client supports the following parameters::
 Examples
 --------
 
+HTML to text conversion
+~~~~~~~~~~~~~~~~~~~~~~~
 convert the given page to text and output the result to the screen::
 
   $ inscript.py https://www.fhgr.ch
@@ -140,9 +142,89 @@ convert HTML provided via stdin and save the output to output.txt::
 
   $ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt 
 
+
+HTML to annotated text conversion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 convert and annotate HTML from a Web page using the provided annotation rules::
 
-  $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json -f output.jsonl
+  $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json -f jsonl
+
+The annotation rules are specified in `annotation-profile.json`:
+
+.. code-block:: json
+
+   {
+    "h1": ["heading", "h1"],
+    "h2": ["heading", "h2"],
+    "b": ["emphasis"],
+    "div#class=toc": ["table-of-contents"],
+    "#class=FactBox": ["fact-box"],
+    "#cite": ["citation"]
+   }
+
+The dictionary maps an HTML tag and/or attribute to the annotations
+inscriptis should provide for them. In the example above, for instance, the tag
+`h1` yields the annotations `heading` and `h1`, a `div` tag with a
+`class` that contains the value `toc` results in the annotation
+`table-of-contents`, and all tags with a `cite` attribute are annotated with
+`citation`.
+
+Given these annotation rules the HTML file
+
+.. code-block:: HTML
+
+   <h1>Chur</h1>
+   <b>Chur</b> is the capital and largest town of the Swiss canton of the
+   Grisons and lies in the Grisonian Rhine Valley.
+
+yields the following JSONL output
+
+.. code-block:: json
+
+   {"text": "Chur\n\nChur is the capital and largest town of the Swiss canton
+             of the Grisons and lies in the Grisonian Rhine Valley.",
+    "label": [[0, 4, "heading"], [0, 4, "h1"], [6, 10, "emphasis"]]}
+
+The provided list of labels contains all annotated text elements with their
+start index, end index and the assigned label.
+
+Annotation postprocessors
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Annotation postprocessors enable the post processing of annotations to formats
+that are suitable for you particular application. Post processors can be
+specified with the `-p` or `--postprocessor` command line argument::
+
+  $ inscript.py https://www.fhgr.ch \
+          -r ./examples/annotation-profile.json \
+          -f jsonl \
+          -p tag
+
+
+Output:
+
+.. code-block:: json
+
+   {"text": "  Chur\n\n  Chur is the capital and largest town of the Swiss
+             canton of the Grisons and lies in the Grisonian Rhine Valley.",
+    "label": [[0, 6, "heading"], [8, 14, "emphasis"]],
+    "tag": "<heading>  Chur</heading>\n\n<emphasis>  Chur</emphasis> is the
+           capital and largest town of the Swiss canton of the Grisons and
+           lies in the Grisonian Rhine Valley."}
+
+
+
+Currently, inscriptis supports the following postprocessors:
+
+- surface: returns an additional mapping between the annotation's surface form text and its label::
+
+    ['heading': 'Chur', 'emphasis': 'Chur']
+
+- tag: returns an additional annotated text version::
+
+    <heading>Chur</heading>
+
+    <emphasis>Chur</emphasis> is the capital and largest town of the Swiss
+    canton of the Grisons and lies in the Grisonian Rhine Valley.
 
 
 
@@ -206,19 +288,8 @@ annotation rules:
 
    {
     "h1": ["heading", "h1"],
-    "h2": ["heading", "h2"],
     "b": ["emphasis"],
-    "div#class=toc": ["table-of-contents"],
-    "#class=FactBox": ["fact-box"],
-    "#cite": ["citation"]
    }
-
-The dictionary maps an HTML tag and/or attribute to the annotations
-inscriptis should provide for them. In the example above, for instance, the tag
-`h1` yields the annotations `heading` and `h1`, a `div` tag with a
-`class` that contains the value `toc` results in the annotation
-`table-of-contents`, and all tags with a `cite` attribute are annotated with
-`citation`.
 
 The following code demonstrates how inscriptis' annotation capabilities can
 be used within a program:
