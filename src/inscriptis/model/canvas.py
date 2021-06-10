@@ -94,8 +94,9 @@ class Canvas:
             flushed = self._flush_inline()
             self.current_block.prefix.remove_last_prefix()
             self.close_block(tag)
-            end_idx = self.current_block.idx if not flushed \
-                else self.current_block.idx - 1
+            end_idx = self.current_block.idx
+            # end_idx = self.current_block.idx if not flushed \
+            #     else self.current_block.idx - 1
         else:
             end_idx = self.current_block.idx
 
@@ -130,14 +131,6 @@ class Canvas:
         """
         self._flush_inline()
         return unescape('\n'.join(self.blocks))
-
-    def get_shifted_annotations(self, shift: int) -> List[Annotation]:
-        """
-        Returns:
-            A list of annotations that has been shifted by start_idx.
-        """
-        return [Annotation(a.start + shift, a.end + shift, a.metadata)
-                for a in self.annotations]
 
     def _flush_inline(self) -> bool:
         """
