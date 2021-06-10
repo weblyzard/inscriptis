@@ -35,7 +35,6 @@ class TableCell(Canvas):
         self._flush_inline()
         self.blocks = [block for block in chain(*(line.split('\n')
                                                   for line in self.blocks))]
-        self.line_width = [len(block) for block in self.blocks]
         return len(self.blocks)
 
     @property
@@ -67,6 +66,10 @@ class TableCell(Canvas):
         Args:
             The cell's expected width.
         """
+        # save the original line widths before reformatting
+        self.line_width = [len(block) for block in self.blocks]
+
+        # record new width and start reformatting
         self._width = width
         format_spec = '{{:{align}{width}}}'.format(align=self.align.value,
                                                    width=width)
