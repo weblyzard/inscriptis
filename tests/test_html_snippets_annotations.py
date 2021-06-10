@@ -20,7 +20,7 @@ def test_html_annotations(filter_str=''):
             continue
 
         with open(annotation_file) as f:
-            reference_annotations = load(f)
+            reference = load(f)
 
         with open(annotation_file.replace('.json', '.html')) as f:
             print(f.name)
@@ -28,22 +28,15 @@ def test_html_annotations(filter_str=''):
 
         result = get_annotated_text(html, ParserConfig(
             css=CSS_PROFILES['strict'],
-            annotation_rules={'h1': ('heading', ),
-                              'h2': ('heading', ),
-                              'h3': ('heading', ),
-                              'b': ('emphasis', ),
-                              'table': ('table', ),
-                              'th': ('table-heading', ),
-                              'td': ('table-cell', ),
-                              }))
+            annotation_rules=reference['annotation_rules']))
         converted = [[a[2], result['text'][a[0]:a[1]]]
                      for a in result['label']]
 
         print("Reference:")
-        print(reference_annotations)
+        print(reference['result'])
         print("\nConverted:")
         print(converted)
-        assert reference_annotations == converted
+        assert reference['result'] == converted
 
 
 if __name__ == '__main__':
