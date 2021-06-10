@@ -2,5 +2,6 @@
     "table": ["table"],
     "th": ["table-heading"],
     "tr": ["table-row"],
-    "td": ["table-cell"]
+    "td": ["table-cell"],
+    "b": ["emphasis"]
 }
