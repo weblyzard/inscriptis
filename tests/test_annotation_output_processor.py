@@ -46,7 +46,7 @@ def test_tag_annotator():
     assert 'label' in result
 
     # and we have additional information on surface forms :)
-    assert result['tag'] == ('<heading><h1>Chur</h1></heading>\n\n<emphasis>'
+    assert result['tag'] == ('<h1><heading>Chur</heading></h1>\n\n<emphasis>'
                              'Chur</emphasis> is the capital and largest town '
                              'of the Swiss canton of the Grisons and lies in '
                              'the Grisonian Rhine Valley.')

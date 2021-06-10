@@ -34,7 +34,7 @@ class TableCell(Canvas):
         """
         self.blocks = [block for block in chain(*(line.split('\n')
                                                   for line in self.blocks))]
-        self.line_width = (len(block) for block in self.blocks)
+        self.line_width = [len(block) for block in self.blocks]
         return len(self.blocks)
 
     @property
@@ -106,11 +106,11 @@ class TableCell(Canvas):
 
         # the more challenging one - multiple cell lines
         line_break_pos = list(accumulate(self.line_width))
-        annotation_lines = [] * len(self.blocks)
+        annotation_lines = [[]] * len(self.blocks)
 
         # assign annotations to the corresponding line
         for a in self.annotations:
-            for idx, line_break in line_break_pos:
+            for idx, line_break in enumerate(line_break_pos):
                 if a.start <= line_break:
                     annotation_lines[idx].append(a)
                     break

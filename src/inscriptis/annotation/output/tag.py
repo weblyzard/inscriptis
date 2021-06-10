@@ -11,20 +11,21 @@ class TagExtractor(AnnotationProcessor):
     def __call__(self, annotated_text: Dict[str, Any]) -> Dict[str, Any]:
         tag_indices = defaultdict(list)
 
-        for start, end, label in annotated_text['label']:
+        for start, end, label in sorted(annotated_text['label']):
             tag_indices[start].append(label)
             tag_indices[end].append('/' + label)
 
         current_idx = 0
         tagged_content = []
         text = annotated_text['text']
-        for index, tags in tag_indices.items():
+        for index, tags in sorted(tag_indices.items()):
             tagged_content.append(text[current_idx:index])
             # close tags
-            tagged_content.extend(['<' + tag + '>' for tag in reversed(tags)
+            tagged_content.extend(['<' + tag + '>'
+                                   for tag in sorted(tags, reverse=True)
                                    if tag.startswith('/')])
             # open tags
-            tagged_content.extend(['<' + tag + '>' for tag in tags
+            tagged_content.extend(['<' + tag + '>' for tag in sorted(tags)
                                    if not tag.startswith('/')])
             current_idx = index
         tagged_content.append(text[current_idx:])
