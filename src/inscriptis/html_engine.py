@@ -267,12 +267,6 @@ class Inscriptis:
         self.tags[-2].canvas.annotations.extend(
             table.get_annotations(start_idx))
 
-        #
-        # for no, t in enumerate(reversed(self.tags)):
-        #     if not t.canvas.annotations:
-        #         continue
-        #     print(no, ">", t, "~~~~~~~~~~", t.canvas.annotations)
-
     def _newline(self, _):
         self.tags[-1].canvas.write_newline()
 

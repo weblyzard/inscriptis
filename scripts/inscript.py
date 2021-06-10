@@ -26,7 +26,6 @@ def get_postprocessor(name):
     Returns:
         The matching postprocessing function
     """
-    print("...<>.")
     pp_class = name.capitalize() + "Extractor"
     mod = __import__('inscriptis.annotation.output.' + name,
                      fromlist=[pp_class])
