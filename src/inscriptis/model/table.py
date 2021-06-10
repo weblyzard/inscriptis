@@ -5,22 +5,24 @@ Classes for representing Tables, Rows and TableCells.
 """
 
 from typing import List
-from itertools import chain, zip_longest
+from itertools import chain, accumulate
 
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
-from inscriptis.annotation import Annotation
+from inscriptis.annotation import Annotation, horizontal_shift
 from inscriptis.model.canvas import Canvas
 
 
 class TableCell(Canvas):
     __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
-                 'margin', 'annotation_counter', 'align', 'valign', '_width')
+                 'margin', 'annotation_counter', 'align', 'valign', '_width',
+                 'line_width')
 
     def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
         super().__init__()
         self.align = align
         self.valign = valign
         self._width = None
+        self.line_width = None
 
     def normalize_blocks(self) -> int:
         """
@@ -32,6 +34,7 @@ class TableCell(Canvas):
         """
         self.blocks = [block for block in chain(*(line.split('\n')
                                                   for line in self.blocks))]
+        self.line_width = (len(block) for block in self.blocks)
         return len(self.blocks)
 
     @property
@@ -67,7 +70,6 @@ class TableCell(Canvas):
         format_spec = '{{:{align}{width}}}'.format(align=self.align.value,
                                                    width=width)
         self.blocks = [format_spec.format(b) for b in self.blocks]
-        # TODO: adjust annotations (!)
 
     @height.setter
     def height(self, height) -> None:
@@ -82,9 +84,45 @@ class TableCell(Canvas):
                 self.blocks = ((height - rows) * empty_line) + self.blocks
             elif self.valign == VerticalAlignment.middle:
                 self.blocks = ((height - rows) // 2) * empty_line + \
-                       self.blocks + ((height - rows + 1) // 2 * empty_line)
+                              self.blocks + \
+                              ((height - rows + 1) // 2 * empty_line)
             else:
                 self.blocks = self.blocks + ((height - rows) * empty_line)
+
+    def get_annotations(self, idx, row_width) -> List[Annotation]:
+        """
+        Returns:
+            A list of annotations that have been adjusted to the cell's
+            position.
+        """
+        self.current_block.idx = idx
+        if not self.annotations:
+            return []
+
+        # the easy case - the cell has only one line :)
+        if len(self.blocks) == 1:
+            return horizontal_shift(self.annotations, self.line_width[0],
+                                    self.width, self.align, idx)
+
+        # the more challenging one - multiple cell lines
+        line_break_pos = list(accumulate(self.line_width))
+        annotation_lines = [] * len(self.blocks)
+
+        # assign annotations to the corresponding line
+        for a in self.annotations:
+            for idx, line_break in line_break_pos:
+                if a.start <= line_break:
+                    annotation_lines[idx].append(a)
+                    break
+
+        # compute the annotation index based on its line and delta :)
+        result = []
+        for line_annotations, line_len in zip(annotation_lines,
+                                              self.line_width):
+            result.extend(horizontal_shift(line_annotations, line_len,
+                                           self.width, self.align, idx))
+            idx += row_width
+        return result
 
 
 class Row:
@@ -108,22 +146,14 @@ class Row:
                                        for column in self.columns])]
         return '\n'.join(row_lines)
 
-    def get_annotations(self, idx: int) -> List[Annotation]:
-        """
-        Args:
-            idx: the start index of the given row.
+    @property
+    def width(self):
+        """Computes and returns the width of the current row"""
+        if not self.columns:
+            return 0
 
-        Returns:
-            The list of all annotations within the given row.
-        """
-        return []
-        annotations = []
-        for no, cell in enumerate(self.columns):
-            annotations.extend(cell.canvas.get_shifted_annotations(idx))
-            # fix: cells can spawn multiple lines (!)
-            for line in cell.get_cell_lines(no):
-                idx += len(cell.get_cell_lines()) + len(self.cell_separator)
-        return annotations
+        return sum((cell.width for cell in self.columns)) + len(
+            self.cell_separator) * (len(self.columns) - 1)
 
 
 class Table:
@@ -164,7 +194,7 @@ class Table:
         for row in self.rows:
             max_row_height = max((cell.normalize_blocks()
                                   for cell in row.columns)) \
-                                  if row.columns else 1
+                if row.columns else 1
             for cell in row.columns:
                 cell.height = max_row_height
 
@@ -191,9 +221,24 @@ class Table:
         return '\n'.join((row.get_text() for row in self.rows))
 
     def get_annotations(self, idx: int) -> List[Annotation]:
+        """
+        Args:
+            idx: the table's start index.
+
+        Returns:
+            A list of all annotations present in the table.
+
+        """
+        if not self.rows:
+            return []
+
         annotations = []
         for row in self.rows:
-            annotations.extend(row.get_annotations(idx))
-            idx += len(row.get_text())
-        return annotations
+            row_width = row.width
+            cell_idx = idx
+            for cell in row.columns:
+                annotations += cell.get_annotations(cell_idx, row_width)
+                cell_idx += cell.width + len(row.cell_separator)
+            idx += row_width
 
+        return annotations
