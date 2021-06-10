@@ -11,7 +11,7 @@ from inscriptis.html_properties import Display
 from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
-from inscriptis.model.table import Table
+from inscriptis.model.table import Table, TableCell
 
 
 class Inscriptis:
@@ -227,10 +227,10 @@ class Inscriptis:
                 self._end_td()
 
             # open td tag
-            canvas = self.tags[-1].set_canvas(Canvas()).canvas
-            self.current_table[-1].add_cell(canvas,
-                                            align=self.tags[-1].align,
-                                            valign=self.tags[-1].valign)
+            table_cell = TableCell(align=self.tags[-1].align,
+                                   valign=self.tags[-1].valign)
+            self.tags[-1].canvas = table_cell
+            self.current_table[-1].add_cell(table_cell)
             self.current_table[-1].td_is_open = True
 
     def _end_td(self):
@@ -262,6 +262,11 @@ class Inscriptis:
             for a in self.tags[-1].annotation:
                 self.tags[-2].canvas.annotations.append(Annotation(
                     start_idx, end_idx, a))
+
+        # transfer in-table annotations
+        self.tags[-2].canvas.annotations.extend(
+            table.get_annotations(start_idx))
+
         #
         # for no, t in enumerate(reversed(self.tags)):
         #     if not t.canvas.annotations:

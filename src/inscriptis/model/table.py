@@ -4,96 +4,126 @@
 Classes for representing Tables, Rows and TableCells.
 """
 
+from typing import List
 from itertools import chain, zip_longest
+
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
+from inscriptis.annotation import Annotation
 from inscriptis.model.canvas import Canvas
 
 
-class TableCell:
-    """ A single table cell """
+class TableCell(Canvas):
+    __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
+                 'margin', 'annotation_counter', 'align', 'valign', '_width')
 
-    __slots__ = ('canvas', 'align', 'valign', 'width', 'height')
-
-    def __init__(self, canvas: Canvas, align: HorizontalAlignment,
-                 valign: VerticalAlignment, width=None, height=None):
-        """
-        Args:
-          canvas: canvas to which the table cell is written.
-          align: the :class:`~inscriptis.html_properties.HorizontalAlignment`
-            of the given line.
-         width: line width
-        """
-        self.canvas = canvas
+    def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
+        super().__init__()
         self.align = align
         self.valign = valign
-        self.width = width
-        self.height = height
+        self._width = None
 
-    def get_format_spec(self):
+    def normalize_blocks(self) -> int:
         """
-        The format specification according to the values of `align` and
-        `width`.
-        """
-        return '{{:{self.align.value}{self.width}}}'.format(self=self)
+        Normalizes the cell by splitting multi-line blocks into multiple ones
+        containing only one line.
 
-    def get_cell_lines(self):
+        Returns:
+            The height of the normalized cell.
+        """
+        self.blocks = [block for block in chain(*(line.split('\n')
+                                                  for line in self.blocks))]
+        return len(self.blocks)
+
+    @property
+    def height(self):
         """
         Returns:
-          list -- A list of all the lines stores within the :class:`TableCell`.
+            The cell's current height.
         """
-        format_spec = self.get_format_spec()
-        # normalize the canvas
-        blocks = list(chain(*[line.split('\n')
-                              for line in self.canvas.blocks]))
+        return len(self.blocks)
 
-        # horizontal alignment
-        rows = [format_spec.format(line) if self.width else line
-                for line in blocks]
+    @property
+    def width(self):
+        """
+        Returns:
+            The cell's current width.
+        """
+        if self._width:
+            return self._width
+        if not self.blocks:
+            return 0
+        return max((len(line) for line in chain(*(block.split('\n')
+                                                  for block in self.blocks))))
 
-        # vertical alignment
-        if self.height and len(rows) < self.height:
+    @width.setter
+    def width(self, width) -> None:
+        """
+        Sets the table's width and apply's the cell's horizontal formatting.
+
+        Args:
+            The cell's expected width.
+        """
+        self._width = width
+        format_spec = '{{:{align}{width}}}'.format(align=self.align.value,
+                                                   width=width)
+        self.blocks = [format_spec.format(b) for b in self.blocks]
+        # TODO: adjust annotations (!)
+
+    @height.setter
+    def height(self, height) -> None:
+        """
+        Applies the given height and the cell's vertical formatting to
+        the current cell.
+        """
+        rows = len(self.blocks)
+        if rows < height:
             empty_line = [' ' * self.width] if self.width else ['']
             if self.valign == VerticalAlignment.bottom:
-                rows = ((self.height - len(rows)) * empty_line) + rows
+                self.blocks = ((height - rows) * empty_line) + self.blocks
             elif self.valign == VerticalAlignment.middle:
-                rows = ((self.height - len(rows) - 1) // 2) * empty_line + rows
-                rows = rows + ((self.height - len(rows)) * empty_line)
+                self.blocks = ((height - rows) // 2) * empty_line + \
+                       self.blocks + ((height - rows + 1) // 2 * empty_line)
             else:
-                rows = rows + ((self.height - len(rows)) * empty_line)
-
-        return rows
+                self.blocks = self.blocks + ((height - rows) * empty_line)
 
 
 class Row:
     """ A single row within a table """
-    __slot__ = ('columns', )
+    __slot__ = ('columns', 'cell_separator')
 
-    def __init__(self):
-        self.columns = []
+    def __init__(self, cell_separator: str = '  '):
+        self.columns: List[TableCell] = []
+        self.cell_separator = cell_separator
 
-    def get_cell_lines(self, column_idx):
-        """
-        Computes the list of lines in the cell specified by the column_idx.
+    def __len__(self):
+        return len(self.columns)
 
-        Args:
-          column_idx: The column index of the cell.
-        Returns:
-          list -- The list of lines in the cell specified by the column_idx or
-                  an empty list if the column does not exist.
-        """
-        return [] if column_idx >= len(self.columns) \
-            else self.columns[column_idx].get_cell_lines()
-
-    def get_text(self):
+    def get_text(self) -> str:
         """
         Returns:
-          str -- A rendered string representation of the given row.
+          A rendered string representation of the given row.
         """
-        row_lines = ['  '.join(line)
-                     for line in zip_longest(*[column.get_cell_lines()
-                                               for column in self.columns],
-                                             fillvalue=' ')]
+        row_lines = [self.cell_separator.join(line)
+                     for line in zip(*[column.blocks
+                                       for column in self.columns])]
         return '\n'.join(row_lines)
+
+    def get_annotations(self, idx: int) -> List[Annotation]:
+        """
+        Args:
+            idx: the start index of the given row.
+
+        Returns:
+            The list of all annotations within the given row.
+        """
+        return []
+        annotations = []
+        for no, cell in enumerate(self.columns):
+            annotations.extend(cell.canvas.get_shifted_annotations(idx))
+            # fix: cells can spawn multiple lines (!)
+            for line in cell.get_cell_lines(no):
+                idx += len(cell.get_cell_lines()) + len(self.cell_separator)
+        return annotations
 
 
 class Table:
@@ -106,22 +136,20 @@ class Table:
         # keep track of whether the last td tag has been closed
         self.td_is_open = False
 
-    def add_row(self):
+    def add_row(self) -> None:
         """
         Adds an empty :class:`Row` to the table.
         """
         self.rows.append(Row())
 
-    def add_cell(self, canvas, align=HorizontalAlignment.left,
-                 valign=VerticalAlignment.top):
+    def add_cell(self, table_cell: TableCell) -> None:
         """
         Adds a new :class:`TableCell` to the table's last row. If no row
         exists yet, a new row is created.
         """
         if not self.rows:
             self.add_row()
-        self.rows[-1].columns.append(
-            TableCell(canvas, align, valign))
+        self.rows[-1].columns.append(table_cell)
 
     def compute_column_width_and_height(self):
         """
@@ -134,9 +162,9 @@ class Table:
 
         # determine row height
         for row in self.rows:
-            max_row_height = (max((len(cell.get_cell_lines())
-                                   for cell in row.columns))
-                              if row.columns else 1)
+            max_row_height = max((cell.normalize_blocks()
+                                  for cell in row.columns)) \
+                                  if row.columns else 1
             for cell in row.columns:
                 cell.height = max_row_height
 
@@ -144,18 +172,14 @@ class Table:
         max_columns = max((len(row.columns) for row in self.rows))
 
         for column_idx in range(max_columns):
-            # determine max_column_width
-            row_cell_lines = [row.get_cell_lines(column_idx)
-                              for row in self.rows]
-            try:
-                max_column_width = max((len(line)
-                                        for line in chain(*row_cell_lines)))
-            except ValueError:
-                max_column_width = 0
+            max_column_width = max((row.columns[column_idx].width
+                                    for row in self.rows
+                                    if len(row) > column_idx)) if self.rows \
+                else 0
 
             # set column width in all rows
             for row in self.rows:
-                if len(row.columns) > column_idx:
+                if len(row) > column_idx:
                     row.columns[column_idx].width = max_column_width
 
     def get_text(self):
@@ -165,3 +189,11 @@ class Table:
         """
         self.compute_column_width_and_height()
         return '\n'.join((row.get_text() for row in self.rows))
+
+    def get_annotations(self, idx: int) -> List[Annotation]:
+        annotations = []
+        for row in self.rows:
+            annotations.extend(row.get_annotations(idx))
+            idx += len(row.get_text())
+        return annotations
+

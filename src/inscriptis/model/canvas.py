@@ -8,6 +8,7 @@ The :class:`Canvas` represents the drawing board to which the HTML page
 is serialized.
 """
 from html import unescape
+from typing import List
 
 from inscriptis.annotation import Annotation
 from inscriptis.html_properties import WhiteSpace, Display
@@ -77,7 +78,6 @@ class Canvas:
             for annotation in tag.annotation:
                 self.annotations.append(
                     Annotation(span.start, span.end, annotation))
-            # print("___", tag, span, self.annotations)
 
     def close_block(self, tag: HtmlElement):
         """
@@ -115,6 +115,14 @@ class Canvas:
         """
         self._flush_inline()
         return unescape('\n'.join(self.blocks))
+
+    def get_shifted_annotations(self, shift: int) -> List[Annotation]:
+        """
+        Returns:
+            A list of annotations that has been shifted by start_idx.
+        """
+        return [Annotation(a.start + shift, a.end + shift, a.metadata)
+                for a in self.annotations]
 
     def _flush_inline(self) -> bool:
         """

@@ -8,5 +8,7 @@
     "div#class=toc": ["table-of-contents"],
     "#class=FactBox": ["fact-box"],
     "#class=shortdescription]": ["description"],
-    "table": ["table"]
+    "table": ["table"],
+    "tr": ["row"],
+    "td": ["cell"]
 }

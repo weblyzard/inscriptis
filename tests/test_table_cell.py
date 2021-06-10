@@ -6,52 +6,42 @@ Tests the Table formatting with different parameters such as width and
 alignment
 """
 
-from inscriptis.model.canvas import Canvas
 from inscriptis.model.table import TableCell
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 
+def test_height():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
 
-def test_horizontal_cell_formatting():
+    cell.blocks = ['hallo']
+    cell.normalize_blocks()
+    assert cell.height == len('\n'.join(cell.blocks).split('\n'))
 
-    canvas = Canvas()
-    cell = TableCell(canvas=canvas, align=HorizontalAlignment.left,
-                     valign=VerticalAlignment.top)
-    cell.width = 16
-    canvas.blocks.append('Ehre sei Gott!')
+    cell.blocks = ['hallo', 'echo']
+    cell.normalize_blocks()
+    assert cell.height == 2
 
-    # left alignment
-    assert cell.get_cell_lines() == ['Ehre sei Gott!  ']
+    cell.blocks = ['hallo\necho']
+    cell.normalize_blocks()
+    assert cell.height == 2
 
-    # right alignment
-    cell.align = HorizontalAlignment.right
-    assert cell.get_cell_lines() == ['  Ehre sei Gott!']
+    cell.blocks = ['hallo\necho', 'Ehre sei Gott', 'Jump\n&\nRun!\n\n\n']
+    cell.normalize_blocks()
+    assert cell.height == 9
+    assert cell.height == len('\n'.join(cell.blocks).split('\n'))
 
+def test_width():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
 
-def test_vertical_cell_formatting():
-    canvas = Canvas()
-    cell = TableCell(canvas=canvas, align=HorizontalAlignment.left,
-                     valign=VerticalAlignment.top)
-    cell.width = 16
-    cell.height = 4
-    canvas.blocks.append('Ehre sei Gott!')
+    cell.blocks = ['hallo']
+    cell.normalize_blocks()
+    assert cell.width == len(cell.blocks[0])
 
-    # default top alignment
-    assert cell.get_cell_lines() == ['Ehre sei Gott!  ',
-                                     '                ',
-                                     '                ',
-                                     '                ']
+    cell.blocks = ['hallo\necho', 'Ehre sei Gott', 'Jump\n&\nRun!\n\n\n']
+    cell.normalize_blocks()
+    assert cell.width == len('Ehre sei Gott')
 
-    # bottom alignment
-    cell.valign = VerticalAlignment.bottom
-    assert cell.get_cell_lines() == ['                ',
-                                     '                ',
-                                     '                ',
-                                     'Ehre sei Gott!  ']
+    # fixed set width
+    cell.width = 95
+    cell.normalize_blocks()
+    assert cell.width == 95
 
-    # middle alignment
-    cell.valign = VerticalAlignment.middle
-    print(cell.get_cell_lines())
-    assert cell.get_cell_lines() == ['                ',
-                                     'Ehre sei Gott!  ',
-                                     '                ',
-                                     '                ']
