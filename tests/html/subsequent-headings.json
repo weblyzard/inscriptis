@@ -1,8 +1,8 @@
 [
-  ["heading", "The first"],
-  ["heading", "The second"],
-  ["heading", "Subheading"],
-  ["heading", "This is a subsubtopic"],
-  ["heading", "Another subheading"],
-  ["heading", "The third"]
+  ["heading", "The first\n\n"],
+  ["heading", "\nThe second\n\n"],
+  ["heading", "\nSubheading\n\n"],
+  ["heading", "\nThis is a subsubtopic\n\n"],
+  ["heading", "Another subheading\n\n"],
+  ["heading", "\nThe third\n\n"]
 ]

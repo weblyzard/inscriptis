@@ -1,9 +1,9 @@
 [
-  ["heading", "Inhaltsverzeichnis"],
+  ["heading", "Inhaltsverzeichnis\n\n"],
   ["emphasis", "marker"],
   ["emphasis", "marker2"],
   ["emphasis", "marker3"],
   ["emphasis", "marker31"],
-  ["heading", "End of enumeration"],
+  ["heading", "\nEnd of enumeration\n\n"],
   ["emphasis", "emphasized text portion"]
 ]
