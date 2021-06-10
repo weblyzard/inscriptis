@@ -68,6 +68,7 @@ class Block:
         text = ''.join((next(self.prefix),
                         text.replace('\n', '\n' + next(self.prefix))))
         self._content += text
+        self.idx += len(text)
         self.collapsable_whitespace = False
 
     def is_empty(self):

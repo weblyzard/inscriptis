@@ -154,5 +154,4 @@ class Canvas:
             self.current_block = self.current_block.new_block()
             self.margin = 0
             return True
-
         return False

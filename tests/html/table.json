@@ -1,0 +1,10 @@
+[
+  ["table", "First  Second  Third\na      b       c    \n"],
+  ["table-heading", "First"], 
+  ["table-heading", "Second"], 
+  ["table-heading", "Third"], 
+  ["table-cell", "a"], 
+  ["emphasis", "b"], 
+  ["table-cell", "b"], 
+  ["table-cell", "c"]
+]

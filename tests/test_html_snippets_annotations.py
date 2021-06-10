@@ -12,7 +12,6 @@ from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
 TESTCASE_PATTERN = os.path.join(os.path.dirname(__file__), 'html/*.json')
-TESTCASE_PATTERN = os.path.join(os.path.dirname(__file__), 'html/nested-table.json')
 
 
 def test_html_annotations(filter_str=''):
