@@ -70,7 +70,6 @@ class Canvas:
 
         # write the block margin
         required_margin = max(tag.previous_margin_after, tag.margin_before)
-        print(required_margin, self.margin, self.blocks)
         if required_margin > self.margin:
             required_newlines = required_margin - self.margin
             self.current_block.idx += required_newlines

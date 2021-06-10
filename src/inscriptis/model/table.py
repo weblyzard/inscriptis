@@ -241,6 +241,8 @@ class Table:
             row_width = row.width
             cell_idx = idx
             for cell in row.columns:
+                if cell.annotations:
+                    print(cell.annotations, "idx:", cell_idx, "width:", row_width)
                 annotations += cell.get_annotations(cell_idx, row_width)
                 cell_idx += cell.width + len(row.cell_separator)
             idx += row_width + 1   # linebreak
