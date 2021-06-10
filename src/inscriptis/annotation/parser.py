@@ -27,22 +27,28 @@ class ApplyAnnotation:
     Applies an Annotation to the given attribute
     """
 
+    __slots__ = ('annotations', 'match_tag', 'match_value', 'attr', 'apply',
+                 'matcher')
+
     def __init__(self, annotations: tuple, attr: str, match_tag: str = None,
                  match_value: str = None):
-        self.annotations = tuple(annotations)
         self.attr = attr
+        self.annotations = tuple(annotations)
+        self.match_tag = match_tag
+        self.match_value = match_value
+
         if not match_tag and not match_value:
             self.apply = self.apply_all
         elif match_tag and match_value:
             self.apply = self.apply_matching
-            self.matcher = lambda value, tag: match_tag == tag and \
-                                              match_value in value.split()
+            self.matcher = lambda value, tag: self.match_tag == tag and \
+                                              self.match_value in value.split()
         elif match_tag:
             self.apply = self.apply_matching
-            self.matcher = lambda value, tag: match_tag == tag
+            self.matcher = lambda value, tag: self.match_tag == tag
         else:
             self.apply = self.apply_matching
-            self.matcher = lambda value, tag: match_value in value.split()
+            self.matcher = lambda value, tag: self.match_value in value.split()
 
     def apply_all(self, _: str, html_element: HtmlElement):
         """
@@ -54,6 +60,7 @@ class ApplyAnnotation:
         """
         Applies the annotation to HtmlElements with matching tags.
         """
+        print(attr_value, self.match_value, ">", html_element.tag, self.match_tag)
         if self.matcher(attr_value, html_element.tag):
             html_element.annotation += self.annotations
 
