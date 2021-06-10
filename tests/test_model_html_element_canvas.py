@@ -20,12 +20,9 @@ def _get_text(html_element):
 
     HtmlElement().set_canvas(c).write("first")
 
-    if html_element.display == Display.block:
-        c.open_block(html_element)
-
+    c.open_tag(html_element)
     html_element.write("Ehre sei Gott!")
-    if html_element.display == Display.block:
-        html_element.close_block()
+    c.close_tag(html_element)
 
     HtmlElement().set_canvas(c).write("last")
     c._flush_inline()
@@ -41,6 +38,8 @@ def test_formatting():
     h.display = Display.block
     h.margin_before = 1
     h.margin_after = 2
+    print(h)
+    print(_get_text(h))
     assert _get_text(h) == 'first\n\nEhre sei Gott!\n\n\nlast'
 
     # list bullet without padding_inline

@@ -32,6 +32,7 @@ class TableCell(Canvas):
         Returns:
             The height of the normalized cell.
         """
+        self._flush_inline()
         self.blocks = [block for block in chain(*(line.split('\n')
                                                   for line in self.blocks))]
         self.line_width = [len(block) for block in self.blocks]
@@ -218,7 +219,7 @@ class Table:
           A rendered string representation of the given table.
         """
         self.compute_column_width_and_height()
-        return '\n'.join((row.get_text() for row in self.rows))
+        return '\n'.join((row.get_text() for row in self.rows)) + '\n'
 
     def get_annotations(self, idx: int) -> List[Annotation]:
         """
@@ -239,6 +240,6 @@ class Table:
             for cell in row.columns:
                 annotations += cell.get_annotations(cell_idx, row_width)
                 cell_idx += cell.width + len(row.cell_separator)
-            idx += row_width + 1 # linebreak
+            idx += row_width + 1   # linebreak
 
         return annotations

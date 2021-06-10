@@ -4,8 +4,6 @@ Representation of a text block within the HTML canvas.
 from collections import namedtuple
 from inscriptis.html_properties import WhiteSpace
 
-Span = namedtuple('Span', 'start end')
-
 
 class Block:
     """
@@ -24,7 +22,7 @@ class Block:
         self._content = ''
         self.collapsable_whitespace = True
 
-    def merge(self, text: str, whitespace: WhiteSpace) -> Span:
+    def merge(self, text: str, whitespace: WhiteSpace) -> None:
         """
         Merges the given text with the current block.
 
@@ -32,17 +30,18 @@ class Block:
             text: the text to merge.
             whitespace: whitespace handling.
         """
-        return self.merge_pre_text(text) if whitespace == WhiteSpace.pre \
-            else self.merge_normal_text(text)
+        if whitespace == WhiteSpace.pre:
+            self.merge_pre_text(text)
+        else:
+            self.merge_normal_text(text)
 
-    def merge_normal_text(self, text: str) -> Span:
+    def merge_normal_text(self, text: str) -> None:
         """
         Merges the given text with the current block.
 
         Args:
             text: the text to merge
         """
-        start = self.idx
         normalized_text = []
 
         for ch in text:
@@ -59,22 +58,17 @@ class Block:
             self._content += text
             self.idx += len(text)
 
-        return Span(start, self.idx)
-
-    def merge_pre_text(self, text: str) -> Span:
+    def merge_pre_text(self, text: str) -> None:
         """
         Merges the given text with the current block.
 
         Args:
             text: the text to merge
         """
-        start = self.idx
         text = ''.join((next(self.prefix),
                         text.replace('\n', '\n' + next(self.prefix))))
         self._content += text
-        self.idx += len(text)
         self.collapsable_whitespace = False
-        return Span(start, self.idx)
 
     def is_empty(self):
         return len(self.content) == 0

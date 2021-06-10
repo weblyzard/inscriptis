@@ -96,12 +96,6 @@ class HtmlElement:
         if self.display == Display.block:
             self.canvas.close_block(self)
 
-    def close_block(self):
-        """
-        Closes a block in the canvas
-        """
-        self.canvas.close_block(self)
-
     def get_refined_html_element(self, new) -> 'HtmlElement':
         """
         Computes the new HTML element based on the previous one.

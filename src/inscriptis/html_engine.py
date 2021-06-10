@@ -97,8 +97,8 @@ class Inscriptis:
 
         self.handle_starttag(tree.tag, tree.attrib)
         cur = self.tags[-1]
-        if cur.display == Display.block:
-            cur.canvas.open_block(cur)
+        cur.canvas.open_tag(cur)
+
         self.tags[-1].write(tree.text)
 
         for node in tree:
@@ -106,8 +106,7 @@ class Inscriptis:
 
         self.handle_endtag(tree.tag)
         prev = self.tags.pop()
-        if prev.display == Display.block:
-            prev.close_block()
+        prev.canvas.close_tag(prev)
 
         # write the tail text to the element's container
         self.tags[-1].write_tail(tree.tail)
@@ -236,7 +235,7 @@ class Inscriptis:
     def _end_td(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self.current_table[-1].td_is_open = False
-            self.tags[-1].close_block()
+            self.tags[-1].canvas.close_tag(self.tags[-1])
 
     def _end_tr(self):
         pass

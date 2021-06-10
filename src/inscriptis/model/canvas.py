@@ -47,6 +47,19 @@ class Canvas:
         self.annotation_counter = {}
         self.block_annotations = {}
 
+    def open_tag(self, tag: HtmlElement) -> None:
+        """
+        Registers that a tag is opened.
+
+        Args:
+            tag: the tag to open.
+        """
+        if tag.annotation:
+            self.block_annotations[tag] = self.current_block.idx
+
+        if tag.display == Display.block:
+            self.open_block(tag)
+
     def open_block(self, tag: HtmlElement):
         """
         Opens an HTML block element.
@@ -57,27 +70,41 @@ class Canvas:
 
         # write the block margin
         required_margin = max(tag.previous_margin_after, tag.margin_before)
+        print(required_margin, self.margin, self.blocks)
         if required_margin > self.margin:
             required_newlines = required_margin - self.margin
             self.current_block.idx += required_newlines
             self.blocks.append('\n' * (required_newlines - 1))
             self.margin = required_margin
 
-        if tag.annotation:
-            self.block_annotations[tag] = self.current_block.idx
-
     def write(self, tag: HtmlElement, text: str,
-              whitespace: WhiteSpace = None):
+              whitespace: WhiteSpace = None) -> None:
         """
         Writes the given block.
         """
-        span = self.current_block.merge(text, whitespace or tag.whitespace)
+        self.current_block.merge(text, whitespace or tag.whitespace)
 
-        if tag.annotation and tag.display != Display.block \
-                and span.start != span.end:
+    def close_tag(self, tag: HtmlElement) -> None:
+        """
+        Registers that a tag is closed.
+        Args:
+            tag: the tag to close.
+        """
+        if tag.display == Display.block:
+            flushed = self._flush_inline()
+            self.current_block.prefix.remove_last_prefix()
+            self.close_block(tag)
+            end_idx = self.current_block.idx if not flushed \
+                else self.current_block.idx - 1
+        else:
+            end_idx = self.current_block.idx
+
+        if tag in self.block_annotations:
+            start_idx = self.block_annotations.pop(tag)
+
             for annotation in tag.annotation:
                 self.annotations.append(
-                    Annotation(span.start, span.end, annotation))
+                    Annotation(start_idx, end_idx, annotation))
 
     def close_block(self, tag: HtmlElement):
         """
@@ -86,18 +113,6 @@ class Canvas:
         Args:
             tag: the HTML Block element to close
         """
-
-        flushed = self._flush_inline()
-        self.current_block.prefix.remove_last_prefix()
-
-        if tag in self.block_annotations:
-            start_idx = self.block_annotations.pop(tag)
-            end_idx = self.current_block.idx if not flushed \
-                else self.current_block.idx - 1
-            for annotation in tag.annotation:
-                self.annotations.append(
-                    Annotation(start_idx, end_idx, annotation))
-
         if tag.margin_after > self.margin:
             required_newlines = tag.margin_after - self.margin
             self.current_block.idx += required_newlines

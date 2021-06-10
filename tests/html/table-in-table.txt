@@ -6,20 +6,24 @@ red        green
      blue       
 red        green
 
+
 Second
 
      blue       
 red        green
-     blue      
+     blue       
+
 
 Nested
 
 red        green       blue              blue       
      blue         red        green  red        green
 red        green       blue              blue       
+                                                    
      blue         red        green       blue       
 red        green       blue         red        green
      blue         red        green       blue       
+                                                    
 red        green       blue              blue       
      blue         red        green  red        green
 red        green       blue              blue
