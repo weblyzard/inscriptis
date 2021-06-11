@@ -288,7 +288,7 @@ annotation rules:
     "b": ["emphasis"],
    }
 
-The following code demonstrates how inscriptis' annotation capabilities can
+The code below demonstrates how inscriptis' annotation capabilities can
 be used within a program:
 
 .. code-block:: python
