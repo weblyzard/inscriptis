@@ -40,7 +40,7 @@ class HtmlExtractor(AnnotationProcessor):
                                    if not tag.startswith('/')])
             current_idx = index
         tagged_content.append(text[current_idx:])
-        tagged_content.append("</pre></body></html>")
+        tagged_content.append('</pre></body></html>')
 
         return ''.join(tagged_content)
 
