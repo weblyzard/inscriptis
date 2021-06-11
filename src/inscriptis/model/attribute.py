@@ -65,6 +65,3 @@ class Attribute:
             attributes[a.attr] = a.apply if a.attr not in attributes \
                 else merge_function(attributes[a.attr], a.apply)
         self.attribute_mapping = attributes
-
-    def __str__(self):
-        return str(self.attribute_mapping)

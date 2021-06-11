@@ -53,3 +53,24 @@ def test_apply_annotation():
     assert '{any}#color=red' in str(attribute_handler.attribute_mapping['color'])
     assert '{any}#bgcolor={any}' in str(attribute_handler.attribute_mapping['bgcolor'])
 
+def test_merged_attribute():
+    """
+    test multiple rules per attribute
+    """
+    rules = {'#color=white': ['white'],
+             '#color=yellow': ['yellow']}
+    css = deepcopy(CSS_PROFILES['strict'])
+    annotation_model = AnnotationModel(css, rules)
+
+    attribute_handler = Attribute()
+    attribute_handler.merge_attribute_map(annotation_model.css_attr)
+
+    e = HtmlElement()
+    attribute_handler.attribute_mapping['color']('green', e)
+    assert e.annotation == ()
+    attribute_handler.attribute_mapping['color']('yellow', e)
+    assert e.annotation == ('yellow', )
+    attribute_handler.attribute_mapping['color']('white', e)
+    assert e.annotation == ('yellow', 'white')
+
+
