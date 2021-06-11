@@ -8,7 +8,6 @@ The :class:`Canvas` represents the drawing board to which the HTML page
 is serialized.
 """
 from html import unescape
-from typing import List
 
 from inscriptis.annotation import Annotation
 from inscriptis.html_properties import WhiteSpace, Display
@@ -90,21 +89,16 @@ class Canvas:
             tag: the tag to close.
         """
         if tag.display == Display.block:
-            flushed = self._flush_inline()
+            self._flush_inline()
             self.current_block.prefix.remove_last_prefix()
             self.close_block(tag)
-            end_idx = self.current_block.idx
-            # end_idx = self.current_block.idx if not flushed \
-            #     else self.current_block.idx - 1
-        else:
-            end_idx = self.current_block.idx
 
         if tag in self.block_annotations:
             start_idx = self.block_annotations.pop(tag)
 
             for annotation in tag.annotation:
                 self.annotations.append(
-                    Annotation(start_idx, end_idx, annotation))
+                    Annotation(start_idx, self.current_block.idx, annotation))
 
     def close_block(self, tag: HtmlElement):
         """

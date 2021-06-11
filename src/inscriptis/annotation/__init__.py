@@ -38,5 +38,3 @@ def horizontal_shift(annotations: List[Annotation], content_width: int,
 
     return [Annotation(a.start + h_align, a.end + h_align, a.metadata)
             for a in annotations]
-
-

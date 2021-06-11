@@ -33,8 +33,7 @@ class TableCell(Canvas):
             The height of the normalized cell.
         """
         self._flush_inline()
-        self.blocks = [block for block in chain(*(line.split('\n')
-                                                  for line in self.blocks))]
+        self.blocks = list(chain(*(line.split('\n') for line in self.blocks)))
         return len(self.blocks)
 
     @property
@@ -88,8 +87,7 @@ class TableCell(Canvas):
                 self.blocks = ((height - rows) * empty_line) + self.blocks
             elif self.valign == VerticalAlignment.middle:
                 self.blocks = ((height - rows) // 2) * empty_line + \
-                              self.blocks + \
-                              ((height - rows + 1) // 2 * empty_line)
+                    self.blocks + ((height - rows + 1) // 2 * empty_line)
             else:
                 self.blocks = self.blocks + ((height - rows) * empty_line)
 
@@ -113,7 +111,7 @@ class TableCell(Canvas):
 
         # the more challenging one - multiple cell lines
         line_break_pos = list(accumulate(self.line_width))
-        annotation_lines = [list() for _ in self.blocks]
+        annotation_lines = [[] for _ in self.blocks]
 
         # assign annotations to the corresponding line
         for a in self.annotations:

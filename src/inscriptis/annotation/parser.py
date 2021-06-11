@@ -48,9 +48,10 @@ class ApplyAnnotation:
         html_element.annotation += self.annotations
 
     def __str__(self):
-        return '<ApplyAnnotation: {}#{}={}'.format(self.match_tag or '{any}',
-                                                   self.attr or '{any}',
-                                                   self.match_value or '{any}')
+        return '<ApplyAnnotation: {tag}#{attr}={value}'.format(
+            tag=self.match_tag or '{any}',
+            attr=self.attr or '{any}',
+            value=self.match_value or '{any}')
 
     __repr__ = __str__
 

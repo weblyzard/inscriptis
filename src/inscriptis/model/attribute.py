@@ -6,7 +6,7 @@ This class handles HTML attributes such as `align`, and `valign` by
 mapping them to the corresponding functions in the CssParse class.
 """
 from copy import copy
-from typing import Dict, Callable, List
+from typing import Dict, List
 
 from inscriptis.annotation.parser import ApplyAnnotation
 from inscriptis.model.css import CssParse

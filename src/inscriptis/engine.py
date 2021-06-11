@@ -5,7 +5,6 @@ Utils for calling inscriptis.
 import re
 import lxml.html
 
-from json import dumps
 from typing import Optional
 
 from inscriptis.model.config import ParserConfig

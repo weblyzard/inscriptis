@@ -1,7 +1,6 @@
 """
 Representation of a text block within the HTML canvas.
 """
-from collections import namedtuple
 from inscriptis.html_properties import WhiteSpace
 
 
