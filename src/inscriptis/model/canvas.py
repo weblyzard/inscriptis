@@ -95,6 +95,9 @@ class Canvas:
 
         if tag in self.block_annotations:
             start_idx = self.block_annotations.pop(tag)
+            # do not record annotations with no content
+            if start_idx == self.current_block.idx:
+                return
 
             for annotation in tag.annotation:
                 self.annotations.append(

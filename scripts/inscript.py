@@ -122,8 +122,10 @@ if __name__ == '__main__':
     if not annotation_rules:
         output = get_text(html_content, config)
     else:
-        output = dumps(args.postprocessor(
-            get_annotated_text(html_content, config)))
+        output = args.postprocessor(
+            get_annotated_text(html_content, config))
+        if not args.postprocessor.verbatim:
+            output = dumps(output)
 
     if args.output:
         with Path(args.output).open('w', encoding=args.encoding) as open_file:

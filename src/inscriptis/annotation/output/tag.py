@@ -8,6 +8,9 @@ class TagExtractor(AnnotationProcessor):
     """
     Provides an annotated version of the text output using XML-style tags.
     """
+
+    verbatim = False
+
     def __call__(self, annotated_text: Dict[str, Any]) -> Dict[str, Any]:
         tag_indices = defaultdict(list)
 
