@@ -105,8 +105,11 @@ class TableCell(Canvas):
 
         # the easy case - the cell has only one line :)
         if len(self.blocks) == 1:
-            return horizontal_shift(self.annotations, self.line_width[0],
-                                    self.width, self.align, idx)
+            annotations = horizontal_shift(self.annotations,
+                                           self.line_width[0],
+                                           self.width, self.align, idx)
+            self.line_width[0] = self.width
+            return annotations
 
         # the more challenging one - multiple cell lines
         line_break_pos = list(accumulate(self.line_width))
@@ -125,7 +128,8 @@ class TableCell(Canvas):
                                               self.line_width):
             result.extend(horizontal_shift(line_annotations, line_len,
                                            self.width, self.align, idx))
-            idx += row_width
+            idx += row_width - line_len
+        self.line_width = [self.width for _ in self.line_width]
         return result
 
 
@@ -238,13 +242,14 @@ class Table:
 
         annotations = []
         for row in self.rows:
+            if not row.columns:
+                continue
             row_width = row.width
             cell_idx = idx
             for cell in row.columns:
-                if cell.annotations:
-                    print(cell.annotations, "idx:", cell_idx, "width:", row_width)
                 annotations += cell.get_annotations(cell_idx, row_width)
                 cell_idx += cell.width + len(row.cell_separator)
-            idx += row_width + 1   # linebreak
+
+            idx += (row_width + 1) * cell.height   # linebreak
 
         return annotations

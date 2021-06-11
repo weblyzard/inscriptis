@@ -27,7 +27,7 @@ def horizontal_shift(annotations: List[Annotation], content_width: int,
         shift: an optional additional shift
 
     Returns:
-        A list of Annotations with the adjusted start and end ositions.
+        A list of Annotations with the adjusted start and end positions.
     """
     if align == HorizontalAlignment.left:
         h_align = shift

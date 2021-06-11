@@ -7,7 +7,6 @@ from copy import copy
 from typing import List
 
 from inscriptis.annotation import Annotation
-from inscriptis.html_properties import Display
 from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
@@ -137,7 +136,7 @@ class Inscriptis:
         # use the css to handle tags known to it :)
         cur = self.tags[-1].get_refined_html_element(
             self.apply_attributes(attrs, html_element=copy(self.css.get(
-                tag, DEFAULT_HTML_ELEMENT))).set_tag(tag))
+                tag, DEFAULT_HTML_ELEMENT)).set_tag(tag)))
         self.tags.append(cur)
 
         handler = self.start_tag_handler_dict.get(tag, None)

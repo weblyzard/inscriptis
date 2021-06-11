@@ -27,42 +27,32 @@ class ApplyAnnotation:
     Applies an Annotation to the given attribute
     """
 
-    __slots__ = ('annotations', 'match_tag', 'match_value', 'attr', 'apply',
-                 'matcher')
+    __slots__ = ('annotations', 'match_tag', 'match_value', 'attr', 'matcher')
 
     def __init__(self, annotations: tuple, attr: str, match_tag: str = None,
                  match_value: str = None):
-        self.attr = attr
         self.annotations = tuple(annotations)
+        self.attr = attr
         self.match_tag = match_tag
         self.match_value = match_value
 
-        if not match_tag and not match_value:
-            self.apply = self.apply_all
-        elif match_tag and match_value:
-            self.apply = self.apply_matching
-            self.matcher = lambda value, tag: self.match_tag == tag and \
-                                              self.match_value in value.split()
-        elif match_tag:
-            self.apply = self.apply_matching
-            self.matcher = lambda value, tag: self.match_tag == tag
-        else:
-            self.apply = self.apply_matching
-            self.matcher = lambda value, tag: self.match_value in value.split()
-
-    def apply_all(self, _: str, html_element: HtmlElement):
-        """
-        Applies the annotations to HtmlElements.
-        """
-        html_element.annotation += self.annotations
-
-    def apply_matching(self, attr_value: str, html_element: HtmlElement):
+    def apply(self, attr_value: str, html_element: HtmlElement):
         """
         Applies the annotation to HtmlElements with matching tags.
         """
-        print(attr_value, self.match_value, ">", html_element.tag, self.match_tag)
-        if self.matcher(attr_value, html_element.tag):
-            html_element.annotation += self.annotations
+        if (self.match_tag and self.match_tag != html_element.tag) or (
+                self.match_value and self.match_value
+                not in attr_value.split()):
+            return
+
+        html_element.annotation += self.annotations
+
+    def __str__(self):
+        return '<ApplyAnnotation: {}#{}={}'.format(self.match_tag or '{any}',
+                                                   self.attr or '{any}',
+                                                   self.match_value or '{any}')
+
+    __repr__ = __str__
 
 
 class AnnotationModel:
