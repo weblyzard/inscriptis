@@ -57,8 +57,6 @@ def get_parser():
     parser.add_argument('-a', '--display-anchor-urls',
                         action='store_true', default=False,
                         help='Deduplicate image captions (default:false).')
-    parser.add_argument('-f', '--output-format', default='text',
-                        help='Output format (text or JSONL); default: text).')
     parser.add_argument('-r', '--annotation-rules', default=None,
                         help='Path to an optional JSON file containing rules '
                              'for annotating the retrieved text.')
@@ -121,7 +119,7 @@ if __name__ == '__main__':
                           display_links=args.display_link_targets,
                           display_anchors=args.display_anchor_urls,
                           annotation_rules=annotation_rules)
-    if args.output_format == 'text':
+    if not annotation_rules:
         output = get_text(html_content, config)
     else:
         output = dumps(args.postprocessor(

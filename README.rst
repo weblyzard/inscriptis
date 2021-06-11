@@ -90,8 +90,8 @@ Command line parameters
 The inscript.py command line client supports the following parameters::
 
    usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] 
-                      [-f OUTPUT_FORMAT] [-r ANNOTATION_RULES]
-                      [--indentation INDENTATION] [-v] [input]
+                      [-r ANNOTATION_RULES] [--indentation INDENTATION] [-v]
+                      [input]
    
    Converts HTML from file or url to a clean text version
    
@@ -114,8 +114,6 @@ The inscript.py command line client supports the following parameters::
                            Display link targets (default:false).
      -a, --display-anchor-urls
                            Deduplicate image captions (default:false).
-     -f OUTPUT_FORMAT, --output-format OUTPUT_FORMAT
-                           Output format (text or JSONL); default: text).
      -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
                            Path to an optional JSON file containing rules for
                            annotating the retrieved text.
@@ -147,7 +145,7 @@ HTML to annotated text conversion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 convert and annotate HTML from a Web page using the provided annotation rules::
 
-  $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json -f jsonl
+  $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json
 
 The annotation rules are specified in `annotation-profile.json`:
 
@@ -196,7 +194,6 @@ specified with the `-p` or `--postprocessor` command line argument::
 
   $ inscript.py https://www.fhgr.ch \
           -r ./examples/annotation-profile.json \
-          -f jsonl \
           -p tag
 
 
