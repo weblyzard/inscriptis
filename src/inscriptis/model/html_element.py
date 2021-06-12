@@ -50,6 +50,15 @@ class HtmlElement:
         self.previous_margin_after = 0
         self.annotation = annotation
 
+    def __copy__(self) -> 'HtmlElement':
+        """
+        Improved copy implementation.
+        """
+        copy = self.__class__.__new__(self.__class__)
+        for attr in self.__slots__:
+            setattr(copy, attr, getattr(self, attr))
+        return copy
+
     def write(self, text: str):
         """
         Writes the given HTML text.

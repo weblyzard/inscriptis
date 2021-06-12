@@ -74,4 +74,3 @@ class Prefix:
             return ' ' * (self.current_padding - len(self.last_used_bullet)) \
                    + self.last_used_bullet
         return ' ' * self.current_padding
-

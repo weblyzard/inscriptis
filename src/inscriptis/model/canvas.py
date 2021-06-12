@@ -152,4 +152,3 @@ class Canvas:
             The length of the current line's left margin.
         """
         return self.current_block.prefix.current_padding
-

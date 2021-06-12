@@ -5,7 +5,7 @@ Utils for calling inscriptis.
 import re
 import lxml.html
 
-from typing import Optional
+from typing import Dict, Optional
 
 from inscriptis.model.config import ParserConfig
 from inscriptis.html_engine import Inscriptis
@@ -50,7 +50,8 @@ def get_text(html_content: str, config: ParserConfig = None) -> str:
         else ''
 
 
-def get_annotated_text(html_content: str, config: ParserConfig = None) -> str:
+def get_annotated_text(html_content: str,
+                       config: ParserConfig = None) -> Dict[str, str]:
     """
     Provide a JSONL string containing a text representation of the given
     HTML content and the corresponding annotations.

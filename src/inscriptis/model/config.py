@@ -50,7 +50,7 @@ class ParserConfig:
             self.attribute_handler.merge_attribute_map(
                 annotation_model.css_attr)
 
-    def parse_a(self):
+    def parse_a(self) -> bool:
         """
         Returns:
             Whether we need to parse <a> tags.
