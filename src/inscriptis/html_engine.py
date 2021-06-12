@@ -206,7 +206,8 @@ class Inscriptis:
 
     def _start_table(self, _):
         self.tags[-1].set_canvas(Canvas())
-        self.current_table.append(Table())
+        self.current_table.append(Table(
+            left_margin_len=self.tags[-1].canvas.left_margin))
 
     def _start_tr(self, _):
         if self.current_table:
@@ -263,7 +264,7 @@ class Inscriptis:
 
         # transfer in-table annotations
         self.tags[-2].canvas.annotations.extend(
-            table.get_annotations(start_idx))
+            table.get_annotations(start_idx, self.tags[-2].canvas.left_margin))
 
     def _newline(self, _):
         self.tags[-1].canvas.write_newline()

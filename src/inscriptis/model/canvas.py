@@ -144,3 +144,12 @@ class Canvas:
             self.margin = 0
             return True
         return False
+
+    @property
+    def left_margin(self) -> int:
+        """
+        Returns:
+            The length of the current line's left margin.
+        """
+        return self.current_block.prefix.current_padding
+

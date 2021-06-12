@@ -1,0 +1,33 @@
+{
+    "annotation_rules": {
+        "h1": ["heading"],
+        "h2": ["heading"],
+        "h3": ["subheading"],
+        "h4": ["subheading"],
+        "h5": ["subheading"],
+        "i": ["emphasis"],
+        "b": ["bold"],
+        "table": ["table"],
+        "th": ["tableheading"],
+        "a": ["link"]
+    },
+    "result": [
+        ["heading", "Ehre sei Gott in der H\u00f6he!\n\n"], 
+        ["link", "Bearbeiten"], 
+        ["heading", "\nBev\u00f6lkerung[Bearbeiten]\n\n"], 
+        ["table", "Bev\u00f6lkerungsentwicklung[6]\nJahr                        1500      1860  1900    1950    1970    2000    2005    2011    2012  \nEinwohner                   ca. 1500  3990  11'532  19'382  31'193  32'989  32'409  36'690  37'036\n"], 
+        ["link", "[6]"], 
+        ["tableheading", "Bev\u00f6lkerungsentwicklung[6]"], 
+        ["tableheading", "Jahr"], 
+        ["tableheading", "1500"], 
+        ["tableheading", "1860"], 
+        ["tableheading", "1900"], 
+        ["tableheading", "1950"], 
+        ["tableheading", "1970"], 
+        ["tableheading", "2000"], 
+        ["tableheading", "2005"], 
+        ["tableheading", "2011"], 
+        ["tableheading", "2012"], 
+        ["tableheading", "Einwohner"]
+    ]
+}

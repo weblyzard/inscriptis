@@ -163,14 +163,17 @@ class Row:
 
 
 class Table:
-    """ A HTML table. """
+    """
+    A HTML table.
+    """
 
     __slot__ = ('rows', 'td_is_open')
 
-    def __init__(self):
+    def __init__(self, left_margin_len):
         self.rows = []
         # keep track of whether the last td tag has been closed
         self.td_is_open = False
+        self.left_margin_len = left_margin_len
 
     def add_row(self) -> None:
         """
@@ -226,10 +229,13 @@ class Table:
         self.compute_column_width_and_height()
         return '\n'.join((row.get_text() for row in self.rows)) + '\n'
 
-    def get_annotations(self, idx: int) -> List[Annotation]:
+    def get_annotations(self, idx: int,
+                        left_margin_len: int) -> List[Annotation]:
         """
         Args:
             idx: the table's start index.
+            left_margin_len: len of the left margin (required for adapting
+                             the position of annotations).
 
         Returns:
             A list of all annotations present in the table.
@@ -239,10 +245,11 @@ class Table:
             return []
 
         annotations = []
+        idx += left_margin_len
         for row in self.rows:
             if not row.columns:
                 continue
-            row_width = row.width
+            row_width = row.width + left_margin_len
             cell_idx = idx
             for cell in row.columns:
                 annotations += cell.get_annotations(cell_idx, row_width)
