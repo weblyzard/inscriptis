@@ -124,7 +124,8 @@ if __name__ == '__main__':
     else:
         output = args.postprocessor(
             get_annotated_text(html_content, config))
-        if not args.postprocessor.verbatim:
+        if hasattr(args.postprocessor, 'verbatim') \
+           and not args.postprocessor.verbatim:
             output = dumps(output)
 
     if args.output:
