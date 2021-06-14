@@ -31,8 +31,8 @@ class HtmlExtractor(AnnotationProcessor):
             if idx in tag_indices:
                 tags = tag_indices[idx]
                 # close tags:
-                for tag in (t for t in sorted(tags, reverse=True)
-                            if t.startswith('/')):
+                for _ in (t for t in sorted(tags, reverse=True)
+                          if t.startswith('/')):
                     open_tags.pop()
                     tagged_content.append('</span>')
                 # open tags
