@@ -253,6 +253,7 @@ class Inscriptis:
 
         start_idx = self.tags[-2].canvas.current_block.idx
         self.tags[-2].write_verbatim_text(table.get_text())
+        self.tags[-2].canvas._flush_inline()
 
         # transfer annotations from the current tag
         if self.tags[-1].annotation:

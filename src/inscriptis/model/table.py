@@ -13,9 +13,18 @@ from inscriptis.model.canvas import Canvas
 
 
 class TableCell(Canvas):
+    """
+    A table cell.
+
+    Attributes:
+        line_width: the original line widths per line (required to adjust
+                    annotations after a reformatting)
+        vertical_padding: vertical padding that has been introduced due to
+                          vertical formatting rules.
+    """
     __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
                  'margin', 'annotation_counter', 'align', 'valign', '_width',
-                 'line_width')
+                 'line_width', 'vertical_padding')
 
     def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
         super().__init__()
@@ -23,6 +32,7 @@ class TableCell(Canvas):
         self.valign = valign
         self._width = None
         self.line_width = None
+        self.vertical_padding = 0
 
     def normalize_blocks(self) -> int:
         """
@@ -34,6 +44,8 @@ class TableCell(Canvas):
         """
         self._flush_inline()
         self.blocks = list(chain(*(line.split('\n') for line in self.blocks)))
+        if not self.blocks:
+            self.blocks = ['']
         return len(self.blocks)
 
     @property
@@ -42,7 +54,7 @@ class TableCell(Canvas):
         Returns:
             The cell's current height.
         """
-        return len(self.blocks)
+        return max(1, len(self.blocks))
 
     @property
     def width(self):
@@ -52,8 +64,6 @@ class TableCell(Canvas):
         """
         if self._width:
             return self._width
-        if not self.blocks:
-            return 0
         return max((len(line) for line in chain(*(block.split('\n')
                                                   for block in self.blocks))))
 
@@ -82,11 +92,13 @@ class TableCell(Canvas):
         """
         rows = len(self.blocks)
         if rows < height:
-            empty_line = [' ' * self.width] if self.width else ['']
+            empty_line = ['']
             if self.valign == VerticalAlignment.bottom:
-                self.blocks = ((height - rows) * empty_line) + self.blocks
+                self.vertical_padding = (height - rows)
+                self.blocks = self.vertical_padding * empty_line + self.blocks
             elif self.valign == VerticalAlignment.middle:
-                self.blocks = ((height - rows) // 2) * empty_line + \
+                self.vertical_padding = (height - rows) // 2
+                self.blocks = self.vertical_padding * empty_line + \
                     self.blocks + ((height - rows + 1) // 2 * empty_line)
             else:
                 self.blocks = self.blocks + ((height - rows) * empty_line)
@@ -116,12 +128,13 @@ class TableCell(Canvas):
         # assign annotations to the corresponding line
         for a in self.annotations:
             for no, line_break in enumerate(line_break_pos):
-                if a.start <= line_break:
-                    annotation_lines[no].append(a)
+                if a.start <= (line_break + no):         # consider newline
+                    annotation_lines[no + self.vertical_padding].append(a)
                     break
 
         # compute the annotation index based on its line and delta :)
         result = []
+        idx += self.vertical_padding   # newlines introduced by the padding
         for line_annotations, line_len in zip(annotation_lines,
                                               self.line_width):
             result.extend(horizontal_shift(line_annotations, line_len,
@@ -203,7 +216,7 @@ class Table:
         for row in self.rows:
             max_row_height = max((cell.normalize_blocks()
                                   for cell in row.columns)) \
-                if row.columns else 1
+                if row.columns else 0
             for cell in row.columns:
                 cell.height = max_row_height
 

@@ -26,4 +26,4 @@ def test_forgotten_td_close_tag():
             '<tr><td>3<td>4'
             '</table>echo</body>')
     print(html)
-    assert get_text(html, config) == u'hallo\n1  2\n3  4\necho'
+    assert get_text(html, config) == u'hallo\n1  2\n3  4\n\necho'

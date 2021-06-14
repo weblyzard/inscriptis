@@ -1,0 +1,31 @@
+{
+    "annotation_rules": {
+        "h1": ["heading"],
+         "h2": ["heading"],
+         "h3": ["subheading"],
+         "h4": ["subheading"],
+         "h5": ["subheading"],
+         "i": ["emphasis"],
+         "b": ["bold"],
+         "th": ["tableheading"],
+         "a": ["link"]
+    },
+    "result": [
+        ["link", "  * Araschgen"], 
+        ["link", "  * F\u00fcrstenwald"], 
+        ["link", "  * Masans"], 
+        ["link", "  * Niederlachen-Untere Au"], 
+        ["link", "  * Lacuna"], 
+        ["link", "  * Giacomettiquartier"], 
+        ["link", "  * Chur West"], 
+        ["link", "  * Dreib\u00fcnden"], 
+        ["link", "  * Sand"], 
+        ["link", "  * Kornquader"], 
+        ["link", "  * Rheinquartier"], 
+        ["link", "  * Rossboden"], 
+        ["link", "Sommerau"], 
+        ["link", "  * Wiesental"], 
+        ["link", "  * Tittwiesen"], 
+        ["link", "[8]"]
+    ]
+}

@@ -35,18 +35,18 @@ def test_vertical_cell_formatting():
     cell.width = 16
     cell.height = 4
     assert cell.blocks == ['Ehre sei Gott!  ',
-                           '                ',
-                           '                ',
-                           '                ']
+                           '',
+                           '',
+                           '']
 
     # bottom alignment
     cell.blocks = ['Ehre sei Gott!']
     cell.valign = VerticalAlignment.bottom
     cell.width = 16
     cell.height = 4
-    assert cell.blocks == ['                ',
-                           '                ',
-                           '                ',
+    assert cell.blocks == ['',
+                           '',
+                           '',
                            'Ehre sei Gott!  ']
 
     # middle alignment
@@ -54,7 +54,7 @@ def test_vertical_cell_formatting():
     cell.valign = VerticalAlignment.middle
     cell.width = 16
     cell.height = 4
-    assert cell.blocks == ['                ',
+    assert cell.blocks == ['',
                            'Ehre sei Gott!  ',
-                           '                ',
-                           '                ']
+                           '',
+                           '']

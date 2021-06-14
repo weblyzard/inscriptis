@@ -9,9 +9,9 @@
  "result": [
      ["heading", "Single\n\n"], 
      ["heading", "First\n\n"], 
-     ["table", "red        green\n     blue       \nred        green\n"], 
+     ["table", "red        green\n     blue       \nred        green\n\n"], 
      ["heading", "\nSecond\n\n"], 
-     ["table", "      blue       \nred?        green\n      blue       \n"], 
+     ["table", "      blue       \nred?        green\n      blue       \n\n"], 
      ["bold", "red?"], 
      ["heading", "\nNested\n\n"], 
      ["table", "red        green.       blue               blue        \n     blue          red        green   red        green \nred        green        blue               blue        \n                                                       \n     blue.         red        green        blue        \nred         green       blue          red        green \n     blue          red        green!       blue        \n                                                       \nred        green        blue               blue        \n     blue          red        green   red         green\nred        green        blue               blue!       \n                                                       \n"], 
