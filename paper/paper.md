@@ -11,9 +11,6 @@ authors:
   - name: Albert Weichselbraun^[corresponding author]
     orcid: 0000-0001-6399-045X
     affiliation: 1
-  - name: Fabian Odoni
-    orcid: 0000-0003-0829-5387 
-    affiliation: 1
 affiliations:
  - name: University of Applied Sciences of the Grisons, Chur, Switzerland
    index: 1
