@@ -21,3 +21,4 @@ venv/
 tests/converted.txt
 tests/reference.txt
 *.c
+paper/*.pdf
