@@ -20,7 +20,7 @@ bibliography: paper.bib
 
 # Summary
 
-``Inscriptis`` provides a library, command line client and Web service for converting HTML content to plain text. In contrast to existing software packages such as [HTML2text](https://github.com/Alir3z4/html2text/), [Justext](https://github.com/miso-belica/jusText/) and [Lynx](https://lynx.invisible-island.net/), it has been tailored towards text processing pipelines by 
+``Inscriptis`` provides a library, command line client and Web service for converting HTML content to plain text. In contrast to existing software packages such as [HTML2text](https://github.com/Alir3z4/html2text/), [jusText](https://github.com/miso-belica/jusText/) and [Lynx](https://lynx.invisible-island.net/), it has been tailored towards text processing pipelines by 
 
 1. providing a layout-aware rendering of textual output that in many cases closely resembles the rendering obtained from standard Web browsers. ``Inscriptis`` excels in terms of conversion quality, since it is able to correctly interpret complex HTML constructs such as nested tables and also supports a subset of HTML (e.g., `align`, `valign`) and CSS (e.g., `display`, `white-space`, `margin-top`, `vertical-algin`, etc.) attributes that determine the text alignment.
  2. supporting annotation rules, i.e., user-provided mappings that allow for annotating the extracted text based on structural and semantic information encoded in HTML tags and attributes used for controlling structure and layout in the original HTML document. 
