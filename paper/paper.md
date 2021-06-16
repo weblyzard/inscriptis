@@ -8,7 +8,7 @@ tags:
   - gold standard creation
   - annotated text output
 authors:
-  - name: Albert Weichselbraun^[corresponding author]
+  - name: Albert Weichselbraun
     orcid: 0000-0001-6399-045X
     affiliation: 1
 affiliations:
