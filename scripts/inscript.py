@@ -63,7 +63,7 @@ def get_parser():
     parser.add_argument('-p', '--postprocessor', type=get_postprocessor,
                         default=lambda x: x,
                         help='Optional component for postprocessing the '
-                             'result (surface, tag). ')
+                             'result (html, surface, xml). ')
     parser.add_argument('--indentation', default='extended',
                         help='How to handle indentation (extended or strict;'
                              ' default: extended).')
