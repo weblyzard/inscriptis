@@ -1,10 +1,11 @@
+"""Data structures for handling HTML Elements."""
+
 from inscriptis.html_properties import Display, HorizontalAlignment, \
     VerticalAlignment, WhiteSpace
 
 
 class HtmlElement:
-    """The HtmlElement class stores the following CSS properties of HTML
-    elements:
+    """The HtmlElement class stores properties and metadata of HTML elements.
 
     Attributes:
     - canvas: the canvas to which the HtmlElement writes its content.
@@ -56,14 +57,14 @@ class HtmlElement:
         self.annotation = annotation
 
     def __copy__(self) -> 'HtmlElement':
-        """ Performance-optimized copy implementation. """
+        """Performance-optimized copy implementation."""
         copy = self.__class__.__new__(self.__class__)
         for attr in self.__slots__:
             setattr(copy, attr, getattr(self, attr))
         return copy
 
     def write(self, text: str):
-        """ Write the given HTML text to the element's canvas. """
+        """Write the given HTML text to the element's canvas."""
         if not text or self.display == Display.none:
             return
 
@@ -71,7 +72,7 @@ class HtmlElement:
             (self.prefix, text, self.suffix)))
 
     def write_tail(self, text: str):
-        """ Write the given tail text the the element's canvas.
+        """Write the given tail text the the element's canvas.
 
         Args:
             text: the text to write
@@ -106,7 +107,7 @@ class HtmlElement:
             self.canvas.close_block(self)
 
     def get_refined_html_element(self, new) -> 'HtmlElement':
-        """Computes the new HTML element based on the previous one.
+        """Compute the new HTML element based on the previous one.
 
         Adaptations:
             margin_top: additional margin required when considering

@@ -15,7 +15,8 @@ CONFIG = ParserConfig(css=RELAXED_CSS_PROFILE, display_images=True,
 
 @app.route('/')
 def index():
-    return 'Hello'
+    """Print a short status message for the Web service's base URL."""
+    return 'Inscriptis text to HTML Web service.'
 
 
 @app.route('/get_text', methods=['POST'])

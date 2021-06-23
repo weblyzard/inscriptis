@@ -1,4 +1,4 @@
-"""Parses annotation configuration files.
+"""Parse annotation configuration files.
 
 Annotation configuration files contain a dictionary that maps tags and
 attributes to the corresponding annotation.
@@ -22,7 +22,7 @@ from inscriptis.model.html_element import HtmlElement, DEFAULT_HTML_ELEMENT
 
 
 class ApplyAnnotation:
-    """Applies an Annotation to the given attribute.
+    """Apply an Annotation to the given attribute.
 
     Arguments:
         annotations: a tuple of annotations to be applied to the attribute.
@@ -43,7 +43,7 @@ class ApplyAnnotation:
         self.match_value = match_value
 
     def apply(self, attr_value: str, html_element: HtmlElement):
-        """Applies the annotation to HtmlElements with matching tags."""
+        """Apply the annotation to HtmlElements with matching tags."""
         if (self.match_tag and self.match_tag != html_element.tag) or (
                 self.match_value and self.match_value
                 not in attr_value.split()):
@@ -61,6 +61,13 @@ class ApplyAnnotation:
 
 
 class AnnotationModel:
+    """Adapt the CSS profile and CSS attributes for annotation support.
+
+    Attributes:
+        css: the refined CSS class which contains annotations for HtmlElements
+             which should be annotated.
+        css_attr: information on CSS attributes that shall be annotated.
+    """
 
     def __init__(self, css_profile, model: dict):
         tags, self.css_attr = self._parse(model)
@@ -72,8 +79,7 @@ class AnnotationModel:
 
     @staticmethod
     def _parse(model: dict) -> 'AnnotationModel':
-        """Parses a model dictionary and returns the corresponding
-        AnnotationModel.
+        """Compute the AnnotationModel from a model dictionary.
 
         Returns:
             the AnnotationModel matching the input dictionary.

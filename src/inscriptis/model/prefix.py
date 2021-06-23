@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# encoding: utf-8
-
-""" Manages the horizontal prefix (left-indentation, bullets) of canvas
-lines. """
+"""Manage the horizontal prefix (left-indentation, bullets) of canvas lines."""
 
 from contextlib import suppress
 
@@ -35,7 +31,7 @@ class Prefix:
         self.consumed = False
 
     def register_prefix(self, padding_inline, bullet):
-        """ Registers the given prefix.
+        """Register the given prefix.
 
         Args:
             padding_inline: the number of characters used for padding_inline
@@ -47,14 +43,18 @@ class Prefix:
             self.bullets.append(bullet)
 
     def remove_last_prefix(self):
-        """ Remotes the last prefix from the list. """
+        """Remove the last prefix from the list."""
         with suppress(IndexError):
             self.current_padding -= self.paddings.pop()
             del self.bullets[-1]
 
     def restore(self):
-        """ Restores the last_used_bullet, if present so that the iterator
-        behaves like before.
+        """Restore the last_used_bullet, if present.
+
+        Notes:
+            After restore the iterator behaves like before its first usage.
+            (i.e., if a bullet had already been used, calling the iterator
+            will again, yield a bullet for the first line)
         """
         if self.last_used_bullet:
             self.bullets.append(self.last_used_bullet)

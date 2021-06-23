@@ -1,9 +1,15 @@
-""" Representation of a text block within the HTML canvas. """
+"""Representation of a text block within the HTML canvas."""
 from inscriptis.html_properties import WhiteSpace
 
 
 class Block:
-    """The current block of the text page.
+    """The current block of text.
+
+    A block usually refers to one line of output text.
+
+    Notes:
+        If pre-formatted content is merged with a block, it may also contain
+        multiple lines.
 
     Args
         idx: the current block's start index.
@@ -19,7 +25,7 @@ class Block:
         self.collapsable_whitespace = True
 
     def merge(self, text: str, whitespace: WhiteSpace) -> None:
-        """Merges the given text with the current block.
+        """Merge the given text with the current block.
 
         Args:
             text: the text to merge.
@@ -31,7 +37,7 @@ class Block:
             self.merge_normal_text(text)
 
     def merge_normal_text(self, text: str) -> None:
-        """Merges the given text with the current block.
+        """Merge the given text with the current block.
 
         Args:
             text: the text to merge
@@ -53,7 +59,7 @@ class Block:
             self.idx += len(text)
 
     def merge_pre_text(self, text: str) -> None:
-        """Merges the given text with the current block.
+        """Merge the given text with the current block.
 
         Args:
             text: the text to merge
@@ -78,7 +84,8 @@ class Block:
         return self._content
 
     def new_block(self) -> 'Block':
-        """
+        """Return a new Block based on the current one.
+
         Returns:
             A new block that follows the current one.
         """

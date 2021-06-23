@@ -12,8 +12,10 @@ Annotation = namedtuple('Annotation', 'start end metadata')
 def horizontal_shift(annotations: List[Annotation], content_width: int,
                      line_width: int, align: HorizontalAlignment,
                      shift: int = 0) -> List[Annotation]:
-    """Adjusts annotation positions according to the given line's formatting
-    and width.
+    """Shift annotations based on the given line's formatting.
+
+    Adjusts the start and end indices of annotations based on the line's
+    formatting and width.
 
     Args:
         annotations: a list of Annotations.

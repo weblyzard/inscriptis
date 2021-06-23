@@ -1,9 +1,10 @@
-"""
-Inscriptis parses HTML content and converts it into a text representation.
-Among others it provides support for
+"""Parse HTML content and converts it into a text representation.
 
-- nested HTML tables and
-- basic Cascade Style Sheets.
+Inscriptis provides support for
+
+- nested HTML tables
+- basic Cascade Style Sheets
+- annotations
 
 Example::
 
@@ -16,7 +17,6 @@ Example::
    text = get_text(html)
 
    print(text)
-
 """
 
 __author__ = 'Albert Weichselbraun, Fabian Odoni'

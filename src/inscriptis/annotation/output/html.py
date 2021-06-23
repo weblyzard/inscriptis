@@ -1,3 +1,4 @@
+"""HTML Annotation Processor."""
 from collections import defaultdict
 from itertools import cycle
 from typing import Dict, Any, List
@@ -9,11 +10,14 @@ COLOR_SCHEMA = ('#D8115980', '#8F2D5680', '#21838080',
 
 
 class HtmlExtractor(AnnotationProcessor):
+    """Provides an HTML version of the extracted text.
+
+    The generated HTML colors annotations based on the COLOR_SCHEMA
+    constant.
+    """
 
     verbatim = True
 
-    """Provides an HTML version of the extracted text with colored 
-    annotations."""
     def __call__(self, annotated_text: Dict[str, Any]) -> str:
         tag_indices = defaultdict(list)
 
@@ -53,7 +57,10 @@ class HtmlExtractor(AnnotationProcessor):
 
     @staticmethod
     def _get_label_colors(labels: List[str]) -> Dict[str, str]:
-        """
+        """Compute the mapping between annotation labels and colors.
+
+        The used color schema is available in the global variable COLOR_SCHEMA.
+
         Args:
             labels: a list of the annotations classes (e.g., heading, etc.)
                     that need to be color-coded.
@@ -66,8 +73,7 @@ class HtmlExtractor(AnnotationProcessor):
                                         cycle(COLOR_SCHEMA))}
 
     def _get_css(self, labels: List[str]) -> str:
-        """
-        Computes the CSS to be included into the HTML output.
+        """Compute the CSS to be included into the HTML output.
 
         Args:
             labels: a list of the annotations classes (e.g., heading, etc.)

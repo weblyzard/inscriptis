@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Provides configuration objects for the Inscriptis HTML to text converter."""
+"""Provide configuration objects for the Inscriptis HTML to text converter."""
 
 from copy import deepcopy
 
@@ -11,13 +11,13 @@ DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
 
 class ParserConfig:
-    """The ParserConfig object encapsulates configuration options and custom
-    CSS definitions used by inscriptis for translating HTML to text.
-    """
+    """Encapsulate configuration options and CSS definitions."""
+
     def __init__(self, css=None, display_images=False,
                  deduplicate_captions=False, display_links=False,
                  display_anchors=False, annotation_rules=None):
-        """
+        """Create a ParserConfig configuration.
+
         Args:
             css: an optional custom CSS definition.
             display_images: whether to include image tiles/alt texts.
@@ -48,8 +48,9 @@ class ParserConfig:
                 annotation_model.css_attr)
 
     def parse_a(self) -> bool:
-        """
-        Returns:
+        """Indicate whether the text output should contain links or anchors.
+
+        Returns
             Whether we need to parse <a> tags.
         """
         return self.display_links or self.display_anchors

@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-"""Implements basic CSS support for inscriptis.
+"""Implement basic CSS support for inscriptis.
 
 - The :class:`HtmlElement` class encapsulates all CSS properties of a single
   HTML element.
@@ -15,18 +13,18 @@ from inscriptis.model.html_element import HtmlElement
 
 
 class CssParse:
-    """Parses CSS specifications and translates them into the corresponding
-    HtmlElements.
+    """Parse CSS specifications and applies them to HtmlElements.
 
     The attribute `display: none`, for instance, is translated to
     `HtmlElement.display=Display.none`.
     """
+
     # used to separate value and unit from each other
     RE_UNIT = re_compile(r'(-?[0-9.]+)(\w+)')
 
     @staticmethod
     def attr_style(style_attribute: str, html_element: HtmlElement):
-        """Applies the provided style attributes to the given html_element.
+        """Apply the provided style attributes to the given HtmlElement.
 
         Args:
           style_attribute: The attribute value of the given style sheet.
@@ -48,8 +46,10 @@ class CssParse:
 
     @staticmethod
     def _get_em(length: str) -> int:
-        """Transforms a length specification (e.g., 2em, 2px, etc.) into the
-        corresponding length in em.
+        """Convert length specifications into em.
+
+        This function takes a length specification (e.g., 2em, 2px, etc.) and
+        transforms it into em.
 
         Args:
           length: the length specification.

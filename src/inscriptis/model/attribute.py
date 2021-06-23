@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""This class handles HTML attributes such as `align`, and `valign` by
-mapping them to the corresponding functions in the CssParse class.
-"""
+"""HTML attribute handling."""
 from copy import copy
 from typing import Dict, List
 
@@ -19,7 +17,10 @@ DEFAULT_ATTRIBUTE_MAP = {
 
 
 def merge_function(func1, func2):
-    """Merges two functions with the same arguments into a single one.
+    """Merge two functions with the same arguments into a single one.
+
+    This function is used for cascading functions that operate on HtmlElements
+    and attributes.
 
     Args:
         func1: the first function
@@ -32,18 +33,22 @@ def merge_function(func1, func2):
 
 
 class Attribute:
-    """Applies attributes and annotations to the given HTML element.
+    """Handle HTML attributes such as `align`, and `valign`.
 
-    Args
-        annotations: an optional mapping of attributes to the corresponding
-                     annotations.
+    This class handles HTML attributes by mapping them to the corresponding
+    functions in the CssParse class.
+
+    Attributes:
+        attribute_mapping: a mapping of attributes to the corresponding handler
+                           functions.
     """
+
     def __init__(self):
         self.attribute_mapping = DEFAULT_ATTRIBUTE_MAP
 
     def apply_attributes(self, attributes: Dict[str, str],
                          html_element: HtmlElement) -> HtmlElement:
-        """Applies the attributes to the given HTML element.
+        """Apply the attributes to the given HTML element.
 
         Args:
             attributes: the list of attributes

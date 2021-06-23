@@ -11,7 +11,7 @@ from inscriptis.model.table import Table, TableCell
 
 
 class Inscriptis:
-    """Translates an lxml HTML tree to the corresponding text representation.
+    """Translate an lxml HTML tree to the corresponding text representation.
 
     Arguments:
       html_tree: the lxml HTML tree to convert.
@@ -105,14 +105,16 @@ class Inscriptis:
         self.tags[-1].write_tail(tree.tail)
 
     def get_text(self) -> str:
-        """
+        """Return the text extracted from the HTML page.
+
         Returns:
             A text representation of the parsed content.
         """
         return self.canvas.get_text()
 
     def get_annotations(self) -> List[Annotation]:
-        """
+        """Return the annotations extracted from the HTML page.
+
         Returns:
             A list of annotations extracted from the parsed content.
         """

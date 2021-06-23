@@ -1,6 +1,4 @@
-"""
-Utils for calling inscriptis.
-"""
+"""Utils for calling inscriptis."""
 
 import re
 import lxml.html
@@ -14,8 +12,7 @@ RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
 
 def _get_html_tree(html_content: str) -> Optional[lxml.html.HtmlElement]:
-    """
-    Obtain the HTML parse tree for the given HTML content.
+    """Obtain the HTML parse tree for the given HTML content.
 
     Args:
         html_content: The content to parse.
@@ -35,8 +32,7 @@ def _get_html_tree(html_content: str) -> Optional[lxml.html.HtmlElement]:
 
 
 def get_text(html_content: str, config: ParserConfig = None) -> str:
-    """
-    Provide a text representation of the given HTML content.
+    """Provide a text representation of the given HTML content.
 
     Args:
       html_content (str): The HTML content to convert.
@@ -52,9 +48,11 @@ def get_text(html_content: str, config: ParserConfig = None) -> str:
 
 def get_annotated_text(html_content: str,
                        config: ParserConfig = None) -> Dict[str, str]:
-    """
-    Provide a JSONL string containing a text representation of the given
-    HTML content and the corresponding annotations.
+    """Return a dictionary of the extracted text and annotations.
+
+    Notes:
+        - the text is stored under the key 'text'.
+        - annotations are provided under the key 'label' in the JSONL format.
 
     Examples:
         {"text": "EU rejects German call to boycott British lamb.", "
@@ -63,11 +61,11 @@ def get_annotated_text(html_content: str,
          "label": [ [0, 15, "heading"] ]}
 
     Returns:
-        A JSONL string with text and annotations.
+        A dictionary of text (key: 'text') and annotations (key: 'label')
     """
     html_tree = _get_html_tree(html_content)
     if html_tree is None:
-        return ''
+        return {}
 
     inscriptis = Inscriptis(html_tree, config)
     labels = [(a.start, a.end, a.metadata)

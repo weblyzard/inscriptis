@@ -19,6 +19,7 @@ class TableCell(Canvas):
         vertical_padding: vertical padding that has been introduced due to
                           vertical formatting rules.
     """
+
     __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
                  'margin', 'annotation_counter', 'align', 'valign', '_width',
                  'line_width', 'vertical_padding')
@@ -32,8 +33,7 @@ class TableCell(Canvas):
         self.vertical_padding = 0
 
     def normalize_blocks(self) -> int:
-        """Normalizes the cell by splitting multi-line blocks into multiple
-        ones containing only one line.
+        """Split multi-line blocks into multiple one-line blocks.
 
         Returns:
             The height of the normalized cell.
@@ -46,7 +46,8 @@ class TableCell(Canvas):
 
     @property
     def height(self):
-        """
+        """Compute the table cell's height.
+
         Returns:
             The cell's current height.
         """
@@ -54,7 +55,8 @@ class TableCell(Canvas):
 
     @property
     def width(self):
-        """
+        """Compute the table cell's width.
+
         Returns:
             The cell's current width.
         """
@@ -65,7 +67,7 @@ class TableCell(Canvas):
 
     @width.setter
     def width(self, width):
-        """Sets the table's width and applies the cell's horizontal formatting.
+        """Set the table's width and applies the cell's horizontal formatting.
 
         Args:
             The cell's expected width.
@@ -81,8 +83,11 @@ class TableCell(Canvas):
 
     @height.setter
     def height(self, height: int):
-        """Applies the given height and the cell's vertical formatting to
-        the current cell.
+        """Set the cell's height to the given value.
+
+        Notes:
+            Depending on the height and the cell's vertical formatting this
+            might require the introduction of empty lines.
         """
         rows = len(self.blocks)
         if rows < height:
@@ -98,7 +103,8 @@ class TableCell(Canvas):
                 self.blocks = self.blocks + ((height - rows) * empty_line)
 
     def get_annotations(self, idx: int, row_width: int) -> List[Annotation]:
-        """
+        """Return a list of all annotations within the TableCell.
+
         Returns:
             A list of annotations that have been adjusted to the cell's
             position.
@@ -139,7 +145,7 @@ class TableCell(Canvas):
 
 
 class Row:
-    """ A single row within a table """
+    """A single row within a table."""
 
     __slot__ = ('columns', 'cell_separator')
 
@@ -151,10 +157,7 @@ class Row:
         return len(self.columns)
 
     def get_text(self) -> str:
-        """
-        Returns:
-          A rendered string representation of the given row.
-        """
+        """Return a text representation of the Row."""
         row_lines = [self.cell_separator.join(line)
                      for line in zip(*[column.blocks
                                        for column in self.columns])]
@@ -162,7 +165,7 @@ class Row:
 
     @property
     def width(self):
-        """Computes and returns the width of the current row."""
+        """Compute and return the width of the current row."""
         if not self.columns:
             return 0
 
@@ -188,21 +191,21 @@ class Table:
         self.left_margin_len = left_margin_len
 
     def add_row(self) -> None:
-        """Adds an empty :class:`Row` to the table."""
+        """Add an empty :class:`Row` to the table."""
         self.rows.append(Row())
 
     def add_cell(self, table_cell: TableCell) -> None:
-        """Adds a new :class:`TableCell` to the table's last row. If no row
-        exists yet, a new row is created.
+        """Add  a new :class:`TableCell` to the table's last row.
+
+        Notes:
+            If no row exists yet, a new row is created.
         """
         if not self.rows:
             self.add_row()
         self.rows[-1].columns.append(table_cell)
 
     def compute_column_width_and_height(self):
-        """Compute and set the column width and height for all columns in the
-        table.
-        """
+        """Set the column width and height for all columns in the table."""
         # skip tables with no row
         if not self.rows:
             return
@@ -230,7 +233,8 @@ class Table:
                     row.columns[column_idx].width = max_column_width
 
     def get_text(self):
-        """
+        """Return and render the text of the given table.
+
         Returns:
           A rendered string representation of the given table.
         """
@@ -239,7 +243,8 @@ class Table:
 
     def get_annotations(self, idx: int,
                         left_margin_len: int) -> List[Annotation]:
-        """
+        """Return all annotations in the given table.
+
         Args:
             idx: the table's start index.
             left_margin_len: len of the left margin (required for adapting

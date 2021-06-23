@@ -1,3 +1,4 @@
+"""XML Annotation processor."""
 from collections import defaultdict
 from typing import Dict, Any
 
@@ -5,8 +6,7 @@ from inscriptis.annotation.output import AnnotationProcessor
 
 
 class XmlExtractor(AnnotationProcessor):
-    """Provides an annotated version of the text output using XML-style
-    tags."""
+    """Provide the converted text with XML-style annotations."""
 
     verbatim = True
 
