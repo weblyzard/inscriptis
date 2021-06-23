@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""
-This module provides the following properties used for the rendering of HTML
+"""This module provides the following properties used for the rendering of HTML
 pages:
 
  1. :class:`Display` properties.
@@ -24,8 +23,7 @@ class Display(Enum):
 
 
 class WhiteSpace(Enum):
-    """
-    This enum specifies the whitespace handling used for an HTML element as
+    """This enum specifies the whitespace handling used for an HTML element as
     outlined in the `Cascading Style Sheets <https://www.w3.org/TR/CSS1/>`_
     specification.
 
@@ -42,8 +40,7 @@ class WhiteSpace(Enum):
 
 
 class HorizontalAlignment(Enum):
-    """
-    This enum specifies the horizontal alignment.
+    """This enum specifies the horizontal alignment.
     """
     left = '<'
     right = '>'
@@ -51,8 +48,7 @@ class HorizontalAlignment(Enum):
 
 
 class VerticalAlignment(Enum):
-    """
-    This enum specifies the vertical alignment.
+    """This enum specifies the vertical alignment.
     """
     top = 1
     middle = 2

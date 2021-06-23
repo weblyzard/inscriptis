@@ -8,7 +8,7 @@ import pytest
 
 from inscriptis.annotation.output import AnnotationProcessor
 from inscriptis.annotation.output.surface import SurfaceExtractor
-from inscriptis.annotation.output.tag import TagExtractor
+from inscriptis.annotation.output.xml import XmlExtractor
 
 EXAMPLE_OUTPUT = {'text': 'Chur\n\nChur is the capital and largest town of '
                           'the Swiss canton of the Grisons and lies in the '
@@ -37,24 +37,22 @@ def test_surface_annotator():
                                  ('h1', 'Chur'),
                                  ('emphasis', 'Chur')]
 
-def test_tag_annotator():
-    processor = TagExtractor()
+def test_xml_annotator():
+    processor = XmlExtractor()
     result = processor(EXAMPLE_OUTPUT)
 
-    # the old keys haven't been changed
-    assert 'text' in result
-    assert 'label' in result
-
     # and we have additional information on surface forms :)
-    assert result['tag'] == ('<h1><heading>Chur</heading></h1>\n\n<emphasis>'
-                             'Chur</emphasis> is the capital and largest town '
-                             'of the Swiss canton of the Grisons and lies in '
-                             'the Grisonian Rhine Valley.')
+    assert result == ('<?xml version="1.0" encoding="UTF-8" ?>'
+                      '<h1><heading>Chur</heading></h1>\n\n<emphasis>'
+                      'Chur</emphasis> is the capital and largest town '
+                      'of the Swiss canton of the Grisons and lies in '
+                      'the Grisonian Rhine Valley.')
 
 def test_trailing_tag_annotation():
-    processor = TagExtractor()
+    processor = XmlExtractor()
     result = processor({'text': 'Ehre sei Gott!',
                         'label': [[9, 14, 'emphasis']]})
 
-    assert result['tag'] == 'Ehre sei <emphasis>Gott!</emphasis>'
+    assert result == ('<?xml version="1.0" encoding="UTF-8" ?>'
+                      'Ehre sei <emphasis>Gott!</emphasis>')
 

@@ -4,9 +4,7 @@ from inscriptis.annotation.output import AnnotationProcessor
 
 
 class SurfaceExtractor(AnnotationProcessor):
-    """
-    Extracts the surface form of all annotated labels.
-    """
+    """Extracts the surface form of all annotated labels."""
 
     verbatim = False
 

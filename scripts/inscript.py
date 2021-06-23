@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # coding:utf-8
-"""
-Inscriptis command line client.
-"""
+"""Inscriptis command line client."""
 
 import argparse
 import sys
@@ -18,8 +16,8 @@ from inscriptis.model.config import ParserConfig
 
 
 def get_postprocessor(name):
-    """
-    Returns the postprocessor (if available) for the given name
+    """Return the postprocessor (if available) for the given name.
+
     Args:
         name: the name of the postprocessor
 
@@ -33,7 +31,7 @@ def get_postprocessor(name):
 
 
 def get_parser():
-    """ Parses the arguments if script is run directly via console """
+    """Parse the arguments if script is run via console."""
     parser = argparse.ArgumentParser(
         description='Converts HTML from file or url to a clean text version')
     parser.add_argument('input', nargs='?', default=None,

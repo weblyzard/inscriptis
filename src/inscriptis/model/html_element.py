@@ -3,10 +3,11 @@ from inscriptis.html_properties import Display, HorizontalAlignment, \
 
 
 class HtmlElement:
-    """
-    The HtmlElement class stores the following CSS properties of HTML
+    """The HtmlElement class stores the following CSS properties of HTML
     elements:
 
+    Attributes:
+    - canvas: the canvas to which the HtmlElement writes its content.
     - tag: tag name of the given HtmlElement.
     - prefix: specifies a prefix that to insert before the tag's content.
     - suffix: a suffix to append after the tag's content.
@@ -19,6 +20,10 @@ class HtmlElement:
       strategy.
     - limit_whitespace_affixes: limit printing of whitespace affixes to
       elements with `normal` whitespace handling.
+    - align: the element's horizontal alignment.
+    - valign: the element's vertical alignment.
+    - previous_margin_after: the margin after of the previous HtmlElement.
+    - annotation: annotations associated with the HtmlElement.
     """
 
     __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
@@ -51,18 +56,14 @@ class HtmlElement:
         self.annotation = annotation
 
     def __copy__(self) -> 'HtmlElement':
-        """
-        Improved copy implementation.
-        """
+        """ Performance-optimized copy implementation. """
         copy = self.__class__.__new__(self.__class__)
         for attr in self.__slots__:
             setattr(copy, attr, getattr(self, attr))
         return copy
 
     def write(self, text: str):
-        """
-        Writes the given HTML text.
-        """
+        """ Write the given HTML text to the element's canvas. """
         if not text or self.display == Display.none:
             return
 
@@ -70,8 +71,7 @@ class HtmlElement:
             (self.prefix, text, self.suffix)))
 
     def write_tail(self, text: str):
-        """
-        Writes the tail text of an element.
+        """ Write the given tail text the the element's canvas.
 
         Args:
             text: the text to write
@@ -89,8 +89,8 @@ class HtmlElement:
         return self
 
     def write_verbatim_text(self, text: str):
-        """
-        Writes the given text verbatim to the canvas.
+        """Write the given text with `Whitespace.pre` to the canvas.
+
         Args:
             text: the text to write
         """
@@ -106,8 +106,7 @@ class HtmlElement:
             self.canvas.close_block(self)
 
     def get_refined_html_element(self, new) -> 'HtmlElement':
-        """
-        Computes the new HTML element based on the previous one.
+        """Computes the new HTML element based on the previous one.
 
         Adaptations:
             margin_top: additional margin required when considering

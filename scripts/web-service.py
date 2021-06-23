@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # coding:utf-8
-"""
-Inscriptis Web Service
-"""
+"""Inscriptis Web Service."""
 
 from flask import request, Response, Flask
 from inscriptis import __version__
@@ -22,10 +20,7 @@ def index():
 
 @app.route('/get_text', methods=['POST'])
 def get_text_call():
-    """
-    Returns:
-        the text representation of the given HTML content.
-    """
+    """Return the text representation of the given HTML content."""
     content_type = request.headers['Content-type']
     if '; encoding=' in content_type:
         encoding = content_type.split('; encoding=')[1]
@@ -38,10 +33,7 @@ def get_text_call():
 
 @app.route('/version', methods=['GET'])
 def get_version_call():
-    """
-    Returns:
-        the used inscriptis version.
-    """
+    """Return the used inscriptis version."""
     return Response(__version__ + '\n', mimetype='text/plain')
 
 

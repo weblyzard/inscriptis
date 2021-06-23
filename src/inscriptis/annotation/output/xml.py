@@ -4,14 +4,22 @@ from typing import Dict, Any
 from inscriptis.annotation.output import AnnotationProcessor
 
 
-class TagExtractor(AnnotationProcessor):
-    """
-    Provides an annotated version of the text output using XML-style tags.
-    """
+class XmlExtractor(AnnotationProcessor):
+    """Provides an annotated version of the text output using XML-style
+    tags."""
 
-    verbatim = False
+    verbatim = True
 
-    def __call__(self, annotated_text: Dict[str, Any]) -> Dict[str, Any]:
+    def __call__(self, annotated_text: Dict[str, Any]) -> str:
+        """Provide an XML version of the given text and annotations.
+
+        Args:
+            annotated_text: a dictionary containing the plain text and the
+                            extracted annotations.
+
+        Returns:
+            A string with the XML-version of the content.
+        """
         tag_indices = defaultdict(list)
 
         for start, end, label in sorted(annotated_text['label']):
@@ -19,7 +27,7 @@ class TagExtractor(AnnotationProcessor):
             tag_indices[end].append('/' + label)
 
         current_idx = 0
-        tagged_content = []
+        tagged_content = ['<?xml version="1.0" encoding="UTF-8" ?>']
         text = annotated_text['text']
         for index, tags in sorted(tag_indices.items()):
             tagged_content.append(text[current_idx:index])
@@ -33,5 +41,4 @@ class TagExtractor(AnnotationProcessor):
             current_idx = index
         tagged_content.append(text[current_idx:])
 
-        annotated_text['tag'] = ''.join(tagged_content)
-        return annotated_text
+        return ''.join(tagged_content)

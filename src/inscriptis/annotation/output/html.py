@@ -1,10 +1,9 @@
 from collections import defaultdict
 from itertools import cycle
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 from inscriptis.annotation.output import AnnotationProcessor
 
-COLOR_SCHEMA = ('#D81159', '#8F2D56', '#218380', '#FBB13C', '#73D2DE')
 COLOR_SCHEMA = ('#D8115980', '#8F2D5680', '#21838080',
                 '#FBB13C80', '#73D2DE80')
 
@@ -13,10 +12,9 @@ class HtmlExtractor(AnnotationProcessor):
 
     verbatim = True
 
-    """
-    Provides an HTML version of the extracted text with colored annotations.
-    """
-    def __call__(self, annotated_text: Dict[str, Any]) -> Dict[str, Any]:
+    """Provides an HTML version of the extracted text with colored 
+    annotations."""
+    def __call__(self, annotated_text: Dict[str, Any]) -> str:
         tag_indices = defaultdict(list)
 
         for start, end, label in sorted(annotated_text['label']):
@@ -54,17 +52,31 @@ class HtmlExtractor(AnnotationProcessor):
         return ''.join(tagged_content) + '</pre></body></html>'
 
     @staticmethod
-    def _get_label_colors(labels) -> Dict[str, str]:
+    def _get_label_colors(labels: List[str]) -> Dict[str, str]:
         """
-
+        Args:
+            labels: a list of the annotations classes (e.g., heading, etc.)
+                    that need to be color-coded.
         Returns:
             A mapping between the available labels and the corresponding color
             from the COLOR_SCHEMA.
         """
-        return {label: color for label, color in zip({a[2] for a in labels},
-                                                     cycle(COLOR_SCHEMA))}
+        return {label: color
+                for label, color in zip({a[2] for a in sorted(labels)},
+                                        cycle(COLOR_SCHEMA))}
 
-    def _get_css(self, labels) -> str:
+    def _get_css(self, labels: List[str]) -> str:
+        """
+        Computes the CSS to be included into the HTML output.
+
+        Args:
+            labels: a list of the annotations classes (e.g., heading, etc.)
+                    that need to be color-coded.
+
+        Returns:
+            A string containing the CSS to be embedded into the HTML output.
+
+        """
         css = []
         for label, color in sorted(self._get_label_colors(labels).items()):
             css.append(

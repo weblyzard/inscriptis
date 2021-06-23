@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-"""
-Provides configuration objects for the Inscriptis HTML 2 text parser.
-"""
+"""Provides configuration objects for the Inscriptis HTML to text converter."""
 
 from copy import deepcopy
 
@@ -13,9 +11,8 @@ DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
 
 class ParserConfig:
-    """
-    The ParserConfig object encapsulates configuration options and custom CSS
-    definitions used by inscriptis for translating HTML to text.
+    """The ParserConfig object encapsulates configuration options and custom
+    CSS definitions used by inscriptis for translating HTML to text.
     """
     def __init__(self, css=None, display_images=False,
                  deduplicate_captions=False, display_links=False,

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-"""
-This module implements basic CSS support for inscriptis.
+"""Implements basic CSS support for inscriptis.
 
 - The :class:`HtmlElement` class encapsulates all CSS properties of a single
   HTML element.
@@ -12,11 +11,11 @@ from contextlib import suppress
 from re import compile as re_compile
 from inscriptis.html_properties import (Display, WhiteSpace,
                                         HorizontalAlignment, VerticalAlignment)
+from inscriptis.model.html_element import HtmlElement
 
 
 class CssParse:
-    """
-    Parses CSS specifications and translates them into the corresponding
+    """Parses CSS specifications and translates them into the corresponding
     HtmlElements.
 
     The attribute `display: none`, for instance, is translated to
@@ -26,9 +25,8 @@ class CssParse:
     RE_UNIT = re_compile(r'(-?[0-9.]+)(\w+)')
 
     @staticmethod
-    def attr_style(style_attribute, html_element):
-        """
-        Applies the provided style attributes to the given html_element.
+    def attr_style(style_attribute: str, html_element: HtmlElement):
+        """Applies the provided style attributes to the given html_element.
 
         Args:
           style_attribute: The attribute value of the given style sheet.
@@ -49,14 +47,15 @@ class CssParse:
                 pass
 
     @staticmethod
-    def _get_em(length):
-        """
+    def _get_em(length: str) -> int:
+        """Transforms a length specification (e.g., 2em, 2px, etc.) into the
+        corresponding length in em.
+
         Args:
-          length (str): the length (e.g. 2em, 2px, etc.) as specified in the
-                        CSS.
+          length: the length specification.
 
         Returns:
-            int -- the length in em's.
+            the length in em.
         """
         _m = CssParse.RE_UNIT.search(length)
         value = float(_m.group(1))
@@ -71,10 +70,8 @@ class CssParse:
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def attr_display(value, html_element):
-        """
-        Apply the given display value.
-        """
+    def attr_display(value: str, html_element: HtmlElement):
+        """Apply the given display value."""
         if html_element.display == Display.none:
             return
 
@@ -86,49 +83,37 @@ class CssParse:
             html_element.display = Display.inline
 
     @staticmethod
-    def attr_white_space(value, html_element):
-        """
-        Apply the given white-space value.
-        """
+    def attr_white_space(value: str, html_element: HtmlElement):
+        """Apply the given white-space value."""
         if value in ('normal', 'nowrap'):
             html_element.whitespace = WhiteSpace.normal
         elif value in ('pre', 'pre-line', 'pre-wrap'):
             html_element.whitespace = WhiteSpace.pre
 
     @staticmethod
-    def attr_margin_top(value, html_element):
-        """
-        Apply the given top margin.
-        """
+    def attr_margin_top(value: str, html_element: HtmlElement):
+        """Apply the given top margin."""
         html_element.margin_before = CssParse._get_em(value)
 
     @staticmethod
-    def attr_margin_bottom(value, html_element):
-        """
-        Apply the provided bottom margin.
-        """
+    def attr_margin_bottom(value: str, html_element: HtmlElement):
+        """Apply the provided bottom margin."""
         html_element.margin_after = CssParse._get_em(value)
 
     @staticmethod
-    def attr_padding_left(value, html_element):
-        """
-        Apply the given left padding_inline.
-        """
+    def attr_padding_left(value: str, html_element: HtmlElement):
+        """Apply the given left padding_inline."""
         html_element.padding_inline = CssParse._get_em(value)
 
     @staticmethod
-    def attr_horizontal_align(value, html_element):
-        """
-        Apply the provided horizontal alignment.
-        """
+    def attr_horizontal_align(value: str, html_element: HtmlElement):
+        """Apply the provided horizontal alignment."""
         with suppress(KeyError):
             html_element.align = HorizontalAlignment[value]
 
     @staticmethod
-    def attr_vertical_align(value, html_element):
-        """
-        Apply the given vertical alignment.
-        """
+    def attr_vertical_align(value: str, html_element: HtmlElement):
+        """Apply the given vertical alignment."""
         with suppress(KeyError):
             html_element.valign = VerticalAlignment[value]
 

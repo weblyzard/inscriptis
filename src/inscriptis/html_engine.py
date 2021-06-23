@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-"""
-The HTML Engine is responsible for converting HTML to text.
-"""
+"""The HTML Engine is responsible for converting HTML to text."""
 from typing import List
 
 from inscriptis.annotation import Annotation
@@ -13,9 +11,7 @@ from inscriptis.model.table import Table, TableCell
 
 
 class Inscriptis:
-    """
-    The Inscriptis class translates an lxml HTML tree to the corresponding
-    text representation.
+    """Translates an lxml HTML tree to the corresponding text representation.
 
     Arguments:
       html_tree: the lxml HTML tree to convert.
@@ -83,8 +79,7 @@ class Inscriptis:
         self._parse_html_tree(html_tree)
 
     def _parse_html_tree(self, tree):
-        """
-        Parses the HTML tree.
+        """Parse the HTML tree.
 
         Args:
             tree: the HTML tree to parse.
@@ -112,7 +107,7 @@ class Inscriptis:
     def get_text(self) -> str:
         """
         Returns:
-          str -- A text representation of the parsed content.
+            A text representation of the parsed content.
         """
         return self.canvas.get_text()
 
@@ -124,13 +119,11 @@ class Inscriptis:
         return self.canvas.annotations
 
     def handle_starttag(self, tag, attrs):
-        """
-        Handles HTML start tags.
+        """Handle HTML start tags.
 
         Args:
-          tag (str): the HTML start tag to process.
-          attrs (dict): a dictionary of HTML attributes and their respective
-             values.
+          tag: the HTML start tag to process.
+          attrs: a dictionary of HTML attributes and their respective values.
         """
         # use the css to handle tags known to it :)
         cur = self.tags[-1].get_refined_html_element(
@@ -143,11 +136,10 @@ class Inscriptis:
             handler(attrs)
 
     def handle_endtag(self, tag):
-        """
-        Handles HTML end tags.
+        """Handle HTML end tags.
 
         Args:
-          tag(str): the HTML end tag to process.
+          tag: the HTML end tag to process.
         """
         handler = self.end_tag_handler_dict.get(tag, None)
         if handler:
@@ -271,8 +263,5 @@ class Inscriptis:
 
     @staticmethod
     def get_bullet(index) -> str:
-        """
-        Returns:
-          str -- The bullet that corresponds to the given index.
-        """
+        """Return the bullet that correspond to the given index."""
         return Inscriptis.UL_COUNTER[index % Inscriptis.UL_COUNTER_LEN]

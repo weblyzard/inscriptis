@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""
-Elements used for rendering (parts) of the canvas.
+""" Manages the horizontal prefix (left-indentation, bullets) of canvas
+lines. """
 
-The :class:`Canvas` represents the drawing board to which the HTML page
-is serialized.
-"""
 from contextlib import suppress
 
 
@@ -18,10 +15,13 @@ class Prefix:
         since new blocks (Display.block) trigger line breaks while inline
         content (Display.normal) does not.
 
-    Class variables:
-        padding_inline: the number of characters used for padding_inline an
-                        HTML block.
-        bullet: an optional bullet used for padding_inline the HTML block.
+    Attributes:
+        current_padding: the number of characters used for the current
+                         left-indentation.
+        paddings: the list of paddings for the current and all previous tags.
+        bullets: the list of bullets in the current and all previous tags.
+        last_used_bullet: the last bullet that has been used.
+        consumed: whether the current bullet has already been consumed.
     """
 
     __slots__ = ('current_padding', 'last_used_bullet', 'paddings', 'bullets',
@@ -35,8 +35,8 @@ class Prefix:
         self.consumed = False
 
     def register_prefix(self, padding_inline, bullet):
-        """
-        Registers the given prefix.
+        """ Registers the given prefix.
+
         Args:
             padding_inline: the number of characters used for padding_inline
             bullet: an optional bullet.
@@ -47,16 +47,13 @@ class Prefix:
             self.bullets.append(bullet)
 
     def remove_last_prefix(self):
-        """
-        Remotes the last prefix from the list.
-        """
+        """ Remotes the last prefix from the list. """
         with suppress(IndexError):
             self.current_padding -= self.paddings.pop()
             del self.bullets[-1]
 
     def restore(self):
-        """
-        Restores the last_used_bullet, if present so that the iterator
+        """ Restores the last_used_bullet, if present so that the iterator
         behaves like before.
         """
         if self.last_used_bullet:

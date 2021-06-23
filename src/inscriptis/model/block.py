@@ -1,12 +1,9 @@
-"""
-Representation of a text block within the HTML canvas.
-"""
+""" Representation of a text block within the HTML canvas. """
 from inscriptis.html_properties import WhiteSpace
 
 
 class Block:
-    """
-    The current block of the text page.
+    """The current block of the text page.
 
     Args
         idx: the current block's start index.
@@ -22,8 +19,7 @@ class Block:
         self.collapsable_whitespace = True
 
     def merge(self, text: str, whitespace: WhiteSpace) -> None:
-        """
-        Merges the given text with the current block.
+        """Merges the given text with the current block.
 
         Args:
             text: the text to merge.
@@ -35,8 +31,7 @@ class Block:
             self.merge_normal_text(text)
 
     def merge_normal_text(self, text: str) -> None:
-        """
-        Merges the given text with the current block.
+        """Merges the given text with the current block.
 
         Args:
             text: the text to merge
@@ -58,8 +53,7 @@ class Block:
             self.idx += len(text)
 
     def merge_pre_text(self, text: str) -> None:
-        """
-        Merges the given text with the current block.
+        """Merges the given text with the current block.
 
         Args:
             text: the text to merge

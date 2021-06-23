@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""
-Elements used for rendering (parts) of the canvas.
+"""Elements used for rendering (parts) of the canvas.
 
 The :class:`Canvas` represents the drawing board to which the HTML page
 is serialized.
@@ -17,8 +16,7 @@ from inscriptis.model.prefix import Prefix
 
 
 class Canvas:
-    """
-    The text Canvas on which Inscriptis writes the HTML page.
+    """The text Canvas on which Inscriptis writes the HTML page.
 
     Attributes:
         margin: the current margin to the previous block (this is required to
@@ -30,39 +28,38 @@ class Canvas:
         annotations: the list of completed annotations
         annotation_counter: a counter used for enumerating all annotations
                             we encounter.
+        _open_annotations: a map of open tags that contain annotations.
     """
 
-    __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
-                 'margin', 'annotation_counter')
+    __slots__ = ('annotations', 'annotation_counter', 'blocks',
+                 'current_block', '_open_annotations', 'margin')
 
     def __init__(self):
-        """
-        Contains the completed blocks. Each block spawns at least a line
+        """ Contains the completed blocks.
+
+        Each block spawns at least a line
         """
         self.margin = 1000  # margin to the previous block
         self.current_block = Block(0, Prefix())
         self.blocks = []
         self.annotations = []
         self.annotation_counter = {}
-        self.block_annotations = {}
+        self._open_annotations = {}
 
     def open_tag(self, tag: HtmlElement) -> None:
-        """
-        Registers that a tag is opened.
+        """Registers that a tag is opened.
 
         Args:
             tag: the tag to open.
         """
         if tag.annotation:
-            self.block_annotations[tag] = self.current_block.idx
+            self._open_annotations[tag] = self.current_block.idx
 
         if tag.display == Display.block:
             self.open_block(tag)
 
     def open_block(self, tag: HtmlElement):
-        """
-        Opens an HTML block element.
-        """
+        """ Opens an HTML block element. """
         self._flush_inline()
         self.current_block.prefix.register_prefix(tag.padding_inline,
                                                   tag.list_bullet)
@@ -77,14 +74,12 @@ class Canvas:
 
     def write(self, tag: HtmlElement, text: str,
               whitespace: WhiteSpace = None) -> None:
-        """
-        Writes the given block.
-        """
+        """ Writes the given block. """
         self.current_block.merge(text, whitespace or tag.whitespace)
 
     def close_tag(self, tag: HtmlElement) -> None:
-        """
-        Registers that a tag is closed.
+        """Registers that a tag is closed.
+
         Args:
             tag: the tag to close.
         """
@@ -93,8 +88,8 @@ class Canvas:
             self.current_block.prefix.remove_last_prefix()
             self.close_block(tag)
 
-        if tag in self.block_annotations:
-            start_idx = self.block_annotations.pop(tag)
+        if tag in self._open_annotations:
+            start_idx = self._open_annotations.pop(tag)
             # do not record annotations with no content
             if start_idx == self.current_block.idx:
                 return
@@ -104,8 +99,7 @@ class Canvas:
                     Annotation(start_idx, self.current_block.idx, annotation))
 
     def close_block(self, tag: HtmlElement):
-        """
-        Closes the given HtmlElement by writing its bottom margin.
+        """Closes the given HtmlElement by writing its bottom margin.
 
         Args:
             tag: the HTML Block element to close
@@ -122,21 +116,19 @@ class Canvas:
             self.current_block = self.current_block.new_block()
 
     def get_text(self) -> str:
-        """
-        Provide a text representation of the current block
-        """
+        """ Provide a text representation of the current block. """
         self._flush_inline()
         return unescape('\n'.join(self.blocks))
 
     def _flush_inline(self) -> bool:
-        """
-        Attempts to flush the content in self.current_block into a new block
+        """Attempts to flush the content in self.current_block into a new block
         which is added to self.blocks.
 
         If self.current_block does not contain any content (or only
         whitespaces) no changes are made.
 
-        Returns: True if the attempt was successful, False otherwise.
+        Returns:
+            True if the attempt was successful, False otherwise.
         """
         if not self.current_block.is_empty():
             self.blocks.append(self.current_block.content)

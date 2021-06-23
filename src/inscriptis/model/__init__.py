@@ -1,5 +1,4 @@
-"""
-The model used for HTML rendering.
+"""The model used for HTML rendering.
 
 - :mod:`inscriptis.model.canvas`: classes required for rendering parts of
     the HTML page.

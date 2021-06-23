@@ -1,5 +1,4 @@
-"""
-Parses annotation configuration files.
+"""Parses annotation configuration files.
 
 Annotation configuration files contain a dictionary that maps tags and
 attributes to the corresponding annotation.
@@ -23,8 +22,15 @@ from inscriptis.model.html_element import HtmlElement, DEFAULT_HTML_ELEMENT
 
 
 class ApplyAnnotation:
-    """
-    Applies an Annotation to the given attribute
+    """Applies an Annotation to the given attribute.
+
+    Arguments:
+        annotations: a tuple of annotations to be applied to the attribute.
+        attr: the name of the attribute.
+        match_tag: only apply annotations to attributes that belong to the
+                   given match_tag.
+        match_value: only apply annotations to attribute with the given
+                     match_value.
     """
 
     __slots__ = ('annotations', 'match_tag', 'match_value', 'attr', 'matcher')
@@ -37,9 +43,7 @@ class ApplyAnnotation:
         self.match_value = match_value
 
     def apply(self, attr_value: str, html_element: HtmlElement):
-        """
-        Applies the annotation to HtmlElements with matching tags.
-        """
+        """Applies the annotation to HtmlElements with matching tags."""
         if (self.match_tag and self.match_tag != html_element.tag) or (
                 self.match_value and self.match_value
                 not in attr_value.split()):
@@ -68,8 +72,7 @@ class AnnotationModel:
 
     @staticmethod
     def _parse(model: dict) -> 'AnnotationModel':
-        """
-        Parses a model dictionary and returns the corresponding
+        """Parses a model dictionary and returns the corresponding
         AnnotationModel.
 
         Returns:

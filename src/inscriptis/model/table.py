@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-"""
-Classes for representing Tables, Rows and TableCells.
-"""
+"""Classes used for representing Tables, Rows and TableCells."""
 
 from typing import List
 from itertools import chain, accumulate
@@ -13,8 +11,7 @@ from inscriptis.model.canvas import Canvas
 
 
 class TableCell(Canvas):
-    """
-    A table cell.
+    """A table cell.
 
     Attributes:
         line_width: the original line widths per line (required to adjust
@@ -35,9 +32,8 @@ class TableCell(Canvas):
         self.vertical_padding = 0
 
     def normalize_blocks(self) -> int:
-        """
-        Normalizes the cell by splitting multi-line blocks into multiple ones
-        containing only one line.
+        """Normalizes the cell by splitting multi-line blocks into multiple
+        ones containing only one line.
 
         Returns:
             The height of the normalized cell.
@@ -68,9 +64,8 @@ class TableCell(Canvas):
                                                   for block in self.blocks))))
 
     @width.setter
-    def width(self, width) -> None:
-        """
-        Sets the table's width and apply's the cell's horizontal formatting.
+    def width(self, width):
+        """Sets the table's width and applies the cell's horizontal formatting.
 
         Args:
             The cell's expected width.
@@ -85,9 +80,8 @@ class TableCell(Canvas):
         self.blocks = [format_spec.format(b) for b in self.blocks]
 
     @height.setter
-    def height(self, height) -> None:
-        """
-        Applies the given height and the cell's vertical formatting to
+    def height(self, height: int):
+        """Applies the given height and the cell's vertical formatting to
         the current cell.
         """
         rows = len(self.blocks)
@@ -103,7 +97,7 @@ class TableCell(Canvas):
             else:
                 self.blocks = self.blocks + ((height - rows) * empty_line)
 
-    def get_annotations(self, idx, row_width) -> List[Annotation]:
+    def get_annotations(self, idx: int, row_width: int) -> List[Annotation]:
         """
         Returns:
             A list of annotations that have been adjusted to the cell's
@@ -146,6 +140,7 @@ class TableCell(Canvas):
 
 class Row:
     """ A single row within a table """
+
     __slot__ = ('columns', 'cell_separator')
 
     def __init__(self, cell_separator: str = '  '):
@@ -167,7 +162,7 @@ class Row:
 
     @property
     def width(self):
-        """Computes and returns the width of the current row"""
+        """Computes and returns the width of the current row."""
         if not self.columns:
             return 0
 
@@ -176,27 +171,28 @@ class Row:
 
 
 class Table:
-    """
-    A HTML table.
+    """A HTML table.
+
+    Attributes:
+        rows: the table's rows.
+        td_is_open: record's whether the table's last td tag has been closed.
+        left_margin_len: length of the left margin before the table.
     """
 
-    __slot__ = ('rows', 'td_is_open')
+    __slot__ = ('rows', 'td_is_open', 'left_margin_len')
 
-    def __init__(self, left_margin_len):
+    def __init__(self, left_margin_len: int):
         self.rows = []
         # keep track of whether the last td tag has been closed
         self.td_is_open = False
         self.left_margin_len = left_margin_len
 
     def add_row(self) -> None:
-        """
-        Adds an empty :class:`Row` to the table.
-        """
+        """Adds an empty :class:`Row` to the table."""
         self.rows.append(Row())
 
     def add_cell(self, table_cell: TableCell) -> None:
-        """
-        Adds a new :class:`TableCell` to the table's last row. If no row
+        """Adds a new :class:`TableCell` to the table's last row. If no row
         exists yet, a new row is created.
         """
         if not self.rows:
@@ -204,8 +200,7 @@ class Table:
         self.rows[-1].columns.append(table_cell)
 
     def compute_column_width_and_height(self):
-        """
-        Compute and set the column width and height for all columns in the
+        """Compute and set the column width and height for all columns in the
         table.
         """
         # skip tables with no row
@@ -252,7 +247,6 @@ class Table:
 
         Returns:
             A list of all annotations present in the table.
-
         """
         if not self.rows:
             return []

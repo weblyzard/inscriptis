@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""
-This class handles HTML attributes such as `align`, and `valign` by
+"""This class handles HTML attributes such as `align`, and `valign` by
 mapping them to the corresponding functions in the CssParse class.
 """
 from copy import copy
@@ -20,8 +19,7 @@ DEFAULT_ATTRIBUTE_MAP = {
 
 
 def merge_function(func1, func2):
-    """
-    Merges two functions with the same arguments into a single one.
+    """Merges two functions with the same arguments into a single one.
 
     Args:
         func1: the first function
@@ -34,8 +32,7 @@ def merge_function(func1, func2):
 
 
 class Attribute:
-    """
-    Applies attributes and annotations to the given HTML element.
+    """Applies attributes and annotations to the given HTML element.
 
     Args
         annotations: an optional mapping of attributes to the corresponding
@@ -46,8 +43,7 @@ class Attribute:
 
     def apply_attributes(self, attributes: Dict[str, str],
                          html_element: HtmlElement) -> HtmlElement:
-        """
-        Applies the attributes to the given HTML element.
+        """Applies the attributes to the given HTML element.
 
         Args:
             attributes: the list of attributes

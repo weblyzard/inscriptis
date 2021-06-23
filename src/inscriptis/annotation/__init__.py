@@ -1,6 +1,4 @@
-"""
-The model used for saving annotations.
-"""
+"""The model used for saving annotations."""
 
 from collections import namedtuple
 from typing import List
@@ -14,9 +12,8 @@ Annotation = namedtuple('Annotation', 'start end metadata')
 def horizontal_shift(annotations: List[Annotation], content_width: int,
                      line_width: int, align: HorizontalAlignment,
                      shift: int = 0) -> List[Annotation]:
-    """
-    Adjusts annotation positions according to the given line's formatting and
-    width.
+    """Adjusts annotation positions according to the given line's formatting
+    and width.
 
     Args:
         annotations: a list of Annotations.
