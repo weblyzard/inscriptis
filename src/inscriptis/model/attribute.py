@@ -36,7 +36,7 @@ class Attribute:
     """Handle HTML attributes such as `align`, and `valign`.
 
     This class handles HTML attributes by mapping them to the corresponding
-    functions in the CssParse class.
+    functions in the :class:`~inscriptis.model.css.CssParse` class.
 
     Attributes:
         attribute_mapping: a mapping of attributes to the corresponding handler

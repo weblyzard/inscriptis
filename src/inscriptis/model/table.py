@@ -144,7 +144,7 @@ class TableCell(Canvas):
         return result
 
 
-class Row:
+class TableRow:
     """A single row within a table."""
 
     __slot__ = ('columns', 'cell_separator')
@@ -157,7 +157,7 @@ class Row:
         return len(self.columns)
 
     def get_text(self) -> str:
-        """Return a text representation of the Row."""
+        """Return a text representation of the TableRow."""
         row_lines = [self.cell_separator.join(line)
                      for line in zip(*[column.blocks
                                        for column in self.columns])]
@@ -190,11 +190,11 @@ class Table:
         self.td_is_open = False
         self.left_margin_len = left_margin_len
 
-    def add_row(self) -> None:
-        """Add an empty :class:`Row` to the table."""
-        self.rows.append(Row())
+    def add_row(self):
+        """Add an empty :class:`TableRow` to the table."""
+        self.rows.append(TableRow())
 
-    def add_cell(self, table_cell: TableCell) -> None:
+    def add_cell(self, table_cell: TableCell):
         """Add  a new :class:`TableCell` to the table's last row.
 
         Notes:
@@ -204,13 +204,8 @@ class Table:
             self.add_row()
         self.rows[-1].columns.append(table_cell)
 
-    def compute_column_width_and_height(self):
-        """Set the column width and height for all columns in the table."""
-        # skip tables with no row
-        if not self.rows:
-            return
-
-        # determine row height
+    def _set_row_height(self):
+        """Set the cell height for all :class:`TableCell`s in the table."""
         for row in self.rows:
             max_row_height = max((cell.normalize_blocks()
                                   for cell in row.columns)) \
@@ -218,19 +213,21 @@ class Table:
             for cell in row.columns:
                 cell.height = max_row_height
 
+    def _set_column_width(self):
+        """Set the column width for all :class:`TableCell`s in the table."""
         # determine maximum number of columns
         max_columns = max((len(row.columns) for row in self.rows))
 
-        for column_idx in range(max_columns):
-            max_column_width = max((row.columns[column_idx].width
+        for cur_column_idx in range(max_columns):
+            # determine the required column width for the current column
+            max_column_width = max((row.columns[cur_column_idx].width
                                     for row in self.rows
-                                    if len(row) > column_idx)) if self.rows \
-                else 0
+                                    if len(row) > cur_column_idx))
 
-            # set column width in all rows
+            # set column width for all TableCells in the current column
             for row in self.rows:
-                if len(row) > column_idx:
-                    row.columns[column_idx].width = max_column_width
+                if len(row) > cur_column_idx:
+                    row.columns[cur_column_idx].width = max_column_width
 
     def get_text(self):
         """Return and render the text of the given table.
@@ -238,7 +235,11 @@ class Table:
         Returns:
           A rendered string representation of the given table.
         """
-        self.compute_column_width_and_height()
+        if not self.rows:
+            return '\n'
+
+        self._set_row_height()
+        self._set_column_width()
         return '\n'.join((row.get_text() for row in self.rows)) + '\n'
 
     def get_annotations(self, idx: int,

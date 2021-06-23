@@ -18,7 +18,7 @@ class Block:
 
     __slots__ = ('idx', 'prefix', '_content', 'collapsable_whitespace')
 
-    def __init__(self, idx, prefix):
+    def __init__(self, idx: int, prefix: str):
         self.idx = idx
         self.prefix = prefix
         self._content = ''

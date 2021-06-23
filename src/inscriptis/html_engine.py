@@ -3,6 +3,8 @@
 """The HTML Engine is responsible for converting HTML to text."""
 from typing import List
 
+import lxml.html
+
 from inscriptis.annotation import Annotation
 from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
 from inscriptis.model.canvas import Canvas
@@ -13,7 +15,7 @@ from inscriptis.model.table import Table, TableCell
 class Inscriptis:
     """Translate an lxml HTML tree to the corresponding text representation.
 
-    Arguments:
+    Args:
       html_tree: the lxml HTML tree to convert.
       config: an optional ParserConfig configuration object.
 
@@ -35,7 +37,8 @@ class Inscriptis:
     UL_COUNTER = ('* ', '+ ', 'o ', '- ')
     UL_COUNTER_LEN = len(UL_COUNTER)
 
-    def __init__(self, html_tree, config: ParserConfig = None):
+    def __init__(self, html_tree: lxml.html.HtmlElement,
+                 config: ParserConfig = None):
         # use the default configuration, if no config object is provided
         self.config = config or ParserConfig()
 

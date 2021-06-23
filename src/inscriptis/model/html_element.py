@@ -1,4 +1,5 @@
 """Data structures for handling HTML Elements."""
+from typing import Tuple
 
 from inscriptis.html_properties import Display, HorizontalAlignment, \
     VerticalAlignment, WhiteSpace
@@ -33,13 +34,16 @@ class HtmlElement:
                  'align', 'valign', 'previous_margin_after', 'annotation')
 
     def __init__(self, tag='default', prefix='', suffix='',
-                 display=Display.inline,
-                 margin_before=0, margin_after=0, padding_inline=0,
-                 list_bullet='',
-                 whitespace=None, limit_whitespace_affixes=False,
-                 align=HorizontalAlignment.left,
-                 valign=VerticalAlignment.middle,
-                 annotation=()):
+                 display: Display = Display.inline,
+                 margin_before: int = 0,
+                 margin_after: int = 0,
+                 padding_inline: int = 0,
+                 list_bullet: str = '',
+                 whitespace: WhiteSpace = None,
+                 limit_whitespace_affixes: bool = False,
+                 align: HorizontalAlignment = HorizontalAlignment.left,
+                 valign: VerticalAlignment = VerticalAlignment.middle,
+                 annotation: Tuple[str] = ()):
         self.canvas = None
         self.tag = tag
         self.prefix = prefix
@@ -106,7 +110,7 @@ class HtmlElement:
         if self.display == Display.block:
             self.canvas.close_block(self)
 
-    def get_refined_html_element(self, new) -> 'HtmlElement':
+    def get_refined_html_element(self, new: 'HtmlElement') -> 'HtmlElement':
         """Compute the new HTML element based on the previous one.
 
         Adaptations:
