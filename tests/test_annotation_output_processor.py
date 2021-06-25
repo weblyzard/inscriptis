@@ -7,6 +7,7 @@ Test the annotation output formatter.
 import pytest
 
 from inscriptis.annotation.output import AnnotationProcessor
+from inscriptis.annotation.output.html import HtmlExtractor
 from inscriptis.annotation.output.surface import SurfaceExtractor
 from inscriptis.annotation.output.xml import XmlExtractor
 
@@ -24,6 +25,7 @@ def test_abstract_class():
     with pytest.raises(NotImplementedError):
         result = processor(EXAMPLE_OUTPUT)
 
+
 def test_surface_annotator():
     processor = SurfaceExtractor()
     result = processor(EXAMPLE_OUTPUT)
@@ -37,6 +39,7 @@ def test_surface_annotator():
                                  ('h1', 'Chur'),
                                  ('emphasis', 'Chur')]
 
+
 def test_xml_annotator():
     processor = XmlExtractor()
     result = processor(EXAMPLE_OUTPUT)
@@ -48,6 +51,25 @@ def test_xml_annotator():
                       'of the Swiss canton of the Grisons and lies in '
                       'the Grisonian Rhine Valley.')
 
+
+def test_html_annotator():
+    processor = HtmlExtractor()
+    result = processor(EXAMPLE_OUTPUT)
+
+    assert result.startswith('<html><head><style>')
+    assert result.endswith('</style></head>'
+                           '<body><pre><span class="heading-label">heading'
+                           '</span><span class="heading">'
+                           '<span class="h1-label">h1</span><span class="h1">'
+                           'Chur</span></span></pre>\n'
+                           '<pre></pre>\n'
+                           '<pre><span class="emphasis-label">emphasis</span>'
+                           '<span class="emphasis">Chur</span> is the capital '
+                           'and largest town of the Swiss canton of the '
+                            'Grisons and lies in the Grisonian Rhine Valley.'
+                           '</pre></body></html>')
+
+
 def test_trailing_tag_annotation():
     processor = XmlExtractor()
     result = processor({'text': 'Ehre sei Gott!',
@@ -55,4 +77,3 @@ def test_trailing_tag_annotation():
 
     assert result == ('<?xml version="1.0" encoding="UTF-8" ?>'
                       'Ehre sei <emphasis>Gott!</emphasis>')
-

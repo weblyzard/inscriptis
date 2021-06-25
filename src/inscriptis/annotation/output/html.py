@@ -28,7 +28,7 @@ class HtmlExtractor(AnnotationProcessor):
         open_tags = []
         tagged_content = ['<html><head><style>',
                           self._get_css(annotated_text['label']),
-                          '</style><body><pre>']
+                          '</style></head><body><pre>']
         for idx, ch in enumerate(annotated_text['text']):
             if idx in tag_indices:
                 tags = tag_indices[idx]
