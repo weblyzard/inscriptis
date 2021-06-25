@@ -72,7 +72,6 @@ class Inscriptis:
         self.tags = [self.css['body'].set_canvas(self.canvas)]
         self.current_table = []
         self.li_counter = []
-        self.li_level = 0
         self.last_caption = None
 
         # used if display_links is enabled
@@ -151,11 +150,9 @@ class Inscriptis:
             handler()
 
     def _start_ul(self, _):
-        self.li_level += 1
-        self.li_counter.append(Inscriptis.get_bullet(self.li_level - 1))
+        self.li_counter.append(self.get_bullet())
 
     def _end_ul(self):
-        self.li_level -= 1
         self.li_counter.pop()
 
     def _start_img(self, attrs):
@@ -181,17 +178,12 @@ class Inscriptis:
 
     def _start_ol(self, _):
         self.li_counter.append(1)
-        self.li_level += 1
 
     def _end_ol(self):
-        self.li_level -= 1
         self.li_counter.pop()
 
     def _start_li(self, _):
-        if self.li_level > 0:
-            bullet = self.li_counter[-1]
-        else:
-            bullet = '* '
+        bullet = self.li_counter[-1] if self.li_counter else '* '
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
             self.tags[-1].list_bullet = '{0}. '.format(bullet)
@@ -233,9 +225,6 @@ class Inscriptis:
             self.current_table[-1].td_is_open = False
             self.tags[-1].canvas.close_tag(self.tags[-1])
 
-    def _end_tr(self):
-        pass
-
     def _end_table(self):
         if self.current_table and self.current_table[-1].td_is_open:
             self._end_td()
@@ -266,7 +255,7 @@ class Inscriptis:
     def _newline(self, _):
         self.tags[-1].canvas.write_newline()
 
-    @staticmethod
-    def get_bullet(index) -> str:
+    def get_bullet(self) -> str:
         """Return the bullet that correspond to the given index."""
-        return Inscriptis.UL_COUNTER[index % Inscriptis.UL_COUNTER_LEN]
+        return Inscriptis.UL_COUNTER[
+            len(self.li_counter) % Inscriptis.UL_COUNTER_LEN]
