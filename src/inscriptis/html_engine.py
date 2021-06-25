@@ -199,34 +199,22 @@ class Inscriptis:
 
     def _start_tr(self, _):
         if self.current_table:
-            # check whether we need to cleanup a <td> tag that has not been
-            # closed yet
-            if self.current_table[-1].td_is_open:
-                self._end_td()
-
             self.current_table[-1].add_row()
 
     def _start_td(self, _):
         if self.current_table:
-            # check whether we need to cleanup a <td> tag that has not been
-            # closed yet
-            if self.current_table[-1].td_is_open:
-                self._end_td()
-
             # open td tag
             table_cell = TableCell(align=self.tags[-1].align,
                                    valign=self.tags[-1].valign)
             self.tags[-1].canvas = table_cell
             self.current_table[-1].add_cell(table_cell)
-            self.current_table[-1].td_is_open = True
 
     def _end_td(self):
-        if self.current_table and self.current_table[-1].td_is_open:
-            self.current_table[-1].td_is_open = False
+        if self.current_table:
             self.tags[-1].canvas.close_tag(self.tags[-1])
 
     def _end_table(self):
-        if self.current_table and self.current_table[-1].td_is_open:
+        if self.current_table:
             self._end_td()
         table = self.current_table.pop()
         # last tag before the table: self.tags[-2]

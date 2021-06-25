@@ -147,7 +147,7 @@ class TableCell(Canvas):
 class TableRow:
     """A single row within a table."""
 
-    __slot__ = ('columns', 'cell_separator')
+    __slots__ = ('columns', 'cell_separator')
 
     def __init__(self, cell_separator: str = '  '):
         self.columns: List[TableCell] = []
@@ -182,12 +182,10 @@ class Table:
         left_margin_len: length of the left margin before the table.
     """
 
-    __slot__ = ('rows', 'td_is_open', 'left_margin_len')
+    __slots__ = ('rows', 'left_margin_len')
 
     def __init__(self, left_margin_len: int):
         self.rows = []
-        # keep track of whether the last td tag has been closed
-        self.td_is_open = False
         self.left_margin_len = left_margin_len
 
     def add_row(self):
