@@ -76,10 +76,6 @@ STRICT_CSS_PROFILE = {
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
 RELAXED_CSS_PROFILE['div'] = HtmlElement('div', display=Display.block,
                                          padding_inline=2)
-RELAXED_CSS_PROFILE['span'] = HtmlElement('span', display=Display.inline,
-                                          prefix=' ', suffix=' ',
-                                          limit_whitespace_affixes=True)
-
 
 CSS_PROFILES = {'strict': STRICT_CSS_PROFILE,
                 'relaxed': RELAXED_CSS_PROFILE}

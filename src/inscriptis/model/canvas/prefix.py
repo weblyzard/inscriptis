@@ -6,11 +6,6 @@ from contextlib import suppress
 class Prefix:
     """Class Prefix manages paddings and bullets that prefix an HTML block.
 
-    Note:
-        In Inscriptis an HTML block corresponds to a line in the final output,
-        since new blocks (Display.block) trigger line breaks while inline
-        content (Display.normal) does not.
-
     Attributes:
         current_padding: the number of characters used for the current
                          left-indentation.

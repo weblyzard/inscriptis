@@ -7,11 +7,11 @@ class Block:
 
     A block usually refers to one line of output text.
 
-    Notes:
+    .. note::
         If pre-formatted content is merged with a block, it may also contain
         multiple lines.
 
-    Args
+    Args:
         idx: the current block's start index.
         prefix: prefix used within the current block.
     """
@@ -59,7 +59,7 @@ class Block:
             self.idx += len(text)
 
     def merge_pre_text(self, text: str) -> None:
-        """Merge the given text with the current block.
+        """Merge the given pre-formatted text with the current block.
 
         Args:
             text: the text to merge
@@ -84,10 +84,6 @@ class Block:
         return self._content
 
     def new_block(self) -> 'Block':
-        """Return a new Block based on the current one.
-
-        Returns:
-            A new block that follows the current one.
-        """
+        """Return a new Block based on the current one.kkkkkkkkkjj"""
         self.prefix.consumed = False
         return Block(idx=self.idx + 1, prefix=self.prefix)

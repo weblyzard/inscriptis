@@ -32,7 +32,7 @@ class Annotation(NamedTuple):
 def horizontal_shift(annotations: List[Annotation], content_width: int,
                      line_width: int, align: HorizontalAlignment,
                      shift: int = 0) -> List[Annotation]:
-    """Shift annotations based on the given line's formatting.
+    r"""Shift annotations based on the given line's formatting.
 
     Adjusts the start and end indices of annotations based on the line's
     formatting and width.
@@ -46,7 +46,8 @@ def horizontal_shift(annotations: List[Annotation], content_width: int,
         shift: an optional additional shift
 
     Returns:
-        A list of Annotations with the adjusted start and end positions.
+        A list of :class:`Annotation`\s with the adjusted start and end
+        positions.
     """
     if align == HorizontalAlignment.left:
         h_align = shift

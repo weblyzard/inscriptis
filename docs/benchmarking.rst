@@ -4,12 +4,33 @@ Testing, benchmarking and evaluation
 
 Unit tests
 ==========
-Test cases concerning the html to text conversion are located in the `tests/html` directory and consist of two files:
+In addition to the standard unit tests that are located in the project's `test` directory Inscriptis also contains 
+test cases that solely focus on the html to text conversion and are located in the `tests/html` directory. 
+These tests consist of two files:
 
  1. `test-name.html` and
  2. `test-name.txt`
 
-the latter one containing the reference text output for the given html file.
+The `.txt` file contains the reference text output for the given html file.
+
+Since Inscripits 2.0 there may also be a third file named `test-name.json` in the `tests/html` directory which contains a JSON dictioanry with keys
+
+ 1. `annotation-rules` containing the annotation rules for extracting metadata from the corresponding html file, and
+ 2. `result` which stores the surface forms of the extracted metadata.
+
+
+Example::
+
+	{"annotation_rules": {
+	    "h1": ["heading"],
+	    "b": ["emphasis"]
+	 },
+	 "result": [
+		["heading", "The first"],
+		["heading", "The second"],
+		["heading", "Subheading"]
+	 ]
+	}
 
 
 Text conversion output comparison and benchmarking

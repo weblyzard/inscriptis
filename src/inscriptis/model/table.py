@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-"""Classes used for representing Tables, Rows and TableCells."""
+"""Classes used for representing Tables, TableRows and TableCells."""
 
 from typing import List
 from itertools import chain, accumulate
@@ -174,11 +174,10 @@ class TableRow:
 
 
 class Table:
-    """A HTML table.
+    """An HTML table.
 
     Attributes:
         rows: the table's rows.
-        td_is_open: record's whether the table's last td tag has been closed.
         left_margin_len: length of the left margin before the table.
     """
 
@@ -195,7 +194,7 @@ class Table:
     def add_cell(self, table_cell: TableCell):
         """Add  a new :class:`TableCell` to the table's last row.
 
-        Notes:
+        .. note::
             If no row exists yet, a new row is created.
         """
         if not self.rows:
@@ -228,11 +227,7 @@ class Table:
                     row.columns[cur_column_idx].width = max_column_width
 
     def get_text(self):
-        """Return and render the text of the given table.
-
-        Returns:
-          A rendered string representation of the given table.
-        """
+        """Return and render the text of the given table."""
         if not self.rows:
             return '\n'
 
@@ -242,7 +237,7 @@ class Table:
 
     def get_annotations(self, idx: int,
                         left_margin_len: int) -> List[Annotation]:
-        """Return all annotations in the given table.
+        r"""Return all annotations in the given table.
 
         Args:
             idx: the table's start index.
@@ -250,7 +245,8 @@ class Table:
                              the position of annotations).
 
         Returns:
-            A list of all annotations present in the table.
+            A list of all :class:`~inscriptis.annotation.Annotation`\s present
+            in the table.
         """
         if not self.rows:
             return []

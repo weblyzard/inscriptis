@@ -51,3 +51,8 @@ Inscriptis annotations
    :members:
 
 
+Annotation processors
+---------------------
+
+.. automodule:: inscriptis.annotation.output
+   :members:
