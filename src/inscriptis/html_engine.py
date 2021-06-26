@@ -107,23 +107,24 @@ class Inscriptis:
         self.tags[-1].write_tail(tree.tail)
 
     def get_text(self) -> str:
-        """Return the text extracted from the HTML page.
-
-        Returns:
-            A text representation of the parsed content.
-        """
+        """Return the text extracted from the HTML page."""
         return self.canvas.get_text()
 
     def get_annotations(self) -> List[Annotation]:
-        """Return the annotations extracted from the HTML page.
-
-        Returns:
-            A list of annotations extracted from the parsed content.
-        """
+        """Return the annotations extracted from the HTML page."""
         return self.canvas.annotations
 
     def handle_starttag(self, tag, attrs):
         """Handle HTML start tags.
+
+        Compute the style of the current :class:`HtmlElement`, based on
+
+        1. the used :attr:`css`,
+        2. apply attributes and css with :meth:`~Attribute.apply_attributes`
+        3. add the `HtmlElement` to the list of open tags.
+
+        Lookup and apply and tag-specific start tag handler in
+        :attr:`start_tag_handler_dict`.
 
         Args:
           tag: the HTML start tag to process.
@@ -141,6 +142,9 @@ class Inscriptis:
 
     def handle_endtag(self, tag):
         """Handle HTML end tags.
+
+        Look up the handler for closing the tag in :attr:`end_tag_handler_dict`
+        and execute it, if available.
 
         Args:
           tag: the HTML end tag to process.

@@ -3,11 +3,12 @@
 Annotation configuration files contain a dictionary that maps tags and
 attributes to the corresponding annotation.
 
-- tags are referenced by their name
-- attributes by a # (e.g., #class) and an optional selector (e.g.,
-  #class=short-description)
+  - tags are referenced by their name
+  - attributes by a `#` (e.g., `#class`) and an optional selector (e.g.,
+    `#class=short-description`)
 
-Example:
+Example::
+
     {
         "h1": ["heading"],
         "b": ["emphasis"],
