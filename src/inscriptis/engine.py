@@ -3,7 +3,7 @@
 import re
 import lxml.html
 
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 
 from inscriptis.model.config import ParserConfig
 from inscriptis.html_engine import Inscriptis
@@ -47,12 +47,13 @@ def get_text(html_content: str, config: ParserConfig = None) -> str:
 
 
 def get_annotated_text(html_content: str,
-                       config: ParserConfig = None) -> Dict[str, str]:
+                       config: ParserConfig = None) -> Dict[str, Any]:
     """Return a dictionary of the extracted text and annotations.
 
     Notes:
         - the text is stored under the key 'text'.
-        - annotations are provided under the key 'label' in the JSONL format.
+        - annotations are provided under the key 'label' which contains a
+          list of :class:`Annotation`s.
 
     Examples:
         {"text": "EU rejects German call to boycott British lamb.", "

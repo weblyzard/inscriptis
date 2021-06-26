@@ -1,4 +1,4 @@
-"""Parse HTML content and converts it into a text representation.
+r"""Parse HTML content and converts it into a text representation.
 
 Inscriptis provides support for
 
@@ -54,7 +54,7 @@ Annotations in the `label` field are returned as a list of triples with
 
 .. code-block:: json
 
-   {"text": "Chur\\n\\nChur is the capital and largest town of the Swiss canton
+   {"text": "Chur\n\nChur is the capital and largest town of the Swiss canton
              of the Grisons and lies in the Grisonian Rhine Valley.",
     "label": [[0, 4, "heading"], [6, 10, "emphasis"]]}
 

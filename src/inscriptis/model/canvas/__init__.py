@@ -1,46 +1,51 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""Elements used for rendering (parts) of the canvas.
+"""Classes used for rendering (parts) of the canvas.
 
-The :class:`Canvas` represents the drawing board to which the HTML page
-is serialized.
+Every parsed :class:`~inscriptis.model.html_element.HtmlElement` writes its
+textual content to the canvas which is managed by the following three classes:
+
+  - :class:`Canvas` provides the drawing board on which the HTML page is
+    serialized and annotations are recorded.
+  - :class:`~inscriptis.model.canvas.block.Block` contains the current line to
+    which text is written.
+  - :class:`~inscriptis.model.canvas.prefix.Prefix` handles indentation
+    and bullets that prefix a line.
 """
 from html import unescape
 
 from inscriptis.annotation import Annotation
 from inscriptis.html_properties import WhiteSpace, Display
-from inscriptis.model.block import Block
+from inscriptis.model.canvas.block import Block
 from inscriptis.model.html_element import HtmlElement
-from inscriptis.model.prefix import Prefix
+from inscriptis.model.canvas.prefix import Prefix
 
 
 class Canvas:
-    """The text Canvas on which Inscriptis writes the HTML page.
+    r"""The text Canvas on which Inscriptis writes the HTML page.
 
     Attributes:
         margin: the current margin to the previous block (this is required to
-                ensure that the `margin_after` and `margin_before` constraints
-                of HTML block elements are met).
-        current_block: A list of TextSnippets that will be consolidated into a
-                       block, once the current block is completed.
-        blocks: a list of the completed blocks (i.e., text lines). Each block
-                spawns at least one line.
-        annotations: the list of completed annotations
-        annotation_counter: a counter used for enumerating all annotations
-                            we encounter.
+            ensure that the `margin_after` and `margin_before` constraints of
+            HTML block elements are met).
+        current_block: A :class:`~inscriptis.model.canvas.block.Block` which
+            merges the input text into a block (i.e., line).
+        blocks: a list of strings containing the completed blocks (i.e.,
+            text lines). Each block spawns at least one line.
+        annotations: the list of recorded
+            :class:`~inscriptis.annotation.Annotation`\s.
         _open_annotations: a map of open tags that contain annotations.
     """
 
-    __slots__ = ('annotations', 'annotation_counter', 'blocks',
-                 'current_block', '_open_annotations', 'margin')
+    __slots__ = ('annotations', 'blocks', 'current_block', '_open_annotations',
+                 'margin')
 
     def __init__(self):
         self.margin = 1000  # margin to the previous block
         self.current_block = Block(0, Prefix())
         self.blocks = []
         self.annotations = []
-        self.annotation_counter = {}
         self._open_annotations = {}
 
     def open_tag(self, tag: HtmlElement) -> None:

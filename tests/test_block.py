@@ -1,8 +1,8 @@
 """
 Test cases for the Block class.
 """
-from inscriptis.model.block import Block
-from inscriptis.model.prefix import Prefix
+from inscriptis.model.canvas.block import Block
+from inscriptis.model.canvas.prefix import Prefix
 
 
 def test_merge_normal_text_collapsable_whitespaces():

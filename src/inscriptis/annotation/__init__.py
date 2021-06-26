@@ -1,12 +1,32 @@
 """The model used for saving annotations."""
 
-from collections import namedtuple
+from typing import NamedTuple, Tuple
 from typing import List
 
 from inscriptis.html_properties import HorizontalAlignment
 
 
-Annotation = namedtuple('Annotation', 'start end metadata')
+class Annotation(NamedTuple):
+    """An Inscriptis annotation which provides metadata on the extracted text.
+
+    The :attr:`start` and :attr:`end` indices indicate the span of the text
+    to which the metadata refers, and the attribute :attr:`metadata` contains
+    the tuple of tags describing this span.
+
+    Example::
+
+        Annotation(0, 10, ('heading', ))
+
+    The annotation above indicates that the text span between the 1st (index 0)
+    and 11th (index 10) character of the extracted text contains a *heading*.
+    """
+
+    start: int
+    """the annotation's start index within the text output."""
+    end: int
+    """the annotation's end index within the text output."""
+    metadata: Tuple[str]
+    """a tuple of tags to be attached to the annotation."""
 
 
 def horizontal_shift(annotations: List[Annotation], content_width: int,

@@ -28,6 +28,14 @@ Inscriptis canvas model
 .. automodule:: inscriptis.model.canvas
    :members:
 
+.. automodule:: inscriptis.model.canvas.block
+   :members:
+
+.. automodule:: inscriptis.model.canvas.prefix
+   :members:
+
+
+
 Inscriptis table model
 ----------------------
 .. automodule:: inscriptis.model.table
@@ -40,11 +48,6 @@ Inscriptis annotations
 ======================
 
 .. automodule:: inscriptis.annotation
-
-
-Annotation parser
------------------
-
-.. automodule:: inscriptis.annotation.parser
+   :members:
 
 
