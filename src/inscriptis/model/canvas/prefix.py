@@ -36,33 +36,38 @@ class Prefix:
         self.paddings.append(padding_inline)
         if bullet:
             self.bullets.append(bullet)
+        self.consumed = False
 
     def remove_last_prefix(self):
         """Remove the last prefix from the list."""
         with suppress(IndexError):
             self.current_padding -= self.paddings.pop()
             del self.bullets[-1]
-
-    def restore(self):
-        """Restore the last_used_bullet, if present.
-
-        Notes:
-            After restore the iterator behaves like before its first usage.
-            (i.e., if a bullet had already been used, calling the iterator
-            will again, yield a bullet for the first line)
-        """
-        if self.last_used_bullet:
-            self.bullets.append(self.last_used_bullet)
-            self.last_used_bullet = None
-
-    def __iter__(self):
         self.consumed = False
-        return self
 
-    def __next__(self):
-        if self.bullets and not self.consumed:
-            self.consumed = True
-            self.last_used_bullet = self.bullets.pop(0)
-            return ' ' * (self.current_padding - len(self.last_used_bullet)) \
-                   + self.last_used_bullet
+    @property
+    def first(self):
+        """Return the prefix used at the beginning of a tag.
+
+        Note::
+            A new block needs to be prefixed by the current padding and bullet.
+            Once this has happened (i.e., :attr:`consumed` is set to `True`) no
+            further prefixes should be used for a line.
+        """
+        if self.consumed:
+            return ''
+
+        self.consumed = True
+        self.last_used_bullet = self.bullets.pop(0) if self.bullets else ''
+        return ' ' * (self.current_padding - len(self.last_used_bullet)) \
+               + self.last_used_bullet
+
+    @property
+    def rest(self):
+        """Return the prefix used for new lines within a block.
+
+        This prefix is used for pre-text that contains newlines. The lines
+        need to be prefixed with the right padding to preserver the
+        indentation.
+        """
         return ' ' * self.current_padding

@@ -53,7 +53,7 @@ class Block:
                 self.collapsable_whitespace = True
 
         if normalized_text:
-            text = ''.join((next(self.prefix), *normalized_text)) if not \
+            text = ''.join((self.prefix.first, *normalized_text)) if not \
                 self._content else ''.join(normalized_text)
             self._content += text
             self.idx += len(text)
@@ -64,8 +64,8 @@ class Block:
         Args:
             text: the text to merge
         """
-        text = ''.join((next(self.prefix),
-                        text.replace('\n', '\n' + next(self.prefix))))
+        text = ''.join((self.prefix.first,
+                        text.replace('\n', '\n' + self.prefix.rest)))
         self._content += text
         self.idx += len(text)
         self.collapsable_whitespace = False
@@ -84,6 +84,6 @@ class Block:
         return self._content
 
     def new_block(self) -> 'Block':
-        """Return a new Block based on the current one.kkkkkkkkkjj"""
+        """Return a new Block based on the current one."""
         self.prefix.consumed = False
         return Block(idx=self.idx + 1, prefix=self.prefix)
