@@ -144,6 +144,7 @@ class HtmlElement:
 
         if new.display == Display.block and self.display == Display.block:
             new.previous_margin_after = self.margin_after
+
         return new
 
     def __str__(self):

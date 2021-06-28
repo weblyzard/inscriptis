@@ -54,6 +54,6 @@ def <span>hallo</span>():
             '''
     config = ParserConfig(css=RELAXED_CSS_PROFILE)
     assert get_text(html, config).strip() == \
-        'halloecho\n\n' \
+        'hallo echo\n\n' \
         'def hallo():\n' \
         '   print("echo")'
