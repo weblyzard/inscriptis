@@ -62,7 +62,12 @@ class Canvas:
 
     def open_block(self, tag: HtmlElement):
         """Open an HTML block element."""
-        self._flush_inline()
+        # write missing bullets, if no content has been written
+        if not self._flush_inline() and tag.list_bullet:
+            bullet = self.current_block.prefix.previous
+            if bullet:
+                self.blocks.append(bullet)
+                self.current_block = self.current_block.new_block()
         self.current_block.prefix.register_prefix(tag.padding_inline,
                                                   tag.list_bullet)
 
@@ -86,7 +91,12 @@ class Canvas:
             tag: the tag to close.
         """
         if tag.display == Display.block:
-            self._flush_inline()
+            if not self._flush_inline() \
+                    and not self.current_block.prefix.consumed and \
+                    self.current_block.prefix.bullets:
+                self.blocks.append(self.current_block.prefix.first)
+                self.current_block = self.current_block.new_block()
+                self.margin = 0
             self.current_block.prefix.remove_last_prefix()
             self.close_block(tag)
 
@@ -139,6 +149,7 @@ class Canvas:
             self.current_block = self.current_block.new_block()
             self.margin = 0
             return True
+
         return False
 
     @property

@@ -63,6 +63,22 @@ class Prefix:
                + self.last_used_bullet
 
     @property
+    def previous(self):
+        """Return bullets that have not yet been serialized.
+
+        Note::
+            This function yields the previous element's bullets, if they have
+            not been consumed yet.
+        """
+        if self.consumed or not self.bullets:
+            return ''
+
+        self.last_used_bullet = self.bullets.pop(0)
+        padding = self.current_padding - self.paddings[-1]
+        return ' ' * (padding - len(self.last_used_bullet)) \
+               + self.last_used_bullet
+
+    @property
     def rest(self):
         """Return the prefix used for new lines within a block.
 

@@ -1,9 +1,9 @@
 """Implement basic CSS support for inscriptis.
 
-    - The :class:`~inscriptis.model.html_element.HtmlElement` class
-      encapsulates all CSS properties of a single HTML element.
-    - :class:`CssParse` parses CSS specifications and translates them into the
-      corresponding HtmlElements used by Inscriptis for rendering HTML pages.
+- The :class:`~inscriptis.model.html_element.HtmlElement` class
+  encapsulates all CSS properties of a single HTML element.
+- :class:`CssParse` parses CSS specifications and translates them into the
+  corresponding HtmlElements used by Inscriptis for rendering HTML pages.
 """
 from contextlib import suppress
 from re import compile as re_compile

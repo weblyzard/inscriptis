@@ -70,7 +70,7 @@ class Block:
         self.idx += len(text)
         self.collapsable_whitespace = False
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return len(self.content) == 0
 
     @property
