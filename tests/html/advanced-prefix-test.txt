@@ -1,0 +1,13 @@
+ 1. first
+ 2. 
+      + y=0
+        for x in range(3,10):
+           print(x)
+           y += x
+        print(y)
+      + print("Hallo")
+        print("Echo")
+        print("123")
+                    
+      + 
+ 3. third
