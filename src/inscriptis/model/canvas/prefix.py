@@ -11,18 +11,15 @@ class Prefix:
                          left-indentation.
         paddings: the list of paddings for the current and all previous tags.
         bullets: the list of bullets in the current and all previous tags.
-        last_used_bullet: the last bullet that has been used.
         consumed: whether the current bullet has already been consumed.
     """
 
-    __slots__ = ('current_padding', 'last_used_bullet', 'paddings', 'bullets',
-                 'consumed')
+    __slots__ = ('current_padding', 'paddings', 'bullets', 'consumed')
 
     def __init__(self):
         self.current_padding = 0
         self.paddings = []
         self.bullets = []
-        self.last_used_bullet = None
         self.consumed = False
 
     def register_prefix(self, padding_inline, bullet):
@@ -34,8 +31,7 @@ class Prefix:
         """
         self.current_padding += padding_inline
         self.paddings.append(padding_inline)
-        if bullet:
-            self.bullets.append(bullet)
+        self.bullets.append(bullet if bullet else '')
         self.consumed = False
 
     def remove_last_prefix(self):
@@ -44,6 +40,19 @@ class Prefix:
             self.current_padding -= self.paddings.pop()
             del self.bullets[-1]
         self.consumed = False
+
+    def pop_next_bullet(self):
+        """Pop the next bullet to use, if any bullet is available."""
+        next_bullet_idx = next((-idx for idx, val
+                                in enumerate(reversed(self.bullets))
+                                if val), 1) - 1
+
+        if not next_bullet_idx:
+            return ''
+
+        bullet = self.bullets[next_bullet_idx]
+        self.bullets[next_bullet_idx] = ''
+        return bullet
 
     @property
     def first(self):
@@ -58,9 +67,9 @@ class Prefix:
             return ''
 
         self.consumed = True
-        self.last_used_bullet = self.bullets.pop(0) if self.bullets else ''
-        return ' ' * (self.current_padding - len(self.last_used_bullet)) \
-               + self.last_used_bullet
+        bullet = self.pop_next_bullet()
+        return ' ' * (self.current_padding - len(bullet)) \
+               + bullet
 
     @property
     def unconsumed_bullet(self):
@@ -70,13 +79,16 @@ class Prefix:
             This function yields the previous element's bullets, if they have
             not been consumed yet.
         """
-        if self.consumed or not self.bullets:
+        if self.consumed:
             return ''
 
-        self.last_used_bullet = self.bullets.pop(0)
+        bullet = self.pop_next_bullet()
+        if not bullet:
+            return ''
+
         padding = self.current_padding - self.paddings[-1]
-        return ' ' * (padding - len(self.last_used_bullet)) \
-               + self.last_used_bullet
+        return ' ' * (padding - len(bullet)) \
+               + bullet
 
     @property
     def rest(self):

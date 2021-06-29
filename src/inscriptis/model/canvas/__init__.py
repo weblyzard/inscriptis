@@ -97,7 +97,7 @@ class Canvas:
         """
         if tag.display == Display.block:
             # write missing bullets, if no content has been written so far.
-            if not self._flush_inline():
+            if not self._flush_inline() and tag.list_bullet:
                 self.write_unconsumed_bullet()
             self.current_block.prefix.remove_last_prefix()
             self.close_block(tag)

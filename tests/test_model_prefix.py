@@ -33,7 +33,6 @@ def test_combined_prefix():
     assert p.first ==  '    1. '
     assert p.first == ''
 
-
     p.remove_last_prefix()
     # second consumption - without the bullet
     assert p.first == '     '
@@ -48,11 +47,11 @@ def test_combined_prefix():
     p.register_prefix(5, '2. ')
     p.register_prefix(2, '- ')
 
-    assert p.first == '    2. '
+    assert p.first == '     - '
     assert p.first == ''
     assert p.rest  == '       '
 
     p.remove_last_prefix()
-    assert p.first == '     '
+    assert p.first == '  2. '
     assert p.rest == '     '
 
