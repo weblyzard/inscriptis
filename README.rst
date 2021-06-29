@@ -70,7 +70,7 @@ Embedding inscriptis into your code is easy, as outlined below:
 .. code-block:: python
    
    import urllib.request
-   from inscriptis.engine import get_text
+   from inscriptis import get_text
    
    url = "https://www.fhgr.ch"
    html = urllib.request.urlopen(url).read().decode('utf-8')
@@ -294,7 +294,7 @@ be used within a program:
 .. code-block:: python
 
   import urllib.request
-  from inscriptis.engine import get_annotated_text
+  from inscriptis import get_annotated_text
 
   url = "https://www.fhgr.ch"
   html = urllib.request.urlopen(url).read().decode('utf-8')
@@ -314,7 +314,7 @@ Fine tuning
 
 The following options are available for fine tuning inscriptis' HTML rendering:
 
-1. **More rigorous indentation:** call `inscriptis.engine.get_text()` with the
+1. **More rigorous indentation:** call `inscriptis.get_text()` with the
    parameter `indentation='extended'` to also use indentation for tags such as
    `<div>` and `<span>` that do not provide indentation in their standard
    definition. This strategy is the default in `inscript.py` and many other

@@ -8,7 +8,7 @@ from json import load
 from glob import glob
 from typing import List
 
-from inscriptis.engine import get_annotated_text
+from inscriptis import get_annotated_text
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 

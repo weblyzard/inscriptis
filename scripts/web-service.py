@@ -3,8 +3,9 @@
 """Inscriptis Web Service."""
 
 from flask import request, Response, Flask
-from inscriptis import __version__
-from inscriptis.engine import get_text
+
+from inscriptis import get_text
+from inscriptis.metadata import __version__
 from inscriptis.css_profiles import RELAXED_CSS_PROFILE
 from inscriptis.model.config import ParserConfig
 

@@ -9,8 +9,8 @@ from pathlib import Path
 
 import requests
 
-from inscriptis import __version__, __copyright__, __license__
-from inscriptis.engine import get_text, get_annotated_text
+from inscriptis import get_text, get_annotated_text
+from inscriptis.metadata import __version__, __copyright__, __license__
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
