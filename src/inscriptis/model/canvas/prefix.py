@@ -63,8 +63,8 @@ class Prefix:
                + self.last_used_bullet
 
     @property
-    def previous(self):
-        """Return bullets that have not yet been serialized.
+    def unconsumed_bullet(self):
+        """Yield any yet unconsumed bullet.
 
         Note::
             This function yields the previous element's bullets, if they have

@@ -64,10 +64,7 @@ class Canvas:
         """Open an HTML block element."""
         # write missing bullets, if no content has been written
         if not self._flush_inline() and tag.list_bullet:
-            bullet = self.current_block.prefix.previous
-            if bullet:
-                self.blocks.append(bullet)
-                self.current_block = self.current_block.new_block()
+            self.write_unconsumed_bullet()
         self.current_block.prefix.register_prefix(tag.padding_inline,
                                                   tag.list_bullet)
 
@@ -78,6 +75,14 @@ class Canvas:
             self.current_block.idx += required_newlines
             self.blocks.append('\n' * (required_newlines - 1))
             self.margin = required_margin
+
+    def write_unconsumed_bullet(self):
+        """Write unconsumed bullets to the blocks list."""
+        bullet = self.current_block.prefix.unconsumed_bullet
+        if bullet:
+            self.blocks.append(bullet)
+            self.current_block = self.current_block.new_block()
+            self.margin = 0
 
     def write(self, tag: HtmlElement, text: str,
               whitespace: WhiteSpace = None) -> None:
@@ -91,12 +96,9 @@ class Canvas:
             tag: the tag to close.
         """
         if tag.display == Display.block:
-            if not self._flush_inline() \
-                    and not self.current_block.prefix.consumed and \
-                    self.current_block.prefix.bullets:
-                self.blocks.append(self.current_block.prefix.first)
-                self.current_block = self.current_block.new_block()
-                self.margin = 0
+            # write missing bullets, if no content has been written so far.
+            if not self._flush_inline():
+                self.write_unconsumed_bullet()
             self.current_block.prefix.remove_last_prefix()
             self.close_block(tag)
 
