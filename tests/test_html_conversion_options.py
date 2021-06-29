@@ -4,7 +4,7 @@
 Tests different HTML to text conversion options.
 """
 
-from inscriptis.engine import get_text
+from inscriptis import get_text
 from inscriptis.model.config import ParserConfig
 
 

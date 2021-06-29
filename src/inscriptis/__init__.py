@@ -132,4 +132,3 @@ def get_annotated_text(html_content: str,
               for a in inscriptis.get_annotations()]
     return {'text': inscriptis.get_text(),
             'label': labels}
-

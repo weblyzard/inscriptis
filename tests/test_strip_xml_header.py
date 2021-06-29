@@ -2,7 +2,7 @@
 
 """ ensures that xml declaration headers are correctly stripped"""
 
-from inscriptis.engine import get_text
+from inscriptis import get_text
 
 def test_successive_a():
     html = u'<?xml version="1.0" encoding="UTF-8" ?> Hallo?>'

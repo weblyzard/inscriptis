@@ -2,19 +2,18 @@
 
 """Inscriptis setup script."""
 
-import sys
 from pathlib import Path
 from setuptools import setup, find_packages
 from os import path
 
+
 here = Path(path.dirname(__file__)).resolve()
-sys.path.insert(0, path.join(str(here), 'src'))
-
-from inscriptis import (__version__, __author__, __author_email__, __license__)
-
+# get version information
+with here.joinpath('src/inscriptis/metadata.py').open() as f:
+    exec(f.read())
 
 # Get the long description from the README.md file
-with here.joinpath(Path('README.rst')).open() as f:  # , encoding='utf-8'
+with here.joinpath('README.rst').open() as f:  # , encoding='utf-8'
     long_description = f.read()
 
 setup(

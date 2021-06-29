@@ -5,7 +5,8 @@
     or space between the tags.
 """
 
-from inscriptis.engine import get_text
+from inscriptis import get_text
+
 
 def test_successive_a():
     html = '<html><body><a href="first">first</a>' \

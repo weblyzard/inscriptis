@@ -5,7 +5,7 @@ Tests different HTML to text conversion options.
 """
 
 from copy import copy
-from inscriptis.engine import get_text
+from inscriptis import get_text
 from inscriptis.css_profiles import RELAXED_CSS_PROFILE
 from inscriptis.html_properties import Display, WhiteSpace
 from inscriptis.model.config import ParserConfig
