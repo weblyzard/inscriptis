@@ -14,6 +14,8 @@ from inscriptis.metadata import __version__, __copyright__, __license__
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
+DEFAULT_ENCODING = 'utf8'
+
 
 def get_postprocessor(name):
     """Return the postprocessor (if available) for the given name.
@@ -33,16 +35,15 @@ def get_postprocessor(name):
 def get_parser():
     """Parse the arguments if script is run via console."""
     parser = argparse.ArgumentParser(
-        description='Converts HTML from file or url to a clean text version')
+        description='Convert the given HTML document to text.')
     parser.add_argument('input', nargs='?', default=None,
-                        help='Html input either from a file or an url '
-                             '(default:stdin)')
+                        help='Html input either from a file or a URL '
+                             '(default:stdin).')
     parser.add_argument('-o', '--output', type=str,
                         help='Output file (default:stdout).')
     parser.add_argument('-e', '--encoding', type=str,
-                        help='Content encoding for reading and writing files '
-                             '(default:utf-8)',
-                        default='utf-8')
+                        help='Input encoding to use (default:utf-8 for '
+                             'files; detected server encoding for Web URLs).')
     parser.add_argument('-i', '--display-image-captions',
                         action='store_true', default=False,
                         help='Display image captions (default:false).')
@@ -87,11 +88,12 @@ if __name__ == '__main__':
     if not args.input:
         html_content = sys.stdin.read()
     elif Path(args.input).is_file():
-        with Path(args.input).open(encoding=args.encoding,
+        with Path(args.input).open(encoding=args.encoding or DEFAULT_ENCODING,
                                    errors='ignore') as f:
             html_content = f.read()
     elif args.input.startswith('http://') or args.input.startswith('https://'):
-        html_content = requests.get(args.input).text
+        req = requests.get(args.input)
+        html_content = req.content.decode(args.encoding or req.encoding)
     else:
         print("ERROR: Cannot open input file '{0}'.\n".format(args.input))
         parser.print_help()
@@ -127,7 +129,7 @@ if __name__ == '__main__':
             output = dumps(output)
 
     if args.output:
-        with Path(args.output).open('w', encoding=args.encoding) as open_file:
+        with Path(args.output).open('w', encoding=DEFAULT_ENCODING) as open_file:
             open_file.write(output)
     else:
         print(output)
