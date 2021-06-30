@@ -13,7 +13,6 @@ def test_simple_prefix():
 
     p.register_prefix(5, '1. ')
 
-
     # first use
     assert p.first == '  1. '
 
@@ -30,12 +29,10 @@ def test_combined_prefix():
     p.register_prefix(5, '1. ')
     p.register_prefix(2, '')
 
-    assert p.first ==  '    1. '
+    assert p.first == '    1. '
     assert p.first == ''
 
     p.remove_last_prefix()
-    # second consumption - without the bullet
-    assert p.first == '     '
     assert p.first == ''
 
     p.remove_last_prefix()
@@ -44,13 +41,15 @@ def test_combined_prefix():
 
     # ensure that there are no interactions between different runs with
     # bullets
+    p.consumed = False
     p.register_prefix(5, '2. ')
     p.register_prefix(2, '- ')
 
     assert p.first == '     - '
     assert p.first == ''
-    assert p.rest  == '       '
+    assert p.rest == '       '
 
+    p.consumed = False
     p.remove_last_prefix()
     assert p.first == '  2. '
     assert p.rest == '     '

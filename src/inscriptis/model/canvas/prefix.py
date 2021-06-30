@@ -32,14 +32,12 @@ class Prefix:
         self.current_padding += padding_inline
         self.paddings.append(padding_inline)
         self.bullets.append(bullet if bullet else '')
-        self.consumed = False
 
     def remove_last_prefix(self):
         """Remove the last prefix from the list."""
         with suppress(IndexError):
             self.current_padding -= self.paddings.pop()
             del self.bullets[-1]
-        self.consumed = False
 
     def pop_next_bullet(self):
         """Pop the next bullet to use, if any bullet is available."""
