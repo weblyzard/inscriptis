@@ -1,59 +1,58 @@
-#!/usr/bin/env python
-# encoding: utf-8
+r"""Provide properties used for rendering HTML pages.
 
-"""
-This module provides the following properties used for the rendering of HTML
-pages:
-
+Supported attributes::
  1. :class:`Display` properties.
  2. :class:`WhiteSpace` properties.
  3. :class:`HorizontalAlignment` properties.
+ 4. :class:`VerticalAlignment` properites.
 """
 
 from enum import Enum
 
 
 class Display(Enum):
+    """Specify whether content will be rendered as inline, block or none.
+
+    .. note::
+        A display attribute on none indicates, that the content should not be
+        rendered at all.
     """
-    This enum specifies whether content will be rendered as inline, block or
-    none (i.e. not rendered).
-    """
+
     inline = 1
     block = 2
     none = 3
 
 
 class WhiteSpace(Enum):
+    """Specify the HTML element's whitespace handling.
+
+    Inscriptis supports the following handling strategies outlined in the
+    `Cascading Style Sheets <https://www.w3.org/TR/CSS1/>`_ specification.
     """
-    This enum specifies the whitespace handling used for an HTML element as
-    outlined in the `Cascading Style Sheets <https://www.w3.org/TR/CSS1/>`_
-    specification.
 
-    .. data:: normal
-
-    Sequences of whitespaces will be collapsed into a single one.
-
-    .. data:: pre
-
-    Sequences of whitespaces will preserved.
-    """
     normal = 1
+    """Collapse multiple whitespaces into a single one."""
     pre = 3
+    """Preserve sequences of whitespaces."""
 
 
 class HorizontalAlignment(Enum):
-    """
-    This enum specifies the horizontal alignment.
-    """
+    """Specify the content's horizontal alignment."""
+
     left = '<'
+    """Left alignment of the block's content."""
     right = '>'
+    """Right alignment of the block's content."""
     center = '^'
+    """Center the block's content."""
 
 
 class VerticalAlignment(Enum):
-    """
-    This enum specifies the vertical alignment.
-    """
+    """Specify the content's vertical alignment."""
+
     top = 1
+    """Align all content at the top."""
     middle = 2
+    """Align all content in the middle."""
     bottom = 3
+    """Align all content at the bottom."""

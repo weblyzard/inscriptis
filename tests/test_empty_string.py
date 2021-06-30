@@ -7,6 +7,7 @@
 
 from inscriptis import get_text
 
+
 def test_empty_and_corrupt():
     assert get_text("test").strip() == "test"
     assert get_text("  ") == ""

@@ -1,7 +1,7 @@
 column with nested table  column 2  column 3  column 4
 nested  table             Tom                         
-11      12                          Joe               
-21      22                                            
+11      12                                            
+21      22                          Joe               
 31      32                                            
                                               Sue     
 last                      line

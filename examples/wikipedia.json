@@ -1,0 +1,12 @@
+{
+    "h1": ["heading"],
+    "h2": ["heading"],
+    "h3": ["subheading"],
+    "h4": ["subheading"],
+    "h5": ["subheading"],
+    "i": ["emphasis"],
+    "b": ["bold"],
+    "table": ["table"],
+    "th": ["tableheading"],
+    "a": ["link"]
+}

@@ -1,11 +1,15 @@
-"""
-Inscriptis parses HTML content and converts it into a text representation.
-Among others it provides support for
+r"""Parse HTML content and converts it into a text representation.
 
-- nested HTML tables and
-- basic Cascade Style Sheets.
+Inscriptis provides support for
 
-Example::
+ - nested HTML tables
+ - basic Cascade Style Sheets
+ - annotations
+
+The following example provides the text representation of
+`<https://www.fhgr.ch>`_.
+
+.. code::
 
    import urllib.request
    from inscriptis import get_text
@@ -17,52 +21,114 @@ Example::
 
    print(text)
 
+Use the method :meth:`~inscriptis.get_annotated_text` to obtain text and
+annotations. The method requires annotation rules as described in annotations_.
+
+.. code::
+
+   import urllib.request
+   from inscriptis import get_annotated_text
+
+   url = "https://www.fhgr.ch"
+   html = urllib.request.urlopen(url).read().decode('utf-8')
+
+   # annotation rules specify the HTML elements and attributes to annotate.
+   rules = {'h1': ['heading'],
+            'h2': ['heading'],
+            '#class=FactBox': ['fact-box'],
+            'i': ['emphasis']}
+
+  output = get_annotated_text(html, ParserConfig(annotation_rules=rules)
+  print("Text:", output['text'])
+  print("Annotations:", output['label'])
+
+The method returns a dictionary with two keys:
+
+ 1. `text` which contains the page's plain text and
+ 2. `label` with the annotations in JSONL format that is used by annotators
+     such as `doccano <https://doccano.herokuapp.com/>`_.
+
+Annotations in the `label` field are returned as a list of triples with
+ `start index`, `end index` and `label` as indicated below:
+
+.. code-block:: json
+
+   {"text": "Chur\n\nChur is the capital and largest town of the Swiss canton
+             of the Grisons and lies in the Grisonian Rhine Valley.",
+    "label": [[0, 4, "heading"], [6, 10, "emphasis"]]}
+
 """
 
-__author__ = 'Albert Weichselbraun, Fabian Odoni'
-__author_email__ = 'albert.weichselbraun@fhgr.ch, fabian.odoni@fhgr.ch'
-__copyright__ = '2016-2021 Albert Weichselbraun, Fabian Odoni'
-__license__ = 'Apache 2.0'
-__version__ = '1.2'
+import re
+import lxml.html
 
+from typing import Dict, Optional, Any
 
-try:
-    import re
-    from lxml.html import fromstring
-
-    from inscriptis.html_engine import Inscriptis
-
-except ImportError:
-    import warnings
-    warnings.warn(
-        "Missing dependencies - inscriptis has not been properly installed")
-
+from inscriptis.model.config import ParserConfig
+from inscriptis.html_engine import Inscriptis
 
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
 
-def get_text(html_content, config=None):
-    """
-    Converts an HTML string to text, optionally including and deduplicating
-    image captions, displaying link targets and using either the standard
-    or extended indentation strategy.
-
+def _get_html_tree(html_content: str) -> Optional[lxml.html.HtmlElement]:
+    """Obtain the HTML parse tree for the given HTML content.
 
     Args:
-      html_content (str): the HTML string to be converted to text.
-      config: An optional ParserConfig object.
+        html_content: The content to parse.
 
     Returns:
-      str -- The text representation of the HTML content.
+        The corresponding HTML parse tree.
     """
     html_content = html_content.strip()
     if not html_content:
-        return ''
+        return None
 
     # strip XML declaration, if necessary
     if html_content.startswith('<?xml '):
         html_content = RE_STRIP_XML_DECLARATION.sub('', html_content, count=1)
 
-    html_tree = fromstring(html_content)
-    parser = Inscriptis(html_tree, config)
-    return parser.get_text()
+    return lxml.html.fromstring(html_content)
+
+
+def get_text(html_content: str, config: ParserConfig = None) -> str:
+    """Provide a text representation of the given HTML content.
+
+    Args:
+      html_content (str): The HTML content to convert.
+      config: An optional ParserConfig object.
+
+    Returns:
+      The text representation of the HTML content.
+    """
+    html_tree = _get_html_tree(html_content)
+    return Inscriptis(html_tree, config).get_text() if html_tree is not None \
+        else ''
+
+
+def get_annotated_text(html_content: str,
+                       config: ParserConfig = None) -> Dict[str, Any]:
+    """Return a dictionary of the extracted text and annotations.
+
+    Notes:
+        - the text is stored under the key 'text'.
+        - annotations are provided under the key 'label' which contains a
+          list of :class:`Annotation`s.
+
+    Examples:
+        {"text": "EU rejects German call to boycott British lamb.", "
+         label": [ [0, 2, "strong"], ... ]}
+        {"text": "Peter Blackburn",
+         "label": [ [0, 15, "heading"] ]}
+
+    Returns:
+        A dictionary of text (key: 'text') and annotations (key: 'label')
+    """
+    html_tree = _get_html_tree(html_content)
+    if html_tree is None:
+        return {}
+
+    inscriptis = Inscriptis(html_tree, config)
+    labels = [(a.start, a.end, a.metadata)
+              for a in inscriptis.get_annotations()]
+    return {'text': inscriptis.get_text(),
+            'label': labels}

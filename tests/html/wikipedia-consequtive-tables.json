@@ -1,0 +1,32 @@
+{
+    "annotation_rules": {
+        "h1": ["heading"],
+         "h2": ["heading"],
+         "h3": ["subheading"],
+         "h4": ["subheading"],
+         "h5": ["subheading"],
+         "i": ["emphasis"],
+         "b": ["bold"],
+         "th": ["tableheading"],
+         "a": ["link"]
+    },
+    "result": [
+        ["bold", "Monatliche Durchschnittstemperaturen und -niederschl\u00e4ge f\u00fcr Chur 1981\u20132010"], 
+        ["link", "Temperatur"], 
+        ["bold", "\u00d8"], 
+        ["bold", "15,1"], 
+        ["bold", "\u00d8"], 
+        ["bold", "5,6"], 
+        ["bold", "\u00d8"], 
+        ["bold", "10"], 
+        ["link", "Niederschlag"], 
+        ["bold", "\u03a3"], 
+        ["bold", "848"], 
+        ["link", "Sonnenstunden"], 
+        ["bold", "\u00d8"], 
+        ["bold", "4,6"], 
+        ["link", "Regentage"], 
+        ["bold", "\u03a3"], 
+        ["bold", "104,6"]
+    ]
+}

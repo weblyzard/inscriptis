@@ -14,3 +14,5 @@ https://www.fhgr.ch
 https://www.diepresse.com
 https://derstandard.at
 https://krone.at
+https://stackoverflow.com/questions/328356/extracting-text-from-html-file-using-python/46921881
+https://www.chur.ch/churinzahlen

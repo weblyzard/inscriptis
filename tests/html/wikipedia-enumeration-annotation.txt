@@ -1,0 +1,45 @@
+Inhaltsverzeichnis
+
+Another marker.
+  * 1 Name und Aussprache - marker2
+  * 2 Geographie - marker3
+      + 2.1 Stadtquartiere - marker31
+      + 2.2 Klima
+  * 3 Geschichte
+      + 3.1 Vorrömische Zeit
+      + 3.2 Antike
+      + 3.3 Mittelalter
+      + 3.4 Wende zur Neuzeit
+      + 3.5 Reformation und Dreissigjähriger Krieg
+      + 3.6 19. Jahrhundert
+      + 3.7 Moderne und Gegenwart
+  * 4 Bevölkerung
+      + 4.1 Sprachen
+      + 4.2 Religionen
+  * 5 Wappen
+  * 6 Politik
+      + 6.1 Stadtpräsidenten
+      + 6.2 Partnerstädte
+  * 7 Wirtschaft und Infrastruktur
+      + 7.1 Wirtschaft
+      + 7.2 Land- und Alpwirtschaft
+      + 7.3 Verkehr
+      + 7.4 Bildung
+      + 7.5 Medien
+      + 7.6 Kultur
+      + 7.7 Justiz
+      + 7.8 Friedhöfe
+      + 7.9 Sportvereine
+  * 8 Sehenswürdigkeiten und Tourismus
+      + 8.1 Tourismus
+  * 9 Besonderes
+  * 10 Galerie
+  * 11 Persönlichkeiten
+  * 12 Siehe auch
+  * 13 Literatur
+  * 14 Weblinks
+  * 15 Einzelnachweise
+
+End of enumeration
+
+Closing remarks and an emphasized text portion.

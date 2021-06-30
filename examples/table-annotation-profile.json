@@ -1,0 +1,7 @@
+{
+    "table": ["table"],
+    "th": ["table-heading"],
+    "tr": ["table-row"],
+    "td": ["table-cell"],
+    "b": ["emphasis"]
+}

@@ -1,0 +1,18 @@
+{"annotation_rules": {
+    "h1": ["heading"],
+    "h2": ["heading"],
+    "h3": ["heading"],
+    "b": ["emphasis"],
+    "table": ["table"],
+    "th": ["table-heading"],
+    "td": ["table-cell"]
+ },
+ "result": [
+  ["heading", "The first\n\n"],
+  ["heading", "\nThe second\n\n"],
+  ["heading", "\nSubheading\n\n"],
+  ["heading", "\nThis is a subsubtopic\n\n"],
+  ["heading", "Another subheading\n\n"],
+  ["heading", "\nThe third\n\n"]
+ ]
+}

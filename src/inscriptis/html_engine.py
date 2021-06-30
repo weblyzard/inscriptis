@@ -1,27 +1,19 @@
 #!/usr/bin/env python
 # coding:utf-8
-"""
-The HTML Engine is responsible for converting HTML to text.
+"""The HTML Engine is responsible for converting HTML to text."""
+from typing import List
 
-Guiding principles:
+import lxml.html
 
- 1. break lines only if we encounter a block element
-"""
-from itertools import chain
-from html import unescape
-
-from inscriptis.model.attribute import apply_attributes
-from inscriptis.model.css import HtmlElement
-from inscriptis.model.canvas import Line
+from inscriptis.annotation import Annotation
+from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
+from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
-from inscriptis.model.table import Table
-from inscriptis.html_properties import Display, WhiteSpace
+from inscriptis.model.table import Table, TableCell
 
 
 class Inscriptis:
-    """
-    The Inscriptis class translates an lxml HTML tree to the corresponding
-    text representation.
+    """Translate an lxml HTML tree to the corresponding text representation.
 
     Args:
       html_tree: the lxml HTML tree to convert.
@@ -45,9 +37,8 @@ class Inscriptis:
     UL_COUNTER = ('* ', '+ ', 'o ', '- ')
     UL_COUNTER_LEN = len(UL_COUNTER)
 
-    DEFAULT_ELEMENT = HtmlElement()
-
-    def __init__(self, html_tree, config=None):
+    def __init__(self, html_tree: lxml.html.HtmlElement,
+                 config: ParserConfig = None):
         # use the default configuration, if no config object is provided
         self.config = config or ParserConfig()
 
@@ -74,19 +65,13 @@ class Inscriptis:
         }
 
         # instance variables
-        self.current_tag = [self.config.css['body']]
-        self.current_line = [Line()]
-        self.next_line = [Line()]
+        self.canvas = Canvas()
+        self.css = self.config.css
+        self.apply_attributes = self.config.attribute_handler.apply_attributes
 
-        # the canvases used for displaying text
-        # clean_text_line[0] refers to the root canvas; tables write into child
-        # canvases that are created for every table line and merged with the
-        # root canvas at the end of a table
-        self.clean_text_lines = [[]]
-
+        self.tags = [self.css['body'].set_canvas(self.canvas)]
         self.current_table = []
         self.li_counter = []
-        self.li_level = 0
         self.last_caption = None
 
         # used if display_links is enabled
@@ -94,157 +79,91 @@ class Inscriptis:
 
         # crawl the html tree
         self._parse_html_tree(html_tree)
-        if self.current_line[-1]:
-            self._write_line()
 
     def _parse_html_tree(self, tree):
-        """
-        Parses the HTML tree.
+        """Parse the HTML tree.
 
         Args:
             tree: the HTML tree to parse.
         """
-        if isinstance(tree.tag, str):
-            self.handle_starttag(tree.tag, tree.attrib)
-            if tree.text:
-                self.handle_data(tree.text)
+        # ignore comments
+        if not isinstance(tree.tag, str):
+            return
 
-            for node in tree:
-                self._parse_html_tree(node)
+        self.handle_starttag(tree.tag, tree.attrib)
+        cur = self.tags[-1]
+        cur.canvas.open_tag(cur)
 
-            self.handle_endtag(tree.tag)
+        self.tags[-1].write(tree.text)
 
-        if tree.tail:
-            self.handle_data(tree.tail)
+        for node in tree:
+            self._parse_html_tree(node)
 
-    def get_text(self):
-        """
-        Returns:
-          str -- A text representation of the parsed content.
-        """
-        return unescape('\n'.join(chain(*self.clean_text_lines))).rstrip()
+        self.handle_endtag(tree.tag)
+        prev = self.tags.pop()
+        prev.canvas.close_tag(prev)
 
-    def _write_line(self, force=False):
-        """
-        Writes the current line to the buffer, provided that there is any
-        data to write.
+        # write the tail text to the element's container
+        self.tags[-1].write_tail(tree.tail)
 
-        Returns:
-          bool -- True, if a line has been writer, otherwise False.
-        """
-        # only write the line if it contains relevant content
-        if not force and (not self.current_line[-1].content
-                          or self.current_line[-1].content.isspace()):
-            self.current_line[-1].margin_before = \
-                max(self.current_line[-1].margin_before,
-                    self.current_tag[-1].margin_before)
-            return False
+    def get_text(self) -> str:
+        """Return the text extracted from the HTML page."""
+        return self.canvas.get_text()
 
-        line = self.current_line[-1].get_text()
-        self.clean_text_lines[-1].append(line)
-        self.current_line[-1] = self.next_line[-1]
-        self.next_line[-1] = Line()
-        return True
-
-    def _write_line_verbatim(self, text):
-        """
-        Writes the current buffer without any modifications.
-
-        Args:
-          text (str): the text to write.
-        """
-        self.clean_text_lines[-1].append(text)
+    def get_annotations(self) -> List[Annotation]:
+        """Return the annotations extracted from the HTML page."""
+        return self.canvas.annotations
 
     def handle_starttag(self, tag, attrs):
-        """
-        Handles HTML start tags.
+        """Handle HTML start tags.
+
+        Compute the style of the current :class:`HtmlElement`, based on
+
+        1. the used :attr:`css`,
+        2. apply attributes and css with :meth:`~Attribute.apply_attributes`
+        3. add the `HtmlElement` to the list of open tags.
+
+        Lookup and apply and tag-specific start tag handler in
+        :attr:`start_tag_handler_dict`.
 
         Args:
-          tag (str): the HTML start tag to process.
-          attrs (dict): a dictionary of HTML attributes and their respective
-             values.
+          tag: the HTML start tag to process.
+          attrs: a dictionary of HTML attributes and their respective values.
         """
         # use the css to handle tags known to it :)
-
-        cur = self.current_tag[-1].get_refined_html_element(
-            self.config.css.get(tag, Inscriptis.DEFAULT_ELEMENT))
-        apply_attributes(attrs, html_element=cur)
-        self.current_tag.append(cur)
-
-        self.next_line[-1].padding = self.current_line[-1].padding \
-            + cur.padding
-        # flush text before display:block elements
-        if cur.display == Display.block:
-            if not self._write_line():
-                self.current_line[-1].margin_before = 0 \
-                    if not self.clean_text_lines[0] else max(
-                        self.current_line[-1].margin_before, cur.margin_before)
-                self.current_line[-1].padding = self.next_line[-1].padding
-            else:
-                self.current_line[-1].margin_after = max(
-                    self.current_line[-1].margin_after, cur.margin_after)
+        cur = self.tags[-1].get_refined_html_element(
+            self.apply_attributes(attrs, html_element=self.css.get(
+                tag, DEFAULT_HTML_ELEMENT).__copy__().set_tag(tag)))
+        self.tags.append(cur)
 
         handler = self.start_tag_handler_dict.get(tag, None)
         if handler:
             handler(attrs)
 
     def handle_endtag(self, tag):
-        """
-        Handles HTML end tags.
+        """Handle HTML end tags.
+
+        Look up the handler for closing the tag in :attr:`end_tag_handler_dict`
+        and execute it, if available.
 
         Args:
-          tag(str): the HTML end tag to process.
+          tag: the HTML end tag to process.
         """
-        cur = self.current_tag.pop()
-        self.next_line[-1].padding = self.current_line[-1].padding \
-            - cur.padding
-        self.current_line[-1].margin_after = max(
-            self.current_line[-1].margin_after, cur.margin_after)
-        # flush text after display:block elements
-        if cur.display == Display.block:
-            # propagate the new padding to the current line, if nothing has
-            # been written
-            if not self._write_line():
-                self.current_line[-1].padding = self.next_line[-1].padding
-
         handler = self.end_tag_handler_dict.get(tag, None)
         if handler:
             handler()
 
-    def handle_data(self, data):
-        """
-        Handles text belonging to HTML tags.
-
-        Args:
-          data (str): The text to process.
-        """
-        if self.current_tag[-1].display == Display.none:
-            return
-
-        # protect pre areas
-        if self.current_tag[-1].whitespace == WhiteSpace.pre:
-            data = '\0' + data + '\0'
-
-        # add prefix, if present
-        data = self.current_tag[-1].prefix + data + self.current_tag[-1].suffix
-
-        # determine whether to add this content to a table column
-        # or to a standard line
-        self.current_line[-1].content += data
-
-    def _start_ul(self, attrs):
-        self.li_level += 1
-        self.li_counter.append(Inscriptis.get_bullet(self.li_level - 1))
+    def _start_ul(self, _):
+        self.li_counter.append(self.get_bullet())
 
     def _end_ul(self):
-        self.li_level -= 1
         self.li_counter.pop()
 
     def _start_img(self, attrs):
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.config.deduplicate_captions
                                and image_text == self.last_caption):
-            self.current_line[-1].content += '[{0}]'.format(image_text)
+            self.tags[-1].write('[{0}]'.format(image_text))
             self.last_caption = image_text
 
     def _start_a(self, attrs):
@@ -255,85 +174,80 @@ class Inscriptis:
             self.link_target = self.link_target or attrs.get('name', '')
 
         if self.link_target:
-            self.current_line[-1].content += '['
+            self.tags[-1].write('[')
 
     def _end_a(self):
         if self.link_target:
-            self.current_line[-1].content += ']({0})'.format(self.link_target)
+            self.tags[-1].write(']({0})'.format(self.link_target))
 
-    def _start_ol(self, attrs):
+    def _start_ol(self, _):
         self.li_counter.append(1)
-        self.li_level += 1
 
     def _end_ol(self):
-        self.li_level -= 1
         self.li_counter.pop()
 
-    def _start_li(self, attrs):
-        self._write_line()
-        if self.li_level > 0:
-            bullet = self.li_counter[-1]
-        else:
-            bullet = "* "
+    def _start_li(self, _):
+        bullet = self.li_counter[-1] if self.li_counter else '* '
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.current_line[-1].list_bullet = "{0}. ".format(bullet)
+            self.tags[-1].list_bullet = '{0}. '.format(bullet)
         else:
-            self.current_line[-1].list_bullet = bullet
+            self.tags[-1].list_bullet = bullet
 
-    def _start_table(self, attrs):
-        self.current_table.append(Table())
+        self.tags[-1].write('')
 
-    def _start_tr(self, attrs):
+    def _start_table(self, _):
+        self.tags[-1].set_canvas(Canvas())
+        self.current_table.append(Table(
+            left_margin_len=self.tags[-1].canvas.left_margin))
+
+    def _start_tr(self, _):
         if self.current_table:
-            # check whether we need to cleanup a <td> tag that has not been
-            # closed yet
-            if self.current_table[-1].td_is_open:
-                self._end_td()
-
             self.current_table[-1].add_row()
 
-    def _start_td(self, attrs):
+    def _start_td(self, _):
         if self.current_table:
-            # check whether we need to cleanup a <td> tag that has not been
-            # closed yet
-            if self.current_table[-1].td_is_open:
-                self._end_td()
-
             # open td tag
-            self.clean_text_lines.append([])
-            self.current_line.append(Line())
-            self.next_line.append(Line())
-            self.current_table[-1].add_cell(self.clean_text_lines[-1],
-                                            align=self.current_tag[-1].align,
-                                            valign=self.current_tag[-1].valign)
-            self.current_table[-1].td_is_open = True
+            table_cell = TableCell(align=self.tags[-1].align,
+                                   valign=self.tags[-1].valign)
+            self.tags[-1].canvas = table_cell
+            self.current_table[-1].add_cell(table_cell)
 
     def _end_td(self):
-        if self.current_table and self.current_table[-1].td_is_open:
-            self.current_table[-1].td_is_open = False
-            self._write_line(force=True)
-            self.clean_text_lines.pop()
-            self.current_line.pop()
-            self.next_line.pop()
-
-    def _end_tr(self):
-        pass
+        if self.current_table:
+            self.tags[-1].canvas.close_tag(self.tags[-1])
 
     def _end_table(self):
-        if self.current_table and self.current_table[-1].td_is_open:
+        if self.current_table:
             self._end_td()
-        self._write_line()
         table = self.current_table.pop()
-        self._write_line_verbatim(table.get_text())
+        # last tag before the table: self.tags[-2]
+        # table tag: self.tags[-1]
 
-    def _newline(self, attrs):
-        self._write_line(force=True)
+        out_of_table_text = self.tags[-1].canvas.get_text().strip()
+        if out_of_table_text:
+            self.tags[-2].write(out_of_table_text)
+            self.tags[-2].canvas.write_newline()
 
-    @staticmethod
-    def get_bullet(index):
-        """
-        Returns:
-          str -- The bullet that corresponds to the given index.
-        """
-        return Inscriptis.UL_COUNTER[index % Inscriptis.UL_COUNTER_LEN]
+        start_idx = self.tags[-2].canvas.current_block.idx
+        self.tags[-2].write_verbatim_text(table.get_text())
+        self.tags[-2].canvas._flush_inline()
+
+        # transfer annotations from the current tag
+        if self.tags[-1].annotation:
+            end_idx = self.tags[-2].canvas.current_block.idx
+            for a in self.tags[-1].annotation:
+                self.tags[-2].canvas.annotations.append(Annotation(
+                    start_idx, end_idx, a))
+
+        # transfer in-table annotations
+        self.tags[-2].canvas.annotations.extend(
+            table.get_annotations(start_idx, self.tags[-2].canvas.left_margin))
+
+    def _newline(self, _):
+        self.tags[-1].canvas.write_newline()
+
+    def get_bullet(self) -> str:
+        """Return the bullet that correspond to the given index."""
+        return Inscriptis.UL_COUNTER[
+            len(self.li_counter) % Inscriptis.UL_COUNTER_LEN]

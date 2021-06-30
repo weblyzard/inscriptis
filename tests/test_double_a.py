@@ -7,6 +7,7 @@
 
 from inscriptis import get_text
 
+
 def test_successive_a():
     html = '<html><body><a href="first">first</a>' \
            '<a href="second">second</a></body></html>'

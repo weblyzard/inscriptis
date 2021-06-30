@@ -1,0 +1,2 @@
+* I obtain "NameError: name 'NamedTuple' is not defined" – nbedou Jul 6 '18 at 12:45
+* @nbedou docs.python.org/3/library/typing.html#typing.NamedTuple – nodakai Oct 3 '18 at 7:44

@@ -1,0 +1,21 @@
+{
+    "annotation_rules": {
+        "h1": ["heading"],
+         "h2": ["heading"],
+         "h3": ["subheading"],
+         "h4": ["subheading"],
+         "h5": ["subheading"],
+         "i": ["emphasis"],
+         "b": ["bold"],
+         "th": ["tableheading"],
+         "a": ["link"]
+    },
+    "result": [
+        ["link", "Chur (Begriffskl\u00e4rung)"],
+        ["tableheading", "Chur "],
+        ["link", "Staat"],
+        ["link", "Schweiz"],
+        ["link", "Kanton"],
+        ["link", "Graub\u00fcnden"]
+    ]
+}

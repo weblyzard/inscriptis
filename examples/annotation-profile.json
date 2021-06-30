@@ -1,0 +1,14 @@
+{
+    "h1": ["heading"],
+    "h2": ["heading"],
+    "h3": ["heading"],
+    "h4": ["heading"],
+    "h5": ["heading"],
+    "b": ["emphasis"],
+    "div#class=toc": ["table-of-contents"],
+    "#class=FactBox": ["fact-box"],
+    "#class=shortdescription]": ["description"],
+    "table": ["table"],
+    "tr": ["row"],
+    "td": ["cell"]
+}

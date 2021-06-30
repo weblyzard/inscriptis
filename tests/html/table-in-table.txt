@@ -1,28 +1,29 @@
 Single
 
-
 First
 
 red        green
      blue       
 red        green
 
+
 Second
 
-     blue       
-red        green
-     blue       
+      blue       
+red?        green
+      blue       
+
 
 Nested
 
-red        green       blue              blue       
-     blue         red        green  red        green
-red        green       blue              blue       
-                                                    
-     blue         red        green       blue       
-red        green       blue         red        green
-     blue         red        green       blue       
-                                                    
-red        green       blue              blue       
-     blue         red        green  red        green
-red        green       blue              blue
+red        green.       blue               blue        
+     blue          red        green   red        green 
+red        green        blue               blue        
+                                                       
+     blue.         red        green        blue        
+red         green       blue          red        green 
+     blue          red        green!       blue        
+                                                       
+red        green        blue               blue        
+     blue          red        green   red         green
+red        green        blue               blue!
