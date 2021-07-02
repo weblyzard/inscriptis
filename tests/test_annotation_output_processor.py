@@ -45,7 +45,7 @@ def test_xml_annotator():
     result = processor(EXAMPLE_OUTPUT)
 
     # and we have additional information on surface forms :)
-    assert result == ('<?xml version="1.0" encoding="UTF-8" ?>'
+    assert result == ('<?xml version="1.0" encoding="UTF-8" ?>\n'
                       '<h1><heading>Chur</heading></h1>\n\n<emphasis>'
                       'Chur</emphasis> is the capital and largest town '
                       'of the Swiss canton of the Grisons and lies in '
@@ -75,5 +75,5 @@ def test_trailing_tag_annotation():
     result = processor({'text': 'Ehre sei Gott!',
                         'label': [[9, 14, 'emphasis']]})
 
-    assert result == ('<?xml version="1.0" encoding="UTF-8" ?>'
+    assert result == ('<?xml version="1.0" encoding="UTF-8" ?>\n'
                       'Ehre sei <emphasis>Gott!</emphasis>')

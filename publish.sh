@@ -8,7 +8,7 @@
 # - https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
 # - https://packaging.python.org/guides/making-a-pypi-friendly-readme/
 
-VERSION=$(grep -Po "\b__version__ = '\K[^']+" src/inscriptis/__init__.py)
+VERSION=$(grep -Po "\b__version__ = '\K[^']+" src/inscriptis/metadata.py)
 IMAGE_NAME=inscriptis-web-service
 
 case "$1" in

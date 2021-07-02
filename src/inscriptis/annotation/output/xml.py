@@ -27,7 +27,7 @@ class XmlExtractor(AnnotationProcessor):
             tag_indices[end].append('/' + label)
 
         current_idx = 0
-        tagged_content = ['<?xml version="1.0" encoding="UTF-8" ?>']
+        tagged_content = ['<?xml version="1.0" encoding="UTF-8" ?>\n']
         text = annotated_text['text']
         for index, tags in sorted(tag_indices.items()):
             tagged_content.append(text[current_idx:index])
