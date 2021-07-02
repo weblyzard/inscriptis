@@ -222,11 +222,29 @@ Currently, inscriptis supports the following postprocessors:
     <emphasis>Chur</emphasis> is the capital and largest town of the Swiss
     canton of the Grisons and lies in the Grisonian Rhine Valley.
 
-- tag: renders an HTML file of the converted text which highlights all annotations as outlined below::
+- html: renders an HTML file of the converted text which highlights all annotations as outlined below::
 
 .. image:: https://github.com/weblyzard/inscriptis/raw/master/docs/paper/images/annotations.png
    :align: left
-   :alt: Annotations extracted from the Wikipedia entry for Chur using the ``--postprocessor html`` command line option.
+   :alt: Annotations extracted from the Wikipedia entry for Chur using the `-p html` command line option.
+
+   Snippet of the rendered HTML file created with `inscript.py -r ./wikipedia.json -p html https://en.wikipedia.org/wiki/Chur.html`
+   and the following `wikipedia.json` annotation rules file
+
+   .. code-block:: json
+
+   {
+     "h1": ["heading"],
+     "h2": ["heading"],
+     "h3": ["subheading"],
+     "h4": ["subheading"],
+     "h5": ["subheading"],
+     "i": ["emphasis"],
+     "b": ["bold"],
+     "table": ["table"],
+     "th": ["tableheading"],
+     "a": ["link"]
+   } 
 
 
 Web Service
