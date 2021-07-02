@@ -46,7 +46,7 @@ Despite this need from within the research community, many standard HTML to text
 - assisting manual document annotation processes (e.g., for qualitative analysis or gold standard creation). ``Inscripti``s supports multiple export formats such as XML, annotated HTML and the JSONL format that is used by the open source annotation tool [doccano](https://github.com/doccano/doccano)^[Please note that doccano currently does not support overlapping annotations and, therefore, cannot import files containing overlapping annotations.]. Support for further annotation formats can be easily added by implementing custom annotation processors.
 - enabling the use of ``Inscriptis``  for tasks such as content extraction (i.e., extract task-specific relevant content from a Web page) which rely on information on the HTML document's structure.
 
-![Annotations extracted from the DBpedia entry for Chur using the ``--postprocessor html`` command line option.\label{fig:annotations}](images/annotations.png)
+![Annotations extracted from the Wikipedia entry for Chur using the ``--postprocessor html`` command line option.\label{fig:annotations}](images/annotations.png)
 
 In conclusion, ``Inscriptis`` provides knowledge extraction components with high quality conversions of HTML documents.
 Since its first public release in March 2016, ``Inscriptis`` has been downloaded over 121,000 times from the Python Package Index (PyPI)^[Source: https://pepy.tech/project/inscriptis], has proven its capabilities in national and European research projects and has been integrated into commercial products such as the [webLyzard Web Intelligence and Visual Analytics Platform](https://www.weblyzard.com/visual-analytics-dashboard/).

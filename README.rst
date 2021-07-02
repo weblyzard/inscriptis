@@ -214,13 +214,19 @@ Currently, inscriptis supports the following postprocessors:
 
     ['heading': 'Chur', 'emphasis': 'Chur']
 
-- tag: returns an additional annotated text version::
+- xml: returns an additional annotated text version::
 
+    <?xml version="1.0" encoding="UTF-8" ?>
     <heading>Chur</heading>
 
     <emphasis>Chur</emphasis> is the capital and largest town of the Swiss
     canton of the Grisons and lies in the Grisonian Rhine Valley.
 
+- tag: renders an HTML file of the converted text which highlights all annotations as outlined below::
+
+.. image:: https://github.com/weblyzard/inscriptis/raw/master/docs/paper/images/annotations.png
+   :align: left
+   :alt: Annotations extracted from the Wikipedia entry for Chur using the ``--postprocessor html`` command line option.
 
 
 Web Service
