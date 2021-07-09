@@ -20,6 +20,7 @@ from time import time
 # Import inscriptis (using the version in the project directory rather than
 # any installed module versions).
 #
+
 LYNX_BIN = '/usr/bin/lynx'
 BENCHMARKING_ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(BENCHMARKING_ROOT, '../src')
@@ -158,7 +159,6 @@ class LynxConverter(AbstractHtmlConverter):
             os.waitpid(-1, os.WNOHANG)
             print('lynx killed')
 
-        text = ''
         lynx_args = '-stdin -width=20000 -force_html -nocolor -dump -nolist ' \
                     '-nobold -display_charset=utf8'
         cmd = [LYNX_BIN, ] + lynx_args.split(' ')
@@ -210,30 +210,17 @@ def get_speed_table(times):
     """
     Provides the table which compares the conversion speed.
     """
-    fastest = 999999
-    for key, value in times.items():
-        if value < fastest:
-            fastest = value
-
-    longest_key = 0
-    longest_value = 0
-    for key, value in times.items():
-        if len(key) > longest_key:
-            longest_key = len(key)
-        if len(str(value)) > longest_value:
-            longest_value = len(str(value))
-
-    sorted_times = sorted(times.items(), key=operator.itemgetter(1))
+    fastest = min((value for _, value in times.items()))
+    longest_key = max(len(key) for key, _ in times.items())
+    longest_value = max(len(str(value)) for _, value in times.items())
 
     result = ''
-    for key, value in sorted_times:
+    for key, value in sorted(times.items(), key=operator.itemgetter(1)):
         difference = value - fastest
-        if difference > 0:
-            difference = '+{}'.format(difference)
-        elif difference < 0:
-            difference = '-{}'.format(difference)
-        elif difference == 0:
+        if difference == 0:
             difference = '--> fastest'
+        else:
+            difference = '{0:+f}'.format(difference)
 
         output = '{}{}: {}{} {}'.format(key, ' ' * (longest_key - len(key)),
                                         value, ' ' * (longest_value -
@@ -290,39 +277,64 @@ def parse_args():
     return parser.parse_args()
 
 
-def benchmark():
+def _setup_benchmarking_directories(args):
     """
-    Runs the benchmark.
+    Setup the benchmarking result and caching directories.
+
+    Args:
+        args: command line arguments that provide the directory names.
     """
-    args = parse_args()
-
-    # These are a few predefined urls the script will
-    with open(args.benchmarking_urls) as url_list:
-        sources = [url.strip() for url in url_list]
-
     if not os.path.exists(args.benchmarking_results):
         os.makedirs(args.benchmarking_results)
-
     if not os.path.exists(args.cache):
         os.makedirs(args.cache)
 
-    for source in sources:
-        source_name = get_fname(source)
-        source_cache_path = os.path.join(args.cache, source_name)
-        if os.path.exists(source_cache_path):
-            html = open(source_cache_path).read()
-        else:
-            req = urllib.request.Request(source)
-            try:
-                html = urllib.request.urlopen(req).read().decode('utf-8')
-            except UnicodeDecodeError:
-                html = urllib.request.urlopen(req).read().decode('latin1')
-            open(source_cache_path, 'w').write(html)
 
-        with open(os.path.join(args.benchmarking_results,
-                               'speed_comparisons.txt'), 'a') as output_file:
-            output_file.write('\nURL: {}\n'.format(source_name))
+def _fetch_url(url, cache_dir):
+    """
+    Fetch the given URL either from the cache or from the Web.
+
+    URLs that are not yet cached are added to the cache.
+
+    Args:
+        url: the URL to fetch.
+
+    Returns:
+        A tuple of the cache file name and the URLs content.
+    """
+    source_name = get_fname(url)
+    source_cache_path = os.path.join(cache_dir, source_name)
+
+    if os.path.exists(source_cache_path):
+        html = open(source_cache_path).read()
+    else:
+        req = urllib.request.Request(url)
+        try:
+            html = urllib.request.urlopen(req).read().decode('utf-8')
+        except UnicodeDecodeError:
+            html = urllib.request.urlopen(req).read().decode('latin1')
+        open(source_cache_path, 'w').write(html)
+
+    return source_name, html
+
+
+def benchmark(args, source_list):
+    """
+    Run the benchmark.
+
+    Args:
+        args: command line arguments
+        source_list: a list of URLs to benchmark.
+    """
+
+    _setup_benchmarking_directories(args)
+
+    output = []
+    for source in source_list:
+        source_name, html = _fetch_url(source, args.cache)
+
         print('\nURL: {}'.format(source_name))
+        output.append('\nURL: {}\n'.format(source_name))
 
         times = {}
         for converter in CONVERTER:
@@ -335,15 +347,17 @@ def benchmark():
 
         speed_table = get_speed_table(times)
         print(speed_table)
-
-        with open(os.path.join(args.benchmarking_results,
-                               OUTFILE), 'a') as output_file:
-            output_file.write(speed_table + '\n')
+        output.append(speed_table)
 
     with open(os.path.join(args.benchmarking_results,
-                           OUTFILE), 'a') as output_file:
-        output_file.write('\n')
+                           OUTFILE), 'w') as output_file:
+        output_file.write('\n'.join(output) + '\n')
 
 
 if __name__ == '__main__':
-    benchmark()
+    # These are a few predefined urls the script will
+    cmdline_args = parse_args()
+    with open(cmdline_args.benchmarking_urls) as url_list:
+        sources = [url.strip() for url in url_list]
+
+    benchmark(cmdline_args, sources)
