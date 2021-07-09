@@ -41,7 +41,7 @@ Most knowledge extraction methods operate on text and, therefore, require an acc
  
 Despite this need from within the research community, many standard HTML to text conversion techniques are not layout aware, yielding text representations that fail to preserve the text's spatial properties, as illustrated below.
  
-![Text representation of a table from DBpedia computed by ``Inscriptis`` (left) and lynx (right). Lynx fails to correctly interpret the cascaded table and, therefore, does not properly align the temperature values.](images/inscriptis-vs-lynx.png)
+![Text representation of a table from Wikipedia computed by ``Inscriptis`` (left) and lynx (right). Lynx fails to correctly interpret the table and, therefore, does not properly align the temperature values.](images/inscriptis-vs-lynx.png)
  
 ``Inscriptis`` is not only able to correctly render such pages but also offers the option to preserve parts of the original HTML document's semantics (e.g., information on headings, emphasized text, tables, etc.) by complementing the extracted text with annotations obtained from the document. \autoref{fig:annotations} provides an example of annotations extracted from a Wikipedia page. These annotations can be useful for
  
