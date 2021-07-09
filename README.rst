@@ -257,7 +257,7 @@ Currently, inscriptis supports the following postprocessors:
 Web Service
 ===========
 
-The Flask Web Service translates HTML pages to the corresponding plain text. 
+The Flask Web Service translates HTML pages to the corresponding plain text.
 
 Additional Requirements
 -----------------------
@@ -365,8 +365,8 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       # create a custom CSS based on the default style sheet and change the
       # rendering of `div` and `span` elements
       css = CSS_PROFILES['strict'].copy()
-      css['div'] = HtmlElement('div', display=Display.block, padding=2)
-      css['span'] = HtmlElement('span', prefix=' ', suffix=' ')
+      css['div'] = HtmlElement(display=Display.block, padding=2)
+      css['span'] = HtmlElement(prefix=' ', suffix=' ')
       
       html_tree = fromstring(html)
       # create a parser using a custom css
