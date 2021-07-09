@@ -323,7 +323,7 @@ be used within a program:
 .. code-block:: python
 
   import urllib.request
-  from inscriptis import get_annotated_text
+  from inscriptis import get_annotated_text, ParserConfig
 
   url = "https://www.fhgr.ch"
   html = urllib.request.urlopen(url).read().decode('utf-8')
