@@ -129,7 +129,7 @@ if __name__ == '__main__':
             output = dumps(output)
 
     if args.output:
-        with Path(args.output).open('w', encoding=DEFAULT_ENCODING) as open_file:
-            open_file.write(output)
+        with Path(args.output).open('w', encoding=DEFAULT_ENCODING) as f:
+            f.write(output)
     else:
         print(output)

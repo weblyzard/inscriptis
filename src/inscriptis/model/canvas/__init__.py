@@ -13,7 +13,6 @@ textual content to the canvas which is managed by the following three classes:
   - :class:`~inscriptis.model.canvas.prefix.Prefix` handles indentation
     and bullets that prefix a line.
 """
-from html import unescape
 
 from inscriptis.annotation import Annotation
 from inscriptis.html_properties import WhiteSpace, Display
@@ -81,6 +80,7 @@ class Canvas:
         bullet = self.current_block.prefix.unconsumed_bullet
         if bullet:
             self.blocks.append(bullet)
+            self.current_block.idx += len(bullet)
             self.current_block = self.current_block.new_block()
             self.margin = 0
 
@@ -132,7 +132,7 @@ class Canvas:
     def get_text(self) -> str:
         """Provide a text representation of the Canvas."""
         self._flush_inline()
-        return unescape('\n'.join(self.blocks))
+        return '\n'.join(self.blocks)
 
     def _flush_inline(self) -> bool:
         """Attempt to flush the content in self.current_block into a new block.

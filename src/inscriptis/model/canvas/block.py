@@ -1,4 +1,5 @@
 """Representation of a text block within the HTML canvas."""
+from html import unescape
 from inscriptis.html_properties import WhiteSpace
 
 
@@ -55,6 +56,7 @@ class Block:
         if normalized_text:
             text = ''.join((self.prefix.first, *normalized_text)) if not \
                 self._content else ''.join(normalized_text)
+            text = unescape(text)
             self._content += text
             self.idx += len(text)
 
@@ -66,6 +68,7 @@ class Block:
         """
         text = ''.join((self.prefix.first,
                         text.replace('\n', '\n' + self.prefix.rest)))
+        text = unescape(text)
         self._content += text
         self.idx += len(text)
         self.collapsable_whitespace = False
