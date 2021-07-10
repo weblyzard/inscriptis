@@ -1,0 +1,14 @@
+{
+    "h1": ["heading"],
+    "h2": ["heading"],
+    "h3": ["heading"],
+    "b": ["emphasis"],
+    "code": ["code"],
+    "#itemprop=dateCreated": ["creation-date"],
+    "#class=lang-py": ["code"],
+    "#class=user-details": ["user"],
+    "#class=reputation-score": ["reputation"],
+    "#class=comment-user": ["comment-user"],
+    "#class=comment-date": ["comment-date"],
+    "#class=comment-copy": ["comment-comment"]
+}
