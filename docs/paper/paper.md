@@ -69,7 +69,7 @@ The following research projects use ``Inscriptis`` within their knowledge extrac
  
 # Acknowledgements
  
-Work on ``Inscriptis`` has been conducted within the MedMon, JobCockpit and CareerCoach projects funded by Innosuisse.
+Work on ``Inscriptis`` has been conducted within the MedMon, Job Cockpit and CareerCoach projects funded by Innosuisse.
  
  
 # References
