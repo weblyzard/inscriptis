@@ -12,7 +12,7 @@ authors:
     orcid: 0000-0001-6399-045X
     affiliation: 1
 affiliations:
- - name: University of Applied Sciences of the Grisons, Chur, Switzerland
+ - name:  Swiss Institute for Information Science, University of Applied Sciences of the Grisons, Pulvermühlestrasse 57, Chur, Switzerland
    index: 1
 date: 25 June 2021
 bibliography: paper.bib
