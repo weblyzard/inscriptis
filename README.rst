@@ -40,10 +40,14 @@ document for a demonstration of inscriptis' conversion quality.
 A Java port of inscriptis 1.x is available
 `here <https://github.com/x28/inscriptis-java>`_.
 
-This document provides a short introduction to Inscriptis. The full
-documentation is built automatically and published on
+This document provides a short introduction to Inscriptis. 
+- The full documentation is built automatically and published on
 `Read the Docs <https://inscriptis.readthedocs.org/en/latest/>`_. 
-If you are interested in a more general overview on the topic of *text extraction from HTML*, this `blog post on different HTML to text conversion approaches, and criteria for selecting them <https://www.semanticlab.net/linux/big%20data/knowledge%20extraction/Extracting-text-from-HTML-with-Python/>`_ might be interesting to you.
+- If you are interested in a more general overview on the topic of 
+  *text extraction from HTML*, this `blog post on different HTML to text 
+  conversion approaches, and criteria for selecting them 
+  <https://www.semanticlab.net/linux/big%20data/knowledge%20extraction/Extracting-text-from-HTML-with-Python/>`_ 
+  might be interesting to you.
 
 
 .. contents:: Table of Contents
