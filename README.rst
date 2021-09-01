@@ -349,7 +349,7 @@ The following annotation rules extract tables from Wikipedia pages, and annotate
       "caption": ["caption"]
    }
 
-.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/chur-table-annotation.png
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/wikipedia-chur-table-annotation.png
    :alt: Table and table metadata annotations extracted from the Wikipedia entry for Chur.
 
 
@@ -366,7 +366,7 @@ This profile extracts references to Wikipedia entities, missing entities and cit
       "class=reference": ["citation"]
    }
 
-.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/chur-entry-annotation.png
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/wikipedia-chur-entry-annotation.png
    :alt: Metadata on entries, missing entries and citations extracted from the Wikipedia entry for Chur.
 
 
