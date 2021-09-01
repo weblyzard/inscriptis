@@ -13,8 +13,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   installation
+   Documentation <README>
    benchmarking
+   contributing
    inscriptis-module-documentation
 
 

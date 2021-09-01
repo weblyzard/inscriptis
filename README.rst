@@ -380,10 +380,11 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       config = ParserConfig(css=css)
       parser = Inscriptis(html_tree, config)
       text = parser.get_text()
-   
+
 
 Changelog
 =========
 
 A full list of changes can be found in the
 `release notes <https://github.com/weblyzard/inscriptis/releases>`_.
+
