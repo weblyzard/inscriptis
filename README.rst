@@ -160,11 +160,8 @@ The inscript.py command line client supports the following parameters::
     -v, --version         display version information
    
 
-Examples
---------
-
 HTML to text conversion
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 convert the given page to text and output the result to the screen::
 
   $ inscript.py https://www.fhgr.ch
@@ -181,7 +178,7 @@ convert HTML provided via stdin and save the output to output.txt::
 .. _annotation rules:
 
 HTML to annotated text conversion
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 convert and annotate HTML from a Web page using the provided annotation rules::
 
   $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json
@@ -225,8 +222,10 @@ yields the following JSONL output
 The provided list of labels contains all annotated text elements with their
 start index, end index and the assigned label.
 
+.. _Annotation postprocessors:
+
 Annotation postprocessors
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 Annotation postprocessors enable the post processing of annotations to formats
 that are suitable for you particular application. Post processors can be
 specified with the `-p` or `--postprocessor` command line argument::
@@ -270,7 +269,7 @@ Currently, inscriptis supports the following postprocessors:
 
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/paper/images/annotations.png
    :align: left
-   :alt: Annotations extracted from the Wikipedia entry for Chur wht the `--postprocess html` postprocessor.
+   :alt: Annotations extracted from the Wikipedia entry for Chur with the `--postprocess html` postprocessor.
 
    Snippet of the rendered HTML file created with the following command line options and annotation rules:
 
@@ -328,6 +327,88 @@ in the `Content-Type` header (`UTF-8` in the example below)::
 The service also supports a version call::
 
   $ curl http://localhost:5000/version
+
+
+Example annotation profiles
+===========================
+
+The following section provides a number of example annotation profiles illustrating the use of Inscriptis' annotation support.
+The examples present the used annotation rules and an image that highlights the annotated text on the converted web page, which has been 
+created using the HTML postprocessor as outlined in Section :ref:`annotation postprocessors<Annotation postprocessors>`.
+
+Tables and table metadata Wikipedia
+-----------------------------------
+
+The following annotation rules extract tables from Wikipedia pages, and annotates table headings that are typically used to indicate column or row headings.
+
+.. code-block:: json
+
+   {
+      "table": ["table"],
+      "th": ["tableheading"],
+      "caption": ["caption"]
+   }
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/chur-table-annotation.png
+   :alt: Table and table metadata annotations extracted from the Wikipedia entry for Chur.
+
+
+References to entities, missing entities and citations from Wikipedia
+---------------------------------------------------------------------
+
+This profile extracts references to Wikipedia entities, missing entities and citations. Please note that the profile isn't perfect, since it also annotates `[ edit ]` links.
+
+.. code-block:: json
+
+   {
+      "a#title": ["entity"],
+      "a#class=new": ["missing"],
+      "class=reference": ["citation"]
+   }
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/chur-entry-annotation.png
+   :alt: Metadata on entries, missing entries and citations extracted from the Wikipedia entry for Chur.
+
+
+
+
+
+Posts and post metadata from the XDA developer forum
+----------------------------------------------------
+
+The annotation rules below, extract posts with metadata on the post's time, user and the user's job title from the XDA developer forum.
+
+.. code-block:: json
+
+   {
+       "article#class=message-body": ["article"],
+       "li#class=u-concealed": ["time"],
+       "#itemprop=name": ["user-name"],
+       "#itemprop=jobTitle": ["user-title"]
+   }
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/xda-posts-annotation.png
+   :alt: Posts and post metadata extracted from the XDA developer forum.
+
+
+
+Code and metadata from Stackoverflow pages
+------------------------------------------
+The rules below extracts code and metadata on users and comments from Stackoverflow pages.
+
+.. code-block:: json
+
+   {
+      "code": ["code"],
+      "#itemprop=dateCreated": ["creation-date"],
+      "#class=user-details": ["user"],
+      "#class=reputation-score": ["reputation"],
+      "#class=comment-date": ["comment-date"],
+      "#class=comment-copy": ["comment-comment"]
+   }
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/stackoverflow-code-annotation.png
+   :alt: Code and meatadata from Stackoverflow pages.
 
 
 Advanced topics
