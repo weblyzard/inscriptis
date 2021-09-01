@@ -1,0 +1,6 @@
+{
+    "article#class=message-body": ["article"],
+    "li#class=u-concealed": ["time"],
+    "#itemprop=name": ["user-name"],
+    "#itemprop=jobTitle": ["user-title"]
+}

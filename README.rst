@@ -32,7 +32,10 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
 
 A python based HTML to text conversion library, command line client and Web
 service with support for **nested tables**, a **subset of CSS** and optional
-support for providing an **annotated output**.
+support for providing an **annotated output**. 
+
+Inscriptis is particularly well suited for appliciations that require high-performance, high-quality (i.e., layout-aware) text representations of HTML content, and will aid knowledge extraction and data science tasks conducted upon Web data.
+
 Please take a look at the
 `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_
 document for a demonstration of inscriptis' conversion quality.
@@ -46,6 +49,38 @@ This document provides a short introduction to Inscriptis.
 - If you are interested in a more general overview on the topic of *text extraction from HTML*, this `blog post on different HTML to text conversion approaches, and criteria for selecting them <https://www.semanticlab.net/linux/big%20data/knowledge%20extraction/Extracting-text-from-HTML-with-Python/>`_ might be interesting to you.
 
 .. contents:: Table of contents
+
+Statement of need - why inscriptis?
+===================================
+
+1. Inscriptis provides a **layout-aware** conversion of HTML that more closely resembles the rendering obtained from standard Web browsers and, therefore, better preserves the spatial arrangement of text elements. 
+
+   Conversion quality becomes a factor once you need to move beyond simple HTML snippets. Non-specialized approaches and less sophisticated libraries do not correctly interpret HTML semantics and, therefore, fail to properly convert constructs such as itemizations, enumerations, and tables.
+
+   BeautifulSoup's `get_text()` function, for example, converts the following HTML enumeration to the string `firstsecond`.
+
+   .. code-block:: HTML
+   
+      <ul>
+        <li>first</li>
+        <li>second</li>
+      <ul>
+
+
+   Inscriptis, in contrast, not only returns the correct output
+   
+   .. code-block::
+   
+      * first
+      * second
+
+   but also supports much more complex constructes such as nested tables and also interprets a subset of HTML (e.g., `align`, `valign`) and CSS (e.g., `display`, `white-space`, `margin-top`, `vertical-align`, etc.) attributes that determine the text alignment. Any time the spatial alignment of text is relevant (e.g., for many knowledge extraction tasks, the computation of word embeddings and language models, and sentiment analysis) an accurate HTML to text conversion is essential.
+
+2. Inscriptis supports :ref:`annotation rules<annotation rules>`, i.e., user-provided mappings that allow for annotating the extracted text based on structural and semantic information encoded in HTML tags and attributes used for controlling structure and layout in the original HTML document. These rules might be used to
+
+   - provide downstream knowledge extraction components with additional information that may be leveraged to improve their respective performance.
+   - assist manual document annotation processes (e.g., for qualitative analysis or gold standard creation). ``Inscriptis`` supports multiple export formats such as XML, annotated HTML and the JSONL format that is used by the open source annotation tool `doccano <https://github.com/doccano/doccano>`_.
+   - enabling the use of ``Inscriptis``  for tasks such as content extraction (i.e., extract task-specific relevant content from a Web page) which rely on information on the HTML document's structure.
 
 
 Installation
@@ -142,6 +177,8 @@ convert HTML provided via stdin and save the output to output.txt::
 
   $ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt 
 
+
+.. _annotation rules:
 
 HTML to annotated text conversion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
