@@ -333,7 +333,7 @@ Example annotation profiles
 ===========================
 
 The following section provides a number of example annotation profiles illustrating the use of Inscriptis' annotation support.
-The examples present the used annotation rules and an image that highlights the annotated text on the converted web page, which has been 
+The examples present the used annotation rules and an image that highlights a snippet with the annotated text on the converted web page, which has been 
 created using the HTML postprocessor as outlined in Section :ref:`annotation postprocessors<Annotation postprocessors>`.
 
 Tables and table metadata Wikipedia
@@ -348,6 +348,8 @@ The following annotation rules extract tables from Wikipedia pages, and annotate
       "th": ["tableheading"],
       "caption": ["caption"]
    }
+
+The figure below outlines an example table from Wikipedia that has been annotated using these rules.
 
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/wikipedia-chur-table-annotation.png
    :alt: Table and table metadata annotations extracted from the Wikipedia entry for Chur.
@@ -365,6 +367,8 @@ This profile extracts references to Wikipedia entities, missing entities and cit
       "a#class=new": ["missing"],
       "class=reference": ["citation"]
    }
+
+The figure shows entities and citations that have been identified on a Wikipedia page using these rules.
 
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/wikipedia-chur-entry-annotation.png
    :alt: Metadata on entries, missing entries and citations extracted from the Wikipedia entry for Chur.
@@ -387,6 +391,8 @@ The annotation rules below, extract posts with metadata on the post's time, user
        "#itemprop=jobTitle": ["user-title"]
    }
 
+The figure illustrates the annotated metadata on posts from the XDA developer forum.
+
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/xda-posts-annotation.png
    :alt: Posts and post metadata extracted from the XDA developer forum.
 
@@ -406,6 +412,8 @@ The rules below extracts code and metadata on users and comments from Stackoverf
       "#class=comment-date": ["comment-date"],
       "#class=comment-copy": ["comment-comment"]
    }
+
+Applying these rules to a Stackoverflow page on text extraction from HTML yields the following snippet:
 
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/stackoverflow-code-annotation.png
    :alt: Code and meatadata from Stackoverflow pages.
