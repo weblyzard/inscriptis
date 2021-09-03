@@ -54,7 +54,6 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'inscriptis'
-
 copyright = __copyright__
 author = __author__
 
