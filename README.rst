@@ -32,7 +32,10 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
 
 A python based HTML to text conversion library, command line client and Web
 service with support for **nested tables**, a **subset of CSS** and optional
-support for providing an **annotated output**.
+support for providing an **annotated output**. 
+
+Inscriptis is particularly well suited for applications that require high-performance, high-quality (i.e., layout-aware) text representations of HTML content, and will aid knowledge extraction and data science tasks conducted upon Web data.
+
 Please take a look at the
 `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_
 document for a demonstration of inscriptis' conversion quality.
@@ -46,6 +49,38 @@ This document provides a short introduction to Inscriptis.
 - If you are interested in a more general overview on the topic of *text extraction from HTML*, this `blog post on different HTML to text conversion approaches, and criteria for selecting them <https://www.semanticlab.net/linux/big%20data/knowledge%20extraction/Extracting-text-from-HTML-with-Python/>`_ might be interesting to you.
 
 .. contents:: Table of contents
+
+Statement of need - why inscriptis?
+===================================
+
+1. Inscriptis provides a **layout-aware** conversion of HTML that more closely resembles the rendering obtained from standard Web browsers and, therefore, better preserves the spatial arrangement of text elements. 
+
+   Conversion quality becomes a factor once you need to move beyond simple HTML snippets. Non-specialized approaches and less sophisticated libraries do not correctly interpret HTML semantics and, therefore, fail to properly convert constructs such as itemizations, enumerations, and tables.
+
+   Beautiful Soup's `get_text()` function, for example, converts the following HTML enumeration to the string `firstsecond`.
+
+   .. code-block:: HTML
+   
+      <ul>
+        <li>first</li>
+        <li>second</li>
+      <ul>
+
+
+   Inscriptis, in contrast, not only returns the correct output
+   
+   .. code-block::
+   
+      * first
+      * second
+
+   but also supports much more complex constructs such as nested tables and also interprets a subset of HTML (e.g., `align`, `valign`) and CSS (e.g., `display`, `white-space`, `margin-top`, `vertical-align`, etc.) attributes that determine the text alignment. Any time the spatial alignment of text is relevant (e.g., for many knowledge extraction tasks, the computation of word embeddings and language models, and sentiment analysis) an accurate HTML to text conversion is essential.
+
+2. Inscriptis supports `annotation rules <#annotation-rules>`_, i.e., user-provided mappings that allow for annotating the extracted text based on structural and semantic information encoded in HTML tags and attributes used for controlling structure and layout in the original HTML document. These rules might be used to
+
+   - provide downstream knowledge extraction components with additional information that may be leveraged to improve their respective performance.
+   - assist manual document annotation processes (e.g., for qualitative analysis or gold standard creation). ``Inscriptis`` supports multiple export formats such as XML, annotated HTML and the JSONL format that is used by the open source annotation tool `doccano <https://github.com/doccano/doccano>`_.
+   - enabling the use of ``Inscriptis``  for tasks such as content extraction (i.e., extract task-specific relevant content from a Web page) which rely on information on the HTML document's structure.
 
 
 Installation
@@ -125,11 +160,8 @@ The inscript.py command line client supports the following parameters::
     -v, --version         display version information
    
 
-Examples
---------
-
 HTML to text conversion
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 convert the given page to text and output the result to the screen::
 
   $ inscript.py https://www.fhgr.ch
@@ -144,7 +176,7 @@ convert HTML provided via stdin and save the output to output.txt::
 
 
 HTML to annotated text conversion
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 convert and annotate HTML from a Web page using the provided annotation rules::
 
   $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json
@@ -188,10 +220,11 @@ yields the following JSONL output
 The provided list of labels contains all annotated text elements with their
 start index, end index and the assigned label.
 
+
 Annotation postprocessors
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 Annotation postprocessors enable the post processing of annotations to formats
-that are suitable for you particular application. Post processors can be
+that are suitable for your particular application. Post processors can be
 specified with the `-p` or `--postprocessor` command line argument::
 
   $ inscript.py https://www.fhgr.ch \
@@ -233,7 +266,7 @@ Currently, inscriptis supports the following postprocessors:
 
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/paper/images/annotations.png
    :align: left
-   :alt: Annotations extracted from the Wikipedia entry for Chur wht the `--postprocess html` postprocessor.
+   :alt: Annotations extracted from the Wikipedia entry for Chur with the `--postprocess html` postprocessor.
 
    Snippet of the rendered HTML file created with the following command line options and annotation rules:
 
@@ -291,6 +324,97 @@ in the `Content-Type` header (`UTF-8` in the example below)::
 The service also supports a version call::
 
   $ curl http://localhost:5000/version
+
+
+Example annotation profiles
+===========================
+
+The following section provides a number of example annotation profiles illustrating the use of Inscriptis' annotation support.
+The examples present the used annotation rules and an image that highlights a snippet with the annotated text on the converted web page, which has been 
+created using the HTML postprocessor as outlined in Section `annotation postprocessors <#annotation-postprocessors>`_.
+
+Wikipedia tables and table metadata
+-----------------------------------
+
+
+The following annotation rules extract tables from Wikipedia pages, and annotate table headings that are typically used to indicate column or row headings.
+
+.. code-block:: json
+
+   {
+      "table": ["table"],
+      "th": ["tableheading"],
+      "caption": ["caption"]
+   }
+
+The figure below outlines an example table from Wikipedia that has been annotated using these rules.
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/wikipedia-chur-table-annotation.png
+   :alt: Table and table metadata annotations extracted from the Wikipedia entry for Chur.
+
+
+References to entities, missing entities and citations from Wikipedia
+---------------------------------------------------------------------
+
+This profile extracts references to Wikipedia entities, missing entities and citations. Please note that the profile isn't perfect, since it also annotates `[ edit ]` links.
+
+.. code-block:: json
+
+   {
+      "a#title": ["entity"],
+      "a#class=new": ["missing"],
+      "class=reference": ["citation"]
+   }
+
+The figure shows entities and citations that have been identified on a Wikipedia page using these rules.
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/wikipedia-chur-entry-annotation.png
+   :alt: Metadata on entries, missing entries and citations extracted from the Wikipedia entry for Chur.
+
+
+
+
+
+Posts and post metadata from the XDA developer forum
+----------------------------------------------------
+
+The annotation rules below, extract posts with metadata on the post's time, user and the user's job title from the XDA developer forum.
+
+.. code-block:: json
+
+   {
+       "article#class=message-body": ["article"],
+       "li#class=u-concealed": ["time"],
+       "#itemprop=name": ["user-name"],
+       "#itemprop=jobTitle": ["user-title"]
+   }
+
+The figure illustrates the annotated metadata on posts from the XDA developer forum.
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/xda-posts-annotation.png
+   :alt: Posts and post metadata extracted from the XDA developer forum.
+
+
+
+Code and metadata from Stackoverflow pages
+------------------------------------------
+The rules below extracts code and metadata on users and comments from Stackoverflow pages.
+
+.. code-block:: json
+
+   {
+      "code": ["code"],
+      "#itemprop=dateCreated": ["creation-date"],
+      "#class=user-details": ["user"],
+      "#class=reputation-score": ["reputation"],
+      "#class=comment-date": ["comment-date"],
+      "#class=comment-copy": ["comment-comment"]
+   }
+
+Applying these rules to a Stackoverflow page on text extraction from HTML yields the following snippet:
+
+.. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/stackoverflow-code-annotation.png
+   :alt: Code and metadata from Stackoverflow pages.
 
 
 Advanced topics
@@ -354,7 +478,7 @@ The following options are available for fine tuning inscriptis' HTML rendering:
    parameter `indentation='extended'` to also use indentation for tags such as
    `<div>` and `<span>` that do not provide indentation in their standard
    definition. This strategy is the default in `inscript.py` and many other
-   tools such as lynx. If you do not want extended indentation you can use the
+   tools such as Lynx. If you do not want extended indentation you can use the
    parameter `indentation='standard'` instead.
 
 2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions
@@ -380,10 +504,11 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       config = ParserConfig(css=css)
       parser = Inscriptis(html_tree, config)
       text = parser.get_text()
-   
+
 
 Changelog
 =========
 
 A full list of changes can be found in the
 `release notes <https://github.com/weblyzard/inscriptis/releases>`_.
+
