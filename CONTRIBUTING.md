@@ -16,7 +16,7 @@ Bugs are tracked as GitHub issues.
 To create an effective and high quality ticket, please include the following information in your
 ticket:
 
- 1. **Use a clear and descriptive title** for the issue to identify the problem. This also helps other users to quickly locate bug reports that affecting them.
+ 1. **Use a clear and descriptive title** for the issue to identify the problem. This also helps other users to quickly locate bug reports that affect them.
  2. **Describe the exact steps necessary for reproducing the problem** including at least information on
     - the affected URL
     - the command line parameters or function arguments you used

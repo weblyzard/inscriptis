@@ -76,7 +76,7 @@ Statement of need - why inscriptis?
 
    but also supports much more complex constructs such as nested tables and also interprets a subset of HTML (e.g., `align`, `valign`) and CSS (e.g., `display`, `white-space`, `margin-top`, `vertical-align`, etc.) attributes that determine the text alignment. Any time the spatial alignment of text is relevant (e.g., for many knowledge extraction tasks, the computation of word embeddings and language models, and sentiment analysis) an accurate HTML to text conversion is essential.
 
-2. Inscriptis supports :ref:`annotation rules<annotation rules>`, i.e., user-provided mappings that allow for annotating the extracted text based on structural and semantic information encoded in HTML tags and attributes used for controlling structure and layout in the original HTML document. These rules might be used to
+2. Inscriptis supports `annotation rules <#annotation-rules>`_, i.e., user-provided mappings that allow for annotating the extracted text based on structural and semantic information encoded in HTML tags and attributes used for controlling structure and layout in the original HTML document. These rules might be used to
 
    - provide downstream knowledge extraction components with additional information that may be leveraged to improve their respective performance.
    - assist manual document annotation processes (e.g., for qualitative analysis or gold standard creation). ``Inscriptis`` supports multiple export formats such as XML, annotated HTML and the JSONL format that is used by the open source annotation tool `doccano <https://github.com/doccano/doccano>`_.
@@ -175,8 +175,6 @@ convert HTML provided via stdin and save the output to output.txt::
   $ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt 
 
 
-.. _annotation rules:
-
 HTML to annotated text conversion
 ---------------------------------
 convert and annotate HTML from a Web page using the provided annotation rules::
@@ -222,7 +220,6 @@ yields the following JSONL output
 The provided list of labels contains all annotated text elements with their
 start index, end index and the assigned label.
 
-.. _Annotation postprocessors:
 
 Annotation postprocessors
 -------------------------
@@ -334,7 +331,7 @@ Example annotation profiles
 
 The following section provides a number of example annotation profiles illustrating the use of Inscriptis' annotation support.
 The examples present the used annotation rules and an image that highlights a snippet with the annotated text on the converted web page, which has been 
-created using the HTML postprocessor as outlined in Section :ref:`annotation postprocessors<Annotation postprocessors>`.
+created using the HTML postprocessor as outlined in Section `annotation postprocessors <#annotation-postprocessors>`_.
 
 Wikipedia tables and table metadata
 -----------------------------------
