@@ -177,9 +177,11 @@ convert HTML provided via stdin and save the output to output.txt::
 
 HTML to annotated text conversion
 ---------------------------------
-convert and annotate HTML from a Web page using the provided annotation rules::
+convert and annotate HTML from a Web page using the provided annotation rules. 
 
-  $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json
+Download the example `annotation-profile.json <https://github.com/weblyzard/inscriptis/blob/master/examples/annotation-profile.json>`_ and save it to your working directory::
+
+  $ inscript.py https://www.fhgr.ch -r annotation-profile.json
 
 The annotation rules are specified in `annotation-profile.json`:
 
