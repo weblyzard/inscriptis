@@ -150,7 +150,7 @@ The inscript.py command line client supports the following parameters::
     -l, --display-link-targets
                           Display link targets (default:false).
     -a, --display-anchor-urls
-                          Deduplicate image captions (default:false).
+                          Display anchor urls (default:false).
     -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
                           Path to an optional JSON file containing rules for annotating the retrieved text.
     -p POSTPROCESSOR, --postprocessor POSTPROCESSOR
@@ -172,7 +172,7 @@ convert the file to text and save the output to output.txt::
    
 convert HTML provided via stdin and save the output to output.txt::
 
-  $ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt 
+  $ echo '<body><p>Make it so!</p></body>' | inscript.py -o output.txt 
 
 
 HTML to annotated text conversion
