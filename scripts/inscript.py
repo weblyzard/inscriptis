@@ -55,7 +55,7 @@ def get_parser():
                         help='Display link targets (default:false).')
     parser.add_argument('-a', '--display-anchor-urls',
                         action='store_true', default=False,
-                        help='Deduplicate image captions (default:false).')
+                        help='Display anchor urls (default:false).')
     parser.add_argument('-r', '--annotation-rules', default=None,
                         help='Path to an optional JSON file containing rules '
                              'for annotating the retrieved text.')
