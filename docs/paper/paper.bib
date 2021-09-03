@@ -283,6 +283,17 @@ similar to WISDOM - identify businesses in financial news and propagate the impa
 	file = {Harris_1954_Distributional Structure.pdf:/home/albert/Zotero/storage/59ZE8S3N/Harris_1954_Distributional Structure.pdf:application/pdf;Snapshot:/home/albert/Zotero/storage/HTSHI7XH/00437956.1954.html:text/html},
 }
 
+@misc{ia-commons,
+    author = {Ilya Kreymer and Sebastian Nagel and Andy Jackson and Noah Levitt},
+    title = {IIPC Web Archive Commons - Utility code for OpenWayBack and other projects.},
+    year = {2021},
+    publisher = {GitHub},
+    journal = {GitHub repository},
+    url = {https://github.com/commoncrawl/ia-web-commons},
+    note = {Accessed: 2021-09-02}
+}
+
+
 @misc{html2text,
     author = {Aaron Swartz},
     title = {html2text - a Python script that converts a page of HTML into clean, easy-to-read plain ASCII text},
@@ -435,3 +446,69 @@ similar to WISDOM - identify businesses in financial news and propagate the impa
 	file = {lang2012-textSweeper.pdf:/home/albert/Zotero/storage/BKDTK3SJ/lang2012-textSweeper.pdf:application/pdf},
     url = {https://aisel.aisnet.org/confirm2012/17/},
 }
+
+
+@article{caswell_quality_2021,
+	title = {Quality at a {Glance}: {An} {Audit} of {Web}-{Crawled} {Multilingual} {Datasets}},
+	shorttitle = {Quality at a {Glance}},
+	url = {http://arxiv.org/abs/2103.12028},
+	abstract = {With the success of large-scale pre-training and multilingual modeling in Natural Language Processing (NLP), recent years have seen a proliferation of large, web-mined text datasets covering hundreds of languages. However, to date there has been no systematic analysis of the quality of these publicly available datasets, or whether the datasets actually contain content in the languages they claim to represent. In this work, we manually audit the quality of 205 language-specific corpora released with five major public datasets (CCAligned, ParaCrawl, WikiMatrix, OSCAR, mC4), and audit the correctness of language codes in a sixth (JW300). We find that lower-resource corpora have systematic issues: at least 15 corpora are completely erroneous, and a significant fraction contains less than 50\% sentences of acceptable quality. Similarly, we find 82 corpora that are mislabeled or use nonstandard/ambiguous language codes. We demonstrate that these issues are easy to detect even for non-speakers of the languages in question, and supplement the human judgements with automatic analyses. Inspired by our analysis, we recommend techniques to evaluate and improve multilingual corpora and discuss the risks that come with low-quality data releases.},
+	urldate = {2021-09-03},
+	journal = {arXiv:2103.12028 [cs]},
+	author = {Caswell, Isaac and Kreutzer, Julia and Wang, Lisa and Wahab, Ahsan and van Esch, Daan and Ulzii-Orshikh, Nasanbayar and Tapo, Allahsera and Subramani, Nishant and Sokolov, Artem and Sikasote, Claytone and Setyawan, Monang and Sarin, Supheakmungkol and Samb, Sokhar and Sagot, Benoît and Rivera, Clara and Rios, Annette and Papadimitriou, Isabel and Osei, Salomey and Suárez, Pedro Javier Ortiz and Orife, Iroro and Ogueji, Kelechi and Niyongabo, Rubungo Andre and Nguyen, Toan Q. and Müller, Mathias and Müller, André and Muhammad, Shamsuddeen Hassan and Muhammad, Nanda and Mnyakeni, Ayanda and Mirzakhalov, Jamshidbek and Matangira, Tapiwanashe and Leong, Colin and Lawson, Nze and Kudugunta, Sneha and Jernite, Yacine and Jenny, Mathias and Firat, Orhan and Dossou, Bonaventure F. P. and Dlamini, Sakhile and de Silva, Nisansa and Ballı, Sakine Çabuk and Biderman, Stella and Battisti, Alessia and Baruwa, Ahmed and Bapna, Ankur and Baljekar, Pallavi and Azime, Israel Abebe and Awokoya, Ayodele and Ataman, Duygu and Ahia, Orevaoghene and Ahia, Oghenefego and Agrawal, Sweta and Adeyemi, Mofetoluwa},
+	month = apr,
+	year = {2021},
+	note = {arXiv: 2103.12028},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Computation and Language},
+	file = {Caswell et al_2021_Quality at a Glance.pdf:/home/albert/Zotero/storage/K3HBQMTH/Caswell et al_2021_Quality at a Glance.pdf:application/pdf;arXiv.org Snapshot:/home/albert/Zotero/storage/XT4AS68K/2103.html:text/html},
+}
+
+@inproceedings{el-kishky_ccaligned_2020,
+	address = {Online},
+	title = {{CCAligned}: {A} {Massive} {Collection} of {Cross}-{Lingual} {Web}-{Document} {Pairs}},
+	shorttitle = {{CCAligned}},
+	url = {https://aclanthology.org/2020.emnlp-main.480},
+	doi = {10.18653/v1/2020.emnlp-main.480},
+	abstract = {Cross-lingual document alignment aims to identify pairs of documents in two distinct languages that are of comparable content or translations of each other. In this paper, we exploit the signals embedded in URLs to label web documents at scale with an average precision of 94.5\% across different language pairs. We mine sixty-eight snapshots of the Common Crawl corpus and identify web document pairs that are translations of each other. We release a new web dataset consisting of over 392 million URL pairs from Common Crawl covering documents in 8144 language pairs of which 137 pairs include English. In addition to curating this massive dataset, we introduce baseline methods that leverage cross-lingual representations to identify aligned documents based on their textual content. Finally, we demonstrate the value of this parallel documents dataset through a downstream task of mining parallel sentences and measuring the quality of machine translations from models trained on this mined data. Our objective in releasing this dataset is to foster new research in cross-lingual NLP across a variety of low, medium, and high-resource languages.},
+	urldate = {2021-09-03},
+	booktitle = {Proceedings of the 2020 {Conference} on {Empirical} {Methods} in {Natural} {Language} {Processing} ({EMNLP})},
+	publisher = {Association for Computational Linguistics},
+	author = {El-Kishky, Ahmed and Chaudhary, Vishrav and Guzmán, Francisco and Koehn, Philipp},
+	month = nov,
+	year = {2020},
+	pages = {5960--5969},
+	file = {El-Kishky et al_2020_CCAligned.pdf:/home/albert/Zotero/storage/ZE439VUV/El-Kishky et al_2020_CCAligned.pdf:application/pdf},
+}
+
+@inproceedings{xue_mt5_2021,
+	address = {Online},
+	title = {{mT5}: {A} {Massively} {Multilingual} {Pre}-trained {Text}-to-{Text} {Transformer}},
+	shorttitle = {{mT5}},
+	url = {https://aclanthology.org/2021.naacl-main.41},
+	doi = {10.18653/v1/2021.naacl-main.41},
+	abstract = {The recent “Text-to-Text Transfer Transformer” (T5) leveraged a unified text-to-text format and scale to attain state-of-the-art results on a wide variety of English-language NLP tasks. In this paper, we introduce mT5, a multilingual variant of T5 that was pre-trained on a new Common Crawl-based dataset covering 101 languages. We detail the design and modified training of mT5 and demonstrate its state-of-the-art performance on many multilingual benchmarks. We also describe a simple technique to prevent “accidental translation” in the zero-shot setting, where a generative model chooses to (partially) translate its prediction into the wrong language. All of the code and model checkpoints used in this work are publicly available.},
+	urldate = {2021-09-03},
+	booktitle = {Proceedings of the 2021 {Conference} of the {North} {American} {Chapter} of the {Association} for {Computational} {Linguistics}: {Human} {Language} {Technologies}},
+	publisher = {Association for Computational Linguistics},
+	author = {Xue, Linting and Constant, Noah and Roberts, Adam and Kale, Mihir and Al-Rfou, Rami and Siddhant, Aditya and Barua, Aditya and Raffel, Colin},
+	month = jun,
+	year = {2021},
+	pages = {483--498},
+	file = {Xue et al_2021_mT5.pdf:/home/albert/Zotero/storage/X32LQJ5V/Xue et al_2021_mT5.pdf:application/pdf},
+}
+
+@inproceedings{suarez_asynchronous_2019,
+	title = {Asynchronous {Pipeline} for {Processing} {Huge} {Corpora} on {Medium} to {Low} {Resource} {Infrastructures}},
+	url = {https://hal.inria.fr/hal-02148693},
+	doi = {10.14618/IDS-PUB-9021},
+	abstract = {Common Crawl is a considerably large, heterogeneous multilingual corpus comprised of crawled documents from the internet, surpassing 20TB of data and distributed as a set of more than 50 thousand plain text files where each contains many documents written in a wide variety of languages. Even though each document has a metadata block associated to it, this data lacks any information about the language in which each document is written, making it extremely difficult to use Common Crawl for monolingual applications. We propose a general, highly parallel, multithreaded pipeline to clean and classify Common Crawl by language; we specifically design it so that it runs efficiently on medium to low resource infrastructures where I/O speeds are the main constraint. We develop the pipeline so that it can be easily reapplied to any kind of heterogeneous corpus and so that it can be parameterised to a wide range of infrastructures. We also distribute a 6.3TB version of Common Crawl, filtered, classified by language, shuffled at line level in order to avoid copyright issues, and ready to be used for NLP applications.},
+	language = {en},
+	urldate = {2021-09-03},
+	publisher = {Leibniz-Institut für Deutsche Sprache},
+	author = {Suárez, Pedro Javier Ortiz and Sagot, Benoît and Romary, Laurent},
+	month = jul,
+	year = {2019},
+	file = {Suárez et al_2019_Asynchronous Pipeline for Processing Huge Corpora on Medium to Low Resource.pdf:/home/albert/Zotero/storage/UZBC8FDK/Suárez et al_2019_Asynchronous Pipeline for Processing Huge Corpora on Medium to Low Resource.pdf:application/pdf;Snapshot:/home/albert/Zotero/storage/FRLXKUEI/hal-02148693.html:text/html},
+}
+
+

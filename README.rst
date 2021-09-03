@@ -34,7 +34,7 @@ A python based HTML to text conversion library, command line client and Web
 service with support for **nested tables**, a **subset of CSS** and optional
 support for providing an **annotated output**. 
 
-Inscriptis is particularly well suited for appliciations that require high-performance, high-quality (i.e., layout-aware) text representations of HTML content, and will aid knowledge extraction and data science tasks conducted upon Web data.
+Inscriptis is particularly well suited for applications that require high-performance, high-quality (i.e., layout-aware) text representations of HTML content, and will aid knowledge extraction and data science tasks conducted upon Web data.
 
 Please take a look at the
 `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_
@@ -57,7 +57,7 @@ Statement of need - why inscriptis?
 
    Conversion quality becomes a factor once you need to move beyond simple HTML snippets. Non-specialized approaches and less sophisticated libraries do not correctly interpret HTML semantics and, therefore, fail to properly convert constructs such as itemizations, enumerations, and tables.
 
-   BeautifulSoup's `get_text()` function, for example, converts the following HTML enumeration to the string `firstsecond`.
+   Beautiful Soup's `get_text()` function, for example, converts the following HTML enumeration to the string `firstsecond`.
 
    .. code-block:: HTML
    
@@ -74,7 +74,7 @@ Statement of need - why inscriptis?
       * first
       * second
 
-   but also supports much more complex constructes such as nested tables and also interprets a subset of HTML (e.g., `align`, `valign`) and CSS (e.g., `display`, `white-space`, `margin-top`, `vertical-align`, etc.) attributes that determine the text alignment. Any time the spatial alignment of text is relevant (e.g., for many knowledge extraction tasks, the computation of word embeddings and language models, and sentiment analysis) an accurate HTML to text conversion is essential.
+   but also supports much more complex constructs such as nested tables and also interprets a subset of HTML (e.g., `align`, `valign`) and CSS (e.g., `display`, `white-space`, `margin-top`, `vertical-align`, etc.) attributes that determine the text alignment. Any time the spatial alignment of text is relevant (e.g., for many knowledge extraction tasks, the computation of word embeddings and language models, and sentiment analysis) an accurate HTML to text conversion is essential.
 
 2. Inscriptis supports :ref:`annotation rules<annotation rules>`, i.e., user-provided mappings that allow for annotating the extracted text based on structural and semantic information encoded in HTML tags and attributes used for controlling structure and layout in the original HTML document. These rules might be used to
 
@@ -227,7 +227,7 @@ start index, end index and the assigned label.
 Annotation postprocessors
 -------------------------
 Annotation postprocessors enable the post processing of annotations to formats
-that are suitable for you particular application. Post processors can be
+that are suitable for your particular application. Post processors can be
 specified with the `-p` or `--postprocessor` command line argument::
 
   $ inscript.py https://www.fhgr.ch \
@@ -336,10 +336,11 @@ The following section provides a number of example annotation profiles illustrat
 The examples present the used annotation rules and an image that highlights a snippet with the annotated text on the converted web page, which has been 
 created using the HTML postprocessor as outlined in Section :ref:`annotation postprocessors<Annotation postprocessors>`.
 
-Tables and table metadata Wikipedia
+Wikipedia tables and table metadata
 -----------------------------------
 
-The following annotation rules extract tables from Wikipedia pages, and annotates table headings that are typically used to indicate column or row headings.
+
+The following annotation rules extract tables from Wikipedia pages, and annotate table headings that are typically used to indicate column or row headings.
 
 .. code-block:: json
 
@@ -416,7 +417,7 @@ The rules below extracts code and metadata on users and comments from Stackoverf
 Applying these rules to a Stackoverflow page on text extraction from HTML yields the following snippet:
 
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/images/stackoverflow-code-annotation.png
-   :alt: Code and meatadata from Stackoverflow pages.
+   :alt: Code and metadata from Stackoverflow pages.
 
 
 Advanced topics
@@ -480,7 +481,7 @@ The following options are available for fine tuning inscriptis' HTML rendering:
    parameter `indentation='extended'` to also use indentation for tags such as
    `<div>` and `<span>` that do not provide indentation in their standard
    definition. This strategy is the default in `inscript.py` and many other
-   tools such as lynx. If you do not want extended indentation you can use the
+   tools such as Lynx. If you do not want extended indentation you can use the
    parameter `indentation='standard'` instead.
 
 2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions
