@@ -3,15 +3,15 @@
 First off, thank you for considering contributing to inscriptis. 
 There are many ways how you can contribute to the project and these guidelines aim at supporting you in doing so.
 
-1. [Reporting bugs](#reporting-bugs)
+1. [Reporting bugs and seeking support](#reporting-bugs-and-seeking-support)
 2. [Suggesting enhancements](#suggesting-enhancements)
 3. [Pull requests](#pull-requests) (contributing code)
 4. [Python style guide](#python-style-guide)
 
 
-## Reporting bugs
+## Reporting bugs and seeking support
 
-Bugs are tracked as GitHub issues.
+Bugs and support requests are tracked as GitHub issues.
 
 To create an effective and high quality ticket, please include the following information in your
 ticket:
