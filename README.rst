@@ -231,7 +231,7 @@ specified with the `-p` or `--postprocessor` command line argument::
 
   $ inscript.py https://www.fhgr.ch \
           -r ./examples/annotation-profile.json \
-          -p tag
+          -p surface
 
 
 Output:
