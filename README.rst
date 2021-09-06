@@ -150,7 +150,7 @@ The inscript.py command line client supports the following parameters::
     -l, --display-link-targets
                           Display link targets (default:false).
     -a, --display-anchor-urls
-                          Deduplicate image captions (default:false).
+                          Display anchor urls (default:false).
     -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
                           Path to an optional JSON file containing rules for annotating the retrieved text.
     -p POSTPROCESSOR, --postprocessor POSTPROCESSOR
@@ -172,14 +172,16 @@ convert the file to text and save the output to output.txt::
    
 convert HTML provided via stdin and save the output to output.txt::
 
-  $ echo '<body><p>Make it so!</p>></body>' | inscript.py -o output.txt 
+  $ echo '<body><p>Make it so!</p></body>' | inscript.py -o output.txt 
 
 
 HTML to annotated text conversion
 ---------------------------------
-convert and annotate HTML from a Web page using the provided annotation rules::
+convert and annotate HTML from a Web page using the provided annotation rules. 
 
-  $ inscript.py https://www.fhgr.ch -r ./examples/annotation-profile.json
+Download the example `annotation-profile.json <https://github.com/weblyzard/inscriptis/blob/master/examples/annotation-profile.json>`_ and save it to your working directory::
+
+  $ inscript.py https://www.fhgr.ch -r annotation-profile.json
 
 The annotation rules are specified in `annotation-profile.json`:
 
