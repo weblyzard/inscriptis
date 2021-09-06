@@ -5,9 +5,9 @@ RUN mkdir /inscriptis
 COPY ./ /inscriptis/
 
 WORKDIR /inscriptis
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir Flask
-RUN python setup.py install
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir Flask && \
+    python setup.py install
 
 ENV FLASK_APP="inscriptis.service.web"
 CMD ["python3", "-m", "flask", "run"]
