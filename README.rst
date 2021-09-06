@@ -57,7 +57,7 @@ Statement of need - why inscriptis?
 
    Conversion quality becomes a factor once you need to move beyond simple HTML snippets. Non-specialized approaches and less sophisticated libraries do not correctly interpret HTML semantics and, therefore, fail to properly convert constructs such as itemizations, enumerations, and tables.
 
-   Beautiful Soup's `get_text()` function, for example, converts the following HTML enumeration to the string `firstsecond`.
+   Beautiful Soup's `get_text()` function, for example, converts the following HTML enumeration to the string ``firstsecond``.
 
    .. code-block:: HTML
    
@@ -150,7 +150,7 @@ The inscript.py command line client supports the following parameters::
     -l, --display-link-targets
                           Display link targets (default:false).
     -a, --display-anchor-urls
-                          Display anchor urls (default:false).
+                          Display anchor URLs (default:false).
     -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
                           Path to an optional JSON file containing rules for annotating the retrieved text.
     -p POSTPROCESSOR, --postprocessor POSTPROCESSOR
@@ -231,7 +231,7 @@ specified with the `-p` or `--postprocessor` command line argument::
 
   $ inscript.py https://www.fhgr.ch \
           -r ./examples/annotation-profile.json \
-          -p tag
+          -p surface
 
 
 Output:
@@ -310,7 +310,7 @@ Startup
 -------
 Start the inscriptis Web service with the following command::
 
-  $ export FLASK_APP="web-service.py"
+  $ export FLASK_APP="inscriptis.service.web"
   $ python3 -m flask run
 
 Usage
