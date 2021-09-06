@@ -41,4 +41,4 @@ def get_version_call():
 
 if __name__ == '__main__':
     print('Starting Web service based on Inscriptis', __version__)
-    app.run(threaded=True, host='0.0.0.0', port=5000)
+    app.run(threaded=True, host='127.0.0.1', port=5000)
