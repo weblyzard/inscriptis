@@ -1,1 +1,3 @@
+lxml
+requests
 myst_parser
