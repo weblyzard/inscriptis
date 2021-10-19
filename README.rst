@@ -30,6 +30,10 @@ inscriptis -- HTML to text conversion library, command line client and Web servi
    :target: https://pepy.tech/project/inscriptis
    :alt: PyPI downloads
 
+.. image:: https://joss.theoj.org/papers/10.21105/joss.03557/status.svg
+   :target: https://doi.org/10.21105/joss.03557
+
+
 A python based HTML to text conversion library, command line client and Web
 service with support for **nested tables**, a **subset of CSS** and optional
 support for providing an **annotated output**. 
