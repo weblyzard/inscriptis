@@ -2,10 +2,12 @@
 """Provide configuration objects for the Inscriptis HTML to text converter."""
 
 from copy import deepcopy
+from typing import Dict
 
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.annotation.parser import AnnotationModel
 from inscriptis.model.attribute import Attribute
+from inscriptis.model.html_element import HtmlElement
 
 DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 
@@ -13,9 +15,13 @@ DEFAULT_CSS_PROFILE_NAME = 'relaxed'
 class ParserConfig:
     """Encapsulate configuration options and CSS definitions."""
 
-    def __init__(self, css=None, display_images=False,
-                 deduplicate_captions=False, display_links=False,
-                 display_anchors=False, annotation_rules=None):
+    def __init__(self, css: Dict[str, HtmlElement] = None,
+                 display_images: bool = False,
+                 deduplicate_captions: bool = False,
+                 display_links: bool = False,
+                 display_anchors: bool = False,
+                 annotation_rules: Attribute = None,
+                 table_cell_separator: str = '  '):
         """Create a ParserConfig configuration.
 
         Args:
@@ -29,6 +35,7 @@ class ParserConfig:
             display_anchors: whether to display anchors (e.g. `[here](#here)`).
             annotation_rules: an optional dictionary of annotation rules which
                               specify tags and attributes to annotation.
+            table_cell_separator: separator to use between table cells.
         """
         self.display_images = display_images
         self.deduplicate_captions = deduplicate_captions
@@ -36,6 +43,7 @@ class ParserConfig:
         self.display_anchors = display_anchors
         self.css = css or CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
         self.attribute_handler = Attribute()
+        self.table_cell_separator = table_cell_separator
         if annotation_rules:
             # ensure that we do not modify the original model or its
             # members.
