@@ -130,40 +130,41 @@ the corresponding text representation.
 
 Command line parameters
 -----------------------
+
 The inscript.py command line client supports the following parameters::
 
-usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] [-r ANNOTATION_RULES] [-p POSTPROCESSOR] [--indentation INDENTATION]
-                   [--table-cell-separator TABLE_CELL_SEPARATOR] [-v]
-                   [input]
+    usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] [-r ANNOTATION_RULES] [-p POSTPROCESSOR] [--indentation INDENTATION]
+                       [--table-cell-separator TABLE_CELL_SEPARATOR] [-v]
+                       [input]
 
-Convert the given HTML document to text.
+    Convert the given HTML document to text.
 
-positional arguments:
-  input                 Html input either from a file or a URL (default:stdin).
+    positional arguments:
+      input                 Html input either from a file or a URL (default:stdin).
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -o OUTPUT, --output OUTPUT
-                        Output file (default:stdout).
-  -e ENCODING, --encoding ENCODING
-                        Input encoding to use (default:utf-8 for files; detected server encoding for Web URLs).
-  -i, --display-image-captions
-                        Display image captions (default:false).
-  -d, --deduplicate-image-captions
-                        Deduplicate image captions (default:false).
-  -l, --display-link-targets
-                        Display link targets (default:false).
-  -a, --display-anchor-urls
-                        Display anchor URLs (default:false).
-  -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
-                        Path to an optional JSON file containing rules for annotating the retrieved text.
-  -p POSTPROCESSOR, --postprocessor POSTPROCESSOR
-                        Optional component for postprocessing the result (html, surface, xml).
-  --indentation INDENTATION
-                        How to handle indentation (extended or strict; default: extended).
-  --table-cell-separator TABLE_CELL_SEPARATOR
-                        Separator to use between table cells (default: three spaces).
-  -v, --version         display version information
+    optional arguments:
+      -h, --help            show this help message and exit
+      -o OUTPUT, --output OUTPUT
+                            Output file (default:stdout).
+      -e ENCODING, --encoding ENCODING
+                            Input encoding to use (default:utf-8 for files; detected server encoding for Web URLs).
+      -i, --display-image-captions
+                            Display image captions (default:false).
+      -d, --deduplicate-image-captions
+                            Deduplicate image captions (default:false).
+      -l, --display-link-targets
+                            Display link targets (default:false).
+      -a, --display-anchor-urls
+                            Display anchor URLs (default:false).
+      -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
+                            Path to an optional JSON file containing rules for annotating the retrieved text.
+      -p POSTPROCESSOR, --postprocessor POSTPROCESSOR
+                            Optional component for postprocessing the result (html, surface, xml).
+      --indentation INDENTATION
+                            How to handle indentation (extended or strict; default: extended).
+      --table-cell-separator TABLE_CELL_SEPARATOR
+                            Separator to use between table cells (default: three spaces).
+      -v, --version         display version information
 
    
 

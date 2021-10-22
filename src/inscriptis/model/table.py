@@ -151,6 +151,7 @@ class TableRow:
         columns: the table row's columns.
         cell_separator: string used for separating columns from each other.
     """
+
     __slots__ = ('columns', 'cell_separator')
 
     def __init__(self, cell_separator):
