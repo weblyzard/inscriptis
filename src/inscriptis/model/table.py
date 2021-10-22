@@ -263,12 +263,14 @@ class Table:
         for row in self.rows:
             if not row.columns:
                 continue
+
             row_width = row.width + left_margin_len
+            row_height = row.columns[0].height
             cell_idx = idx
             for cell in row.columns:
                 annotations += cell.get_annotations(cell_idx, row_width)
                 cell_idx += cell.width + len(row.cell_separator)
 
-            idx += (row_width + 1) * cell.height   # linebreak
+            idx += (row_width + 1) * row_height   # linebreak
 
         return annotations
