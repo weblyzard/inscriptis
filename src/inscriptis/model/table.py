@@ -145,11 +145,16 @@ class TableCell(Canvas):
 
 
 class TableRow:
-    """A single row within a table."""
+    """A single row within a table.
+
+    Attributes:
+        columns: the table row's columns.
+        cell_separator: string used for separating columns from each other.
+    """
 
     __slots__ = ('columns', 'cell_separator')
 
-    def __init__(self, cell_separator: str = '  '):
+    def __init__(self, cell_separator):
         self.columns: List[TableCell] = []
         self.cell_separator = cell_separator
 
@@ -179,17 +184,19 @@ class Table:
     Attributes:
         rows: the table's rows.
         left_margin_len: length of the left margin before the table.
+        cell_separator: string used for separating cells from each other.
     """
 
-    __slots__ = ('rows', 'left_margin_len')
+    __slots__ = ('rows', 'left_margin_len', 'cell_separator')
 
-    def __init__(self, left_margin_len: int):
+    def __init__(self, left_margin_len: int, cell_separator):
         self.rows = []
         self.left_margin_len = left_margin_len
+        self.cell_separator = cell_separator
 
     def add_row(self):
         """Add an empty :class:`TableRow` to the table."""
-        self.rows.append(TableRow())
+        self.rows.append(TableRow(self.cell_separator))
 
     def add_cell(self, table_cell: TableCell):
         """Add  a new :class:`TableCell` to the table's last row.
@@ -256,12 +263,14 @@ class Table:
         for row in self.rows:
             if not row.columns:
                 continue
+
             row_width = row.width + left_margin_len
+            row_height = row.columns[0].height
             cell_idx = idx
             for cell in row.columns:
                 annotations += cell.get_annotations(cell_idx, row_width)
                 cell_idx += cell.width + len(row.cell_separator)
 
-            idx += (row_width + 1) * cell.height   # linebreak
+            idx += (row_width + 1) * row_height   # linebreak
 
         return annotations

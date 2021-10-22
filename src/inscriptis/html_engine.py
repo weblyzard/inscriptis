@@ -199,7 +199,8 @@ class Inscriptis:
     def _start_table(self, _):
         self.tags[-1].set_canvas(Canvas())
         self.current_table.append(Table(
-            left_margin_len=self.tags[-1].canvas.left_margin))
+            left_margin_len=self.tags[-1].canvas.left_margin,
+            cell_separator=self.config.table_cell_separator))
 
     def _start_tr(self, _):
         if self.current_table:

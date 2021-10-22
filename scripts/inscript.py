@@ -66,6 +66,9 @@ def get_parser():
     parser.add_argument('--indentation', default='extended',
                         help='How to handle indentation (extended or strict;'
                              ' default: extended).')
+    parser.add_argument('--table-cell-separator', default='  ',
+                        help='Separator to use between table cells (default: '
+                             'three spaces).')
     parser.add_argument('-v', '--version',
                         action='store_true', default=False,
                         help='display version information')
@@ -118,7 +121,8 @@ if __name__ == '__main__':
                           deduplicate_captions=args.deduplicate_image_captions,
                           display_links=args.display_link_targets,
                           display_anchors=args.display_anchor_urls,
-                          annotation_rules=annotation_rules)
+                          annotation_rules=annotation_rules,
+                          table_cell_separator=args.table_cell_separator)
     if not annotation_rules:
         output = get_text(html_content, config)
     else:
