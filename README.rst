@@ -512,6 +512,27 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       text = parser.get_text()
 
 
+Citation
+========
+
+There is a [Journal of Open Source Software](https://joss.theoj.org) [paper](https://joss.theoj.org/papers/10.21105/joss.03557) you can cite for Inscriptis:
+
+```bibtex
+@article{Weichselbraun2021,
+  doi = {10.21105/joss.03557},
+  url = {https://doi.org/10.21105/joss.03557},
+  year = {2021},
+  publisher = {The Open Journal},
+  volume = {6},
+  number = {66},
+  pages = {3557},
+  author = {Albert Weichselbraun},
+  title = {Inscriptis - A Python-based HTML to text conversion library optimized for knowledge extraction from the Web},
+  journal = {Journal of Open Source Software}
+}
+```
+
+
 Changelog
 =========
 
