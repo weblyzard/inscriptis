@@ -70,7 +70,6 @@ STRICT_CSS_PROFILE = {
                            whitespace=WhiteSpace.pre),
     'plaintext': HtmlElement(display=Display.block,
                              whitespace=WhiteSpace.pre),
-
 }
 
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
