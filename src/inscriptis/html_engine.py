@@ -104,7 +104,7 @@ class Inscriptis:
             # write the tail text to the element's container
             self.tags[-1].write(tree.tail)
 
-        elif tree.tag is Comment:
+        elif tree.tag is Comment and tree.tail:
             self.tags[-1].canvas.write(self.tags[-1], tree.tail)
 
     def get_text(self) -> str:
