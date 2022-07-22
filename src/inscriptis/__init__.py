@@ -60,7 +60,8 @@ Annotations in the `label` field are returned as a list of triples with
 """
 
 import re
-import lxml.html
+from lxml.html import fromstring, HtmlElement
+from lxml.etree import ParserError
 
 from typing import Dict, Optional, Any
 
@@ -70,7 +71,7 @@ from inscriptis.html_engine import Inscriptis
 RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
 
 
-def _get_html_tree(html_content: str) -> Optional[lxml.html.HtmlElement]:
+def _get_html_tree(html_content: str) -> Optional[HtmlElement]:
     """Obtain the HTML parse tree for the given HTML content.
 
     Args:
@@ -87,7 +88,10 @@ def _get_html_tree(html_content: str) -> Optional[lxml.html.HtmlElement]:
     if html_content.startswith('<?xml '):
         html_content = RE_STRIP_XML_DECLARATION.sub('', html_content, count=1)
 
-    return lxml.html.fromstring(html_content)
+    try:
+        return fromstring(html_content)
+    except ParserError:
+        return fromstring("<pre>" + html_content + "</pre>")
 
 
 def get_text(html_content: str, config: ParserConfig = None) -> str:
