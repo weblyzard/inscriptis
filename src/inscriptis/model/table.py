@@ -115,11 +115,10 @@ class TableCell(Canvas):
 
         # the easy case - the cell has only one line :)
         if len(self.blocks) == 1:
-            annotations = horizontal_shift(self.annotations,
-                                           self.line_width[0],
-                                           self.width, self.align, idx)
             self.line_width[0] = self.width
-            return annotations
+            return horizontal_shift(self.annotations,
+                                    self.line_width[0],
+                                    self.width, self.align, idx)
 
         # the more challenging one - multiple cell lines
         line_break_pos = list(accumulate(self.line_width))

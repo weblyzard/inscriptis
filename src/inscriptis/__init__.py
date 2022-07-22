@@ -91,7 +91,7 @@ def _get_html_tree(html_content: str) -> Optional[HtmlElement]:
     try:
         return fromstring(html_content)
     except ParserError:
-        return fromstring("<pre>" + html_content + "</pre>")
+        return fromstring('<pre>' + html_content + '</pre>')
 
 
 def get_text(html_content: str, config: ParserConfig = None) -> str:
