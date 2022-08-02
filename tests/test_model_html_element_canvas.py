@@ -53,4 +53,4 @@ def test_formatting():
     # and prefixes + suffixes
     h.prefix = '>>'
     h.suffix = '<<'
-    assert  _get_text(h)== 'first\n\n * >>Ehre sei Gott!<<\n\n\nlast'
+    assert _get_text(h)== 'first\n\n * >>Ehre sei Gott!<<\n\n\nlast'
