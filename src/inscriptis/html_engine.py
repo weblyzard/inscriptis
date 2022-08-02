@@ -4,6 +4,7 @@
 from typing import List
 
 import lxml.html
+from lxml.etree import Comment
 
 from inscriptis.annotation import Annotation
 from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
@@ -86,25 +87,25 @@ class Inscriptis:
         Args:
             tree: the HTML tree to parse.
         """
-        # ignore comments
-        if not isinstance(tree.tag, str):
-            return
+        if isinstance(tree.tag, str):
+            self.handle_starttag(tree.tag, tree.attrib)
+            cur = self.tags[-1]
+            cur.canvas.open_tag(cur)
 
-        self.handle_starttag(tree.tag, tree.attrib)
-        cur = self.tags[-1]
-        cur.canvas.open_tag(cur)
+            self.tags[-1].write(tree.text)
 
-        self.tags[-1].write(tree.text)
+            for node in tree:
+                self._parse_html_tree(node)
 
-        for node in tree:
-            self._parse_html_tree(node)
+            self.handle_endtag(tree.tag)
+            prev = self.tags.pop()
+            prev.canvas.close_tag(prev)
 
-        self.handle_endtag(tree.tag)
-        prev = self.tags.pop()
-        prev.canvas.close_tag(prev)
+            # write the tail text to the element's container
+            self.tags[-1].write(tree.tail)
 
-        # write the tail text to the element's container
-        self.tags[-1].write_tail(tree.tail)
+        elif tree.tag is Comment and tree.tail:
+            self.tags[-1].canvas.write(self.tags[-1], tree.tail)
 
     def get_text(self) -> str:
         """Return the text extracted from the HTML page."""

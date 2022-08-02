@@ -71,19 +71,8 @@ class HtmlElement:
         """Write the given HTML text to the element's canvas."""
         if not text or self.display == Display.none:
             return
-
         self.canvas.write(self, ''.join(
             (self.prefix, text, self.suffix)))
-
-    def write_tail(self, text: str):
-        """Write the given tail text the the element's canvas.
-
-        Args:
-            text: the text to write
-        """
-        if not text or self.display == Display.none:
-            return
-        self.write(text)
 
     def set_canvas(self, canvas) -> 'HtmlElement':
         self.canvas = canvas
