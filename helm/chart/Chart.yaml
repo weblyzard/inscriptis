@@ -1,0 +1,40 @@
+---
+apiVersion: v2
+type: application
+
+version: 1.0.0
+appVersion: 2.3.0
+
+dependencies:
+    # the template chart to be used
+    # https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common
+  - name: common
+    repository: https://library-charts.k8s-at-home.com
+    version: 4.4.2
+
+# description of the project itself
+name: inscriptis
+description: A Helm chart for Kubernetes, including inscriptis deployment, service and ingress
+home: https://github.com/weblyzard/inscriptis
+sources:
+ - https://github.com/weblyzard/inscriptis
+ - https://github.com/x28/inscriptis-java
+keywords:
+  - inscriptis
+  - html2text
+  - preprocessing
+  - nlp
+# icon: 
+maintainers:
+ # - name:
+ #   email:
+ #   url:
+   - name: Albert Weichselbraun
+   - name: Philipp Kuntschik
+   
+
+# A list of annotations keyed by name (optional). Could be used used for a changelog.
+# annotations:
+
+# Kubernetes Version Compatibility (optional):
+# kubeVersion:
