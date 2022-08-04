@@ -10,5 +10,5 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     python setup.py install
 
 ENV FLASK_APP="inscriptis.service.web"
-CMD ["python3", "-m", "flask", "run"]
+CMD ["python3", "-m", "flask", "run", "-h", "0.0.0.0"]
 EXPOSE 5000
