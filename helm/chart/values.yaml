@@ -39,7 +39,7 @@ service:
 
 # defines the ingress created for this application
 ingress:
-  main:  
+  main:
     enabled: true
     annotations: {}
     hosts:
