@@ -3,6 +3,7 @@
 """Inscriptis Web Service."""
 
 from flask import request, Response, Flask
+from waitress import serve
 
 from inscriptis import get_text
 from inscriptis.metadata import __version__
@@ -41,4 +42,4 @@ def get_version_call():
 
 if __name__ == '__main__':
     print('Starting Web service based on Inscriptis', __version__)
-    app.run(threaded=True, host='127.0.0.1', port=5000)
+    serve(app, host='0.0.0.0', port=5000)
