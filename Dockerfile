@@ -12,4 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     python setup.py install
 
 CMD ["waitress-serve", "src.inscriptis.service.web:app"]
+
 EXPOSE 5000
