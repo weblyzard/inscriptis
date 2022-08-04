@@ -24,14 +24,13 @@ keywords:
   - html2text
   - preprocessing
   - nlp
-# icon: 
+# icon:
 maintainers:
  # - name:
  #   email:
  #   url:
    - name: Albert Weichselbraun
    - name: Philipp Kuntschik
-   
 
 # A list of annotations keyed by name (optional). Could be used used for a changelog.
 # annotations:
