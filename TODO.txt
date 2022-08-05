@@ -1,12 +1,5 @@
 Please feel free to address any of the following issues
 
-high priority:
-- two pass table formatting (pass 1: use tabs; pass 2: expand tabs to align the columns)
-- finalize support for WhiteSpace.pre (pre)
 - add a class that translates style sheets to the corresponding dictionary of `HtmlElement`s.
-- add support for nested tags in white spaces (e.g. `ul ol`)
 - check: option to remove links with a one letter description (footnotes)
-
-
-low priority:
 - support for <hr /> tag (if needed)
