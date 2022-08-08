@@ -4,34 +4,56 @@
 # https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common
 #
 
+# defines gloabl variables
+global:
+  # -- name-prefix override
+  nameOverride:
+  # -- full-name override
+  fullnameOverride:
+  # -- global labels
+  labels: {}
+  # -- global annotations
+  annotations: {}
+
 # defines the image to use
 image:
+  # -- the image repository for this deployment
   repository: ghcr.io/weblyzard/inscriptis
+  # -- the image version for this deployment
   tag: 2.3.0
+  # -- the image pull policy for this deployment
   pullPolicy: Always
 
 # defines the replication and update strategy
 controller:
-  strategy: RollingUpdate
+  # -- number of pods to spawn
   replicas: 2
+  strategy: RollingUpdate
   rollingUpdate:
-    maxSurge: 1
-    maxUnavailable: 1
+    # -- set rollingupdate max surge
+    surge: 1
+    # -- set rollingupdate max unavailable
+    unavailable: 1
 
 # defines the resource to be allocated by the pod
 resources:
   limits:
+     # -- a pods memory limits
      memory: 1024Mi
   requests:
+     # -- a pods memory requests
      memory: 1024Mi
 
 # defines the services created for this application.
 service:
   main:
+    # -- whether a service should be created
     enabled: true
+    # -- the type of service
     type: ClusterIP
     ports:
       http:
+        # -- the service port that should be created
         port: 5000
         targetPort: 5000
         protocol: HTTP
@@ -40,13 +62,33 @@ service:
 # defines the ingress created for this application
 ingress:
   main:
-    enabled: true
+    # -- whether an ingress should be created
+    enabled: false
+    # -- ingress annotation to be set
     annotations: {}
     hosts:
+        # -- the host url the ingress should listen to
       - host: inscriptis.cluster.local
         paths:
         - path: /
         service:
           name: inscriptis
+          # -- the same port defined in the service.
           port: 5000
-    tls: {}
+    # -- tls configuration
+    tls: []
+    #  - secretName: inscriptis-example-tls
+    #    hosts:
+    #      - inscriptis.cluster.local
+
+
+# -- [[node selector]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
+nodeSelector: {}
+
+
+# -- [[affinity]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
+affinity: {}
+
+
+# -- [[taint tolerations]](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
+tolerations: []

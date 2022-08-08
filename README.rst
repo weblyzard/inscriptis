@@ -328,7 +328,7 @@ the docker definition can be found `here <https://github.com/weblyzard/inscripti
 Run as Kubernetes Deployment with Helm
 --------------------------------------
 
-The helm repository is located `here <https://weblyzard.github.io/inscriptis/>`_. All supported configuration parameters are documented in the `helm subdir <https://github.com/weblyzard/inscriptis/helm>`_::
+The helm repository is located `here <https://weblyzard.github.io/inscriptis/>`_. All supported configuration parameters are documented in the `helm subdir <https://github.com/weblyzard/inscriptis/tree/master/helm>`_::
 
   $ helm repo add inscriptis https://weblyzard.github.io/inscriptis/
   $ helm repo update
