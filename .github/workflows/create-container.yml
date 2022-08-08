@@ -33,7 +33,7 @@ jobs:
         tags: |
           ghcr.io/weblyzard/inscriptis:v${{ steps.version.outputs.APP_VERSION }}
           ghcr.io/weblyzard/inscriptis:latest
-          
+
     - name: publish helm
       uses: helm/chart-releaser-action@v1.4.0
       with:
