@@ -1,5 +1,0 @@
-Please feel free to address any of the following issues
-
-- add a class that translates style sheets to the corresponding dictionary of `HtmlElement`s.
-- check: option to remove links with a one letter description (footnotes)
-- support for <hr /> tag (if needed)

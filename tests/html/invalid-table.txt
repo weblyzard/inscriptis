@@ -1,3 +1,0 @@
-           First       Second       Third
-any        beta        charly     
-long time  short time  medium time
