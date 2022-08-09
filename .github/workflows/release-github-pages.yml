@@ -7,6 +7,7 @@ on:
     
 jobs:
   release:
+    steps:
     - name: publish helm
       uses: helm/chart-releaser-action@v1.4.0
       with:
