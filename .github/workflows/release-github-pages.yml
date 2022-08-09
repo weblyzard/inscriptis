@@ -4,29 +4,29 @@ on:
   push:
     branches:
       - master
-      
+
 jobs:
   release:
     permissions:
       contents: write
-    runs-on: ubuntu-latest  
-    
+    runs-on: ubuntu-latest
+
     steps:
     - name: checkout commit
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-        
+
     - name: git configuration
       run: |
         git config user.name "$GITHUB_ACTOR"
         git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-        
+
     - name: install Helm
       uses: azure/setup-helm@v1
       with:
         version: v3.8.1
-        
+
     - name: publish helm repository
       uses: helm/chart-releaser-action@v1.4.0
       with:
