@@ -1,4 +1,4 @@
-name: container
+name: release github pages
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     
 jobs:
   release:
+    runs-on: ubuntu-latest  
     steps:
     - name: publish helm
       uses: helm/chart-releaser-action@v1.4.0
