@@ -13,7 +13,7 @@ helm repo update
 
 ### Helm Charts
 
-* [nextcloud](https://weblyzard.github.io/inscriptis/)
+* [inscriptis](https://weblyzard.github.io/inscriptis/)
 
   ```bash
   helm install my-inscriptis inscriptis/inscriptis
