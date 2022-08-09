@@ -23,5 +23,5 @@ COPY --from=builder /inscriptis /inscriptis
 COPY ./src /inscriptis/src
 
 ENV PATH="/inscriptis/.venv/bin:$PATH"
-CMD ["waitress-serve", "inscriptis.service.web:app"]
+CMD ["waitress-serve", "inscriptis.service.web:app", "--port=5000", "--host=0.0.0.0"]
 EXPOSE 5000
