@@ -3,7 +3,7 @@ name: release github pages
 on:
   push:
     branches:
-      - feature/helm-repo
+      - master
 
 jobs:
   release:
