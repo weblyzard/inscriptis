@@ -1,0 +1,15 @@
+name: container
+
+on:
+  push:
+    branches:
+      - master
+    
+jobs:
+  release:
+    - name: publish helm
+      uses: helm/chart-releaser-action@v1.4.0
+      with:
+        charts_dir: helm
+      env:
+        CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
