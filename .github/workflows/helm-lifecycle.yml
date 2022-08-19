@@ -3,7 +3,7 @@ name: helm lifecycle
 on:
   push:
     branches:
-      - master
+      - test
 
 jobs:
   release:
