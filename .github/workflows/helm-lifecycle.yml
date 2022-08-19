@@ -1,4 +1,4 @@
-name: release github pages
+name: helm lifecycle
 
 on:
   push:
@@ -27,9 +27,10 @@ jobs:
       with:
         version: v3.8.1
 
-    - name: publish helm repository
+    - name: build publish to gh pages
       uses: helm/chart-releaser-action@v1.4.0
       with:
         charts_dir: helm
+        config: helm/chart-release-config.yaml
       env:
         CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
