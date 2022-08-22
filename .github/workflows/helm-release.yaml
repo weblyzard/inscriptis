@@ -1,0 +1,20 @@
+name: helm release
+
+on:
+  push:
+    branches:
+      - PhilippKuntschik-patch-2
+    tags:
+      - '*'
+
+jobs:
+  myEvent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dispatch inscriptis-helm
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.HELMREPO_ACCESS_TOKEN }}
+          repository: weblyzard/inscriptis-helm
+          event-type: tag-released
+          client-payload: '{"tagname": "${{ GITHUB_REF_NAME }}"}'
