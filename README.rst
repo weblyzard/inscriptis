@@ -327,7 +327,7 @@ The docker definition can be found `here <https://github.com/weblyzard/inscripti
 Run as Kubernetes Deployment
 --------------------------------------
 
-The helm chart for deployment on a kubernetes cluster is located in the `inscriptis-helm repository<https://github.com/weblyzard/inscriptis-helm>`.
+The helm chart for deployment on a kubernetes cluster is located in the `inscriptis-helm repository <https://github.com/weblyzard/inscriptis-helm>`_.
 
 Use the Web Service
 -------------------
