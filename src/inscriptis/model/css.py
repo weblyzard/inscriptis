@@ -93,17 +93,20 @@ class CssParse:
     @staticmethod
     def attr_margin_top(value: str, html_element: HtmlElement):
         """Apply the given top margin."""
-        html_element.margin_before = CssParse._get_em(value)
+        with suppress(ValueError):
+            html_element.margin_before = CssParse._get_em(value)
 
     @staticmethod
     def attr_margin_bottom(value: str, html_element: HtmlElement):
         """Apply the provided bottom margin."""
-        html_element.margin_after = CssParse._get_em(value)
+        with suppress(ValueError):
+            html_element.margin_after = CssParse._get_em(value)
 
     @staticmethod
     def attr_padding_left(value: str, html_element: HtmlElement):
         """Apply the given left padding_inline."""
-        html_element.padding_inline = CssParse._get_em(value)
+        with suppress(ValueError):
+            html_element.padding_inline = CssParse._get_em(value)
 
     @staticmethod
     def attr_horizontal_align(value: str, html_element: HtmlElement):
