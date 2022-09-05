@@ -174,13 +174,17 @@ convert the given page to text and output the result to the screen::
 
   $ inscript.py https://www.fhgr.ch
    
-convert the file to text and save the output to output.txt::
+convert the file to text and save the output to fhgr.txt::
 
   $ inscript.py fhgr.html -o fhgr.txt
+
+convert the file using strict indentation (i.e., minimize indentation and extra spaces) and save the output to fhgr-layout-optimized.txt::
+
+  $ inscript.py --indentation strict fhgr.html -o fhgr-layout-optimized.txt
    
 convert HTML provided via stdin and save the output to output.txt::
 
-  $ echo '<body><p>Make it so!</p></body>' | inscript.py -o output.txt 
+  $ echo "<body><p>Make it so!</p></body>" | inscript.py -o output.txt 
 
 
 HTML to annotated text conversion
