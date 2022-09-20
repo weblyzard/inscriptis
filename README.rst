@@ -558,10 +558,10 @@ The following code mitigates this problem on Unix systems by manually forcing lx
 
 .. code-block:: python
 
-import ctypes
-def trim_memory() -> int:
-        libc = ctypes.CDLL("libc.so.6")
-        return libc.malloc_trim(0)
+   import ctypes
+   def trim_memory() -> int:
+      libc = ctypes.CDLL("libc.so.6")
+      return libc.malloc_trim(0)
 
 
 Citation
