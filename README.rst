@@ -549,6 +549,21 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       text = parser.get_text()
 
 
+Optimizing memory consumption
+-----------------------------
+
+Inscriptis uses the Python lxml library which prefers to reuse memory rather than release it to the operating system. This behavior might lead to an increased memory consumption, if you use inscriptis within a Web service that parses very complex HTML pages.
+
+The following code mitigates this problem on Unix systems by manually forcing lxml to release the allocated memory:
+
+```python
+import ctypes
+def trim_memory() -> int:
+        libc = ctypes.CDLL("libc.so.6")
+        return libc.malloc_trim(0)
+```
+
+
 Citation
 ========
 
