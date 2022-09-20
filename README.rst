@@ -556,12 +556,12 @@ Inscriptis uses the Python lxml library which prefers to reuse memory rather tha
 
 The following code mitigates this problem on Unix systems by manually forcing lxml to release the allocated memory:
 
-```python
+.. code-block:: python
+
 import ctypes
 def trim_memory() -> int:
         libc = ctypes.CDLL("libc.so.6")
         return libc.malloc_trim(0)
-```
 
 
 Citation
