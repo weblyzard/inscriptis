@@ -22,6 +22,7 @@ from time import time
 #
 
 LYNX_BIN = '/usr/bin/lynx'
+LINKS_BIN = '/usr/bin/links'
 BENCHMARKING_ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(BENCHMARKING_ROOT, '../src')
 sys.path.insert(0, os.path.abspath(SRC_DIR))
@@ -173,6 +174,42 @@ class LynxConverter(AbstractHtmlConverter):
         return text
 
 
+class LinksConverter(AbstractHtmlConverter):
+    """
+    Converts HTML to text using links.
+    """
+    name = 'Links'
+
+    def __init__(self):
+        try:
+            subprocess.call([LINKS_BIN, '-dump \'www.google.com\''],
+                            stdout=subprocess.PIPE)
+            self.available = True
+        except OSError:
+            print('links can not be called. Please check in order to compare '
+                  'with links.')
+            self.available = False
+
+    def get_text(self, html):
+
+        def kill_links(pid):
+            os.kill(pid, signal.SIGKILL)
+            os.waitpid(-1, os.WNOHANG)
+            print('links killed')
+
+        links_args= '-dump '
+        cmd = [LINKS_BIN, ] + links_args.split(' ')
+        links = subprocess.Popen(cmd, stdin=subprocess.PIPE,
+                                 stdout=subprocess.PIPE)
+        links.stdin.write(html.encode('utf8'))
+        links.stdin.close()
+        _t = threading.Timer(200.0, kill_links, args=[links.pid])
+        _t.start()
+        text = links.stdout.read().decode('utf-8', 'replace')
+        _t.cancel()
+        return text
+
+
 class InscriptisHtmlConverter(AbstractHtmlConverter):
     """
     Converts HTML to text using Inscriptis.
@@ -250,6 +287,7 @@ CONVERTER = (BeautifulSoupHtmlConverter(),
              JustextConverter(),
              Html2TextConverter(),
              LynxConverter(),
+             LinksConverter(),
              InscriptisHtmlConverter())
 
 
