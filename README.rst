@@ -61,7 +61,7 @@ Statement of need - why inscriptis?
 
    Conversion quality becomes a factor once you need to move beyond simple HTML snippets. Non-specialized approaches and less sophisticated libraries do not correctly interpret HTML semantics and, therefore, fail to properly convert constructs such as itemizations, enumerations, and tables.
 
-   Beautiful Soup's `get_text()` function, for example, converts the following HTML enumeration to the string ``firstsecond``.
+   Beautiful Soup's ``get_text()`` function, for example, converts the following HTML enumeration to the string ``firstsecond``.
 
    .. code-block:: HTML
    
@@ -78,7 +78,7 @@ Statement of need - why inscriptis?
       * first
       * second
 
-   but also supports much more complex constructs such as nested tables and also interprets a subset of HTML (e.g., `align`, `valign`) and CSS (e.g., `display`, `white-space`, `margin-top`, `vertical-align`, etc.) attributes that determine the text alignment. Any time the spatial alignment of text is relevant (e.g., for many knowledge extraction tasks, the computation of word embeddings and language models, and sentiment analysis) an accurate HTML to text conversion is essential.
+   but also supports much more complex constructs such as nested tables and also interprets a subset of HTML (e.g., ``align``, ``valign``) and CSS (e.g., ``display``, ``white-space``, ``margin-top``, ``vertical-align``, etc.) attributes that determine the text alignment. Any time the spatial alignment of text is relevant (e.g., for many knowledge extraction tasks, the computation of word embeddings and language models, and sentiment analysis) an accurate HTML to text conversion is essential.
 
 2. Inscriptis supports `annotation rules <#annotation-rules>`_, i.e., user-provided mappings that allow for annotating the extracted text based on structural and semantic information encoded in HTML tags and attributes used for controlling structure and layout in the original HTML document. These rules might be used to
 
@@ -210,10 +210,10 @@ The annotation rules are specified in `annotation-profile.json`:
 
 The dictionary maps an HTML tag and/or attribute to the annotations
 inscriptis should provide for them. In the example above, for instance, the tag
-`h1` yields the annotations `heading` and `h1`, a `div` tag with a
-`class` that contains the value `toc` results in the annotation
-`table-of-contents`, and all tags with a `cite` attribute are annotated with
-`citation`.
+``h1`` yields the annotations ``heading`` and ``h1``, a ``div`` tag with a
+``class`` that contains the value ``toc`` results in the annotation
+``table-of-contents``, and all tags with a ``cite`` attribute are annotated with
+``citation``.
 
 Given these annotation rules the HTML file
 
@@ -239,7 +239,7 @@ Annotation postprocessors
 -------------------------
 Annotation postprocessors enable the post processing of annotations to formats
 that are suitable for your particular application. Post processors can be
-specified with the `-p` or `--postprocessor` command line argument::
+specified with the ``-p`` or ``--postprocessor`` command line argument::
 
   $ inscript.py https://www.fhgr.ch \
           -r ./examples/annotation-profile.json \
@@ -280,7 +280,7 @@ Currently, inscriptis supports the following postprocessors:
 
 .. figure:: https://github.com/weblyzard/inscriptis/raw/master/docs/paper/images/annotations.png
    :align: left
-   :alt: Annotations extracted from the Wikipedia entry for Chur with the `--postprocess html` postprocessor.
+   :alt: Annotations extracted from the Wikipedia entry for Chur with the ``--postprocess html`` postprocessor.
 
    Snippet of the rendered HTML file created with the following command line options and annotation rules:
 
@@ -290,7 +290,7 @@ Currently, inscriptis supports the following postprocessors:
                   --postprocessor html \
                   https://en.wikipedia.org/wiki/Chur.html
 
-   Annotation rules encoded in the `wikipedia.json` file:
+   Annotation rules encoded in the ``wikipedia.json`` file:
 
    .. code-block:: json
 
@@ -330,7 +330,7 @@ Usage
 
 The Web services receives the HTML file in the request body and returns the
 corresponding text. The file's encoding needs to be specified
-in the `Content-Type` header (`UTF-8` in the example below)::
+in the ``Content-Type`` header (``UTF-8`` in the example below)::
 
   $ curl -X POST  -H "Content-Type: text/html; encoding=UTF8"  \
           --data-binary @test.html  http://localhost:5000/get_text
@@ -370,7 +370,7 @@ The figure below outlines an example table from Wikipedia that has been annotate
 References to entities, missing entities and citations from Wikipedia
 ---------------------------------------------------------------------
 
-This profile extracts references to Wikipedia entities, missing entities and citations. Please note that the profile isn't perfect, since it also annotates `[ edit ]` links.
+This profile extracts references to Wikipedia entities, missing entities and citations. Please note that the profile isn't perfect, since it also annotates ``[ edit ]`` links.
 
 .. code-block:: json
 
@@ -488,15 +488,15 @@ Fine tuning
 
 The following options are available for fine tuning inscriptis' HTML rendering:
 
-1. **More rigorous indentation:** call `inscriptis.get_text()` with the
-   parameter `indentation='extended'` to also use indentation for tags such as
-   `<div>` and `<span>` that do not provide indentation in their standard
-   definition. This strategy is the default in `inscript.py` and many other
+1. **More rigorous indentation:** call ``inscriptis.get_text()`` with the
+   parameter ``indentation='extended'`` to also use indentation for tags such as
+   ``<div>`` and ``<span>`` that do not provide indentation in their standard
+   definition. This strategy is the default in ``inscript.py`` and many other
    tools such as Lynx. If you do not want extended indentation you can use the
-   parameter `indentation='standard'` instead.
+   parameter ``indentation='standard'`` instead.
 
 2. **Overwriting the default CSS definition:** inscriptis uses CSS definitions
-   that are maintained in `inscriptis.css.CSS` for rendering HTML tags. You can
+   that are maintained in ``inscriptis.css.CSS`` for rendering HTML tags. You can
    override these definitions (and therefore change the rendering) as outlined
    below:
 
@@ -548,6 +548,23 @@ The following options are available for fine tuning inscriptis' HTML rendering:
     -v, --version         display version information
       text = parser.get_text()
 
+
+Custom HTML tag handling
+------------------------
+
+If the fine-tuning options discussed above are not sufficient, you may even override Inscriptis' handling of start and end tags as outlined below:
+
+.. code-block:: python
+
+    inscriptis = Inscriptis(html, config)
+
+    inscriptis.start_tag_handler_dict['a'] = my_handle_start_a
+    inscriptis.end_tag_handler_dict['a'] = my_handle_end_a
+    text = inscriptis.get_text()
+		
+
+In the example the standard HTML handlers for the ``a`` tag are overwritten with custom versions (i.e., ``my_handle_start_a`` and ``my_handle_end_a``).
+You may define custom handlers for any tag, regardless of whether it already exists in ``start_tag_handler_dict`` or ``end_tag_handler_dict``. 
 
 Optimizing memory consumption
 -----------------------------
