@@ -313,20 +313,28 @@ Web Service
 
 The Flask Web Service translates HTML pages to the corresponding plain text.
 
-Additional Requirements
------------------------
-
-* python3-flask
-
-Startup
--------
-Start the inscriptis Web service with the following command::
+Run the Web Service on your host system
+---------------------------------------
+Provide additional requirement `python3-flask <https://flask.palletsprojects.com/en/2.2.x/>`_, then start the inscriptis Web service with the following command::
 
   $ export FLASK_APP="inscriptis.service.web"
   $ python3 -m flask run
 
-Usage
------
+Run the Web Service with Docker
+-------------------------------
+
+The docker definition can be found `here <https://github.com/weblyzard/inscriptis/pkgs/container/inscriptis>`_::
+  
+  $ docker pull ghcr.io/weblyzard/inscriptis:latest
+  $ docker run -n inscriptis ghcr.io/weblyzard/inscriptis:latest
+
+Run as Kubernetes Deployment
+--------------------------------------
+
+The helm chart for deployment on a kubernetes cluster is located in the `inscriptis-helm repository <https://github.com/weblyzard/inscriptis-helm>`_.
+
+Use the Web Service
+-------------------
 
 The Web services receives the HTML file in the request body and returns the
 corresponding text. The file's encoding needs to be specified
