@@ -1,7 +1,7 @@
 #
 # Stage 1 - Install build dependencies
 #
-FROM python:3.10.7-slim-bullseye AS builder
+FROM python:3.11.0-slim-bullseye AS builder
 
 WORKDIR /inscriptis
 COPY requirements.txt .
@@ -13,7 +13,7 @@ RUN .venv/bin/pip install --no-cache-dir -r requirements.txt && \
 #
 # Stage 2 - Copy only necessary files to the runner stage
 #
-FROM python:3.10.7-slim-bullseye 
+FROM python:3.11.0-slim-bullseye 
 LABEL maintainer="albert.weichselbraun@fhgr.ch"
 
 # Note: only copy the src directory, to prevent bloating the image with 
