@@ -44,8 +44,8 @@ Please take a look at the
 `Rendering <https://github.com/weblyzard/inscriptis/blob/master/RENDERING.md>`_
 document for a demonstration of inscriptis' conversion quality.
 
-A Java port of inscriptis 1.x is available
-`here <https://github.com/x28/inscriptis-java>`_.
+A Java port of inscriptis 1.x has been published by
+`x28 <https://github.com/x28/inscriptis-java>`_.
 
 This document provides a short introduction to Inscriptis. 
 
