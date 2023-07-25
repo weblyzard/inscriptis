@@ -524,36 +524,7 @@ The following options are available for fine tuning inscriptis' HTML rendering:
       html_tree = fromstring(html)
       # create a parser using a custom css
       config = ParserConfig(css=css)
-      parser = Inscriptis(html_tree, config)  usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] [-r ANNOTATION_RULES] [-p POSTPROCESSOR]
-                     [--indentation INDENTATION] [-v]
-                     [input]
-
-  Convert the given HTML document to text.
-
-  positional arguments:
-    input                 Html input either from a file or a URL (default:stdin).
-
-  optional arguments:
-    -h, --help            show this help message and exit
-    -o OUTPUT, --output OUTPUT
-                          Output file (default:stdout).
-    -e ENCODING, --encoding ENCODING
-                          Input encoding to use (default:utf-8 for files; detected server encoding for Web URLs).
-    -i, --display-image-captions
-                          Display image captions (default:false).
-    -d, --deduplicate-image-captions
-                          Deduplicate image captions (default:false).
-    -l, --display-link-targets
-                          Display link targets (default:false).
-    -a, --display-anchor-urls
-                          Display anchor URLs (default:false).
-    -r ANNOTATION_RULES, --annotation-rules ANNOTATION_RULES
-                          Path to an optional JSON file containing rules for annotating the retrieved text.
-    -p POSTPROCESSOR, --postprocessor POSTPROCESSOR
-                          Optional component for postprocessing the result (html, surface, xml).
-    --indentation INDENTATION
-                          How to handle indentation (extended or strict; default: extended).
-    -v, --version         display version information
+      parser = Inscriptis(html_tree, config)
       text = parser.get_text()
 
 
@@ -587,6 +558,56 @@ The following code mitigates this problem on Unix systems by manually forcing lx
    def trim_memory() -> int:
       libc = ctypes.CDLL("libc.so.6")
       return libc.malloc_trim(0)
+
+
+Examples
+========
+
+Strict indentation handling
+---------------------------
+
+The following example demonstrates how to modify the `ParserConfig` for strict indentation handling.
+
+.. code-block:: python
+
+   from inscriptis import get_text
+   from inscriptis.css_profiles import CSS_PROFILES
+   from inscriptis.model.config import ParserConfig
+
+   config = ParserConfig(css=CSS_PROFILES['strict'].copy())
+   text = get_text('fi<span>r</span>st', config)
+   print(text)
+
+Ignore elements during parsing 
+------------------------------
+
+Overwriting the default CSS profile also allows changing the rendering of selected elements. 
+The snippet below, for example, removes forms from the parsed text by setting the definition of the `form` tag to `Display.none`.
+
+.. code-block:: python
+
+      from inscriptis import get_text
+      from inscriptis.css_profiles import CSS_PROFILES, HtmlElement
+      from inscriptis.html_properties import Display
+      from inscriptis.model.config import ParserConfig
+
+      # create a custom CSS based on the default style sheet and change the
+      # rendering of `div` and `span` elements
+      css = CSS_PROFILES['strict'].copy()
+      css['form'] = HtmlElement(display=Display.none)
+
+      # create a parser configuration using a custom css
+      html = """First line. 
+                <form>
+                  User data
+                  <label for="name">Name:</label><br>
+                  <input type="text" id="name" name="name"><br>
+                  <label for="pass">Password:</label><br>
+                  <input type="hidden" id="pass" name="pass">
+                </form>"""
+      config = ParserConfig(css=css)
+      text = get_text(html, config)
+      print(text)
 
 
 Citation
