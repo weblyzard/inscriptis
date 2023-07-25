@@ -566,7 +566,7 @@ Examples
 Strict indentation handling
 ---------------------------
 
-The following example demonstrates how to modify the `ParserConfig` for strict indentation handling.
+The following example demonstrates modifying ``ParserConfig`` for strict indentation handling.
 
 .. code-block:: python
 
@@ -582,7 +582,7 @@ Ignore elements during parsing
 ------------------------------
 
 Overwriting the default CSS profile also allows changing the rendering of selected elements. 
-The snippet below, for example, removes forms from the parsed text by setting the definition of the `form` tag to `Display.none`.
+The snippet below, for example, removes forms from the parsed text by setting the definition of the ``form`` tag to ``Display.none``.
 
 .. code-block:: python
 
