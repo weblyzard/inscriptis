@@ -164,7 +164,7 @@ class Inscriptis:
         image_text = attrs.get('alt', '') or attrs.get('title', '')
         if image_text and not (self.config.deduplicate_captions
                                and image_text == self.last_caption):
-            self.tags[-1].write('[{0}]'.format(image_text))
+            self.tags[-1].write(f'[{image_text}]')
             self.last_caption = image_text
 
     def _start_a(self, attrs):
@@ -179,7 +179,7 @@ class Inscriptis:
 
     def _end_a(self):
         if self.link_target:
-            self.tags[-1].write(']({0})'.format(self.link_target))
+            self.tags[-1].write(f']({self.link_target})')
 
     def _start_ol(self, _):
         self.li_counter.append(1)
@@ -191,7 +191,7 @@ class Inscriptis:
         bullet = self.li_counter[-1] if self.li_counter else '* '
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.tags[-1].list_bullet = '{0}. '.format(bullet)
+            self.tags[-1].list_bullet = f'{bullet}. '
         else:
             self.tags[-1].list_bullet = bullet
 
