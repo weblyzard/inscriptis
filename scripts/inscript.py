@@ -15,6 +15,7 @@ from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.config import ParserConfig
 
 DEFAULT_ENCODING = 'utf8'
+DEFAULT_TIMEOUT = 5  # default timeout in seconds
 
 
 def get_postprocessor(name):
@@ -69,6 +70,9 @@ def get_parser():
     parser.add_argument('--table-cell-separator', default='  ',
                         help='Separator to use between table cells (default: '
                              'three spaces).')
+    parser.add_argument('--timeout', default=DEFAULT_TIMEOUT,
+                        help='Request timeout in seconds (default: '
+                             f'{DEFAULT_TIMEOUT}).')
     parser.add_argument('-v', '--version',
                         action='store_true', default=False,
                         help='display version information')
@@ -95,7 +99,7 @@ if __name__ == '__main__':
                                    errors='ignore') as f:
             html_content = f.read()
     elif args.input.startswith('http://') or args.input.startswith('https://'):
-        req = requests.get(args.input)
+        req = requests.get(args.input, timeout=args.timeout)
         html_content = req.content.decode(args.encoding or req.encoding)
     else:
         print("ERROR: Cannot open input file '{0}'.\n".format(args.input))
