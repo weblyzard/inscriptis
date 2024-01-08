@@ -137,7 +137,7 @@ class Inscriptis:
                 tag, DEFAULT_HTML_ELEMENT).__copy__().set_tag(tag)))
         self.tags.append(cur)
 
-        handler = self.start_tag_handler_dict.get(tag, None)
+        handler = self.start_tag_handler_dict.get(tag)
         if handler:
             handler(attrs)
 
@@ -150,7 +150,7 @@ class Inscriptis:
         Args:
           tag: the HTML end tag to process.
         """
-        handler = self.end_tag_handler_dict.get(tag, None)
+        handler = self.end_tag_handler_dict.get(tag)
         if handler:
             handler()
 

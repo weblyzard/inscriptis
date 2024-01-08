@@ -68,9 +68,7 @@ class HtmlExtractor(AnnotationProcessor):
             A mapping between the available labels and the corresponding color
             from the COLOR_SCHEMA.
         """
-        return {label: color
-                for label, color in zip({a[2] for a in sorted(labels)},
-                                        cycle(COLOR_SCHEMA))}
+        return dict(zip({a[2] for a in sorted(labels)}, cycle(COLOR_SCHEMA)))
 
     def _get_css(self, labels: List[str]) -> str:
         """Compute the CSS to be included into the HTML output.
