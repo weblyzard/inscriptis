@@ -17,12 +17,12 @@ class Block:
         prefix: prefix used within the current block.
     """
 
-    __slots__ = ('idx', 'prefix', '_content', 'collapsable_whitespace')
+    __slots__ = ("idx", "prefix", "_content", "collapsable_whitespace")
 
     def __init__(self, idx: int, prefix: str):
         self.idx = idx
         self.prefix = prefix
-        self._content = ''
+        self._content = ""
         self.collapsable_whitespace = True
 
     def merge(self, text: str, whitespace: WhiteSpace) -> None:
@@ -50,12 +50,15 @@ class Block:
                 normalized_text.append(ch)
                 self.collapsable_whitespace = False
             elif not self.collapsable_whitespace:
-                normalized_text.append(' ')
+                normalized_text.append(" ")
                 self.collapsable_whitespace = True
 
         if normalized_text:
-            text = ''.join((self.prefix.first, *normalized_text)) if not \
-                self._content else ''.join(normalized_text)
+            text = (
+                "".join((self.prefix.first, *normalized_text))
+                if not self._content
+                else "".join(normalized_text)
+            )
             text = unescape(text)
             self._content += text
             self.idx += len(text)
@@ -66,8 +69,7 @@ class Block:
         Args:
             text: the text to merge
         """
-        text = ''.join((self.prefix.first,
-                        text.replace('\n', '\n' + self.prefix.rest)))
+        text = "".join((self.prefix.first, text.replace("\n", "\n" + self.prefix.rest)))
         text = unescape(text)
         self._content += text
         self.idx += len(text)
@@ -81,12 +83,12 @@ class Block:
         if not self.collapsable_whitespace:
             return self._content
 
-        if self._content.endswith(' '):
+        if self._content.endswith(" "):
             self._content = self._content[:-1]
             self.idx -= 1
         return self._content
 
-    def new_block(self) -> 'Block':
+    def new_block(self) -> "Block":
         """Return a new Block based on the current one."""
         self.prefix.consumed = False
         return Block(idx=self.idx + 1, prefix=self.prefix)

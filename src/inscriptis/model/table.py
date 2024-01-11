@@ -20,9 +20,19 @@ class TableCell(Canvas):
                           vertical formatting rules.
     """
 
-    __slots__ = ('annotations', 'block_annotations', 'blocks', 'current_block',
-                 'margin', 'annotation_counter', 'align', 'valign', '_width',
-                 'line_width', 'vertical_padding')
+    __slots__ = (
+        "annotations",
+        "block_annotations",
+        "blocks",
+        "current_block",
+        "margin",
+        "annotation_counter",
+        "align",
+        "valign",
+        "_width",
+        "line_width",
+        "vertical_padding",
+    )
 
     def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
         super().__init__()
@@ -39,9 +49,9 @@ class TableCell(Canvas):
             The height of the normalized cell.
         """
         self._flush_inline()
-        self.blocks = list(chain(*(line.split('\n') for line in self.blocks)))
+        self.blocks = list(chain(*(line.split("\n") for line in self.blocks)))
         if not self.blocks:
-            self.blocks = ['']
+            self.blocks = [""]
         return len(self.blocks)
 
     @property
@@ -62,8 +72,9 @@ class TableCell(Canvas):
         """
         if self._width:
             return self._width
-        return max((len(line) for line in chain(*(block.split('\n')
-                                                  for block in self.blocks))))
+        return max(
+            (len(line) for line in chain(*(block.split("\n") for block in self.blocks)))
+        )
 
     @width.setter
     def width(self, width):
@@ -77,8 +88,7 @@ class TableCell(Canvas):
 
         # record new width and start reformatting
         self._width = width
-        format_spec = '{{:{align}{width}}}'.format(align=self.align.value,
-                                                   width=width)
+        format_spec = "{{:{align}{width}}}".format(align=self.align.value, width=width)
         self.blocks = [format_spec.format(b) for b in self.blocks]
 
     @height.setter
@@ -91,14 +101,17 @@ class TableCell(Canvas):
         """
         rows = len(self.blocks)
         if rows < height:
-            empty_line = ['']
+            empty_line = [""]
             if self.valign == VerticalAlignment.bottom:
-                self.vertical_padding = (height - rows)
+                self.vertical_padding = height - rows
                 self.blocks = self.vertical_padding * empty_line + self.blocks
             elif self.valign == VerticalAlignment.middle:
                 self.vertical_padding = (height - rows) // 2
-                self.blocks = self.vertical_padding * empty_line + \
-                    self.blocks + ((height - rows + 1) // 2 * empty_line)
+                self.blocks = (
+                    self.vertical_padding * empty_line
+                    + self.blocks
+                    + ((height - rows + 1) // 2 * empty_line)
+                )
             else:
                 self.blocks = self.blocks + ((height - rows) * empty_line)
 
@@ -116,9 +129,9 @@ class TableCell(Canvas):
         # the easy case - the cell has only one line :)
         if len(self.blocks) == 1:
             self.line_width[0] = self.width
-            return horizontal_shift(self.annotations,
-                                    self.line_width[0],
-                                    self.width, self.align, idx)
+            return horizontal_shift(
+                self.annotations, self.line_width[0], self.width, self.align, idx
+            )
 
         # the more challenging one - multiple cell lines
         line_break_pos = list(accumulate(self.line_width))
@@ -127,17 +140,19 @@ class TableCell(Canvas):
         # assign annotations to the corresponding line
         for a in self.annotations:
             for no, line_break in enumerate(line_break_pos):
-                if a.start <= (line_break + no):         # consider newline
+                if a.start <= (line_break + no):  # consider newline
                     annotation_lines[no + self.vertical_padding].append(a)
                     break
 
         # compute the annotation index based on its line and delta :)
         result = []
-        idx += self.vertical_padding   # newlines introduced by the padding
-        for line_annotations, line_len in zip(annotation_lines,
-                                              self.line_width):
-            result.extend(horizontal_shift(line_annotations, line_len,
-                                           self.width, self.align, idx))
+        idx += self.vertical_padding  # newlines introduced by the padding
+        for line_annotations, line_len in zip(annotation_lines, self.line_width):
+            result.extend(
+                horizontal_shift(
+                    line_annotations, line_len, self.width, self.align, idx
+                )
+            )
             idx += row_width - line_len
         self.line_width = [self.width for _ in self.line_width]
         return result
@@ -151,7 +166,7 @@ class TableRow:
         cell_separator: string used for separating columns from each other.
     """
 
-    __slots__ = ('columns', 'cell_separator')
+    __slots__ = ("columns", "cell_separator")
 
     def __init__(self, cell_separator):
         self.columns: List[TableCell] = []
@@ -162,10 +177,11 @@ class TableRow:
 
     def get_text(self) -> str:
         """Return a text representation of the TableRow."""
-        row_lines = [self.cell_separator.join(line)
-                     for line in zip(*[column.blocks
-                                       for column in self.columns])]
-        return '\n'.join(row_lines)
+        row_lines = [
+            self.cell_separator.join(line)
+            for line in zip(*[column.blocks for column in self.columns])
+        ]
+        return "\n".join(row_lines)
 
     @property
     def width(self):
@@ -173,8 +189,9 @@ class TableRow:
         if not self.columns:
             return 0
 
-        return sum((cell.width for cell in self.columns)) + len(
-            self.cell_separator) * (len(self.columns) - 1)
+        return sum((cell.width for cell in self.columns)) + len(self.cell_separator) * (
+            len(self.columns) - 1
+        )
 
 
 class Table:
@@ -186,7 +203,7 @@ class Table:
         cell_separator: string used for separating cells from each other.
     """
 
-    __slots__ = ('rows', 'left_margin_len', 'cell_separator')
+    __slots__ = ("rows", "left_margin_len", "cell_separator")
 
     def __init__(self, left_margin_len: int, cell_separator):
         self.rows = []
@@ -210,9 +227,11 @@ class Table:
     def _set_row_height(self):
         """Set the cell height for all :class:`TableCell`s in the table."""
         for row in self.rows:
-            max_row_height = max((cell.normalize_blocks()
-                                  for cell in row.columns)) \
-                if row.columns else 0
+            max_row_height = (
+                max((cell.normalize_blocks() for cell in row.columns))
+                if row.columns
+                else 0
+            )
             for cell in row.columns:
                 cell.height = max_row_height
 
@@ -223,9 +242,13 @@ class Table:
 
         for cur_column_idx in range(max_columns):
             # determine the required column width for the current column
-            max_column_width = max((row.columns[cur_column_idx].width
-                                    for row in self.rows
-                                    if len(row) > cur_column_idx))
+            max_column_width = max(
+                (
+                    row.columns[cur_column_idx].width
+                    for row in self.rows
+                    if len(row) > cur_column_idx
+                )
+            )
 
             # set column width for all TableCells in the current column
             for row in self.rows:
@@ -235,14 +258,13 @@ class Table:
     def get_text(self):
         """Return and render the text of the given table."""
         if not self.rows:
-            return '\n'
+            return "\n"
 
         self._set_row_height()
         self._set_column_width()
-        return '\n'.join((row.get_text() for row in self.rows)) + '\n'
+        return "\n".join((row.get_text() for row in self.rows)) + "\n"
 
-    def get_annotations(self, idx: int,
-                        left_margin_len: int) -> List[Annotation]:
+    def get_annotations(self, idx: int, left_margin_len: int) -> List[Annotation]:
         r"""Return all annotations in the given table.
 
         Args:
@@ -270,6 +292,6 @@ class Table:
                 annotations += cell.get_annotations(cell_idx, row_width)
                 cell_idx += cell.width + len(row.cell_separator)
 
-            idx += (row_width + 1) * row_height   # linebreak
+            idx += (row_width + 1) * row_height  # linebreak
 
         return annotations

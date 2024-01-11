@@ -1,8 +1,12 @@
 """Data structures for handling HTML Elements."""
 from typing import Tuple
 
-from inscriptis.html_properties import Display, HorizontalAlignment, \
-    VerticalAlignment, WhiteSpace
+from inscriptis.html_properties import (
+    Display,
+    HorizontalAlignment,
+    VerticalAlignment,
+    WhiteSpace,
+)
 
 
 class HtmlElement:
@@ -28,22 +32,40 @@ class HtmlElement:
     - annotation: annotations associated with the HtmlElement.
     """
 
-    __slots__ = ('canvas', 'tag', 'prefix', 'suffix', 'display',
-                 'margin_before', 'margin_after', 'padding_inline',
-                 'list_bullet', 'whitespace', 'limit_whitespace_affixes',
-                 'align', 'valign', 'previous_margin_after', 'annotation')
+    __slots__ = (
+        "canvas",
+        "tag",
+        "prefix",
+        "suffix",
+        "display",
+        "margin_before",
+        "margin_after",
+        "padding_inline",
+        "list_bullet",
+        "whitespace",
+        "limit_whitespace_affixes",
+        "align",
+        "valign",
+        "previous_margin_after",
+        "annotation",
+    )
 
-    def __init__(self, tag='default', prefix='', suffix='',
-                 display: Display = Display.inline,
-                 margin_before: int = 0,
-                 margin_after: int = 0,
-                 padding_inline: int = 0,
-                 list_bullet: str = '',
-                 whitespace: WhiteSpace = None,
-                 limit_whitespace_affixes: bool = False,
-                 align: HorizontalAlignment = HorizontalAlignment.left,
-                 valign: VerticalAlignment = VerticalAlignment.middle,
-                 annotation: Tuple[str] = ()):
+    def __init__(
+        self,
+        tag="default",
+        prefix="",
+        suffix="",
+        display: Display = Display.inline,
+        margin_before: int = 0,
+        margin_after: int = 0,
+        padding_inline: int = 0,
+        list_bullet: str = "",
+        whitespace: WhiteSpace = None,
+        limit_whitespace_affixes: bool = False,
+        align: HorizontalAlignment = HorizontalAlignment.left,
+        valign: VerticalAlignment = VerticalAlignment.middle,
+        annotation: Tuple[str] = (),
+    ):
         self.canvas = None
         self.tag = tag
         self.prefix = prefix
@@ -60,7 +82,7 @@ class HtmlElement:
         self.previous_margin_after = 0
         self.annotation = annotation
 
-    def __copy__(self) -> 'HtmlElement':
+    def __copy__(self) -> "HtmlElement":
         """Performance-optimized copy implementation."""
         copy = self.__class__.__new__(self.__class__)
         for attr in self.__slots__:
@@ -71,14 +93,13 @@ class HtmlElement:
         """Write the given HTML text to the element's canvas."""
         if not text or self.display == Display.none:
             return
-        self.canvas.write(self, ''.join(
-            (self.prefix, text, self.suffix)))
+        self.canvas.write(self, "".join((self.prefix, text, self.suffix)))
 
-    def set_canvas(self, canvas) -> 'HtmlElement':
+    def set_canvas(self, canvas) -> "HtmlElement":
         self.canvas = canvas
         return self
 
-    def set_tag(self, tag: str) -> 'HtmlElement':
+    def set_tag(self, tag: str) -> "HtmlElement":
         self.tag = tag
         return self
 
@@ -99,7 +120,7 @@ class HtmlElement:
         if self.display == Display.block:
             self.canvas.close_block(self)
 
-    def get_refined_html_element(self, new: 'HtmlElement') -> 'HtmlElement':
+    def get_refined_html_element(self, new: "HtmlElement") -> "HtmlElement":
         """Compute the new HTML element based on the previous one.
 
         Adaptations:
@@ -124,12 +145,11 @@ class HtmlElement:
 
         # do not display whitespace only affixes in Whitespace.pre areas
         # if `limit_whitespace_affixes` is set.
-        if (new.limit_whitespace_affixes
-                and self.whitespace == WhiteSpace.pre):
+        if new.limit_whitespace_affixes and self.whitespace == WhiteSpace.pre:
             if new.prefix.isspace():
-                new.prefix = ''
+                new.prefix = ""
             if new.suffix.isspace():
-                new.suffix = ''
+                new.suffix = ""
 
         if new.display == Display.block and self.display == Display.block:
             new.previous_margin_after = self.margin_after
@@ -138,13 +158,13 @@ class HtmlElement:
 
     def __str__(self):
         return (
-            '<{self.tag} prefix={self.prefix}, suffix={self.suffix}, '
-            'display={self.display}, margin_before={self.margin_before}, '
-            'margin_after={self.margin_after}, '
-            'padding_inline={self.padding_inline}, '
-            'list_bullet={self.list_bullet}, '
-            'whitespace={self.whitespace}, align={self.align}, '
-            'valign={self.valign}, annotation={self.annotation}>'
+            "<{self.tag} prefix={self.prefix}, suffix={self.suffix}, "
+            "display={self.display}, margin_before={self.margin_before}, "
+            "margin_after={self.margin_after}, "
+            "padding_inline={self.padding_inline}, "
+            "list_bullet={self.list_bullet}, "
+            "whitespace={self.whitespace}, align={self.align}, "
+            "valign={self.valign}, annotation={self.annotation}>"
         ).format(self=self)
 
     __repr__ = __str__

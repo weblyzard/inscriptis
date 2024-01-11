@@ -39,11 +39,11 @@ class WhiteSpace(Enum):
 class HorizontalAlignment(Enum):
     """Specify the content's horizontal alignment."""
 
-    left = '<'
+    left = "<"
     """Left alignment of the block's content."""
-    right = '>'
+    right = ">"
     """Right alignment of the block's content."""
-    center = '^'
+    center = "^"
     """Center the block's content."""
 
 
