@@ -19,8 +19,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.black]
 line-length = 88
 target-version = ["py38", "py39", "py310", "py311", "py312"]
+extend-exclude = '\.html$|\.json$|\.txt$'
 include = '''
-  ^scripts/
-  ^src/
-  ^tests/
+  ^/scripts/|^/src/|^/tests/
 '''
