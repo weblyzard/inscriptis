@@ -1,15 +1,36 @@
 [tool.poetry]
 name = "inscriptis"
 version = "2.4.0"
-description = "inscriptis - HTML to text converter."
 authors = ["Albert Weichselbraun <albert.weichselbraun@fhgr.ch>", "Fabian Odoni <fabian.odoni@fhgr.ch>"]
-license = "Apache 2.0"
+description = "inscriptis - HTML to text converter."
+keywords = ["HTML", "converter", "text"]
+classifiers = [
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Topic :: Text Processing',
+        'Topic :: Text Processing :: Markup :: HTML',
+        'Topic :: Utilities',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+    ]
+homepage = "https://github.com/weblyzard/inscriptis"
+repository = "https://github.com/weblyzard/inscriptis"
+documentation = "https://inscriptis.readthedocs.io/en"
+license = "Apache-2.0"
 readme = "README.rst"
+
+# [tool.poetry.scripts]
+# inscript = "scripts/inscript.py"
 
 [tool.poetry.dependencies]
 python = "^3.8 || ^3.9 || ^3.10 || ^3.11 || ^3.12"
-requests = "^2.31.0"
-lxml = "^5.1.0"
+requests = ">=2.23.0"
+lxml = ">=4.5.0"
 
 [build-system]
 requires = ["poetry-core"]
