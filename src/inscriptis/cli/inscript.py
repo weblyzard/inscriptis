@@ -5,6 +5,7 @@
 import argparse
 import sys
 from json import load, dumps
+from typing import Optional
 from pathlib import Path
 
 import requests
@@ -121,7 +122,32 @@ def get_parser():
     return parser
 
 
-if __name__ == "__main__":
+def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[str]:
+    """
+    Return the HTML content to convert.
+
+    Args:
+        url: URL to the HTML content, or None if the content is obtained from stdin.
+        encoding: used encoding.
+
+    Returns:
+        The html_content or None, if no content could be extracted.
+
+    """
+    if not url:
+        return sys.stdin.read()
+    elif Path(url).is_file():
+        with Path(url).open(
+            encoding=encoding or DEFAULT_ENCODING, errors="ignore"
+        ) as f:
+            return f.read()
+    elif url.startswith("http://") or url.startswith("https://"):
+        req = requests.get(url, timeout=timeout)
+        return req.content.decode(encoding or req.encoding)
+
+
+def cli():
+    """Run the inscript command line client."""
     parser = get_parser()
     args = parser.parse_args()
 
@@ -138,17 +164,7 @@ if __name__ == "__main__":
         )
         sys.exit(0)
 
-    if not args.input:
-        html_content = sys.stdin.read()
-    elif Path(args.input).is_file():
-        with Path(args.input).open(
-            encoding=args.encoding or DEFAULT_ENCODING, errors="ignore"
-        ) as f:
-            html_content = f.read()
-    elif args.input.startswith("http://") or args.input.startswith("https://"):
-        req = requests.get(args.input, timeout=args.timeout)
-        html_content = req.content.decode(args.encoding or req.encoding)
-    else:
+    if not (html_content := get_html_content(args.input, args.timeout, args.encoding)):
         print("ERROR: Cannot open input file '{0}'.\n".format(args.input))
         parser.print_help()
         sys.exit(-1)

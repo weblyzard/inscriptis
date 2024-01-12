@@ -24,13 +24,20 @@ documentation = "https://inscriptis.readthedocs.io/en"
 license = "Apache-2.0"
 readme = "README.rst"
 
-# [tool.poetry.scripts]
-# inscript = "scripts/inscript.py"
+packages = [
+    { include = "inscriptis" }
+]
+
+[tool.poetry.scripts]
+inscript = "inscriptis.cli.inscript:cli"
 
 [tool.poetry.dependencies]
 python = "^3.8 || ^3.9 || ^3.10 || ^3.11 || ^3.12"
 requests = ">=2.23.0"
 lxml = ">=4.5.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=7.2.0"
 
 [build-system]
 requires = ["poetry-core"]
