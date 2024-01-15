@@ -25,7 +25,7 @@ license = "Apache-2.0"
 readme = "README.rst"
 
 packages = [
-    { include = "inscriptis" }
+   {include = "inscriptis", from="src"},
 ]
 
 [tool.poetry.scripts]
@@ -49,5 +49,5 @@ line-length = 88
 target-version = ["py38", "py39", "py310", "py311", "py312"]
 extend-exclude = '\.html$|\.json$|\.txt$'
 include = '''
-  ^/scripts/|^/src/|^/tests/
+  ^/src/|^/tests/
 '''

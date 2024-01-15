@@ -33,8 +33,12 @@ def get_postprocessor(name):
     return getattr(mod, pp_class)()
 
 
-def get_parser():
-    """Parse the arguments if script is run via console."""
+def parse_command_line() -> argparse.Namespace:
+    """Parse the command line arguments.
+
+    Returns:
+        The parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(
         description="Convert the given HTML document to text."
     )
@@ -119,7 +123,22 @@ def get_parser():
         default=False,
         help="display version information",
     )
-    return parser
+
+    # parse command line arguments
+    args = parser.parse_args()
+    if args.version:
+        print(
+            "Inscript HTML to text conversion (based on the inscriptis "
+            "library version {0})".format(__version__)
+        )
+        print("Copyright (C)", __copyright__)
+        print("\nInscript comes with ABSOLUTELY NO WARRANTY.")
+        print(
+            "This is free software and you are welcome to redistribute it "
+            "under the terms of the {0}.".format(__license__)
+        )
+        sys.exit(0)
+    return args
 
 
 def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[str]:
@@ -149,21 +168,7 @@ def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[s
 def cli():
     """Run the inscript command line client."""
     parser = get_parser()
-    args = parser.parse_args()
-
-    if args.version:
-        print(
-            "Inscript HTML to text conversion (based on the inscriptis "
-            "library version {0})".format(__version__)
-        )
-        print("Copyright (C)", __copyright__)
-        print("\nInscript comes with ABSOLUTELY NO WARRANTY.")
-        print(
-            "This is free software and you are welcome to redistribute it "
-            "under the terms of the {0}.".format(__license__)
-        )
-        sys.exit(0)
-
+    args = parse_command_line()
     if not (html_content := get_html_content(args.input, args.timeout, args.encoding)):
         print("ERROR: Cannot open input file '{0}'.\n".format(args.input))
         parser.print_help()

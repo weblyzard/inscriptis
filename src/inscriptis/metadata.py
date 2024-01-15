@@ -1,7 +1,11 @@
 """Inscriptis metadata information."""
 
+import importlib.metadata as metadata
+
+PACKAGE = "inscriptis"
+
 __author__ = "Albert Weichselbraun, Fabian Odoni"
 __author_email__ = "albert.weichselbraun@fhgr.ch, fabian.odoni@fhgr.ch"
-__copyright__ = "2016-2024 Albert Weichselbraun, Fabian Odoni"
-__license__ = "Apache 2.0"
-__version__ = "2.3.3"
+__copyright__ = f"{metadata.metadata(PACKAGE)['Name']} {metadata.metadata(PACKAGE)['Version']} © 2016-2023 {__author__}"
+__license__ = metadata.metadata(PACKAGE)["License"]
+__version__ = metadata.metadata(PACKAGE)["Version"]
