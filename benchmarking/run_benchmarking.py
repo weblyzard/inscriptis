@@ -368,6 +368,7 @@ def benchmark(args, source_list):
     _setup_benchmarking_directories(args)
 
     output = []
+    total_times = {}
     for source in source_list:
         source_name, html = _fetch_url(source, args.cache)
 
@@ -383,9 +384,21 @@ def benchmark(args, source_list):
                 save_to_file(converter.name, source_name, text,
                              args.benchmarking_results)
 
+        for converter, conversion_time in times.items():
+            total_times[converter] = total_times.get(converter, 0) + conversion_time
         speed_table = get_speed_table(times)
         print(speed_table)
         output.append(speed_table)
+
+    print('\nTotal')
+    output.append('\nTotal\n')
+    speed_table = get_speed_table(total_times)
+    print(speed_table)
+    output.append(speed_table)
+
+
+
+
 
     with open(os.path.join(args.benchmarking_results,
                            OUTFILE), 'w') as output_file:

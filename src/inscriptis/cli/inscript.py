@@ -167,11 +167,9 @@ def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[s
 
 def cli():
     """Run the inscript command line client."""
-    parser = get_parser()
     args = parse_command_line()
     if not (html_content := get_html_content(args.input, args.timeout, args.encoding)):
-        print("ERROR: Cannot open input file '{0}'.\n".format(args.input))
-        parser.print_help()
+        print("ERROR: Cannot open input file '{0}'.".format(args.input))
         sys.exit(-1)
 
     if args.annotation_rules:

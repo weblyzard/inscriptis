@@ -315,7 +315,7 @@ The Flask Web Service translates HTML pages to the corresponding plain text.
 
 Run the Web Service on your host system
 ---------------------------------------
-Provide additional requirement `python3-flask <https://flask.palletsprojects.com/en/2.2.x/>`_, then start the inscriptis Web service with the following command::
+Install the additional requirement `python3-flask <https://flask.palletsprojects.com/en/2.2.x/>`_, then start the inscriptis Web service with the following command::
 
   $ export FLASK_APP="inscriptis.service.web"
   $ python3 -m flask run

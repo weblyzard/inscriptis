@@ -42,6 +42,10 @@ class Block:
 
         Args:
             text: the text to merge
+
+        Note:
+            If the previous text ended with a whitespace and text starts with one, both
+             will automatically collapse into a single whitespace.
         """
         normalized_text = []
 

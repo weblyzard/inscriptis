@@ -158,14 +158,14 @@ class HtmlElement:
 
     def __str__(self):
         return (
-            "<{self.tag} prefix={self.prefix}, suffix={self.suffix}, "
-            "display={self.display}, margin_before={self.margin_before}, "
-            "margin_after={self.margin_after}, "
-            "padding_inline={self.padding_inline}, "
-            "list_bullet={self.list_bullet}, "
-            "whitespace={self.whitespace}, align={self.align}, "
-            "valign={self.valign}, annotation={self.annotation}>"
-        ).format(self=self)
+            f"<{self.tag} prefix={self.prefix}, suffix={self.suffix}, "
+            f"display={self.display}, margin_before={self.margin_before}, "
+            f"margin_after={self.margin_after}, "
+            f"padding_inline={self.padding_inline}, "
+            f"list_bullet={self.list_bullet}, "
+            f"whitespace={self.whitespace}, align={self.align}, "
+            f"valign={self.valign}, annotation={self.annotation}>"
+        )
 
     __repr__ = __str__
 

@@ -55,7 +55,7 @@ class TableCell(Canvas):
         return len(self.blocks)
 
     @property
-    def height(self):
+    def height(self) -> int:
         """Compute the table cell's height.
 
         Returns:
@@ -64,7 +64,7 @@ class TableCell(Canvas):
         return max(1, len(self.blocks))
 
     @property
-    def width(self):
+    def width(self) -> int:
         """Compute the table cell's width.
 
         Returns:
@@ -184,7 +184,7 @@ class TableRow:
         return "\n".join(row_lines)
 
     @property
-    def width(self):
+    def width(self) -> int:
         """Compute and return the width of the current row."""
         if not self.columns:
             return 0
@@ -255,7 +255,7 @@ class Table:
                 if len(row) > cur_column_idx:
                     row.columns[cur_column_idx].width = max_column_width
 
-    def get_text(self):
+    def get_text(self) -> str:
         """Return and render the text of the given table."""
         if not self.rows:
             return "\n"
