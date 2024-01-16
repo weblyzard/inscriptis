@@ -131,9 +131,9 @@ the corresponding text representation.
 Command line parameters
 -----------------------
 
-The inscript.py command line client supports the following parameters::
+The inscript command line client supports the following parameters::
 
-    usage: inscript.py [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] [-r ANNOTATION_RULES] [-p POSTPROCESSOR] [--indentation INDENTATION]
+    usage: inscript [-h] [-o OUTPUT] [-e ENCODING] [-i] [-d] [-l] [-a] [-r ANNOTATION_RULES] [-p POSTPROCESSOR] [--indentation INDENTATION]
                        [--table-cell-separator TABLE_CELL_SEPARATOR] [-v]
                        [input]
 
@@ -172,19 +172,19 @@ HTML to text conversion
 -----------------------
 convert the given page to text and output the result to the screen::
 
-  $ inscript.py https://www.fhgr.ch
+  $ inscript https://www.fhgr.ch
    
 convert the file to text and save the output to fhgr.txt::
 
-  $ inscript.py fhgr.html -o fhgr.txt
+  $ inscript fhgr.html -o fhgr.txt
 
 convert the file using strict indentation (i.e., minimize indentation and extra spaces) and save the output to fhgr-layout-optimized.txt::
 
-  $ inscript.py --indentation strict fhgr.html -o fhgr-layout-optimized.txt
+  $ inscript --indentation strict fhgr.html -o fhgr-layout-optimized.txt
    
 convert HTML provided via stdin and save the output to output.txt::
 
-  $ echo "<body><p>Make it so!</p></body>" | inscript.py -o output.txt 
+  $ echo "<body><p>Make it so!</p></body>" | inscript -o output.txt 
 
 
 HTML to annotated text conversion
@@ -193,7 +193,7 @@ convert and annotate HTML from a Web page using the provided annotation rules.
 
 Download the example `annotation-profile.json <https://github.com/weblyzard/inscriptis/blob/master/examples/annotation-profile.json>`_ and save it to your working directory::
 
-  $ inscript.py https://www.fhgr.ch -r annotation-profile.json
+  $ inscript https://www.fhgr.ch -r annotation-profile.json
 
 The annotation rules are specified in `annotation-profile.json`:
 
@@ -241,7 +241,7 @@ Annotation postprocessors enable the post processing of annotations to formats
 that are suitable for your particular application. Post processors can be
 specified with the ``-p`` or ``--postprocessor`` command line argument::
 
-  $ inscript.py https://www.fhgr.ch \
+  $ inscript https://www.fhgr.ch \
           -r ./examples/annotation-profile.json \
           -p surface
 
@@ -286,7 +286,7 @@ Currently, inscriptis supports the following postprocessors:
 
    .. code-block:: bash
 
-      inscript.py --annotation-rules ./wikipedia.json \
+      inscript --annotation-rules ./wikipedia.json \
                   --postprocessor html \
                   https://en.wikipedia.org/wiki/Chur.html
 
@@ -503,7 +503,7 @@ The following options are available for fine tuning inscriptis' HTML rendering:
 1. **More rigorous indentation:** call ``inscriptis.get_text()`` with the
    parameter ``indentation='extended'`` to also use indentation for tags such as
    ``<div>`` and ``<span>`` that do not provide indentation in their standard
-   definition. This strategy is the default in ``inscript.py`` and many other
+   definition. This strategy is the default in ``inscript`` and many other
    tools such as Lynx. If you do not want extended indentation you can use the
    parameter ``indentation='standard'`` instead.
 
