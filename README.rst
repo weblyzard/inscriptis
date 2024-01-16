@@ -311,14 +311,18 @@ Currently, inscriptis supports the following postprocessors:
 Web Service
 ===========
 
-The Flask Web Service translates HTML pages to the corresponding plain text.
+A FastAPI-based Web Service that uses Inscriptis for translating HTML pages to plain text.
 
 Run the Web Service on your host system
 ---------------------------------------
-Install the additional requirement `python3-flask <https://flask.palletsprojects.com/en/2.2.x/>`_, then start the inscriptis Web service with the following command::
+Install the optional feature `web-service` for inscriptis::
+  
+  $ pip install inscriptis[web-service]
 
-  $ export FLASK_APP="inscriptis.service.web"
-  $ python3 -m flask run
+Start the Inscriptis Web service with the following command::
+
+  $ uvicorn inscriptis.service.web:app --port 5000 --host 127.0.0.1
+
 
 Run the Web Service with Docker
 -------------------------------
