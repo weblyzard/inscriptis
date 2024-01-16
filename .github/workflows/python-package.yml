@@ -24,7 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install tox setuptools pytest pytest-cov codecov poetry
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        poetry build
+        poetry install
     - name: Lint with tox
       run: |
         tox
