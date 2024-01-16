@@ -21,7 +21,9 @@ class SurfaceExtractor(AnnotationProcessor):
             An extended dictionary which contains the extracted surface-forms
             of the annotations under the key 'surface'.
         """
-        surface_forms = [(label, annotated_text['text'][start:end])
-                         for start, end, label in annotated_text['label']]
-        annotated_text['surface'] = surface_forms
+        surface_forms = [
+            (label, annotated_text["text"][start:end])
+            for start, end, label in annotated_text["label"]
+        ]
+        annotated_text["surface"] = surface_forms
         return annotated_text

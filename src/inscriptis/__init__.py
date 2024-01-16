@@ -68,7 +68,7 @@ from typing import Dict, Optional, Any
 from inscriptis.model.config import ParserConfig
 from inscriptis.html_engine import Inscriptis
 
-RE_STRIP_XML_DECLARATION = re.compile(r'^<\?xml [^>]+?\?>')
+RE_STRIP_XML_DECLARATION = re.compile(r"^<\?xml [^>]+?\?>")
 
 
 def _get_html_tree(html_content: str) -> Optional[HtmlElement]:
@@ -85,13 +85,13 @@ def _get_html_tree(html_content: str) -> Optional[HtmlElement]:
         return None
 
     # strip XML declaration, if necessary
-    if html_content.startswith('<?xml '):
-        html_content = RE_STRIP_XML_DECLARATION.sub('', html_content, count=1)
+    if html_content.startswith("<?xml "):
+        html_content = RE_STRIP_XML_DECLARATION.sub("", html_content, count=1)
 
     try:
         return fromstring(html_content)
     except ParserError:
-        return fromstring('<pre>' + html_content + '</pre>')
+        return fromstring("<pre>" + html_content + "</pre>")
 
 
 def get_text(html_content: str, config: ParserConfig = None) -> str:
@@ -105,12 +105,12 @@ def get_text(html_content: str, config: ParserConfig = None) -> str:
       The text representation of the HTML content.
     """
     html_tree = _get_html_tree(html_content)
-    return Inscriptis(html_tree, config).get_text() if html_tree is not None \
-        else ''
+    return Inscriptis(html_tree, config).get_text() if html_tree is not None else ""
 
 
-def get_annotated_text(html_content: str,
-                       config: ParserConfig = None) -> Dict[str, Any]:
+def get_annotated_text(
+    html_content: str, config: ParserConfig = None
+) -> Dict[str, Any]:
     """Return a dictionary of the extracted text and annotations.
 
     Notes:
@@ -132,7 +132,5 @@ def get_annotated_text(html_content: str,
         return {}
 
     inscriptis = Inscriptis(html_tree, config)
-    labels = [(a.start, a.end, a.metadata)
-              for a in inscriptis.get_annotations()]
-    return {'text': inscriptis.get_text(),
-            'label': labels}
+    labels = [(a.start, a.end, a.metadata) for a in inscriptis.get_annotations()]
+    return {"text": inscriptis.get_text(), "label": labels}

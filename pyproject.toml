@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "inscriptis"
+version = "2.4.0"
+authors = ["Albert Weichselbraun <albert.weichselbraun@fhgr.ch>", "Fabian Odoni <fabian.odoni@fhgr.ch>"]
+description = "inscriptis - HTML to text converter."
+keywords = ["HTML", "converter", "text"]
+classifiers = [
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Topic :: Text Processing',
+        'Topic :: Text Processing :: Markup :: HTML',
+        'Topic :: Utilities',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+    ]
+homepage = "https://github.com/weblyzard/inscriptis"
+repository = "https://github.com/weblyzard/inscriptis"
+documentation = "https://inscriptis.readthedocs.io/en"
+license = "Apache-2.0"
+readme = "README.rst"
+
+packages = [
+   {include = "inscriptis", from="src"},
+]
+
+
+[tool.poetry.scripts]
+inscript = "inscriptis.cli.inscript:cli"
+inscriptis-api = "inscriptis.service.web:start"
+
+
+[tool.poetry.extras]
+web-service = ["fastapi", "uvicorn"]
+
+
+[tool.poetry.dependencies]
+python = "^3.8 || ^3.9 || ^3.10 || ^3.11 || ^3.12"
+requests = ">=2.31.0"
+lxml = ">=4.9.3"
+
+# optional dependencies
+fastapi = { version = "^0.109.0", optional = true }
+uvicorn = { version = "^0.25.0", optional = true }
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+# code formatting with black
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+extend-exclude = '\.html$|\.json$|\.txt$|/a$|/b$'
+include = '''
+  ^/src/|^/tests/|^/benchmarking/
+'''

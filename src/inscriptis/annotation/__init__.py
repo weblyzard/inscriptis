@@ -29,9 +29,13 @@ class Annotation(NamedTuple):
     """a tuple of tags to be attached to the annotation."""
 
 
-def horizontal_shift(annotations: List[Annotation], content_width: int,
-                     line_width: int, align: HorizontalAlignment,
-                     shift: int = 0) -> List[Annotation]:
+def horizontal_shift(
+    annotations: List[Annotation],
+    content_width: int,
+    line_width: int,
+    align: HorizontalAlignment,
+    shift: int = 0,
+) -> List[Annotation]:
     r"""Shift annotations based on the given line's formatting.
 
     Adjusts the start and end indices of annotations based on the line's
@@ -56,5 +60,6 @@ def horizontal_shift(annotations: List[Annotation], content_width: int,
     else:
         h_align = shift + (line_width - content_width) // 2
 
-    return [Annotation(a.start + h_align, a.end + h_align, a.metadata)
-            for a in annotations]
+    return [
+        Annotation(a.start + h_align, a.end + h_align, a.metadata) for a in annotations
+    ]

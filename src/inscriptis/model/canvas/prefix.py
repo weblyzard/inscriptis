@@ -14,7 +14,7 @@ class Prefix:
         consumed: whether the current bullet has already been consumed.
     """
 
-    __slots__ = ('current_padding', 'paddings', 'bullets', 'consumed')
+    __slots__ = ("current_padding", "paddings", "bullets", "consumed")
 
     def __init__(self):
         self.current_padding = 0
@@ -31,7 +31,7 @@ class Prefix:
         """
         self.current_padding += padding_inline
         self.paddings.append(padding_inline)
-        self.bullets.append(bullet if bullet else '')
+        self.bullets.append(bullet if bullet else "")
 
     def remove_last_prefix(self):
         """Remove the last prefix from the list."""
@@ -41,15 +41,15 @@ class Prefix:
 
     def pop_next_bullet(self):
         """Pop the next bullet to use, if any bullet is available."""
-        next_bullet_idx = next((-idx for idx, val
-                                in enumerate(reversed(self.bullets))
-                                if val), 1) - 1
+        next_bullet_idx = (
+            next((-idx for idx, val in enumerate(reversed(self.bullets)) if val), 1) - 1
+        )
 
         if not next_bullet_idx:
-            return ''
+            return ""
 
         bullet = self.bullets[next_bullet_idx]
-        self.bullets[next_bullet_idx] = ''
+        self.bullets[next_bullet_idx] = ""
         return bullet
 
     @property
@@ -62,12 +62,11 @@ class Prefix:
             further prefixes should be used for a line.
         """
         if self.consumed:
-            return ''
+            return ""
 
         self.consumed = True
         bullet = self.pop_next_bullet()
-        return ' ' * (self.current_padding - len(bullet)) \
-               + bullet
+        return " " * (self.current_padding - len(bullet)) + bullet
 
     @property
     def unconsumed_bullet(self):
@@ -78,15 +77,14 @@ class Prefix:
             not been consumed yet.
         """
         if self.consumed:
-            return ''
+            return ""
 
         bullet = self.pop_next_bullet()
         if not bullet:
-            return ''
+            return ""
 
         padding = self.current_padding - self.paddings[-1]
-        return ' ' * (padding - len(bullet)) \
-               + bullet
+        return " " * (padding - len(bullet)) + bullet
 
     @property
     def rest(self):
@@ -96,4 +94,4 @@ class Prefix:
         need to be prefixed with the right padding to preserver the
         indentation.
         """
-        return ' ' * self.current_padding
+        return " " * self.current_padding

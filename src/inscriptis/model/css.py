@@ -7,8 +7,12 @@
 """
 from contextlib import suppress
 from re import compile as re_compile
-from inscriptis.html_properties import (Display, WhiteSpace,
-                                        HorizontalAlignment, VerticalAlignment)
+from inscriptis.html_properties import (
+    Display,
+    WhiteSpace,
+    HorizontalAlignment,
+    VerticalAlignment,
+)
 from inscriptis.model.html_element import HtmlElement
 
 
@@ -20,7 +24,7 @@ class CssParse:
     """
 
     # used to separate value and unit from each other
-    RE_UNIT = re_compile(r'(-?[0-9.]+)(\w+)')
+    RE_UNIT = re_compile(r"(-?[0-9.]+)(\w+)")
 
     @staticmethod
     def attr_style(style_attribute: str, html_element: HtmlElement):
@@ -31,15 +35,15 @@ class CssParse:
                            Example: display: none
           html_element: The HtmlElement to which the given style is applied.
         """
-        for style_directive in style_attribute.lower().split(';'):
-            if ':' not in style_directive:
+        for style_directive in style_attribute.lower().split(";"):
+            if ":" not in style_directive:
                 continue
-            key, value = (s.strip() for s in style_directive.split(':', 1))
+            key, value = (s.strip() for s in style_directive.split(":", 1))
 
             try:
-                apply_style = getattr(CssParse, 'attr_'
-                                      + key.replace('-webkit-', '')
-                                      .replace('-', '_'))
+                apply_style = getattr(
+                    CssParse, "attr_" + key.replace("-webkit-", "").replace("-", "_")
+                )
                 apply_style(value, html_element)
             except AttributeError:
                 pass
@@ -61,7 +65,7 @@ class CssParse:
         value = float(_m.group(1))
         unit = _m.group(2)
 
-        if unit not in ('em', 'qem', 'rem'):
+        if unit not in ("em", "qem", "rem"):
             return int(round(value / 8))
         return int(round(value))
 
@@ -75,9 +79,9 @@ class CssParse:
         if html_element.display == Display.none:
             return
 
-        if value == 'block':
+        if value == "block":
             html_element.display = Display.block
-        elif value == 'none':
+        elif value == "none":
             html_element.display = Display.none
         else:
             html_element.display = Display.inline
@@ -85,9 +89,9 @@ class CssParse:
     @staticmethod
     def attr_white_space(value: str, html_element: HtmlElement):
         """Apply the given white-space value."""
-        if value in ('normal', 'nowrap'):
+        if value in ("normal", "nowrap"):
             html_element.whitespace = WhiteSpace.normal
-        elif value in ('pre', 'pre-line', 'pre-wrap'):
+        elif value in ("pre", "pre-line", "pre-wrap"):
             html_element.whitespace = WhiteSpace.pre
 
     @staticmethod

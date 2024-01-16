@@ -34,10 +34,15 @@ class ApplyAnnotation:
                      match_value.
     """
 
-    __slots__ = ('annotations', 'match_tag', 'match_value', 'attr', 'matcher')
+    __slots__ = ("annotations", "match_tag", "match_value", "attr", "matcher")
 
-    def __init__(self, annotations: tuple, attr: str, match_tag: str = None,
-                 match_value: str = None):
+    def __init__(
+        self,
+        annotations: tuple,
+        attr: str,
+        match_tag: str = None,
+        match_value: str = None,
+    ):
         self.annotations = tuple(annotations)
         self.attr = attr
         self.match_tag = match_tag
@@ -46,17 +51,18 @@ class ApplyAnnotation:
     def apply(self, attr_value: str, html_element: HtmlElement):
         """Apply the annotation to HtmlElements with matching tags."""
         if (self.match_tag and self.match_tag != html_element.tag) or (
-                self.match_value and self.match_value
-                not in attr_value.split()):
+            self.match_value and self.match_value not in attr_value.split()
+        ):
             return
 
         html_element.annotation += self.annotations
 
     def __str__(self):
-        return '<ApplyAnnotation: {tag}#{attr}={value}'.format(
-            tag=self.match_tag or '{any}',
-            attr=self.attr or '{any}',
-            value=self.match_value or '{any}')
+        return "<ApplyAnnotation: {tag}#{attr}={value}".format(
+            tag=self.match_tag or "{any}",
+            attr=self.attr or "{any}",
+            value=self.match_value or "{any}",
+        )
 
     __repr__ = __str__
 
@@ -79,7 +85,7 @@ class AnnotationModel:
         self.css = css_profile
 
     @staticmethod
-    def _parse(model: dict) -> 'AnnotationModel':
+    def _parse(model: dict) -> "AnnotationModel":
         """Compute the AnnotationModel from a model dictionary.
 
         Returns:
@@ -88,14 +94,13 @@ class AnnotationModel:
         tags = defaultdict(list)
         attrs = []
         for key, annotations in model.items():
-            if '#' in key:
-                tag, attr = key.split('#')
-                if '=' in attr:
-                    attr, value = attr.split('=')
+            if "#" in key:
+                tag, attr = key.split("#")
+                if "=" in attr:
+                    attr, value = attr.split("=")
                 else:
                     value = None
-                attrs.append(ApplyAnnotation(annotations, attr,
-                                             tag, value))
+                attrs.append(ApplyAnnotation(annotations, attr, tag, value))
             else:
                 tags[key].extend(annotations)
         return tags, attrs

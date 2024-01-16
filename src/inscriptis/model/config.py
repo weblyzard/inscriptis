@@ -9,19 +9,22 @@ from inscriptis.annotation.parser import AnnotationModel
 from inscriptis.model.attribute import Attribute
 from inscriptis.model.html_element import HtmlElement
 
-DEFAULT_CSS_PROFILE_NAME = 'relaxed'
+DEFAULT_CSS_PROFILE_NAME = "relaxed"
 
 
 class ParserConfig:
     """Encapsulate configuration options and CSS definitions."""
 
-    def __init__(self, css: Dict[str, HtmlElement] = None,
-                 display_images: bool = False,
-                 deduplicate_captions: bool = False,
-                 display_links: bool = False,
-                 display_anchors: bool = False,
-                 annotation_rules: Attribute = None,
-                 table_cell_separator: str = '  '):
+    def __init__(
+        self,
+        css: Dict[str, HtmlElement] = None,
+        display_images: bool = False,
+        deduplicate_captions: bool = False,
+        display_links: bool = False,
+        display_anchors: bool = False,
+        annotation_rules: Attribute = None,
+        table_cell_separator: str = "  ",
+    ):
         """Create a ParserConfig configuration.
 
         Args:
@@ -47,13 +50,11 @@ class ParserConfig:
         if annotation_rules:
             # ensure that we do not modify the original model or its
             # members.
-            annotation_model = AnnotationModel(deepcopy(self.css),
-                                               annotation_rules)
+            annotation_model = AnnotationModel(deepcopy(self.css), annotation_rules)
             # css with annotation support
             self.css = annotation_model.css
             # attribute handler with annotation support
-            self.attribute_handler.merge_attribute_map(
-                annotation_model.css_attr)
+            self.attribute_handler.merge_attribute_map(annotation_model.css_attr)
 
     def parse_a(self) -> bool:
         """Indicate whether the text output should contain links or anchors.

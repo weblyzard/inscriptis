@@ -11,25 +11,25 @@ def test_merge_normal_text_collapsable_whitespaces():
     """
     b = Block(0, Prefix())
     b.merge_normal_text("Hallo")
-    assert b._content == 'Hallo'
+    assert b._content == "Hallo"
     assert not b.collapsable_whitespace
 
     b = Block(0, Prefix())
     b.merge_normal_text(" Hallo ")
-    assert b._content == 'Hallo '
+    assert b._content == "Hallo "
     assert b.collapsable_whitespace
 
     b = Block(0, Prefix())
-    b.merge_normal_text('')
-    assert b._content == ''
+    b.merge_normal_text("")
+    assert b._content == ""
     assert b.collapsable_whitespace
 
-    b.merge_normal_text(' ')
-    assert b._content == ''
+    b.merge_normal_text(" ")
+    assert b._content == ""
     assert b.collapsable_whitespace
 
-    b.merge_normal_text('  ')
-    assert b._content == ''
+    b.merge_normal_text("  ")
+    assert b._content == ""
     assert b.collapsable_whitespace
 
 
@@ -37,29 +37,29 @@ def test_merge_normal_non_collapsable_whitespaces():
     b = Block(0, Prefix())
     b.collapsable_whitespace = False
     b.merge_normal_text("Hallo")
-    assert b._content == 'Hallo'
+    assert b._content == "Hallo"
     assert not b.collapsable_whitespace
 
     b = Block(0, Prefix())
     b.collapsable_whitespace = False
     b.merge_normal_text(" Hallo ")
-    assert b._content == ' Hallo '
+    assert b._content == " Hallo "
     assert b.collapsable_whitespace
 
     b = Block(0, Prefix())
     b.collapsable_whitespace = False
-    b.merge_normal_text('')
-    assert b._content == ''
+    b.merge_normal_text("")
+    assert b._content == ""
     assert not b.collapsable_whitespace
 
     b = Block(0, Prefix())
     b.collapsable_whitespace = False
-    b.merge_normal_text(' ')
-    assert b._content == ' '
+    b.merge_normal_text(" ")
+    assert b._content == " "
     assert b.collapsable_whitespace
 
     b = Block(0, Prefix())
     b.collapsable_whitespace = False
-    b.merge_normal_text('  ')
-    assert b._content == ' '
+    b.merge_normal_text("  ")
+    assert b._content == " "
     assert b.collapsable_whitespace

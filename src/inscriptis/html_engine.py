@@ -35,34 +35,33 @@ class Inscriptis:
       text = parser.get_text()
     """
 
-    UL_COUNTER = ('* ', '+ ', 'o ', '- ')
+    UL_COUNTER = ("* ", "+ ", "o ", "- ")
     UL_COUNTER_LEN = len(UL_COUNTER)
 
-    def __init__(self, html_tree: lxml.html.HtmlElement,
-                 config: ParserConfig = None):
+    def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None):
         # use the default configuration, if no config object is provided
         self.config = config or ParserConfig()
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {
-            'table': self._start_table,
-            'tr': self._start_tr,
-            'td': self._start_td,
-            'th': self._start_td,
-            'ul': self._start_ul,
-            'ol': self._start_ol,
-            'li': self._start_li,
-            'br': self._newline,
-            'a': self._start_a if self.config.parse_a() else None,
-            'img': self._start_img if self.config.display_images else None,
+            "table": self._start_table,
+            "tr": self._start_tr,
+            "td": self._start_td,
+            "th": self._start_td,
+            "ul": self._start_ul,
+            "ol": self._start_ol,
+            "li": self._start_li,
+            "br": self._newline,
+            "a": self._start_a if self.config.parse_a() else None,
+            "img": self._start_img if self.config.display_images else None,
         }
         self.end_tag_handler_dict = {
-            'table': self._end_table,
-            'ul': self._end_ul,
-            'ol': self._end_ol,
-            'td': self._end_td,
-            'th': self._end_td,
-            'a': self._end_a if self.config.parse_a() else None,
+            "table": self._end_table,
+            "ul": self._end_ul,
+            "ol": self._end_ol,
+            "td": self._end_td,
+            "th": self._end_td,
+            "a": self._end_a if self.config.parse_a() else None,
         }
 
         # instance variables
@@ -70,13 +69,13 @@ class Inscriptis:
         self.css = self.config.css
         self.apply_attributes = self.config.attribute_handler.apply_attributes
 
-        self.tags = [self.css['body'].set_canvas(self.canvas)]
+        self.tags = [self.css["body"].set_canvas(self.canvas)]
         self.current_table = []
         self.li_counter = []
         self.last_caption = None
 
         # used if display_links is enabled
-        self.link_target = ''
+        self.link_target = ""
 
         # crawl the html tree
         self._parse_html_tree(html_tree)
@@ -133,11 +132,16 @@ class Inscriptis:
         """
         # use the css to handle tags known to it :)
         cur = self.tags[-1].get_refined_html_element(
-            self.apply_attributes(attrs, html_element=self.css.get(
-                tag, DEFAULT_HTML_ELEMENT).__copy__().set_tag(tag)))
+            self.apply_attributes(
+                attrs,
+                html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT)
+                .__copy__()
+                .set_tag(tag),
+            )
+        )
         self.tags.append(cur)
 
-        handler = self.start_tag_handler_dict.get(tag, None)
+        handler = self.start_tag_handler_dict.get(tag)
         if handler:
             handler(attrs)
 
@@ -150,7 +154,7 @@ class Inscriptis:
         Args:
           tag: the HTML end tag to process.
         """
-        handler = self.end_tag_handler_dict.get(tag, None)
+        handler = self.end_tag_handler_dict.get(tag)
         if handler:
             handler()
 
@@ -161,25 +165,26 @@ class Inscriptis:
         self.li_counter.pop()
 
     def _start_img(self, attrs):
-        image_text = attrs.get('alt', '') or attrs.get('title', '')
-        if image_text and not (self.config.deduplicate_captions
-                               and image_text == self.last_caption):
-            self.tags[-1].write('[{0}]'.format(image_text))
+        image_text = attrs.get("alt", "") or attrs.get("title", "")
+        if image_text and not (
+            self.config.deduplicate_captions and image_text == self.last_caption
+        ):
+            self.tags[-1].write(f"[{image_text}]")
             self.last_caption = image_text
 
     def _start_a(self, attrs):
-        self.link_target = ''
+        self.link_target = ""
         if self.config.display_links:
-            self.link_target = attrs.get('href', '')
+            self.link_target = attrs.get("href", "")
         if self.config.display_anchors:
-            self.link_target = self.link_target or attrs.get('name', '')
+            self.link_target = self.link_target or attrs.get("name", "")
 
         if self.link_target:
-            self.tags[-1].write('[')
+            self.tags[-1].write("[")
 
     def _end_a(self):
         if self.link_target:
-            self.tags[-1].write(']({0})'.format(self.link_target))
+            self.tags[-1].write(f"]({self.link_target})")
 
     def _start_ol(self, _):
         self.li_counter.append(1)
@@ -188,20 +193,23 @@ class Inscriptis:
         self.li_counter.pop()
 
     def _start_li(self, _):
-        bullet = self.li_counter[-1] if self.li_counter else '* '
+        bullet = self.li_counter[-1] if self.li_counter else "* "
         if isinstance(bullet, int):
             self.li_counter[-1] += 1
-            self.tags[-1].list_bullet = '{0}. '.format(bullet)
+            self.tags[-1].list_bullet = f"{bullet}. "
         else:
             self.tags[-1].list_bullet = bullet
 
-        self.tags[-1].write('')
+        self.tags[-1].write("")
 
     def _start_table(self, _):
         self.tags[-1].set_canvas(Canvas())
-        self.current_table.append(Table(
-            left_margin_len=self.tags[-1].canvas.left_margin,
-            cell_separator=self.config.table_cell_separator))
+        self.current_table.append(
+            Table(
+                left_margin_len=self.tags[-1].canvas.left_margin,
+                cell_separator=self.config.table_cell_separator,
+            )
+        )
 
     def _start_tr(self, _):
         if self.current_table:
@@ -210,8 +218,9 @@ class Inscriptis:
     def _start_td(self, _):
         if self.current_table:
             # open td tag
-            table_cell = TableCell(align=self.tags[-1].align,
-                                   valign=self.tags[-1].valign)
+            table_cell = TableCell(
+                align=self.tags[-1].align, valign=self.tags[-1].valign
+            )
             self.tags[-1].canvas = table_cell
             self.current_table[-1].add_cell(table_cell)
 
@@ -239,17 +248,18 @@ class Inscriptis:
         if self.tags[-1].annotation:
             end_idx = self.tags[-2].canvas.current_block.idx
             for a in self.tags[-1].annotation:
-                self.tags[-2].canvas.annotations.append(Annotation(
-                    start_idx, end_idx, a))
+                self.tags[-2].canvas.annotations.append(
+                    Annotation(start_idx, end_idx, a)
+                )
 
         # transfer in-table annotations
         self.tags[-2].canvas.annotations.extend(
-            table.get_annotations(start_idx, self.tags[-2].canvas.left_margin))
+            table.get_annotations(start_idx, self.tags[-2].canvas.left_margin)
+        )
 
     def _newline(self, _):
         self.tags[-1].canvas.write_newline()
 
     def get_bullet(self) -> str:
         """Return the bullet that correspond to the given index."""
-        return Inscriptis.UL_COUNTER[
-            len(self.li_counter) % Inscriptis.UL_COUNTER_LEN]
+        return Inscriptis.UL_COUNTER[len(self.li_counter) % Inscriptis.UL_COUNTER_LEN]
