@@ -28,20 +28,30 @@ packages = [
    {include = "inscriptis", from="src"},
 ]
 
+
 [tool.poetry.scripts]
 inscript = "inscriptis.cli.inscript:cli"
+inscriptis-api = "inscriptis.service.web:start"
+
+
+[tool.poetry.extras]
+web-service = ["fastapi", "uvicorn"]
+
 
 [tool.poetry.dependencies]
 python = "^3.8 || ^3.9 || ^3.10 || ^3.11 || ^3.12"
-requests = ">=2.23.0"
-lxml = ">=4.5.0"
+requests = ">=2.31.0"
+lxml = ">=4.9.3"
 
-[tool.poetry.group.test.dependencies]
-pytest = ">=7.2.0"
+# optional dependencies
+fastapi = { version = "^0.109.0", optional = true }
+uvicorn = { version = "^0.25.0", optional = true }
+
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
 
 # code formatting with black
 [tool.black]
