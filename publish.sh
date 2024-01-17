@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# TODO
-# - check release version number!
+# Publishing sequence:
+# ====================
+# 1. create pypi package
+# 2. publish docker container
+# 3. create github release (which runs the helm scripts)
 
 # publish the latest package to pypi
 # sources:
