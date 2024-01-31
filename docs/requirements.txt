@@ -1,3 +1,4 @@
 lxml
 requests
+inscriptis
 myst_parser

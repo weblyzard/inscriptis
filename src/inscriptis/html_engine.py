@@ -111,6 +111,9 @@ class Inscriptis:
 
     def get_annotations(self) -> List[Annotation]:
         """Return the annotations extracted from the HTML page."""
+        if not self.canvas.get_text():
+            raise ValueError("No text to annotate available yet. "
+                             "Have you already parsed the page with get_text?")
         return self.canvas.annotations
 
     def handle_starttag(self, tag, attrs):

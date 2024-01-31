@@ -132,5 +132,6 @@ def get_annotated_text(
         return {}
 
     inscriptis = Inscriptis(html_tree, config)
+    text = inscriptis.get_text()
     labels = [(a.start, a.end, a.metadata) for a in inscriptis.get_annotations()]
-    return {"text": inscriptis.get_text(), "label": labels}
+    return {"text": text, "label": labels}

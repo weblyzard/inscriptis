@@ -1,14 +1,17 @@
 #!/bin/bash
 
-# TODO
-# - check release version number!
+# Publishing sequence:
+# ====================
+# 1. create pypi package
+# 2. publish docker container
+# 3. create github release (which runs the helm scripts)
 
 # publish the latest package to pypi
 # sources:
 # - https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
 # - https://packaging.python.org/guides/making-a-pypi-friendly-readme/
 
-VERSION=$(grep -Po "\b__version__ = '\K[^']+" src/inscriptis/metadata.py)
+VERSION=$(grep -oP '^version = "\K[^"]+' pyproject.toml)
 IMAGE_NAME=inscriptis
 
 case "$1" in
@@ -16,11 +19,8 @@ case "$1" in
 		# cleanup dist
 		rm -rf ./dist
 
-		# build and verify packages
-		python3 setup.py sdist bdist_wheel; twine check dist/*
-
-		# upload
-		twine upload dist/*
+		# build and publish packages
+		poetry publish --build
 		;;
 	docker)
 		echo "Publishing ${IMAGE_NAME} in version ${VERSION}"
