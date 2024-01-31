@@ -191,7 +191,7 @@ HTML to annotated text conversion
 ---------------------------------
 convert and annotate HTML from a Web page using the provided annotation rules. 
 
-Download the example `annotation-profile.json <https://github.com/weblyzard/inscriptis/blob/master/examples/annotation-profile.json>`_ and save it to your working directory::
+Download the example `annotation-profile.json <https://github.com/weblyzard/inscriptis/blob/master/examples/annotation/annotation-profile.json>`_ and save it to your working directory::
 
   $ inscript https://www.fhgr.ch -r annotation-profile.json
 
@@ -242,7 +242,7 @@ that are suitable for your particular application. Post processors can be
 specified with the ``-p`` or ``--postprocessor`` command line argument::
 
   $ inscript https://www.fhgr.ch \
-          -r ./examples/annotation-profile.json \
+          -r ./annotation/examples/annotation-profile.json \
           -p surface
 
 
