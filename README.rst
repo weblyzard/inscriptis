@@ -547,7 +547,7 @@ If the fine-tuning options discussed above are not sufficient, you may even over
 In the example the standard HTML handlers for the ``a`` tag are overwritten with custom versions (i.e., ``my_handle_start_a`` and ``my_handle_end_a``).
 You may define custom handlers for any tag, regardless of whether it already exists in ``start_tag_handler_dict`` or ``end_tag_handler_dict``. 
 
-Please refer to `custom-html-handling.py https://github.com/weblyzard/inscriptis/blob/master/examples/custom-html-handling.py`_ for a working example.
+Please refer to `custom-html-handling.py <https://github.com/weblyzard/inscriptis/blob/master/examples/custom-html-handling.py>`_ for a working example.
 
 Optimizing memory consumption
 -----------------------------
