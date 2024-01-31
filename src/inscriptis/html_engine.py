@@ -40,6 +40,7 @@ class Inscriptis:
 
     def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None):
         # use the default configuration, if no config object is provided
+        self.html_tree = html_tree
         self.config = config or ParserConfig()
 
         # setup start and end tag call tables
@@ -77,9 +78,6 @@ class Inscriptis:
         # used if display_links is enabled
         self.link_target = ""
 
-        # crawl the html tree
-        self._parse_html_tree(html_tree)
-
     def _parse_html_tree(self, tree):
         """Parse the HTML tree.
 
@@ -108,6 +106,7 @@ class Inscriptis:
 
     def get_text(self) -> str:
         """Return the text extracted from the HTML page."""
+        self._parse_html_tree(self.html_tree)
         return self.canvas.get_text()
 
     def get_annotations(self) -> List[Annotation]:

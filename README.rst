@@ -539,15 +539,20 @@ If the fine-tuning options discussed above are not sufficient, you may even over
 
 .. code-block:: python
 
-    inscriptis = Inscriptis(html, config)
+    from inscriptis.html_engine import Inscriptis
+    from functools import partial
 
-    inscriptis.start_tag_handler_dict['a'] = my_handle_start_a
-    inscriptis.end_tag_handler_dict['a'] = my_handle_end_a
+    inscriptis = Inscriptis(html_tree, config)
+
+    inscriptis.start_tag_handler_dict['a'] = partial(my_handle_start_a, inscriptis)
+    inscriptis.end_tag_handler_dict['a'] = partial(my_handle_end_a, inscriptis)
     text = inscriptis.get_text()
 		
 
 In the example the standard HTML handlers for the ``a`` tag are overwritten with custom versions (i.e., ``my_handle_start_a`` and ``my_handle_end_a``).
 You may define custom handlers for any tag, regardless of whether it already exists in ``start_tag_handler_dict`` or ``end_tag_handler_dict``. 
+
+Please refer to `custom-html-handling.py https://github.com/weblyzard/inscriptis/blob/master/examples/custom-html-handling.py`_ for a working example.
 
 Optimizing memory consumption
 -----------------------------
