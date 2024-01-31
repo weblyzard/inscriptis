@@ -67,16 +67,16 @@ class Inscriptis:
 
         # instance variables
         self.canvas = Canvas()
-        self.css = self.config.css
-        self.apply_attributes = self.config.attribute_handler.apply_attributes
+        self._css = self.config.css
+        self._apply_attributes = self.config.attribute_handler.apply_attributes
 
-        self.tags = [self.css["body"].set_canvas(self.canvas)]
+        self.tags = [self._css["body"].set_canvas(self.canvas)]
         self.current_table = []
-        self.li_counter = []
-        self.last_caption = None
+        self._li_counter = []
+        self._last_caption = None
 
         # used if display_links is enabled
-        self.link_target = ""
+        self._link_target = ""
 
     def _parse_html_tree(self, tree):
         """Parse the HTML tree.
@@ -136,9 +136,9 @@ class Inscriptis:
         """
         # use the css to handle tags known to it :)
         cur = self.tags[-1].get_refined_html_element(
-            self.apply_attributes(
+            self._apply_attributes(
                 attrs,
-                html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT)
+                html_element=self._css.get(tag, DEFAULT_HTML_ELEMENT)
                 .__copy__()
                 .set_tag(tag),
             )
@@ -163,43 +163,43 @@ class Inscriptis:
             handler()
 
     def _start_ul(self, _):
-        self.li_counter.append(self.get_bullet())
+        self._li_counter.append(self.get_bullet())
 
     def _end_ul(self):
-        self.li_counter.pop()
+        self._li_counter.pop()
 
     def _start_img(self, attrs):
         image_text = attrs.get("alt", "") or attrs.get("title", "")
         if image_text and not (
-            self.config.deduplicate_captions and image_text == self.last_caption
+            self.config.deduplicate_captions and image_text == self._last_caption
         ):
             self.tags[-1].write(f"[{image_text}]")
-            self.last_caption = image_text
+            self._last_caption = image_text
 
     def _start_a(self, attrs):
-        self.link_target = ""
+        self._link_target = ""
         if self.config.display_links:
-            self.link_target = attrs.get("href", "")
+            self._link_target = attrs.get("href", "")
         if self.config.display_anchors:
-            self.link_target = self.link_target or attrs.get("name", "")
+            self._link_target = self._link_target or attrs.get("name", "")
 
-        if self.link_target:
+        if self._link_target:
             self.tags[-1].write("[")
 
     def _end_a(self):
-        if self.link_target:
-            self.tags[-1].write(f"]({self.link_target})")
+        if self._link_target:
+            self.tags[-1].write(f"]({self._link_target})")
 
     def _start_ol(self, _):
-        self.li_counter.append(1)
+        self._li_counter.append(1)
 
     def _end_ol(self):
-        self.li_counter.pop()
+        self._li_counter.pop()
 
     def _start_li(self, _):
-        bullet = self.li_counter[-1] if self.li_counter else "* "
+        bullet = self._li_counter[-1] if self._li_counter else "* "
         if isinstance(bullet, int):
-            self.li_counter[-1] += 1
+            self._li_counter[-1] += 1
             self.tags[-1].list_bullet = f"{bullet}. "
         else:
             self.tags[-1].list_bullet = bullet
@@ -266,4 +266,4 @@ class Inscriptis:
 
     def get_bullet(self) -> str:
         """Return the bullet that correspond to the given index."""
-        return Inscriptis.UL_COUNTER[len(self.li_counter) % Inscriptis.UL_COUNTER_LEN]
+        return Inscriptis.UL_COUNTER[len(self._li_counter) % Inscriptis.UL_COUNTER_LEN]
