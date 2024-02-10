@@ -14,7 +14,6 @@ def test_get_annotation():
     rules = {'b': ['bold']}
 
     inscriptis = Inscriptis(fromstring(html), ParserConfig(annotation_rules=rules))
-    annotations = inscriptis.get_annotations()
 
-    assert text == "Chur is a City in Switzerland"
-    assert annotations == [Annotation(start=0, end=4, metadata='bold'), Annotation(start=18, end=29, metadata='bold')]
+    assert inscriptis.get_text() == "Chur is a City in Switzerland"
+    assert inscriptis.get_annotations() == [Annotation(start=0, end=4, metadata='bold'), Annotation(start=18, end=29, metadata='bold')]

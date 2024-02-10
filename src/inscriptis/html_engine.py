@@ -10,7 +10,6 @@ from inscriptis.annotation import Annotation
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.html_document_state import HtmlDocumentState
-from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
 from inscriptis.model.tag.a_tag import a_start_handler, a_end_handler
 from inscriptis.model.tag.br_tag import br_start_handler
 from inscriptis.model.tag.img_tag import img_start_handler
@@ -54,7 +53,7 @@ class Inscriptis:
 
     def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None):
         # use the default configuration, if no config object is provided
-        self.config = config or ParserConfig()
+        config = config or ParserConfig()
 
         # setup start and end tag call tables
         self.start_tag_handler_dict = {
@@ -66,8 +65,8 @@ class Inscriptis:
             "ol": ol_start_handler,
             "li": li_start_handler,
             "br": br_start_handler,
-            "a": a_start_handler if self.config.parse_a() else None,
-            "img": img_start_handler if self.config.display_images else None,
+            "a": a_start_handler if config.parse_a() else None,
+            "img": img_start_handler if config.display_images else None,
         }
         self.end_tag_handler_dict = {
             "table": table_end_handler,
@@ -75,12 +74,11 @@ class Inscriptis:
             "ol": ol_end_handler,
             "td": td_end_handler,
             "th": td_end_handler,
-            "a": a_end_handler if self.config.parse_a() else None,
+            "a": a_end_handler if config.parse_a() else None,
         }
 
         # parse the HTML tree
-        state = HtmlDocumentState(config)
-        self.canvas = self._parse_html_tree(state, html_tree)
+        self.canvas = self._parse_html_tree(HtmlDocumentState(config), html_tree)
 
     def _parse_html_tree(self, state: HtmlDocumentState, tree) -> Canvas:
         """Parse the HTML tree.
@@ -89,7 +87,10 @@ class Inscriptis:
             tree: the HTML tree to parse.
         """
         if isinstance(tree.tag, str):
-            self.handle_starttag(state, tree.tag, tree.attrib)
+            state.apply_starttag_layout(tree.tag, tree.attrib)
+
+            if handler := self.start_tag_handler_dict.get(tree.tag):
+                handler(state, tree.attrib)
             cur = state.tags[-1]
             cur.canvas.open_tag(cur)
 
@@ -119,33 +120,3 @@ class Inscriptis:
     def get_annotations(self) -> List[Annotation]:
         """Return the annotations extracted from the HTML page."""
         return self.canvas.annotations
-
-    def handle_starttag(self, state, tag, attrs, handler):
-        """Handle HTML start tags.
-
-        Compute the style of the current :class:`HtmlElement`, based on
-
-        1. the used :attr:`css`,
-        2. apply attributes and css with :meth:`~Attribute.apply_attributes`
-        3. add the `HtmlElement` to the list of open tags.
-
-        Lookup and apply and tag-specific start tag handler in
-        :attr:`start_tag_handler_dict`.
-
-        Args:
-          tag: the HTML start tag to process.
-          attrs: a dictionary of HTML attributes and their respective values.
-        """
-        # use the css to handle tags known to it :)
-        cur = state.tags[-1].get_refined_html_element(
-            state.apply_attributes(
-                attrs,
-                html_element=state.css.get(tag, DEFAULT_HTML_ELEMENT)
-                .__copy__()
-                .set_tag(tag),
-            )
-        )
-        state.tags.append(cur)
-
-        if handler:
-            handler(attrs)
