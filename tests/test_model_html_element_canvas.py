@@ -25,7 +25,7 @@ def _get_text(html_element):
     c.close_tag(html_element)
 
     HtmlElement().set_canvas(c).write("last")
-    c._flush_inline()
+    c.flush_inline()
     return "\n".join(c.blocks)
 
 

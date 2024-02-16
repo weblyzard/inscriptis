@@ -52,7 +52,7 @@ def table_end_handler(state: HtmlDocumentState):
 
     start_idx = state.tags[-2].canvas.current_block.idx
     state.tags[-2].write_verbatim_text(table.get_text())
-    state.tags[-2].canvas._flush_inline()
+    state.tags[-2].canvas.flush_inline()
 
     # transfer annotations from the current tag
     if state.tags[-1].annotation:

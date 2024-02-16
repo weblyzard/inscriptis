@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 """Provide configuration objects for the Inscriptis HTML to text converter."""
-
+from __future__ import annotations
 from copy import deepcopy
-from typing import Dict
+from typing import Dict, List
 
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.annotation.parser import AnnotationModel
 from inscriptis.model.attribute import Attribute
 from inscriptis.model.html_element import HtmlElement
+from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 
 DEFAULT_CSS_PROFILE_NAME = "relaxed"
 
@@ -22,8 +23,9 @@ class ParserConfig:
         deduplicate_captions: bool = False,
         display_links: bool = False,
         display_anchors: bool = False,
-        annotation_rules: Attribute = None,
+        annotation_rules: Dict[str, List[str]] = None,
         table_cell_separator: str = "  ",
+        custom_html_tag_handler_mapping: CustomHtmlTagHandlerMapping = None,
     ):
         """Create a ParserConfig configuration.
 
@@ -39,6 +41,7 @@ class ParserConfig:
             annotation_rules: an optional dictionary of annotation rules which
                               specify tags and attributes to annotation.
             table_cell_separator: separator to use between table cells.
+            custom_html_tag_handler_mapping: an optional CustomHtmlTagHandler
         """
         self.display_images = display_images
         self.deduplicate_captions = deduplicate_captions
@@ -47,6 +50,8 @@ class ParserConfig:
         self.css = css or CSS_PROFILES[DEFAULT_CSS_PROFILE_NAME]
         self.attribute_handler = Attribute()
         self.table_cell_separator = table_cell_separator
+        self.custom_html_tag_handler_mapping = custom_html_tag_handler_mapping
+
         if annotation_rules:
             # ensure that we do not modify the original model or its
             # members.

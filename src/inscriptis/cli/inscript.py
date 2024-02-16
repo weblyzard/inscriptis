@@ -148,6 +148,7 @@ def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[s
     Args:
         url: URL to the HTML content, or None if the content is obtained from stdin.
         encoding: used encoding.
+        timeout: timeout in seconds for retrieving the URL.
 
     Returns:
         The html_content or None, if no content could be extracted.

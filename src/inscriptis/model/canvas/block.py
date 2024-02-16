@@ -1,6 +1,12 @@
 """Representation of a text block within the HTML canvas."""
+from __future__ import annotations
 from html import unescape
+from typing import TYPE_CHECKING
+
 from inscriptis.html_properties import WhiteSpace
+
+if TYPE_CHECKING:
+    from inscriptis.model.canvas import Prefix
 
 
 class Block:
@@ -19,7 +25,7 @@ class Block:
 
     __slots__ = ("idx", "prefix", "_content", "collapsable_whitespace")
 
-    def __init__(self, idx: int, prefix: str):
+    def __init__(self, idx: int, prefix: Prefix):
         self.idx = idx
         self.prefix = prefix
         self._content = ""

@@ -48,7 +48,7 @@ class TableCell(Canvas):
         Returns:
             The height of the normalized cell.
         """
-        self._flush_inline()
+        self.flush_inline()
         self.blocks = list(chain(*(line.split("\n") for line in self.blocks)))
         if not self.blocks:
             self.blocks = [""]

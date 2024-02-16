@@ -67,7 +67,7 @@ class Canvas:
     def open_block(self, tag: HtmlElement):
         """Open an HTML block element."""
         # write missing bullets, if no content has been written
-        if not self._flush_inline() and tag.list_bullet:
+        if not self.flush_inline() and tag.list_bullet:
             self.write_unconsumed_bullet()
         self.current_block.prefix.register_prefix(tag.padding_inline, tag.list_bullet)
 
@@ -100,7 +100,7 @@ class Canvas:
         """
         if tag.display == Display.block:
             # write missing bullets, if no content has been written so far.
-            if not self._flush_inline() and tag.list_bullet:
+            if not self.flush_inline() and tag.list_bullet:
                 self.write_unconsumed_bullet()
             self.current_block.prefix.remove_last_prefix()
             self.close_block(tag)
@@ -129,16 +129,16 @@ class Canvas:
             self.margin = tag.margin_after
 
     def write_newline(self):
-        if not self._flush_inline():
+        if not self.flush_inline():
             self.blocks.append("")
             self.current_block = self.current_block.new_block()
 
     def get_text(self) -> str:
         """Provide a text representation of the Canvas."""
-        self._flush_inline()
+        self.flush_inline()
         return "\n".join(self.blocks)
 
-    def _flush_inline(self) -> bool:
+    def flush_inline(self) -> bool:
         """Attempt to flush the content in self.current_block into a new block.
 
         Notes:
