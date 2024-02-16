@@ -534,8 +534,9 @@ If the fine-tuning options discussed above are not sufficient, you may even over
 
 .. code-block:: python
 
-    from inscriptis.html_engine import Inscriptis
     from inscriptis import ParserConfig
+    from inscriptis.html_engine import Inscriptis
+    from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 
     my_mapping = CustomHtmlTagHandlerMapping(
         start_tag_mapping={'a': my_handle_start_a},
