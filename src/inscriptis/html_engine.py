@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding:utf-8
 """The HTML Engine is responsible for converting HTML to text."""
-from typing import List, Dict, Callable, Any
+from typing import List, Dict, Callable
 
 import lxml.html
 from lxml.etree import Comment
@@ -57,7 +57,7 @@ class Inscriptis:
 
         # setup start and end tag call tables
         self.start_tag_handler_dict: Dict[
-            str, Callable[[HtmlDocumentState, Any], None]
+            str, Callable[[HtmlDocumentState, Dict], None]
         ] = {
             "table": table_start_handler,
             "tr": tr_start_handler,
@@ -81,10 +81,10 @@ class Inscriptis:
 
         if config.custom_html_tag_handler_mapping:
             self.start_tag_handler_dict.update(
-                config.custom_html_tag_handler_mapping.start_tag_handler_mapping
+                config.custom_html_tag_handler_mapping.start_tag_mapping
             )
             self.end_tag_handler_dict.update(
-                config.custom_html_tag_handler_mapping.end_tag_handler_mapping
+                config.custom_html_tag_handler_mapping.end_tag_mapping
             )
 
         # parse the HTML tree

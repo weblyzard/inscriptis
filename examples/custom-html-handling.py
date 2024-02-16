@@ -27,8 +27,8 @@ def my_handle_end_b(state: HtmlDocumentState):
 
 
 MY_MAPPING = CustomHtmlTagHandlerMapping(
-    start_tag_handler_mapping={"b": my_handle_start_b},
-    end_tag_handler_mapping={"b": my_handle_end_b},
+    start_tag_mapping={"b": my_handle_start_b},
+    end_tag_mapping={"b": my_handle_end_b},
 )
 
 

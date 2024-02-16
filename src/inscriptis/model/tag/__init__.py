@@ -9,7 +9,12 @@ if TYPE_CHECKING:
 
 
 class CustomHtmlTagHandlerMapping(NamedTuple):
-    """Provide a custom HTML Tag handler mapping."""
+    """Refine the standard HTML Tag handling with the provided mapping.
 
-    start_tag_handler_mapping: Dict[str, Callable[[HtmlDocumentState, Dict], None]]
-    end_tag_handler_mapping: Dict[str, Callable[[HtmlDocumentState], None]]
+    Attributes:
+        start_tag_mapping: a dictionary of custom start tag handlers.
+        end_tag_mapping: a dictionary of custom end tag handlers.
+    """
+
+    start_tag_mapping: Dict[str, Callable[[HtmlDocumentState, Dict], None]]
+    end_tag_mapping: Dict[str, Callable[[HtmlDocumentState], None]]
