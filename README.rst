@@ -550,7 +550,7 @@ In the example the standard HTML handlers for the ``a`` tag are overwritten with
 You may define custom handlers for any tag, regardless of whether it already exists in the standard mapping.
 
 Please refer to `custom-html-handling.py <https://github.com/weblyzard/inscriptis/blob/master/examples/custom-html-handling.py>`_ for a working example. 
-The standard HTML tag handlers can be found in the `inscriptis.model.tag` <https://github.com/weblyzard/inscriptis/blob/master/src/inscriptis/model/tag> package.
+The standard HTML tag handlers can be found in the `inscriptis.model.tag <https://github.com/weblyzard/inscriptis/blob/master/src/inscriptis/model/tag>`_ package.
 
 Optimizing memory consumption
 -----------------------------
