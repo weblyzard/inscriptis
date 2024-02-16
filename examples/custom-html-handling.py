@@ -9,27 +9,33 @@ bold text with "**".
 Example:
     "Welcome to <b>Chur</b>" is rendered as "Welcome to **Chur**".
 """
-
-
+from inscriptis import ParserConfig
 from inscriptis.html_engine import Inscriptis
-from functools import partial
+from inscriptis.model.html_document_state import HtmlDocumentState
+from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 from lxml.html import fromstring
 
 
-def my_handle_start_b(self, attrs):
+def my_handle_start_b(state: HtmlDocumentState, _):
     """Handle the opening <b> tag."""
-    self.tags[-1].write("**")
+    state.tags[-1].write("**")
 
 
-def my_handle_end_b(self):
+def my_handle_end_b(state: HtmlDocumentState):
     """Handle the closing </b> tag."""
-    self.tags[-1].write("**")
+    state.tags[-1].write("**")
+
+
+MY_MAPPING = CustomHtmlTagHandlerMapping(
+    start_tag_handler_mapping={"b": my_handle_start_b},
+    end_tag_handler_mapping={"b": my_handle_end_b},
+)
 
 
 HTML = "Welcome to <b>Chur</b>"
 
 html_tree = fromstring(HTML)
-inscriptis = Inscriptis(html_tree)
-inscriptis.start_tag_handler_dict["b"] = partial(my_handle_start_b, inscriptis)
-inscriptis.end_tag_handler_dict["b"] = partial(my_handle_end_b, inscriptis)
+inscriptis = Inscriptis(
+    html_tree, ParserConfig(custom_html_tag_handler_mapping=MY_MAPPING)
+)
 print(inscriptis.get_text())
