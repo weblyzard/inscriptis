@@ -175,7 +175,7 @@ def cli():
         try:
             with Path(args.annotation_rules).open() as f:
                 annotation_rules = load(f)
-        except IOError:
+        except (IOError, FileNotFoundError, PermissionError):
             print(
                 "ERROR: Cannot open annotation rule file '{0}'.".format(
                     args.annotation_rules
