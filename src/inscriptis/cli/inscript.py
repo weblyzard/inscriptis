@@ -156,10 +156,8 @@ def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[s
     """
     if not url:
         return sys.stdin.read()
-    elif Path(url).is_file():
-        with Path(url).open(
-            encoding=encoding or DEFAULT_ENCODING, errors="ignore"
-        ) as f:
+    elif (p := Path(url)).is_file():
+        with p.open(encoding=encoding or DEFAULT_ENCODING, errors="ignore") as f:
             return f.read()
     elif url.startswith("http://") or url.startswith("https://"):
         req = requests.get(url, timeout=timeout)
