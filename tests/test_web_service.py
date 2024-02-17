@@ -3,8 +3,6 @@ from fastapi.testclient import TestClient
 from inscriptis.service.web import app
 from inscriptis.metadata import __version__
 
-# Replace "your_module" with the actual module name where your FastAPI app is defined.
-
 
 @pytest.fixture
 def client():
@@ -42,6 +40,4 @@ def test_get_text_call_without_content_type(client):
 def test_get_version_call(client):
     response = client.get("/version")
     assert response.status_code == 200
-    assert (
-        response.text == __version__
-    )  # Assuming your ParserConfig has a version attribute
+    assert response.text == __version__
