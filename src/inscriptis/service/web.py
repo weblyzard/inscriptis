@@ -22,15 +22,15 @@ CONFIG = ParserConfig(
 @app.get("/")
 def index():
     """Print a short status message for the Web service's base URL."""
-    return "Inscriptis text to HTML Web service."
+    return PlainTextResponse("Inscriptis text to HTML Web service.")
 
 
 @app.post("/get_text", response_class=PlainTextResponse)
 async def get_text_call(request: Request):
     """Return the text representation of the given HTML content."""
     content_type = request.headers.get("Content-type")
-    if "; encoding=" in content_type:
-        encoding = content_type.split("; encoding=")[1]
+    if "; charset=" in content_type:
+        encoding = content_type.split("; charset=")[1]
     else:
         encoding = "UTF-8"
     html_content = await request.body()
