@@ -1,7 +1,7 @@
 """The model used for saving annotations."""
 
-from typing import NamedTuple
 from typing import List
+from typing import NamedTuple
 
 from inscriptis.html_properties import HorizontalAlignment
 

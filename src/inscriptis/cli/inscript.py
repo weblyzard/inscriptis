@@ -5,14 +5,14 @@
 import argparse
 import sys
 from json import load, dumps
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
 import requests
 
 from inscriptis import get_text, get_annotated_text
-from inscriptis.metadata import __version__, __copyright__, __license__
 from inscriptis.css_profiles import CSS_PROFILES
+from inscriptis.metadata import __version__, __copyright__, __license__
 from inscriptis.model.config import ParserConfig
 
 DEFAULT_ENCODING = "utf8"
@@ -164,7 +164,7 @@ def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[s
         return req.content.decode(encoding or req.encoding)
 
 
-def cli():
+def cli() -> None:
     """Run the inscript command line client."""
     args = parse_command_line()
     if not (html_content := get_html_content(args.input, args.timeout, args.encoding)):

@@ -1,11 +1,13 @@
 """Handle the <table>, <tr> and <td> tags."""
+from typing import Dict
+
 from inscriptis.annotation import Annotation
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.html_document_state import HtmlDocumentState
 from inscriptis.model.table import Table, TableCell
 
 
-def td_start_handler(state: HtmlDocumentState, _):
+def td_start_handler(state: HtmlDocumentState, _: Dict) -> None:
     """Handle the <td> tag."""
     if state.current_table:
         # open td tag
@@ -14,13 +16,13 @@ def td_start_handler(state: HtmlDocumentState, _):
         state.current_table[-1].add_cell(table_cell)
 
 
-def tr_start_handler(state: HtmlDocumentState, _):
+def tr_start_handler(state: HtmlDocumentState, _: Dict) -> None:
     """Handle the <tr> tag."""
     if state.current_table:
         state.current_table[-1].add_row()
 
 
-def table_start_handler(state: HtmlDocumentState, _):
+def table_start_handler(state: HtmlDocumentState, _: Dict) -> None:
     """Handle the <table> tag."""
     state.tags[-1].set_canvas(Canvas())
     state.current_table.append(
@@ -31,13 +33,13 @@ def table_start_handler(state: HtmlDocumentState, _):
     )
 
 
-def td_end_handler(state: HtmlDocumentState):
+def td_end_handler(state: HtmlDocumentState) -> None:
     """Handle the </td> tag."""
     if state.current_table:
         state.tags[-1].canvas.close_tag(state.tags[-1])
 
 
-def table_end_handler(state: HtmlDocumentState):
+def table_end_handler(state: HtmlDocumentState) -> None:
     """Handle the </table> tag."""
     if state.current_table:
         td_end_handler(state)

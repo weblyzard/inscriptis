@@ -9,6 +9,8 @@ bold text with "**".
 Example:
     "Welcome to <b>Chur</b>" is rendered as "Welcome to **Chur**".
 """
+from typing import Dict
+
 from inscriptis import ParserConfig
 from inscriptis.html_engine import Inscriptis
 from inscriptis.model.html_document_state import HtmlDocumentState
@@ -16,12 +18,12 @@ from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 from lxml.html import fromstring
 
 
-def my_handle_start_b(state: HtmlDocumentState, _):
+def my_handle_start_b(state: HtmlDocumentState, _: Dict) -> None:
     """Handle the opening <b> tag."""
     state.tags[-1].write("**")
 
 
-def my_handle_end_b(state: HtmlDocumentState):
+def my_handle_end_b(state: HtmlDocumentState) -> None:
     """Handle the closing </b> tag."""
     state.tags[-1].write("**")
 

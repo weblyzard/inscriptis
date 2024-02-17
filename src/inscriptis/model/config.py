@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 """Provide configuration objects for the Inscriptis HTML to text converter."""
 from __future__ import annotations
+
 from copy import deepcopy
 from typing import Dict, List
 
-from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.annotation.parser import AnnotationModel
+from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.attribute import Attribute
 from inscriptis.model.html_element import HtmlElement
 from inscriptis.model.tag import CustomHtmlTagHandlerMapping

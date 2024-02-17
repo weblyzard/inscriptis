@@ -6,8 +6,8 @@ from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse
 
 from inscriptis import get_text
-from inscriptis.metadata import __version__
 from inscriptis.css_profiles import RELAXED_CSS_PROFILE
+from inscriptis.metadata import __version__
 from inscriptis.model.config import ParserConfig
 
 app = FastAPI()

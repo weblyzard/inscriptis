@@ -7,6 +7,7 @@
 """
 from contextlib import suppress
 from re import compile as re_compile
+
 from inscriptis.html_properties import (
     Display,
     WhiteSpace,
