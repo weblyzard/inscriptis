@@ -102,3 +102,24 @@ def test_help(monkeypatch, capsys):
     captured = capsys.readouterr().out
     assert captured.startswith("Inscript HTML to text conversion")
     assert "Inscript comes with ABSOLUTELY NO WARRANTY." in captured
+
+
+def test_missing_input_file(monkeypatch, capsys):
+    monkeypatch.setattr("sys.argv", ["inscript", "test.html"])
+    with pytest.raises(SystemExit) as exit_info:
+        cli()
+
+    captured = capsys.readouterr()
+    assert exit_info.value.code == -1
+    assert captured.out.strip().startswith("ERROR: Cannot open input file")
+
+
+def test_missing_annotation_file(monkeypatch, capsys):
+    monkeypatch.setattr("sys.argv", ["inscript", "--annotation-rules", "rules.json"])
+    monkeypatch.setattr("sys.stdin", StringIO(INPUT_DATA))
+    with pytest.raises(SystemExit) as exit_info:
+        cli()
+
+    captured = capsys.readouterr()
+    assert exit_info.value.code == -1
+    assert captured.out.strip().startswith("ERROR: Cannot open annotation rule file")
