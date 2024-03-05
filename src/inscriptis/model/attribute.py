@@ -66,7 +66,7 @@ class Attribute:
             self.attribute_mapping[attr_name](attr_value, html_element)
         return html_element
 
-    def merge_attribute_map(self, annotations: List[ApplyAnnotation] = None):
+    def merge_attribute_map(self, annotations: List[ApplyAnnotation] = None) -> None:
         attributes = copy(self.attribute_mapping)
         for a in annotations:
             attributes[a.attr] = (

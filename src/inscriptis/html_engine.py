@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding:utf-8
 """The HTML Engine is responsible for converting HTML to text."""
-from typing import List
+from typing import List, Dict, Callable
 
 import lxml.html
 from lxml.etree import Comment
@@ -56,7 +56,9 @@ class Inscriptis:
         config = config or ParserConfig()
 
         # setup start and end tag call tables
-        self.start_tag_handler_dict = {
+        self.start_tag_handler_dict: Dict[
+            str, Callable[[HtmlDocumentState, Dict], None]
+        ] = {
             "table": table_start_handler,
             "tr": tr_start_handler,
             "td": td_start_handler,
@@ -68,7 +70,7 @@ class Inscriptis:
             "a": a_start_handler if config.parse_a() else None,
             "img": img_start_handler if config.display_images else None,
         }
-        self.end_tag_handler_dict = {
+        self.end_tag_handler_dict: Dict[str, Callable[[HtmlDocumentState], None]] = {
             "table": table_end_handler,
             "ul": ul_end_handler,
             "ol": ol_end_handler,
@@ -76,6 +78,14 @@ class Inscriptis:
             "th": td_end_handler,
             "a": a_end_handler if config.parse_a() else None,
         }
+
+        if config.custom_html_tag_handler_mapping:
+            self.start_tag_handler_dict.update(
+                config.custom_html_tag_handler_mapping.start_tag_mapping
+            )
+            self.end_tag_handler_dict.update(
+                config.custom_html_tag_handler_mapping.end_tag_mapping
+            )
 
         # parse the HTML tree
         self.canvas = self._parse_html_tree(HtmlDocumentState(config), html_tree)
