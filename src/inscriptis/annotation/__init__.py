@@ -1,7 +1,7 @@
 """The model used for saving annotations."""
 
-from typing import NamedTuple, Tuple
 from typing import List
+from typing import NamedTuple
 
 from inscriptis.html_properties import HorizontalAlignment
 
@@ -25,8 +25,8 @@ class Annotation(NamedTuple):
     """the annotation's start index within the text output."""
     end: int
     """the annotation's end index within the text output."""
-    metadata: Tuple[str]
-    """a tuple of tags to be attached to the annotation."""
+    metadata: str
+    """the tag to be attached to the annotation."""
 
 
 def horizontal_shift(

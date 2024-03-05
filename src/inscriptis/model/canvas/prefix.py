@@ -22,7 +22,7 @@ class Prefix:
         self.bullets = []
         self.consumed = False
 
-    def register_prefix(self, padding_inline, bullet):
+    def register_prefix(self, padding_inline: int, bullet: str) -> None:
         """Register the given prefix.
 
         Args:
@@ -33,13 +33,13 @@ class Prefix:
         self.paddings.append(padding_inline)
         self.bullets.append(bullet if bullet else "")
 
-    def remove_last_prefix(self):
+    def remove_last_prefix(self) -> None:
         """Remove the last prefix from the list."""
         with suppress(IndexError):
             self.current_padding -= self.paddings.pop()
             del self.bullets[-1]
 
-    def pop_next_bullet(self):
+    def pop_next_bullet(self) -> str:
         """Pop the next bullet to use, if any bullet is available."""
         next_bullet_idx = (
             next((-idx for idx, val in enumerate(reversed(self.bullets)) if val), 1) - 1
@@ -53,7 +53,7 @@ class Prefix:
         return bullet
 
     @property
-    def first(self):
+    def first(self) -> str:
         """Return the prefix used at the beginning of a tag.
 
         Note::
@@ -69,7 +69,7 @@ class Prefix:
         return " " * (self.current_padding - len(bullet)) + bullet
 
     @property
-    def unconsumed_bullet(self):
+    def unconsumed_bullet(self) -> str:
         """Yield any yet unconsumed bullet.
 
         Note::
@@ -87,7 +87,7 @@ class Prefix:
         return " " * (padding - len(bullet)) + bullet
 
     @property
-    def rest(self):
+    def rest(self) -> str:
         """Return the prefix used for new lines within a block.
 
         This prefix is used for pre-text that contains newlines. The lines

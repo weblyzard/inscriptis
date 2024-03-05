@@ -2,11 +2,11 @@
 # encoding: utf-8
 """Classes used for representing Tables, TableRows and TableCells."""
 
-from typing import List
 from itertools import chain, accumulate
+from typing import List
 
-from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 from inscriptis.annotation import Annotation, horizontal_shift
+from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 from inscriptis.model.canvas import Canvas
 
 
@@ -48,7 +48,7 @@ class TableCell(Canvas):
         Returns:
             The height of the normalized cell.
         """
-        self._flush_inline()
+        self.flush_inline()
         self.blocks = list(chain(*(line.split("\n") for line in self.blocks)))
         if not self.blocks:
             self.blocks = [""]
@@ -168,7 +168,7 @@ class TableRow:
 
     __slots__ = ("columns", "cell_separator")
 
-    def __init__(self, cell_separator):
+    def __init__(self, cell_separator: str):
         self.columns: List[TableCell] = []
         self.cell_separator = cell_separator
 
@@ -205,7 +205,7 @@ class Table:
 
     __slots__ = ("rows", "left_margin_len", "cell_separator")
 
-    def __init__(self, left_margin_len: int, cell_separator):
+    def __init__(self, left_margin_len: int, cell_separator: str):
         self.rows = []
         self.left_margin_len = left_margin_len
         self.cell_separator = cell_separator

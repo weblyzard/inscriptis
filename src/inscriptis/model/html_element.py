@@ -52,9 +52,9 @@ class HtmlElement:
 
     def __init__(
         self,
-        tag="default",
-        prefix="",
-        suffix="",
+        tag: str = "default",
+        prefix: str = "",
+        suffix: str = "",
         display: Display = Display.inline,
         margin_before: int = 0,
         margin_after: int = 0,
@@ -156,7 +156,7 @@ class HtmlElement:
 
         return new
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"<{self.tag} prefix={self.prefix}, suffix={self.suffix}, "
             f"display={self.display}, margin_before={self.margin_before}, "

@@ -8,8 +8,8 @@
              preventing cases where two words stick together.
 """
 
-from inscriptis.model.html_element import HtmlElement
 from inscriptis.html_properties import Display, WhiteSpace
+from inscriptis.model.html_element import HtmlElement
 
 STRICT_CSS_PROFILE = {
     "body": HtmlElement(display=Display.inline, whitespace=WhiteSpace.normal),

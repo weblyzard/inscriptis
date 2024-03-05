@@ -60,12 +60,12 @@ Annotations in the `label` field are returned as a list of triples with
 """
 
 import re
-from lxml.html import fromstring, HtmlElement
-from lxml.etree import ParserError
-
 from typing import Dict, Optional, Any
-
 from inscriptis.model.config import ParserConfig
+
+from lxml.etree import ParserError
+from lxml.html import fromstring, HtmlElement
+
 from inscriptis.html_engine import Inscriptis
 
 RE_STRIP_XML_DECLARATION = re.compile(r"^<\?xml [^>]+?\?>")
@@ -132,5 +132,6 @@ def get_annotated_text(
         return {}
 
     inscriptis = Inscriptis(html_tree, config)
+    text = inscriptis.get_text()
     labels = [(a.start, a.end, a.metadata) for a in inscriptis.get_annotations()]
-    return {"text": inscriptis.get_text(), "label": labels}
+    return {"text": text, "label": labels}

@@ -4,7 +4,7 @@ Supported attributes::
  1. :class:`Display` properties.
  2. :class:`WhiteSpace` properties.
  3. :class:`HorizontalAlignment` properties.
- 4. :class:`VerticalAlignment` properites.
+ 4. :class:`VerticalAlignment` properties.
 """
 
 from enum import Enum

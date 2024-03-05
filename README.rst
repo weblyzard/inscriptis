@@ -185,7 +185,7 @@ HTML to annotated text conversion
 ---------------------------------
 convert and annotate HTML from a Web page using the provided annotation rules. 
 
-Download the example `annotation-profile.json <https://github.com/weblyzard/inscriptis/blob/master/examples/annotation-profile.json>`_ and save it to your working directory::
+Download the example `annotation-profile.json <https://github.com/weblyzard/inscriptis/blob/master/examples/annotation/annotation-profile.json>`_ and save it to your working directory::
 
   $ inscript https://www.fhgr.ch -r annotation-profile.json
 
@@ -236,7 +236,7 @@ that are suitable for your particular application. Post processors can be
 specified with the ``-p`` or ``--postprocessor`` command line argument::
 
   $ inscript https://www.fhgr.ch \
-          -r ./examples/annotation-profile.json \
+          -r ./annotation/examples/annotation-profile.json \
           -p surface
 
 
@@ -474,7 +474,8 @@ be used within a program:
 .. code-block:: python
 
   import urllib.request
-  from inscriptis import get_annotated_text, ParserConfig
+  from inscriptis import get_annotated_text
+  from inscriptis.model.config import ParserConfig
 
   url = "https://www.fhgr.ch"
   html = urllib.request.urlopen(url).read().decode('utf-8')
@@ -533,15 +534,24 @@ If the fine-tuning options discussed above are not sufficient, you may even over
 
 .. code-block:: python
 
-    inscriptis = Inscriptis(html, config)
+    from inscriptis import ParserConfig
+    from inscriptis.html_engine import Inscriptis
+    from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 
-    inscriptis.start_tag_handler_dict['a'] = my_handle_start_a
-    inscriptis.end_tag_handler_dict['a'] = my_handle_end_a
+    my_mapping = CustomHtmlTagHandlerMapping(
+        start_tag_mapping={'a': my_handle_start_a},
+        end_tag_mapping={'a': my_handle_end_a}
+    )
+    inscriptis = Inscriptis(html_tree, 
+                            ParserConfig(custom_html_tag_handler_mapping=my_mapping))
     text = inscriptis.get_text()
 		
 
 In the example the standard HTML handlers for the ``a`` tag are overwritten with custom versions (i.e., ``my_handle_start_a`` and ``my_handle_end_a``).
-You may define custom handlers for any tag, regardless of whether it already exists in ``start_tag_handler_dict`` or ``end_tag_handler_dict``. 
+You may define custom handlers for any tag, regardless of whether it already exists in the standard mapping.
+
+Please refer to `custom-html-handling.py <https://github.com/weblyzard/inscriptis/blob/master/examples/custom-html-handling.py>`_ for a working example. 
+The standard HTML tag handlers can be found in the `inscriptis.model.tag <https://github.com/weblyzard/inscriptis/blob/master/src/inscriptis/model/tag>`_ package.
 
 Optimizing memory consumption
 -----------------------------
