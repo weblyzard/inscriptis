@@ -57,13 +57,9 @@ class Attribute:
             attributes: the list of attributes
             html_element: the HTML element for which the attributes are parsed
         """
-        supported_attributes = (
-            (name, val)
-            for name, val in attributes.items()
-            if name in self.attribute_mapping
-        )
-        for attr_name, attr_value in supported_attributes:
-            self.attribute_mapping[attr_name](attr_value, html_element)
+        for attr_name, attr_value in attributes.items():
+            if attr_name in self.attribute_mapping:
+                self.attribute_mapping[attr_name](attr_value, html_element)
         return html_element
 
     def merge_attribute_map(self, annotations: List[ApplyAnnotation] = None) -> None:
