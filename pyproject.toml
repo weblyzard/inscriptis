@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "inscriptis"
-version = "2.5.1"
+version = "2.5.3"
 authors = ["Albert Weichselbraun <albert.weichselbraun@fhgr.ch>", "Fabian Odoni <fabian.odoni@fhgr.ch>"]
 description = "inscriptis - HTML to text converter."
 keywords = ["HTML", "converter", "text"]
