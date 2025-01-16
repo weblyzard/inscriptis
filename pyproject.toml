@@ -40,7 +40,7 @@ web-service = ["fastapi", "uvicorn"]
 
 [tool.poetry.dependencies]
 python = "^3.9 || ^3.10 || ^3.11 || ^3.12 || ^3.13"
-requests = "2.32.2"
+requests = ">=2.32.2"
 lxml = ">=4.9.3"
 
 # optional dependencies
