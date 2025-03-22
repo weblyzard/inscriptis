@@ -1,4 +1,5 @@
 """HTML Annotation Processor."""
+
 from collections import defaultdict
 from itertools import cycle
 from typing import Dict, Any, List
@@ -18,44 +19,27 @@ class HtmlExtractor(AnnotationProcessor):
     verbatim = True
 
     def __call__(self, annotated_text: Dict[str, Any]) -> str:
-        tag_indices = defaultdict(list)
+        tag_dict = defaultdict(list)
 
-        for start, end, label in sorted(annotated_text["label"]):
-            tag_indices[start].append(label)
-            tag_indices[end].append("/" + label)
+        for start, end, label in reversed(annotated_text["label"]):
+            tag_dict[start].append(
+                f'<span class="{label}-label">{label}</span><span class="{label}">'
+            )
+            tag_dict[end].insert(0, "</span>")
 
-        open_tags = []
         tagged_content = [
             "<html><head><style>",
             self._get_css(annotated_text["label"]),
             "</style></head><body><pre>",
         ]
-        for idx, ch in enumerate(annotated_text["text"]):
-            if idx in tag_indices:
-                tags = tag_indices[idx]
-                # close tags:
-                for _ in (t for t in sorted(tags, reverse=True) if t.startswith("/")):
-                    open_tags.pop()
-                    tagged_content.append("</span>")
-                # open tags
-                for tag in (
-                    t for t in sorted(tags, reverse=True) if not t.startswith("/")
-                ):
-                    open_tags.append(tag)
-                    tagged_content.append(
-                        '<span class="{tag}-label">{tag}</span>'
-                        '<span class="{tag}">'.format(tag=tag)
-                    )
 
-            if ch == "\n":
-                tagged_content.extend(["</span>" for _ in open_tags])
-                tagged_content.append("</pre>\n<pre>")
-                tagged_content.extend(
-                    ['<span class="{tag}">'.format(tag=tag) for tag in open_tags]
-                )
-            else:
-                tagged_content.append(ch)
-
+        text = annotated_text["text"]
+        current_idx = 0
+        for idx, tags in sorted(tag_dict.items()):
+            tagged_content.append(text[current_idx:idx].replace("\n", "</pre>\n<pre>"))
+            current_idx = idx
+            tagged_content.extend(tags)
+        tagged_content.append(text[current_idx:].replace("\n", "</pre>\n</pre>"))
         return "".join(tagged_content) + "</pre></body></html>"
 
     @staticmethod
