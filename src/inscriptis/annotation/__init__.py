@@ -28,6 +28,12 @@ class Annotation(NamedTuple):
     metadata: str
     """the tag to be attached to the annotation."""
 
+    def __lt__(self, other):
+        return (self.start, -self.end) < (other.start, -other.end)
+
+    def __gt__(self, other):
+        return not self.__lt__(other)
+
 
 def horizontal_shift(
     annotations: List[Annotation],

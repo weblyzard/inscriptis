@@ -3,6 +3,7 @@
 from collections import defaultdict
 from typing import Dict, Any
 
+from inscriptis.annotation import Annotation
 from inscriptis.annotation.output import AnnotationProcessor
 
 
@@ -13,7 +14,9 @@ class XmlExtractor(AnnotationProcessor):
 
     def __call__(self, annotated_text: Dict[str, Any], root_element="content"):
         tag_dict = defaultdict(list)
-        for start, end, tag in reversed(annotated_text["label"]):
+        for start, end, tag in sorted(
+            Annotation(s, e, t) for s, e, t in reversed(annotated_text["label"])
+        ):  # noqa: C414
             tag_dict[start].append(f"<{tag}>")
             tag_dict[end].insert(0, f"</{tag}>")
 

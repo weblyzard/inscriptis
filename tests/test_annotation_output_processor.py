@@ -63,13 +63,11 @@ def test_html_annotator():
     assert result.startswith("<html><head><style>")
     assert result.split("</style>")[1] == (
         "</head>"
-        '<body><pre><span class="heading-label">heading'
-        '</span><span class="heading">'
-        '<span class="h1-label">h1</span><span class="h1">'
-        "Chur</span></span></pre>\n"
-        "<pre></pre>\n"
-        '<pre><span class="emphasis-label">emphasis</span>'
-        '<span class="emphasis">Chur</span> is the capital '
+        '<body><pre><span class="heading" data-label="heading">'
+        '<span class="h1" data-label="h1">'
+        "Chur</span></span>\n\n"
+        '<span class="emphasis" data-label="emphasis">'
+        "Chur</span> is the capital "
         "and largest town of the Swiss canton of the "
         "Grisons and lies in the Grisonian Rhine Valley."
         "</pre></body></html>"

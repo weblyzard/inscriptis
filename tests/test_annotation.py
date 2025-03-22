@@ -69,3 +69,47 @@ def test_horizontal_shift():
         align=HorizontalAlignment.center,
         shift=7,
     ).pop() == Annotation(10, 14, "test")
+
+
+def test_comparison():
+    a = Annotation(24, 62, "tableheading")
+    b = Annotation(24, 600, "table")
+    c = Annotation(51, 56, "tableheading")
+
+    assert b > b
+    assert a < c
+    assert b < c
+
+
+def test_sorting():
+    annotations = [
+        Annotation(24, 62, "tableheading"),
+        Annotation(24, 600, "table"),
+        Annotation(51, 56, "tableheading"),
+        Annotation(59, 115, "tableheading"),
+        Annotation(79, 104, "emphasis"),
+        Annotation(125, 139, "tableheading"),
+        Annotation(140, 160, "emphasis"),
+        Annotation(254, 263, "link"),
+        Annotation(254, 271, "bold"),
+        Annotation(266, 268, "link"),
+        Annotation(271, 280, "link"),
+        Annotation(369, 385, "link"),
+        Annotation(484, 498, "link"),
+    ]
+
+    assert sorted(annotations) == [
+        Annotation(24, 600, "table"),
+        Annotation(24, 62, "tableheading"),
+        Annotation(51, 56, "tableheading"),
+        Annotation(59, 115, "tableheading"),
+        Annotation(79, 104, "emphasis"),
+        Annotation(125, 139, "tableheading"),
+        Annotation(140, 160, "emphasis"),
+        Annotation(254, 271, "bold"),
+        Annotation(254, 263, "link"),
+        Annotation(266, 268, "link"),
+        Annotation(271, 280, "link"),
+        Annotation(369, 385, "link"),
+        Annotation(484, 498, "link"),
+    ]

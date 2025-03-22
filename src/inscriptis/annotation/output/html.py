@@ -4,6 +4,7 @@ from collections import defaultdict
 from itertools import cycle
 from typing import Dict, Any, List
 
+from inscriptis.annotation import Annotation
 from inscriptis.annotation.output import AnnotationProcessor
 
 COLOR_SCHEMA = ("#D8115980", "#8F2D5680", "#21838080", "#FBB13C80", "#73D2DE80")
@@ -20,12 +21,11 @@ class HtmlExtractor(AnnotationProcessor):
 
     def __call__(self, annotated_text: Dict[str, Any]) -> str:
         tag_dict = defaultdict(list)
-
-        for start, end, label in reversed(annotated_text["label"]):
-            tag_dict[start].append(
-                f'<span class="{label}-label">{label}</span><span class="{label}">'
-            )
-            tag_dict[end].insert(0, "</span>")
+        for start, end, label in sorted(
+            Annotation(s, e, t) for s, e, t in reversed(annotated_text["label"])
+        ):
+            tag_dict[start].append(f'<span class="{label}" data-label="{label}">')
+            tag_dict[end].insert(0, f"</span>")
 
         tagged_content = [
             "<html><head><style>",
@@ -36,10 +36,10 @@ class HtmlExtractor(AnnotationProcessor):
         text = annotated_text["text"]
         current_idx = 0
         for idx, tags in sorted(tag_dict.items()):
-            tagged_content.append(text[current_idx:idx].replace("\n", "</pre>\n<pre>"))
+            tagged_content.append(text[current_idx:idx])
             current_idx = idx
             tagged_content.extend(tags)
-        tagged_content.append(text[current_idx:].replace("\n", "</pre>\n</pre>"))
+        tagged_content.append(text[current_idx:])
         return "".join(tagged_content) + "</pre></body></html>"
 
     @staticmethod
@@ -72,17 +72,16 @@ class HtmlExtractor(AnnotationProcessor):
         for label, color in sorted(self._get_label_colors(labels).items()):
             css.append(
                 "pre{{"
-                "  position: relative;\n"
+                "position: relative; white-space: pre; line-height: 2.5; font-family: monospace;"
                 "}}\n"
-                ".{label} {{\n"
-                "  background-color: {color};\n"
-                "  border-radius: 0.4em;\n"
+                ".{label} {{ position: relative; display: inline-block; white-space: pre;"
+                "  background-color: {color}; \n"
+                "  border-radius: 0.4em; padding: 0 4px\n"
                 "}}\n"
-                ".{label}-label {{\n"
-                "  top: -1.0em;\n"
-                '  content: "{label}";\n'
-                "  position: absolute;\n"
-                "  background-color: {color};\n"
-                "  font-size: 75%; }}\n".format(label=label, color=color)
+                ".{label}::before {{"
+                "content: attr(data-label); position: absolute; top: -1.3em; left: 0;"
+                "background-color: {color}; "
+                "font-size: 65%; padding: 0px 2px; border-radius: 1px; white-space: nowrap; font-weight: bold;"
+                " }}\n".format(label=label, color=color)
             )
         return "\n".join(css)
