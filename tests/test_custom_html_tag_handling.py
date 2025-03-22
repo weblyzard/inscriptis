@@ -1,4 +1,5 @@
 """Test the custom HTML tag handling."""
+
 from lxml.html import fromstring
 
 from inscriptis import Inscriptis, ParserConfig

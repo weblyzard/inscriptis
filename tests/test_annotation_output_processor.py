@@ -60,9 +60,9 @@ def test_html_annotator():
     processor = HtmlExtractor()
     result = processor(EXAMPLE_OUTPUT)
 
-
     assert result.startswith("<html><head><style>")
-    assert result.split("</style>")[1] ==  ("</head>"
+    assert result.split("</style>")[1] == (
+        "</head>"
         '<body><pre><span class="heading-label">heading'
         '</span><span class="heading">'
         '<span class="h1-label">h1</span><span class="h1">'
@@ -72,7 +72,8 @@ def test_html_annotator():
         '<span class="emphasis">Chur</span> is the capital '
         "and largest town of the Swiss canton of the "
         "Grisons and lies in the Grisonian Rhine Valley."
-        "</pre></body></html>")
+        "</pre></body></html>"
+    )
 
 
 def test_trailing_tag_annotation():

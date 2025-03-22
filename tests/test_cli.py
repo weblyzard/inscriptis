@@ -1,6 +1,7 @@
 """
 Tests the Inscriptis CLI client.
 """
+
 from io import StringIO
 from pathlib import Path
 from json import loads
