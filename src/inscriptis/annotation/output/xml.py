@@ -20,9 +20,9 @@ class XmlExtractor(AnnotationProcessor):
         current_idx = 0
         text = annotated_text["text"]
         tagged_content = ['<?xml version="1.0" encoding="UTF-8" ?>\n', "<content>\n"]
-        for index, tags in sorted(tag_dict.items()):
-            tagged_content.append(text[current_idx:index])
-            current_idx = index
+        for idx, tags in sorted(tag_dict.items()):
+            tagged_content.append(text[current_idx:idx])
+            current_idx = idx
             tagged_content.extend(tags)
 
         tagged_content.append(text[current_idx:])
