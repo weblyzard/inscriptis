@@ -51,7 +51,9 @@ class Inscriptis:
       text = parser.get_text()
     """
 
-    def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None):
+    def __init__(
+        self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None
+    ) -> None:
         # use the default configuration, if no config object is provided
         config = config or ParserConfig()
 

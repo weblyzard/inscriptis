@@ -1,5 +1,6 @@
 """The model used for saving annotations."""
 
+from functools import total_ordering
 from typing import List
 from typing import NamedTuple
 
