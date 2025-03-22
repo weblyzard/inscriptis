@@ -10,9 +10,9 @@ by overwrite the class's :meth:`AnnotationProcessor.__call__` method.
     2. The overwritten :meth:`__call__` method may either extend the original
        dictionary which contains the extracted text and annotations (e.g.,
        :class:`~inscriptis.annotation.output.surface.SurfaceExtractor`) or
-       may replace it with an custom output (e.g.,
+       may replace it with a custom output (e.g.,
        :class:`~inscriptis.annotation.output.html.HtmlExtractor` and
-       :class:`~inscriptis.annotation.output.xml.XmlExtractor`.
+       :class:`~inscriptis.annotation.output.xml.XmlExtractor`).
 
 Currently, Inscriptis supports the following built-in AnnotationProcessors:
 
@@ -25,6 +25,7 @@ Currently, Inscriptis supports the following built-in AnnotationProcessors:
     of the extracted annotations.
 
 """
+
 from typing import Dict, Any
 
 
