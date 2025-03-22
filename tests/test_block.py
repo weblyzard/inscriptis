@@ -1,6 +1,7 @@
 """
 Test cases for the Block class.
 """
+
 from inscriptis.model.canvas.block import Block
 from inscriptis.model.canvas.prefix import Prefix
 

@@ -236,7 +236,7 @@ that are suitable for your particular application. Post processors can be
 specified with the ``-p`` or ``--postprocessor`` command line argument::
 
   $ inscript https://www.fhgr.ch \
-          -r ./annotation/examples/annotation-profile.json \
+          -r ./examples/annotation/annotation-profile.json \
           -p surface
 
 
@@ -265,10 +265,12 @@ Currently, inscriptis supports the following postprocessors:
 - xml: returns an additional annotated text version::
 
     <?xml version="1.0" encoding="UTF-8" ?>
+    <content>
     <heading>Chur</heading>
 
     <emphasis>Chur</emphasis> is the capital and largest town of the Swiss
     canton of the Grisons and lies in the Grisonian Rhine Valley.
+    </content>
 
 - html: creates an HTML file which contains the converted text and highlights all annotations as outlined below:
 
@@ -282,7 +284,7 @@ Currently, inscriptis supports the following postprocessors:
 
       inscript --annotation-rules ./wikipedia.json \
                   --postprocessor html \
-                  https://en.wikipedia.org/wiki/Chur.html
+                  https://en.wikipedia.org/wiki/Chur
 
    Annotation rules encoded in the ``wikipedia.json`` file:
 

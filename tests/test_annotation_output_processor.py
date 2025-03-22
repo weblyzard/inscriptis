@@ -15,7 +15,7 @@ EXAMPLE_OUTPUT = {
     "text": "Chur\n\nChur is the capital and largest town of "
     "the Swiss canton of the Grisons and lies in the "
     "Grisonian Rhine Valley.",
-    "label": [[0, 4, "heading"], [0, 4, "h1"], [6, 10, "emphasis"]],
+    "label": [[0, 4, "h1"], [0, 4, "heading"], [6, 10, "emphasis"]],
 }
 
 
@@ -36,8 +36,8 @@ def test_surface_annotator():
 
     # and we have additional information on surface forms :)
     assert result["surface"] == [
-        ("heading", "Chur"),
         ("h1", "Chur"),
+        ("heading", "Chur"),
         ("emphasis", "Chur"),
     ]
 
@@ -48,11 +48,11 @@ def test_xml_annotator():
 
     # and we have additional information on surface forms :)
     assert result == (
-        '<?xml version="1.0" encoding="UTF-8" ?>\n'
-        "<h1><heading>Chur</heading></h1>\n\n<emphasis>"
+        '<?xml version="1.0" encoding="UTF-8" ?>\n<content>\n'
+        "<heading><h1>Chur</h1></heading>\n\n<emphasis>"
         "Chur</emphasis> is the capital and largest town "
         "of the Swiss canton of the Grisons and lies in "
-        "the Grisonian Rhine Valley."
+        "the Grisonian Rhine Valley.\n</content>"
     )
 
 
@@ -61,8 +61,8 @@ def test_html_annotator():
     result = processor(EXAMPLE_OUTPUT)
 
     assert result.startswith("<html><head><style>")
-    assert result.endswith(
-        "</style></head>"
+    assert result.split("</style>")[1] == (
+        "</head>"
         '<body><pre><span class="heading-label">heading'
         '</span><span class="heading">'
         '<span class="h1-label">h1</span><span class="h1">'
@@ -81,6 +81,6 @@ def test_trailing_tag_annotation():
     result = processor({"text": "Ehre sei Gott!", "label": [[9, 14, "emphasis"]]})
 
     assert result == (
-        '<?xml version="1.0" encoding="UTF-8" ?>\n'
-        "Ehre sei <emphasis>Gott!</emphasis>"
+        '<?xml version="1.0" encoding="UTF-8" ?>\n<content>\n'
+        "Ehre sei <emphasis>Gott!</emphasis>\n</content>"
     )
