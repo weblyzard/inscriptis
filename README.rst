@@ -284,7 +284,7 @@ Currently, inscriptis supports the following postprocessors:
 
       inscript --annotation-rules ./wikipedia.json \
                   --postprocessor html \
-                  https://en.wikipedia.org/wiki/Chur.html
+                  https://en.wikipedia.org/wiki/Chur
 
    Annotation rules encoded in the ``wikipedia.json`` file:
 
