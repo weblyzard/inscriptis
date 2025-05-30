@@ -1,66 +1,76 @@
-[tool.poetry]
+[project]
 name = "inscriptis"
-version = "2.6.0"
-authors = ["Albert Weichselbraun <albert.weichselbraun@fhgr.ch>", "Fabian Odoni <fabian.odoni@fhgr.ch>"]
+version = "2.6.1"
 description = "inscriptis - HTML to text converter."
-keywords = ["HTML", "converter", "text"]
-classifiers = [
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Topic :: Text Processing',
-        'Topic :: Text Processing :: Markup :: HTML',
-        'Topic :: Utilities',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
-    ]
-homepage = "https://github.com/weblyzard/inscriptis"
-repository = "https://github.com/weblyzard/inscriptis"
-documentation = "https://inscriptis.readthedocs.io/en"
 license = "Apache-2.0"
 readme = "README.rst"
+requires-python = ">=3.9,<3.15"
 
-packages = [
-   {include = "inscriptis", from="src"},
+authors = [
+        { name = "Albert Weichselbraun", email = "albert.weichselbraun@fhgr.ch" },
+        { name = "Fabian Odoni", email = "fabian.odoni@fhgr.ch" }
 ]
 
+keywords = ["HTML", "converter", "text"]
 
-[tool.poetry.scripts]
+classifiers = [
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Topic :: Text Processing",
+        "Topic :: Text Processing :: Markup :: HTML",
+        "Topic :: Utilities",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
+    ]
+
+dependencies = [
+  "requests>=2.32.2,<3.0.0",
+  "lxml>=4.9.3,<5.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/weblyzard/inscriptis"
+Repository = "https://github.com/weblyzard/inscriptis"
+Documentation = "https://inscriptis.readthedocs.io/en/latest/"
+
+[project.scripts]
 inscript = "inscriptis.cli.inscript:cli"
 inscriptis-api = "inscriptis.service.web:start"
 
+[project.optional-dependencies]
+web-service = [
+  "fastapi>=0.115.11,<1.0.0",
+  "uvicorn>=0.34.0,<1.0.0"
+]
 
-[tool.poetry.extras]
-web-service = ["fastapi", "uvicorn"]
-
-
-[tool.poetry.dependencies]
-python = "^3.9 || ^3.10 || ^3.11 || ^3.12 || ^3.13"
-requests = ">=2.32.2"
-lxml = ">=4.9.3"
-
-# optional dependencies
-fastapi = { version = "^0.115.11", optional = true }
-uvicorn = { version = "^0.34.0", optional = true }
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
-
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "ruff>=0.11.12",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+sources = ["src"]
 
 
-# code formatting with black
-[tool.black]
+
+# code formatting with ruff
+[tool.ruff]
 line-length = 88
-target-version = ["py39", "py310", "py311", "py312", "py313"]
-extend-exclude = '\.html$|\.json$|\.txt$|/a$|/b$'
-include = '''
-  ^/src/|^/tests/|^/benchmarking/|^/examples/
-'''
+target-version = "py311"  # adjust as needed
+extend-exclude = ["*.html", "*.json", "*.txt", "/a", "/b"]
+src = ["src", "tests", "benchmarking", "examples"]
+
+[tool.ruff.format]
+quote-style = "double"
+
