@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-# coding:utf-8
 """
 Runs a benchmarking suite to compare speed
 and output of different implementations.
 """
 
 import argparse
-from datetime import datetime
 import operator
 import os
 import signal
@@ -14,7 +12,7 @@ import subprocess
 import sys
 import threading
 import urllib.request
-
+from datetime import datetime
 from time import time
 
 #
@@ -31,10 +29,7 @@ sys.path.insert(0, os.path.abspath(SRC_DIR))
 try:
     import inscriptis
 except ImportError:
-    print(
-        "Inscriptis is not available. Please install it in order to "
-        "compare with inscriptis."
-    )
+    print("Inscriptis is not available. Please install it in order to compare with inscriptis.")
 
 #
 # Import third-party HTML 2 text converters.
@@ -42,23 +37,15 @@ except ImportError:
 try:
     from bs4 import BeautifulSoup
 except ImportError:
-    print(
-        "BeautifulSoup is not available. Please install it in order to "
-        "compare with BeautifulSoup."
-    )
+    print("BeautifulSoup is not available. Please install it in order to compare with BeautifulSoup.")
 try:
     import html2text
 except ImportError:
-    print(
-        "html2text is not available. Please install it in order to "
-        "compare with html2text."
-    )
+    print("html2text is not available. Please install it in order to compare with html2text.")
 try:
     import justext
 except ImportError:
-    print(
-        "justext is not available. Please install it in order to compare with justext."
-    )
+    print("justext is not available. Please install it in order to compare with justext.")
 
 
 TRIES = 7
@@ -156,9 +143,7 @@ class LynxConverter(AbstractHtmlConverter):
 
     def __init__(self):
         try:
-            subprocess.call(
-                [LYNX_BIN, "-dump 'www.google.com'"], stdout=subprocess.PIPE
-            )
+            subprocess.call([LYNX_BIN, "-dump 'www.google.com'"], stdout=subprocess.PIPE)
             self.available = True
         except OSError:
             print("lynx can not be called. Please check in order to compare with lynx.")
@@ -170,10 +155,7 @@ class LynxConverter(AbstractHtmlConverter):
             os.waitpid(-1, os.WNOHANG)
             print("lynx killed")
 
-        lynx_args = (
-            "-stdin -width=20000 -force_html -nocolor -dump -nolist "
-            "-nobold -display_charset=utf8"
-        )
+        lynx_args = "-stdin -width=20000 -force_html -nocolor -dump -nolist -nobold -display_charset=utf8"
         cmd = [
             LYNX_BIN,
         ] + lynx_args.split(" ")
@@ -196,14 +178,10 @@ class LinksConverter(AbstractHtmlConverter):
 
     def __init__(self):
         try:
-            subprocess.call(
-                [LINKS_BIN, "-dump 'www.google.com'"], stdout=subprocess.PIPE
-            )
+            subprocess.call([LINKS_BIN, "-dump 'www.google.com'"], stdout=subprocess.PIPE)
             self.available = True
         except OSError:
-            print(
-                "links can not be called. Please check in order to compare with links."
-            )
+            print("links can not be called. Please check in order to compare with links.")
             self.available = False
 
     def get_text(self, html):
@@ -248,9 +226,7 @@ def save_to_file(algorithm, url, data, benchmarking_results_dir):
     """
     Saves a benchmarking result to the given file.
     """
-    result_file = os.path.join(
-        benchmarking_results_dir, "{}_{}.txt".format(algorithm, url)
-    )
+    result_file = os.path.join(benchmarking_results_dir, f"{algorithm}_{url}.txt")
     with open(result_file, "w") as output_file:
         output_file.write(data)
 
@@ -266,10 +242,7 @@ def get_speed_table(times):
     result = ""
     for key, value in sorted(times.items(), key=operator.itemgetter(1)):
         difference = value - fastest
-        if difference == 0:
-            difference = "--> fastest"
-        else:
-            difference = "{0:+f}".format(difference)
+        difference = "--> fastest" if difference == 0 else f"{difference:+f}"
 
         output = "{}{}: {}{} {}".format(
             key,
@@ -367,14 +340,16 @@ def _fetch_url(url, cache_dir):
     source_cache_path = os.path.join(cache_dir, source_name)
 
     if os.path.exists(source_cache_path):
-        html = open(source_cache_path).read()
+        with open(source_cache_path) as f:
+            html = f.read()
     else:
         req = urllib.request.Request(url)
         try:
             html = urllib.request.urlopen(req).read().decode("utf-8")
         except UnicodeDecodeError:
             html = urllib.request.urlopen(req).read().decode("latin1")
-        open(source_cache_path, "w").write(html)
+        with open(source_cache_path, "w") as f:
+            f.write(html)
 
     return source_name, html
 
@@ -395,21 +370,15 @@ def benchmark(args, source_list):
     for source in source_list:
         source_name, html = _fetch_url(source, args.cache)
 
-        print("\nURL: {}".format(source_name))
-        output.append("\nURL: {}\n".format(source_name))
+        print(f"\nURL: {source_name}")
+        output.append(f"\nURL: {source_name}\n")
 
         times = {}
         for converter in CONVERTER:
-            if (
-                converter.available
-                and not args.converter
-                or converter.name in args.converter
-            ):
+            if converter.available and not args.converter or converter.name in args.converter:
                 time_required, text = converter.benchmark(html)
                 times[converter.name] = time_required
-                save_to_file(
-                    converter.name, source_name, text, args.benchmarking_results
-                )
+                save_to_file(converter.name, source_name, text, args.benchmarking_results)
 
         for converter, conversion_time in times.items():
             total_times[converter] = total_times.get(converter, 0) + conversion_time
