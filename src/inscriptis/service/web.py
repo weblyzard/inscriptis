@@ -19,27 +19,27 @@ CONFIG = ParserConfig(
 
 
 @app.get("/")
-def index():
+def index() -> PlainTextResponse:
     """Print a short status message for the Web service's base URL."""
     return PlainTextResponse("Inscriptis text to HTML Web service.")
 
 
 @app.post("/get_text", response_class=PlainTextResponse)
-async def get_text_call(request: Request):
+async def get_text_call(request: Request) -> str:
     """Return the text representation of the given HTML content."""
-    content_type = request.headers.get("Content-type")
+    content_type = request.headers.get("Content-type", "")
     encoding = content_type.split("; charset=")[1] if "; charset=" in content_type else "UTF-8"
     html_content = await request.body()
     return get_text(html_content.decode(encoding, errors="ignore"), CONFIG)
 
 
 @app.get("/version", response_class=PlainTextResponse)
-def get_version_call():
+def get_version_call() -> str:
     """Return the used inscriptis version."""
     return __version__
 
 
-def start():
+def start() -> None:
     """Start the webservice."""
     import uvicorn
 

@@ -98,7 +98,7 @@ def _get_html_tree(html_content: str) -> HtmlElement | None:
         return fromstring("<pre>" + html_content + "</pre>")
 
 
-def get_text(html_content: str, config: ParserConfig = None) -> str:
+def get_text(html_content: str, config: ParserConfig | None = None) -> str:
     """Provide a text representation of the given HTML content.
 
     Args:
@@ -112,7 +112,7 @@ def get_text(html_content: str, config: ParserConfig = None) -> str:
     return Inscriptis(html_tree, config).get_text() if html_tree is not None else ""
 
 
-def get_annotated_text(html_content: str, config: ParserConfig = None) -> dict[str, Any]:
+def get_annotated_text(html_content: str, config: ParserConfig | None = None) -> dict[str, Any]:
     """Return a dictionary of the extracted text and annotations.
 
     Notes:

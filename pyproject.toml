@@ -55,6 +55,8 @@ dev = [
     "fastapi>=0.115.11,<1.0.0",
     "ruff>=0.11.12",
     "httpx>=0.28.1",
+    "uvicorn>=0.34.2",
+    "ty>=0.0.1a7",
 ]
 
 [build-system]
@@ -101,3 +103,7 @@ select = [
     "RSE", "RET", "SLOT", "TID", "TC", "C90", "N", "PERF", "E", "W", 
     "UP", "FURB", "RUF", "TRY", "YTT"
 ]
+
+[tool.ty.src]
+root="./src"
+

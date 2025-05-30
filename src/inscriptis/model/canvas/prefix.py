@@ -16,10 +16,10 @@ class Prefix:
 
     __slots__ = ("bullets", "consumed", "current_padding", "paddings")
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.current_padding = 0
-        self.paddings = []
-        self.bullets = []
+        self.paddings: list[int] = []
+        self.bullets: list[str] = []
         self.consumed = False
 
     def register_prefix(self, padding_inline: int, bullet: str) -> None:

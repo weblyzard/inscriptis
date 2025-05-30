@@ -126,7 +126,7 @@ def parse_command_line() -> argparse.Namespace:
     return args
 
 
-def get_html_content(url: str, timeout: int, encoding: str = "") -> str | None:
+def get_html_content(url: str, timeout: int, encoding: str = "") -> str:
     """
     Return the HTML content to convert.
 
@@ -147,7 +147,7 @@ def get_html_content(url: str, timeout: int, encoding: str = "") -> str | None:
     elif url.startswith("http://") or url.startswith("https://"):
         req = requests.get(url, timeout=timeout)
         return req.content.decode(encoding or req.encoding)
-    return None
+    return ""
 
 
 def cli() -> None:
