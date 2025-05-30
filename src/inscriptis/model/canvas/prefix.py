@@ -14,7 +14,7 @@ class Prefix:
         consumed: whether the current bullet has already been consumed.
     """
 
-    __slots__ = ("current_padding", "paddings", "bullets", "consumed")
+    __slots__ = ("bullets", "consumed", "current_padding", "paddings")
 
     def __init__(self):
         self.current_padding = 0

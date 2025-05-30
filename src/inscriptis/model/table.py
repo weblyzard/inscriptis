@@ -19,16 +19,16 @@ class TableCell(Canvas):
     """
 
     __slots__ = (
+        "_width",
+        "align",
+        "annotation_counter",
         "annotations",
         "block_annotations",
         "blocks",
         "current_block",
-        "margin",
-        "annotation_counter",
-        "align",
-        "valign",
-        "_width",
         "line_width",
+        "margin",
+        "valign",
         "vertical_padding",
     )
 
@@ -152,7 +152,7 @@ class TableRow:
         cell_separator: string used for separating columns from each other.
     """
 
-    __slots__ = ("columns", "cell_separator")
+    __slots__ = ("cell_separator", "columns")
 
     def __init__(self, cell_separator: str):
         self.columns: list[TableCell] = []
@@ -186,7 +186,7 @@ class Table:
         cell_separator: string used for separating cells from each other.
     """
 
-    __slots__ = ("rows", "left_margin_len", "cell_separator")
+    __slots__ = ("cell_separator", "left_margin_len", "rows")
 
     def __init__(self, left_margin_len: int, cell_separator: str):
         self.rows = []

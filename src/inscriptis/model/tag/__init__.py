@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from typing import TYPE_CHECKING, NamedTuple
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from inscriptis.model.html_document_state import HtmlDocumentState
 
 

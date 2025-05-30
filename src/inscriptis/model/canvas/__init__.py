@@ -37,10 +37,10 @@ class Canvas:
     """
 
     __slots__ = (
+        "_open_annotations",
         "annotations",
         "blocks",
         "current_block",
-        "_open_annotations",
         "margin",
     )
 

@@ -32,21 +32,21 @@ class HtmlElement:
     """
 
     __slots__ = (
-        "canvas",
-        "tag",
-        "prefix",
-        "suffix",
-        "display",
-        "margin_before",
-        "margin_after",
-        "padding_inline",
-        "list_bullet",
-        "whitespace",
-        "limit_whitespace_affixes",
         "align",
-        "valign",
-        "previous_margin_after",
         "annotation",
+        "canvas",
+        "display",
+        "limit_whitespace_affixes",
+        "list_bullet",
+        "margin_after",
+        "margin_before",
+        "padding_inline",
+        "prefix",
+        "previous_margin_after",
+        "suffix",
+        "tag",
+        "valign",
+        "whitespace",
     )
 
     def __init__(

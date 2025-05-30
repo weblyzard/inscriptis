@@ -25,7 +25,7 @@ class Block:
         prefix: prefix used within the current block.
     """
 
-    __slots__ = ("idx", "prefix", "_content", "collapsable_whitespace")
+    __slots__ = ("_content", "collapsable_whitespace", "idx", "prefix")
 
     def __init__(self, idx: int, prefix: Prefix):
         self.idx = idx

@@ -66,8 +66,8 @@ class CssParse:
         unit = _m.group(2)
 
         if unit not in ("em", "qem", "rem"):
-            return int(round(value / 8))
-        return int(round(value))
+            return round(value / 8)
+        return round(value)
 
     # ------------------------------------------------------------------------
     # css styles

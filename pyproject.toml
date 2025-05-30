@@ -68,7 +68,7 @@ sources = ["src"]
 [tool.ruff]
 line-length = 120
 target-version = "py311"  # adjust as needed
-extend-exclude = ["*.html", "*.json", "*.txt", "/a", "/b"]
+extend-exclude = ["*.html", "*.json", "*.txt", "/a", "/b", "docs/conf.py"]
 src = ["src", "tests", "benchmarking", "examples"]
 
 [tool.ruff.format]
@@ -82,10 +82,22 @@ select = [
     "F",
     # pyupgrade
     "UP",
+    # flake8-builtins
+    "A",
     # flake8-bugbear
     "B",
+    # flake8-comprehensions
+    "C4",
+    # flake8-errmsg
+    "EM",
+    # flake8-quotes
+    "Q",
+    # flake8-pyi
+    "PYI",
     # flake8-simplify
     "SIM",
     # isort
     "I",
+    "RSE", "RET", "SLOT", "TID", "TC", "C90", "N", "PERF", "E", "W", 
+    "UP", "FURB", "RUF"
 ]

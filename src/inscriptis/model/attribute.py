@@ -59,7 +59,7 @@ class Attribute:
                 self.attribute_mapping[attr_name](attr_value, html_element)
         return html_element
 
-    def merge_attribute_map(self, annotations: list[ApplyAnnotation] = None) -> None:
+    def merge_attribute_map(self, annotations: list[ApplyAnnotation]) -> None:
         attributes = copy(self.attribute_mapping)
         for a in annotations:
             attributes[a.attr] = a.apply if a.attr not in attributes else merge_function(attributes[a.attr], a.apply)

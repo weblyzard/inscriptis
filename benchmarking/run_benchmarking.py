@@ -96,8 +96,7 @@ class BeautifulSoupHtmlConverter(AbstractHtmlConverter):
         text = soup.get_text()
         lines = (line.strip() for line in text.splitlines())
         chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-        result = "\n".join(chunk for chunk in chunks if chunk)
-        return result
+        return "\n".join(chunk for chunk in chunks if chunk)
 
 
 class JustextConverter(AbstractHtmlConverter):
@@ -130,7 +129,6 @@ class Html2TextConverter(AbstractHtmlConverter):
         converter = html2text.HTML2Text()
         converter.ignore_links = True
         result = converter.handle(str(html))
-
         return "".join(result)
 
 
@@ -156,9 +154,7 @@ class LynxConverter(AbstractHtmlConverter):
             print("lynx killed")
 
         lynx_args = "-stdin -width=20000 -force_html -nocolor -dump -nolist -nobold -display_charset=utf8"
-        cmd = [
-            LYNX_BIN,
-        ] + lynx_args.split(" ")
+        cmd = [LYNX_BIN, *lynx_args.split(" ")]
         lynx = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         lynx.stdin.write(html.encode("utf8"))
         lynx.stdin.close()
@@ -191,9 +187,7 @@ class LinksConverter(AbstractHtmlConverter):
             print("links killed")
 
         links_args = "-dump "
-        cmd = [
-            LINKS_BIN,
-        ] + links_args.split(" ")
+        cmd = [LINKS_BIN, *links_args.split(" ")]
         links = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         links.stdin.write(html.encode("utf8"))
         links.stdin.close()
@@ -375,7 +369,7 @@ def benchmark(args, source_list):
 
         times = {}
         for converter in CONVERTER:
-            if converter.available and not args.converter or converter.name in args.converter:
+            if (converter.available and not args.converter) or converter.name in args.converter:
                 time_required, text = converter.benchmark(html)
                 times[converter.name] = time_required
                 save_to_file(converter.name, source_name, text, args.benchmarking_results)

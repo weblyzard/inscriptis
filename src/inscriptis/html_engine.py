@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 """The HTML Engine is responsible for converting HTML to text."""
 
-from collections.abc import Callable
+from __future__ import annotations
 
-import lxml.html
+from typing import TYPE_CHECKING
+
 from lxml.etree import Comment
 
-from inscriptis.annotation import Annotation
-from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.html_document_state import HtmlDocumentState
 from inscriptis.model.tag.a_tag import a_end_handler, a_start_handler
@@ -27,6 +26,14 @@ from inscriptis.model.tag.table_tag import (
     td_start_handler,
     tr_start_handler,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    import lxml.html
+
+    from inscriptis.annotation import Annotation
+    from inscriptis.model.canvas import Canvas
 
 
 class Inscriptis:

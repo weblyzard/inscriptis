@@ -35,14 +35,14 @@ class ApplyAnnotation:
                      match_value.
     """
 
-    __slots__ = ("annotations", "match_tag", "match_value", "attr", "matcher")
+    __slots__ = ("annotations", "attr", "match_tag", "match_value", "matcher")
 
     def __init__(
         self,
         annotations: tuple,
         attr: str,
-        match_tag: str = None,
-        match_value: str = None,
+        match_tag: str = "",
+        match_value: str = "",
     ):
         self.annotations = tuple(annotations)
         self.attr = attr

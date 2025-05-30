@@ -126,7 +126,7 @@ def parse_command_line() -> argparse.Namespace:
     return args
 
 
-def get_html_content(url: str, timeout: int, encoding: str = None) -> str | None:
+def get_html_content(url: str, timeout: int, encoding: str = "") -> str | None:
     """
     Return the HTML content to convert.
 
@@ -141,12 +141,13 @@ def get_html_content(url: str, timeout: int, encoding: str = None) -> str | None
     """
     if not url:
         return sys.stdin.read()
-    elif (p := Path(url)).is_file():
+    if (p := Path(url)).is_file():
         with p.open(encoding=encoding or DEFAULT_ENCODING, errors="ignore") as f:
             return f.read()
     elif url.startswith("http://") or url.startswith("https://"):
         req = requests.get(url, timeout=timeout)
         return req.content.decode(encoding or req.encoding)
+    return None
 
 
 def cli() -> None:
