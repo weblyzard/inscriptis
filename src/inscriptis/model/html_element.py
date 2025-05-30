@@ -60,7 +60,7 @@ class HtmlElement:
         padding_inline: int = 0,
         list_bullet: str = "",
         whitespace: WhiteSpace = WhiteSpace.normal,
-        limit_whitespace_affixes: bool = False, 
+        limit_whitespace_affixes: bool = False,
         align: HorizontalAlignment = HorizontalAlignment.left,
         valign: VerticalAlignment = VerticalAlignment.middle,
         annotation: tuple[str] = (),
