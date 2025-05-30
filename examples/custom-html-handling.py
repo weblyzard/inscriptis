@@ -9,6 +9,7 @@ bold text with "**".
 Example:
     "Welcome to <b>Chur</b>" is rendered as "Welcome to **Chur**".
 """
+
 from typing import Dict
 
 from inscriptis import ParserConfig

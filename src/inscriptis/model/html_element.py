@@ -1,4 +1,5 @@
 """Data structures for handling HTML Elements."""
+
 from typing import Tuple
 
 from inscriptis.html_properties import (

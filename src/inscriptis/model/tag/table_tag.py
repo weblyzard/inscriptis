@@ -1,4 +1,5 @@
 """Handle the <table>, <tr> and <td> tags."""
+
 from typing import Dict
 
 from inscriptis.annotation import Annotation

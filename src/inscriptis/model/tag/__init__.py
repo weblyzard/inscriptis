@@ -1,4 +1,5 @@
 """HTML Tag handlers and classes for designing custom HTML tag handlers."""
+
 from __future__ import annotations
 
 from typing import Dict, Callable, NamedTuple

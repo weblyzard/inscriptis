@@ -1,4 +1,5 @@
 """Surface Form Annotation Processor."""
+
 from typing import Dict, Any
 
 from inscriptis.annotation.output import AnnotationProcessor

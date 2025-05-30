@@ -3,6 +3,7 @@
 """
 This test case verifies that annotation are correctly computed.
 """
+
 import os
 from json import load
 from glob import glob

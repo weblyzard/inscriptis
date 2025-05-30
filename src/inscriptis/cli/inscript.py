@@ -46,7 +46,7 @@ def parse_command_line() -> argparse.Namespace:
         "input",
         nargs="?",
         default=None,
-        help="Html input either from a file or a URL " "(default:stdin).",
+        help="Html input either from a file or a URL (default:stdin).",
     )
     parser.add_argument(
         "-o", "--output", type=str, help="Output file (default:stdout)."
@@ -98,23 +98,22 @@ def parse_command_line() -> argparse.Namespace:
         "--postprocessor",
         type=get_postprocessor,
         default=lambda x: x,
-        help="Optional component for postprocessing the "
-        "result (html, surface, xml). ",
+        help="Optional component for postprocessing the result (html, surface, xml). ",
     )
     parser.add_argument(
         "--indentation",
         default="extended",
-        help="How to handle indentation (extended or strict;" " default: extended).",
+        help="How to handle indentation (extended or strict; default: extended).",
     )
     parser.add_argument(
         "--table-cell-separator",
         default="  ",
-        help="Separator to use between table cells (default: " "three spaces).",
+        help="Separator to use between table cells (default: three spaces).",
     )
     parser.add_argument(
         "--timeout",
         default=DEFAULT_TIMEOUT,
-        help="Request timeout in seconds (default: " f"{DEFAULT_TIMEOUT}).",
+        help=f"Request timeout in seconds (default: {DEFAULT_TIMEOUT}).",
     )
     parser.add_argument(
         "-v",

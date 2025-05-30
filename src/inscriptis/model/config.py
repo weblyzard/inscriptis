@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Provide configuration objects for the Inscriptis HTML to text converter."""
+
 from __future__ import annotations
 
 from copy import deepcopy

@@ -3,6 +3,7 @@
 """
 Test the annotation XmlExtractor.
 """
+
 from lxml.html import fromstring
 
 from inscriptis import Inscriptis, ParserConfig

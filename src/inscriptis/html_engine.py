@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding:utf-8
 """The HTML Engine is responsible for converting HTML to text."""
+
 from typing import List, Dict, Callable
 
 import lxml.html

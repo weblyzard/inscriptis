@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 """HTML attribute handling."""
+
 from copy import copy
 from typing import Dict, List
 

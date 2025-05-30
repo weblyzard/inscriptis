@@ -4,6 +4,7 @@
 Test HTML snippets in the project's HTML directory. The corresponding .txt file
 contains the reference conversion.
 """
+
 from os.path import dirname, join
 from glob import glob
 
@@ -37,7 +38,7 @@ def test_html_snippets(filter_str=""):
                 )
             )
             print("HTML file:", testcase_txt.replace(".txt", ".html"))
-            print("Visualize differences with `vimdiff reference.txt " "converted.txt`")
+            print("Visualize differences with `vimdiff reference.txt converted.txt`")
             open("reference.txt", "w").write(reference_txt)
             open("converted.txt", "w").write(converted_txt)
 
