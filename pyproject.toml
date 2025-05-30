@@ -99,5 +99,5 @@ select = [
     # isort
     "I",
     "RSE", "RET", "SLOT", "TID", "TC", "C90", "N", "PERF", "E", "W", 
-    "UP", "FURB", "RUF"
+    "UP", "FURB", "RUF", "TRY", "YTT"
 ]
