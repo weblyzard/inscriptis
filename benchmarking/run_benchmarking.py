@@ -4,6 +4,7 @@
 Runs a benchmarking suite to compare speed
 and output of different implementations.
 """
+
 import argparse
 from datetime import datetime
 import operator
@@ -56,8 +57,7 @@ try:
     import justext
 except ImportError:
     print(
-        "justext is not available. Please install it in order to compare "
-        "with justext."
+        "justext is not available. Please install it in order to compare with justext."
     )
 
 
@@ -161,9 +161,7 @@ class LynxConverter(AbstractHtmlConverter):
             )
             self.available = True
         except OSError:
-            print(
-                "lynx can not be called. Please check in order to compare " "with lynx."
-            )
+            print("lynx can not be called. Please check in order to compare with lynx.")
             self.available = False
 
     def get_text(self, html):
@@ -204,8 +202,7 @@ class LinksConverter(AbstractHtmlConverter):
             self.available = True
         except OSError:
             print(
-                "links can not be called. Please check in order to compare "
-                "with links."
+                "links can not be called. Please check in order to compare with links."
             )
             self.available = False
 
@@ -311,7 +308,7 @@ def parse_args():
     """
     Parse optional benchmarking arguments.
     """
-    parser = argparse.ArgumentParser(description="Inscriptis benchmarking " "suite")
+    parser = argparse.ArgumentParser(description="Inscriptis benchmarking suite")
     parser.add_argument(
         "converter",
         type=str,
@@ -330,13 +327,13 @@ def parse_args():
         "-r",
         "--benchmarking-results",
         default=DEFAULT_RESULT_DIR,
-        help="Optional directory for saving the benchmarking " "results.",
+        help="Optional directory for saving the benchmarking results.",
     )
     parser.add_argument(
         "-c",
         "--cache",
         default=DEFAULT_CACHE_DIR,
-        help="Optional cache directory for the retrieved Web " "pages.",
+        help="Optional cache directory for the retrieved Web pages.",
     )
     return parser.parse_args()
 
