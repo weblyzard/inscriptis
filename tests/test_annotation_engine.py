@@ -1,10 +1,11 @@
 # test the annotation handling
 
 
+from lxml.html import fromstring
+
 from inscriptis.annotation import Annotation
 from inscriptis.html_engine import Inscriptis
 from inscriptis.model.config import ParserConfig
-from lxml.html import fromstring
 
 
 def test_get_annotation():

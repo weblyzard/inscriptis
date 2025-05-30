@@ -1,7 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
-from inscriptis.service.web import app
+
 from inscriptis.metadata import __version__
+from inscriptis.service.web import app
 
 
 @pytest.fixture

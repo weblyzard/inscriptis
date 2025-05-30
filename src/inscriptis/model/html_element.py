@@ -1,7 +1,5 @@
 """Data structures for handling HTML Elements."""
 
-from typing import Tuple
-
 from inscriptis.html_properties import (
     Display,
     HorizontalAlignment,
@@ -65,7 +63,7 @@ class HtmlElement:
         limit_whitespace_affixes: bool = False,
         align: HorizontalAlignment = HorizontalAlignment.left,
         valign: VerticalAlignment = VerticalAlignment.middle,
-        annotation: Tuple[str] = (),
+        annotation: tuple[str] = (),
     ):
         self.canvas = None
         self.tag = tag

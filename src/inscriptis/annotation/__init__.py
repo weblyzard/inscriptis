@@ -1,6 +1,5 @@
 """The model used for saving annotations."""
 
-from typing import List
 from typing import NamedTuple
 
 from inscriptis.html_properties import HorizontalAlignment
@@ -30,12 +29,12 @@ class Annotation(NamedTuple):
 
 
 def horizontal_shift(
-    annotations: List[Annotation],
+    annotations: list[Annotation],
     content_width: int,
     line_width: int,
     align: HorizontalAlignment,
     shift: int = 0,
-) -> List[Annotation]:
+) -> list[Annotation]:
     r"""Shift annotations based on the given line's formatting.
 
     Adjusts the start and end indices of annotations based on the line's
@@ -60,6 +59,4 @@ def horizontal_shift(
     else:
         h_align = shift + (line_width - content_width) // 2
 
-    return [
-        Annotation(a.start + h_align, a.end + h_align, a.metadata) for a in annotations
-    ]
+    return [Annotation(a.start + h_align, a.end + h_align, a.metadata) for a in annotations]

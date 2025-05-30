@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
-# coding:utf-8
 """Inscriptis command line client."""
 
 import argparse
 import sys
-from json import load, dumps
+from json import dumps, load
 from pathlib import Path
-from typing import Optional
 
 import requests
 
-from inscriptis import get_text, get_annotated_text
+from inscriptis import get_annotated_text, get_text
 from inscriptis.css_profiles import CSS_PROFILES
-from inscriptis.metadata import __version__, __copyright__, __license__
+from inscriptis.metadata import __copyright__, __license__, __version__
 from inscriptis.model.config import ParserConfig
 
 DEFAULT_ENCODING = "utf8"
@@ -39,24 +37,19 @@ def parse_command_line() -> argparse.Namespace:
     Returns:
         The parsed command line arguments.
     """
-    parser = argparse.ArgumentParser(
-        description="Convert the given HTML document to text."
-    )
+    parser = argparse.ArgumentParser(description="Convert the given HTML document to text.")
     parser.add_argument(
         "input",
         nargs="?",
         default=None,
         help="Html input either from a file or a URL (default:stdin).",
     )
-    parser.add_argument(
-        "-o", "--output", type=str, help="Output file (default:stdout)."
-    )
+    parser.add_argument("-o", "--output", type=str, help="Output file (default:stdout).")
     parser.add_argument(
         "-e",
         "--encoding",
         type=str,
-        help="Input encoding to use (default:utf-8 for "
-        "files; detected server encoding for Web URLs).",
+        help="Input encoding to use (default:utf-8 for files; detected server encoding for Web URLs).",
     )
     parser.add_argument(
         "-i",
@@ -90,8 +83,7 @@ def parse_command_line() -> argparse.Namespace:
         "-r",
         "--annotation-rules",
         default=None,
-        help="Path to an optional JSON file containing rules "
-        "for annotating the retrieved text.",
+        help="Path to an optional JSON file containing rules for annotating the retrieved text.",
     )
     parser.add_argument(
         "-p",
@@ -126,21 +118,15 @@ def parse_command_line() -> argparse.Namespace:
     # parse command line arguments
     args = parser.parse_args()
     if args.version:
-        print(
-            "Inscript HTML to text conversion (based on the inscriptis "
-            "library version {0})".format(__version__)
-        )
+        print(f"Inscript HTML to text conversion (based on the inscriptis library version {__version__})")
         print("Copyright (C)", __copyright__)
         print("\nInscript comes with ABSOLUTELY NO WARRANTY.")
-        print(
-            "This is free software and you are welcome to redistribute it "
-            "under the terms of the {0}.".format(__license__)
-        )
+        print(f"This is free software and you are welcome to redistribute it under the terms of the {__license__}.")
         sys.exit(0)
     return args
 
 
-def get_html_content(url: str, timeout: int, encoding: str = None) -> Optional[str]:
+def get_html_content(url: str, timeout: int, encoding: str = None) -> str | None:
     """
     Return the HTML content to convert.
 
@@ -167,28 +153,20 @@ def cli() -> None:
     """Run the inscript command line client."""
     args = parse_command_line()
     if not (html_content := get_html_content(args.input, args.timeout, args.encoding)):
-        print("ERROR: Cannot open input file '{0}'.".format(args.input))
+        print(f"ERROR: Cannot open input file '{args.input}'.")
         sys.exit(-1)
 
     if args.annotation_rules:
         try:
             with Path(args.annotation_rules).open() as f:
                 annotation_rules = load(f)
-        except IOError:
-            print(
-                "ERROR: Cannot open annotation rule file '{0}'.".format(
-                    args.annotation_rules
-                )
-            )
+        except OSError:
+            print(f"ERROR: Cannot open annotation rule file '{args.annotation_rules}'.")
             sys.exit(-1)
     else:
         annotation_rules = None
 
-    css_profile = (
-        CSS_PROFILES["relaxed"]
-        if args.indentation == "extended"
-        else CSS_PROFILES["strict"]
-    )
+    css_profile = CSS_PROFILES["relaxed"] if args.indentation == "extended" else CSS_PROFILES["strict"]
     config = ParserConfig(
         css=css_profile,
         display_images=args.display_image_captions,

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding:utf-8
 """Inscriptis Web Service."""
 
 from fastapi import FastAPI, Request
@@ -29,10 +28,7 @@ def index():
 async def get_text_call(request: Request):
     """Return the text representation of the given HTML content."""
     content_type = request.headers.get("Content-type")
-    if "; charset=" in content_type:
-        encoding = content_type.split("; charset=")[1]
-    else:
-        encoding = "UTF-8"
+    encoding = content_type.split("; charset=")[1] if "; charset=" in content_type else "UTF-8"
     html_content = await request.body()
     return get_text(html_content.decode(encoding, errors="ignore"), CONFIG)
 

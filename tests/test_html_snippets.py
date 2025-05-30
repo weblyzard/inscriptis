@@ -5,8 +5,8 @@ Test HTML snippets in the project's HTML directory. The corresponding .txt file
 contains the reference conversion.
 """
 
-from os.path import dirname, join
 from glob import glob
+from os.path import dirname, join
 
 from inscriptis import get_text
 from inscriptis.css_profiles import CSS_PROFILES
@@ -25,22 +25,18 @@ def test_html_snippets(filter_str=""):
 
         with open(testcase_txt.replace(".txt", ".html")) as f:
             print(f.name)
-            html = "<html><body>{}</body></html>".format(f.read())
+            html = f"<html><body>{f.read()}</body></html>"
 
-        converted_txt = get_text(
-            html, ParserConfig(css=CSS_PROFILES["strict"])
-        ).rstrip()
+        converted_txt = get_text(html, ParserConfig(css=CSS_PROFILES["strict"])).rstrip()
 
         if converted_txt != reference_txt:
-            print(
-                "File:{}\nHTML:\n{}\n\nReference:\n{}\n\nConverted:\n{}".format(
-                    testcase_txt, html, reference_txt, converted_txt
-                )
-            )
+            print(f"File:{testcase_txt}\nHTML:\n{html}\n\nReference:\n{reference_txt}\n\nConverted:\n{converted_txt}")
             print("HTML file:", testcase_txt.replace(".txt", ".html"))
             print("Visualize differences with `vimdiff reference.txt converted.txt`")
-            open("reference.txt", "w").write(reference_txt)
-            open("converted.txt", "w").write(converted_txt)
+            with open("reference.txt", "w") as f:
+                f.write(reference_txt)
+            with open("converted.txt", "w") as f:
+                f.write(converted_txt)
 
         assert converted_txt == reference_txt
 

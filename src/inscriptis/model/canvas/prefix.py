@@ -41,9 +41,7 @@ class Prefix:
 
     def pop_next_bullet(self) -> str:
         """Pop the next bullet to use, if any bullet is available."""
-        next_bullet_idx = (
-            next((-idx for idx, val in enumerate(reversed(self.bullets)) if val), 1) - 1
-        )
+        next_bullet_idx = next((-idx for idx, val in enumerate(reversed(self.bullets)) if val), 1) - 1
 
         if not next_bullet_idx:
             return ""

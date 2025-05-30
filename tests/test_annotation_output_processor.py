@@ -81,6 +81,5 @@ def test_trailing_tag_annotation():
     result = processor({"text": "Ehre sei Gott!", "label": [[9, 14, "emphasis"]]})
 
     assert result == (
-        '<?xml version="1.0" encoding="UTF-8" ?>\n<content>\n'
-        "Ehre sei <emphasis>Gott!</emphasis>\n</content>"
+        '<?xml version="1.0" encoding="UTF-8" ?>\n<content>\nEhre sei <emphasis>Gott!</emphasis>\n</content>'
     )

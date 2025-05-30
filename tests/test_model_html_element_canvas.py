@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 """
 Tests the rendering of a single table line.
 """
 
+from inscriptis.html_properties import Display
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.html_element import HtmlElement
-from inscriptis.html_properties import Display
 
 
 def _get_text(html_element):

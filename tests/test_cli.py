@@ -3,9 +3,9 @@ Tests the Inscriptis CLI client.
 """
 
 from io import StringIO
-from pathlib import Path
 from json import loads
-from unittest.mock import Mock, mock_open, patch, call
+from pathlib import Path
+from unittest.mock import Mock, call, mock_open, patch
 
 import pytest
 
@@ -74,14 +74,10 @@ def test_cli_read_from_url(monkeypatch, capsys):
 def test_cli_annotations(monkeypatch, capsys):
     """Test annotation handling in the command line client."""
     # Prepare input data for the test
-    annotation_rule_path = (
-        Path(__file__).parent / "data" / "annotation-profile-unittest.json"
-    )
+    annotation_rule_path = Path(__file__).parent / "data" / "annotation-profile-unittest.json"
 
     # Use monkeypatch to replace the 'input' function
-    monkeypatch.setattr(
-        "sys.argv", ["inscript", "-p", "surface", "-r", str(annotation_rule_path)]
-    )
+    monkeypatch.setattr("sys.argv", ["inscript", "-p", "surface", "-r", str(annotation_rule_path)])
     monkeypatch.setattr("sys.stdin", StringIO(INPUT_DATA))
     cli()
 

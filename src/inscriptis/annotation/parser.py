@@ -19,9 +19,8 @@ Example::
 
 from collections import defaultdict
 from copy import copy
-from typing import Dict, Tuple, List
 
-from inscriptis.model.html_element import HtmlElement, DEFAULT_HTML_ELEMENT
+from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT, HtmlElement
 
 
 class ApplyAnnotation:
@@ -87,7 +86,7 @@ class AnnotationModel:
         self.css = css_profile
 
     @staticmethod
-    def _parse(model: dict) -> Tuple[Dict, List]:
+    def _parse(model: dict) -> tuple[dict, list]:
         """Compute the AnnotationModel from a model dictionary.
 
         Returns:

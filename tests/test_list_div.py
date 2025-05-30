@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 """ensures that two successive <a>text</a> contain
 a space between each other, if there is a linebreak

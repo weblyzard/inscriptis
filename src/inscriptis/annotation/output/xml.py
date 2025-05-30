@@ -1,7 +1,7 @@
 """XML Annotation processor."""
 
 from collections import defaultdict
-from typing import Dict, Any
+from typing import Any
 
 from inscriptis.annotation.output import AnnotationProcessor
 
@@ -11,7 +11,7 @@ class XmlExtractor(AnnotationProcessor):
 
     verbatim = True
 
-    def __call__(self, annotated_text: Dict[str, Any], root_element="content"):
+    def __call__(self, annotated_text: dict[str, Any], root_element="content"):
         tag_dict = defaultdict(list)
         for start, end, tag in reversed(annotated_text["label"]):
             tag_dict[start].append(f"<{tag}>")

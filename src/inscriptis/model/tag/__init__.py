@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Dict, Callable, NamedTuple
-from typing import TYPE_CHECKING
+from collections.abc import Callable
+from typing import TYPE_CHECKING, NamedTuple
 
 if TYPE_CHECKING:
     from inscriptis.model.html_document_state import HtmlDocumentState
@@ -17,5 +17,5 @@ class CustomHtmlTagHandlerMapping(NamedTuple):
         end_tag_mapping: a dictionary of custom end tag handlers.
     """
 
-    start_tag_mapping: Dict[str, Callable[[HtmlDocumentState, Dict], None]]
-    end_tag_mapping: Dict[str, Callable[[HtmlDocumentState], None]]
+    start_tag_mapping: dict[str, Callable[[HtmlDocumentState, dict], None]]
+    end_tag_mapping: dict[str, Callable[[HtmlDocumentState], None]]

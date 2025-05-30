@@ -66,7 +66,7 @@ sources = ["src"]
 
 # code formatting with ruff
 [tool.ruff]
-line-length = 88
+line-length = 120
 target-version = "py311"  # adjust as needed
 extend-exclude = ["*.html", "*.json", "*.txt", "/a", "/b"]
 src = ["src", "tests", "benchmarking", "examples"]
@@ -74,3 +74,18 @@ src = ["src", "tests", "benchmarking", "examples"]
 [tool.ruff.format]
 quote-style = "double"
 
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]

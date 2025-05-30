@@ -1,6 +1,6 @@
 # test borderline cases
 
-from inscriptis import get_text, get_annotated_text
+from inscriptis import get_annotated_text, get_text
 
 
 def test_text_from_empty_content():

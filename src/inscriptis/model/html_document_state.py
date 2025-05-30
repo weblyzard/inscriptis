@@ -44,9 +44,7 @@ class HtmlDocumentState:
         cur = self.tags[-1].get_refined_html_element(
             self.apply_attributes(
                 attrs,
-                html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT)
-                .__copy__()
-                .set_tag(tag),
+                html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT).__copy__().set_tag(tag),
             )
         )
         self.tags.append(cur)

@@ -66,11 +66,7 @@ class Block:
                 self.collapsable_whitespace = True
 
         if normalized_text:
-            text = (
-                "".join((self.prefix.first, *normalized_text))
-                if not self._content
-                else "".join(normalized_text)
-            )
+            text = "".join((self.prefix.first, *normalized_text)) if not self._content else "".join(normalized_text)
             text = unescape(text)
             self._content += text
             self.idx += len(text)
@@ -100,7 +96,7 @@ class Block:
             self.idx -= 1
         return self._content
 
-    def new_block(self) -> "Block":
+    def new_block(self) -> Block:
         """Return a new Block based on the current one."""
         self.prefix.consumed = False
         return Block(idx=self.idx + 1, prefix=self.prefix)

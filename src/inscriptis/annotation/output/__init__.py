@@ -26,13 +26,13 @@ Currently, Inscriptis supports the following built-in AnnotationProcessors:
 
 """
 
-from typing import Dict, Any
+from typing import Any
 
 
 class AnnotationProcessor:
     """An AnnotationProcessor is called for formatting annotations."""
 
-    def __call__(self, annotated_text: Dict[str, str]) -> Any:
+    def __call__(self, annotated_text: dict[str, str]) -> Any:
         """Format the given text and annotations.
 
         Args:

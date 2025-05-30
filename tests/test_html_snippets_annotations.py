@@ -5,9 +5,8 @@ This test case verifies that annotation are correctly computed.
 """
 
 import os
-from json import load
 from glob import glob
-from typing import List
+from json import load
 
 from inscriptis import get_annotated_text
 from inscriptis.css_profiles import CSS_PROFILES
@@ -16,10 +15,8 @@ from inscriptis.model.config import ParserConfig
 TESTCASE_PATTERN = os.path.join(os.path.dirname(__file__), "html/*.json")
 
 
-def assert_equal_ignoring_whitespace(
-    reference: List[str], converted: List[str]
-) -> bool:
-    for (ref_tag, ref_str), (conv_tag, conv_str) in zip(reference, converted):
+def assert_equal_ignoring_whitespace(reference: list[str], converted: list[str]) -> bool:
+    for (ref_tag, ref_str), (conv_tag, conv_str) in zip(reference, converted, strict=False):
         assert ref_tag == conv_tag
         assert "".join(ref_str.split()) == "".join(conv_str.split())
 
@@ -34,7 +31,7 @@ def test_html_annotations(filter_str=""):
 
         with open(annotation_file.replace(".json", ".html")) as f:
             print(f.name)
-            html = "<html><body>{}</body></html>".format(f.read())
+            html = f"<html><body>{f.read()}</body></html>"
 
         for indentation_strategy in ("strict", "relaxed"):
             result = get_annotated_text(
@@ -50,11 +47,7 @@ def test_html_annotations(filter_str=""):
             if reference["result"] != converted:
                 print("Reference:")
                 print(reference["result"])
-                print(
-                    "\nConverted (indentation strategy: {})".format(
-                        indentation_strategy
-                    )
-                )
+                print(f"\nConverted (indentation strategy: {indentation_strategy})")
                 print(converted)
 
             if indentation_strategy == "strict":

@@ -22,9 +22,7 @@ def test_custom_html_handler():
     )
 
     html_tree = fromstring("Welcome to <b>Chur</b>")
-    inscriptis = Inscriptis(
-        html_tree, ParserConfig(custom_html_tag_handler_mapping=custom_mapping)
-    )
+    inscriptis = Inscriptis(html_tree, ParserConfig(custom_html_tag_handler_mapping=custom_mapping))
 
     # custom HTML Handler
     assert inscriptis.get_text().strip() == "Welcome to **Chur**"

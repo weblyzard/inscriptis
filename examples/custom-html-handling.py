@@ -10,16 +10,15 @@ Example:
     "Welcome to <b>Chur</b>" is rendered as "Welcome to **Chur**".
 """
 
-from typing import Dict
+from lxml.html import fromstring
 
 from inscriptis import ParserConfig
 from inscriptis.html_engine import Inscriptis
 from inscriptis.model.html_document_state import HtmlDocumentState
 from inscriptis.model.tag import CustomHtmlTagHandlerMapping
-from lxml.html import fromstring
 
 
-def my_handle_start_b(state: HtmlDocumentState, _: Dict) -> None:
+def my_handle_start_b(state: HtmlDocumentState, _: dict) -> None:
     """Handle the opening <b> tag."""
     state.tags[-1].write("**")
 
@@ -38,7 +37,5 @@ MY_MAPPING = CustomHtmlTagHandlerMapping(
 HTML = "Welcome to <b>Chur</b>"
 
 html_tree = fromstring(HTML)
-inscriptis = Inscriptis(
-    html_tree, ParserConfig(custom_html_tag_handler_mapping=MY_MAPPING)
-)
+inscriptis = Inscriptis(html_tree, ParserConfig(custom_html_tag_handler_mapping=MY_MAPPING))
 print(inscriptis.get_text())

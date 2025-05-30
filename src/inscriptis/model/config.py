@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Dict, List
 
 from inscriptis.annotation.parser import AnnotationModel
 from inscriptis.css_profiles import CSS_PROFILES
@@ -20,12 +19,12 @@ class ParserConfig:
 
     def __init__(
         self,
-        css: Dict[str, HtmlElement] = None,
+        css: dict[str, HtmlElement] = None,
         display_images: bool = False,
         deduplicate_captions: bool = False,
         display_links: bool = False,
         display_anchors: bool = False,
-        annotation_rules: Dict[str, List[str]] = None,
+        annotation_rules: dict[str, list[str]] = None,
         table_cell_separator: str = "  ",
         custom_html_tag_handler_mapping: CustomHtmlTagHandlerMapping = None,
     ):

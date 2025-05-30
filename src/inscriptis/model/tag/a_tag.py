@@ -1,11 +1,9 @@
 """Handle the <a> tag."""
 
-from typing import Dict
-
 from inscriptis.model.html_document_state import HtmlDocumentState
 
 
-def a_start_handler(state: HtmlDocumentState, attrs: Dict) -> None:
+def a_start_handler(state: HtmlDocumentState, attrs: dict) -> None:
     """Handle the <a> tag."""
     state.link_target = ""
     if state.config.display_links:

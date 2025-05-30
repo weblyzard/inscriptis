@@ -11,9 +11,9 @@ from re import compile as re_compile
 
 from inscriptis.html_properties import (
     Display,
-    WhiteSpace,
     HorizontalAlignment,
     VerticalAlignment,
+    WhiteSpace,
 )
 from inscriptis.model.html_element import HtmlElement
 
@@ -43,9 +43,7 @@ class CssParse:
             key, value = (s.strip() for s in style_directive.split(":", 1))
 
             try:
-                apply_style = getattr(
-                    CssParse, "attr_" + key.replace("-webkit-", "").replace("-", "_")
-                )
+                apply_style = getattr(CssParse, "attr_" + key.replace("-webkit-", "").replace("-", "_"))
                 apply_style(value, html_element)
             except AttributeError:
                 pass

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # inscriptis documentation build configuration file, created by
 # sphinx-quickstart on Sat Dec 14 06:42:31 2019.
@@ -23,8 +22,7 @@ import sys
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath("./../src"))
 
-from inscriptis.metadata import __copyright__, __author__, __version__
-
+from inscriptis.metadata import __author__, __copyright__, __version__
 
 # -- General configuration ------------------------------------------------
 

@@ -5,6 +5,7 @@ Tests different HTML to text conversion options.
 """
 
 from copy import copy
+
 from inscriptis import get_text
 from inscriptis.css_profiles import RELAXED_CSS_PROFILE
 from inscriptis.html_properties import Display, WhiteSpace
@@ -58,6 +59,4 @@ def <span>hallo</span>():
                 </html>
             """
     config = ParserConfig(css=RELAXED_CSS_PROFILE)
-    assert (
-        get_text(html, config).strip() == 'hallo echo\n\ndef hallo():\n   print("echo")'
-    )
+    assert get_text(html, config).strip() == 'hallo echo\n\ndef hallo():\n   print("echo")'

@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# coding:utf-8
 """The HTML Engine is responsible for converting HTML to text."""
 
-from typing import List, Dict, Callable
+from collections.abc import Callable
 
 import lxml.html
 from lxml.etree import Comment
@@ -11,22 +10,22 @@ from inscriptis.annotation import Annotation
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.config import ParserConfig
 from inscriptis.model.html_document_state import HtmlDocumentState
-from inscriptis.model.tag.a_tag import a_start_handler, a_end_handler
+from inscriptis.model.tag.a_tag import a_end_handler, a_start_handler
 from inscriptis.model.tag.br_tag import br_start_handler
 from inscriptis.model.tag.img_tag import img_start_handler
 from inscriptis.model.tag.list_tag import (
-    ul_start_handler,
-    ol_start_handler,
     li_start_handler,
-    ul_end_handler,
     ol_end_handler,
+    ol_start_handler,
+    ul_end_handler,
+    ul_start_handler,
 )
 from inscriptis.model.tag.table_tag import (
-    table_start_handler,
-    tr_start_handler,
-    td_start_handler,
     table_end_handler,
+    table_start_handler,
     td_end_handler,
+    td_start_handler,
+    tr_start_handler,
 )
 
 
@@ -52,16 +51,12 @@ class Inscriptis:
       text = parser.get_text()
     """
 
-    def __init__(
-        self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None
-    ) -> None:
+    def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None) -> None:
         # use the default configuration, if no config object is provided
         config = config or ParserConfig()
 
         # setup start and end tag call tables
-        self.start_tag_handler_dict: Dict[
-            str, Callable[[HtmlDocumentState, Dict], None]
-        ] = {
+        self.start_tag_handler_dict: dict[str, Callable[[HtmlDocumentState, dict], None]] = {
             "table": table_start_handler,
             "tr": tr_start_handler,
             "td": td_start_handler,
@@ -73,7 +68,7 @@ class Inscriptis:
             "a": a_start_handler if config.parse_a() else None,
             "img": img_start_handler if config.display_images else None,
         }
-        self.end_tag_handler_dict: Dict[str, Callable[[HtmlDocumentState], None]] = {
+        self.end_tag_handler_dict: dict[str, Callable[[HtmlDocumentState], None]] = {
             "table": table_end_handler,
             "ul": ul_end_handler,
             "ol": ol_end_handler,
@@ -83,12 +78,8 @@ class Inscriptis:
         }
 
         if config.custom_html_tag_handler_mapping:
-            self.start_tag_handler_dict.update(
-                config.custom_html_tag_handler_mapping.start_tag_mapping
-            )
-            self.end_tag_handler_dict.update(
-                config.custom_html_tag_handler_mapping.end_tag_mapping
-            )
+            self.start_tag_handler_dict.update(config.custom_html_tag_handler_mapping.start_tag_mapping)
+            self.end_tag_handler_dict.update(config.custom_html_tag_handler_mapping.end_tag_mapping)
 
         # parse the HTML tree
         self.canvas = self._parse_html_tree(HtmlDocumentState(config), html_tree)
@@ -130,6 +121,6 @@ class Inscriptis:
         """Return the text extracted from the HTML page."""
         return self.canvas.get_text()
 
-    def get_annotations(self) -> List[Annotation]:
+    def get_annotations(self) -> list[Annotation]:
         """Return the annotations extracted from the HTML page."""
         return self.canvas.annotations
