@@ -59,14 +59,18 @@ Annotations in the `label` field are returned as a list of triples with
 
 """
 
+from __future__ import annotations
+
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from lxml.etree import ParserError
 from lxml.html import HtmlElement, fromstring
 
-from inscriptis.model.config import ParserConfig
 from inscriptis.html_engine import Inscriptis
+
+if TYPE_CHECKING:
+    from inscriptis.model.config import ParserConfig
 
 RE_STRIP_XML_DECLARATION = re.compile(r"^<\?xml [^>]+?\?>")
 

@@ -2,7 +2,8 @@
 
 from lxml.html import fromstring
 
-from inscriptis import Inscriptis, ParserConfig
+from inscriptis import Inscriptis
+from inscriptis.model.config import ParserConfig
 from inscriptis.model.html_document_state import HtmlDocumentState
 from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 

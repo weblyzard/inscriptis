@@ -3,11 +3,15 @@
 The provided `HtmlDocumentState` class contains and exposes all fields required for
 representing the current state of the HTML to text conversion.
 """
+from __future__ import annotations
 
-from inscriptis import ParserConfig
+from typing import TYPE_CHECKING
+
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
 
+if TYPE_CHECKING:
+    from inscriptis import ParserConfig
 
 class HtmlDocumentState:
     """Represents the state of the parsed html document."""

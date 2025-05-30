@@ -6,8 +6,9 @@ Test the annotation XmlExtractor.
 
 from lxml.html import fromstring
 
-from inscriptis import Inscriptis, ParserConfig
+from inscriptis import Inscriptis
 from inscriptis.annotation.output.xml import XmlExtractor
+from inscriptis.model.config import ParserConfig
 
 
 def test_tag_error_issue_93():
