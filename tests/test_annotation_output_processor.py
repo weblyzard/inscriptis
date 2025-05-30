@@ -23,7 +23,7 @@ def test_abstract_class():
     processor = AnnotationProcessor()
 
     with pytest.raises(NotImplementedError):
-        result = processor(EXAMPLE_OUTPUT)
+        _ = processor(EXAMPLE_OUTPUT)
 
 
 def test_surface_annotator():

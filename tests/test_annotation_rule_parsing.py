@@ -9,7 +9,7 @@ alignment
 from copy import deepcopy
 
 from inscriptis.css_profiles import CSS_PROFILES
-from inscriptis.annotation.parser import AnnotationModel, ApplyAnnotation
+from inscriptis.annotation.parser import AnnotationModel
 from inscriptis.model.attribute import Attribute
 from inscriptis.model.html_element import HtmlElement
 

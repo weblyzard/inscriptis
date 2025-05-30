@@ -1,6 +1,5 @@
 # test the annotation handling
 
-import pytest
 
 from inscriptis.annotation import Annotation
 from inscriptis.html_engine import Inscriptis

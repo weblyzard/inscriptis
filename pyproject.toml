@@ -62,8 +62,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build]
 sources = ["src"]
 
-
-
 # code formatting with ruff
 [tool.ruff]
 line-length = 88
