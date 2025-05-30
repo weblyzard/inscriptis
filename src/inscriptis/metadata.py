@@ -10,5 +10,5 @@ __copyright__ = (
     f"{metadata.metadata(PACKAGE)['Name']} "
     + f"{metadata.metadata(PACKAGE)['Version']} © 2016-2025 {__author__}"
 )
-__license__ = metadata.metadata(PACKAGE)["License"]
+__license__ = metadata.metadata(PACKAGE)["License-Expression"]
 __version__ = metadata.metadata(PACKAGE)["Version"]
