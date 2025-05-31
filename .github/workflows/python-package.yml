@@ -21,6 +21,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install build environment
       run: |
+        apt-get install -y libxml2-dev libxslt1-dev python3-dev
         python -m pip install --upgrade pip
         python -m pip install tox setuptools pytest pytest-cov codecov
     - name: Build and test with tox.
