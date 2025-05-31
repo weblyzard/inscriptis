@@ -30,8 +30,8 @@ classifiers = [
     ]
 
 dependencies = [
-  "requests>=2.32.2,<3.0.0",
-  "lxml>=5.2.1,<6.0.0",
+  "requests>=2.32.3,<3.0.0",
+  "lxml>=5.4.0,<6.0.0",
 ]
 
 [project.urls]
@@ -58,6 +58,7 @@ dev = [
     "uvicorn>=0.34.2",
     "ty>=0.0.1a7",
     "pytest-cov>=6.1.1",
+    "safety>=3.5.1",
 ]
 
 [build-system]
