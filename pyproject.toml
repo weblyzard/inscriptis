@@ -31,7 +31,7 @@ classifiers = [
 
 dependencies = [
   "requests>=2.32.2,<3.0.0",
-  "lxml>=4.9.3,<5.0.0",
+  "lxml>=5.2.1,<6.0.0",
 ]
 
 [project.urls]
