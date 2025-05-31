@@ -25,4 +25,4 @@ jobs:
         python -m pip install tox setuptools pytest pytest-cov codecov
     - name: Build and test with tox.
       run: |
-        tox
+        tox -vv -e flake8
