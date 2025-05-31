@@ -57,6 +57,7 @@ dev = [
     "httpx>=0.28.1",
     "uvicorn>=0.34.2",
     "ty>=0.0.1a7",
+    "pytest-cov>=6.1.1",
 ]
 
 [build-system]
@@ -107,3 +108,6 @@ select = [
 [tool.ty.src]
 root="./src"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=inscriptis --cov-report=term-missing"
