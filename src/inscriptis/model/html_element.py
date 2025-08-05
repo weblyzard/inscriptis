@@ -1,4 +1,12 @@
-"""Data structures for handling HTML Elements."""
+"""
+The HtmlElement class controls how Inscriptis interprets HTML Elements.
+
+- The module :mod:`inscriptis.css_profiles` contain CSS profiles which assign
+  to each standard HTML tag the corresponding :class:`HtmlElement`.
+- As for standard GUI browsers, CSS definitions within the parsed HTML modify
+  the :class:`HtmlElement` and its interpretation.
+"""
+
 from typing import Tuple
 
 from inscriptis.html_properties import (
@@ -13,23 +21,23 @@ class HtmlElement:
     """The HtmlElement class stores properties and metadata of HTML elements.
 
     Attributes:
-    - canvas: the canvas to which the HtmlElement writes its content.
-    - tag: tag name of the given HtmlElement.
-    - prefix: specifies a prefix that to insert before the tag's content.
-    - suffix: a suffix to append after the tag's content.
-    - display: :class:`~inscriptis.html_properties.Display` strategy used for
-      the content.
-    - margin_before: vertical margin before the tag's content.
-    - margin_after: vertical margin after the tag's content.
-    - padding_inline: horizontal padding_inline before the tag's content.
-    - whitespace: the :class:`~inscriptis.html_properties.Whitespace` handling
-      strategy.
-    - limit_whitespace_affixes: limit printing of whitespace affixes to
-      elements with `normal` whitespace handling.
-    - align: the element's horizontal alignment.
-    - valign: the element's vertical alignment.
-    - previous_margin_after: the margin after of the previous HtmlElement.
-    - annotation: annotations associated with the HtmlElement.
+        canvas: the canvas to which the HtmlElement writes its content.
+        tag: tag name of the given HtmlElement.
+        prefix: specifies a prefix that to insert before the tag's content.
+        suffix: a suffix to append after the tag's content.
+        display: :class:`~inscriptis.html_properties.Display` strategy used for
+        the content.
+        margin_before: vertical margin before the tag's content.
+        margin_after: vertical margin after the tag's content.
+        padding_inline: horizontal padding_inline before the tag's content.
+        whitespace: the :class:`~inscriptis.html_properties.Whitespace` handling
+        strategy.
+        limit_whitespace_affixes: limit printing of whitespace affixes to
+        elements with `normal` whitespace handling.
+        align: the element's horizontal alignment.
+        valign: the element's vertical alignment.
+        previous_margin_after: the margin after of the previous HtmlElement.
+        annotation: annotations associated with the HtmlElement.
     """
 
     __slots__ = (

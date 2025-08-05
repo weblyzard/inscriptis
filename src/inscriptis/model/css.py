@@ -5,6 +5,7 @@
 - :class:`CssParse` parses CSS specifications and translates them into the
   corresponding HtmlElements used by Inscriptis for rendering HTML pages.
 """
+
 from contextlib import suppress
 from re import compile as re_compile
 

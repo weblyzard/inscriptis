@@ -16,7 +16,7 @@ Contents:
    Documentation <README>
    benchmarking
    contributing
-   inscriptis-module-documentation
+   api
 
 
 

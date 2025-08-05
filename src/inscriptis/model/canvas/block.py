@@ -1,4 +1,5 @@
 """Representation of a text block within the HTML canvas."""
+
 from __future__ import annotations
 
 from html import unescape

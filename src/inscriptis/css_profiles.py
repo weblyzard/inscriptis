@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # coding: utf-8
-"""Standard CSS profiles shipped with inscriptis.
+"""Standard CSS profiles shipped with Inscriptis. 
 
-- `strict`: this profile corresponds to the defaults used by Firefox
-- `relaxed`: this profile is more suited for text analytics, since it ensures
-             that whitespaces are inserted between span and div elements
-             preventing cases where two words stick together.
+   CSS profiles are used together with 
+   :class:`inscriptis.model.config.ParserConfig` to customize
+   the HTML to text conversion.
 """
 
 from inscriptis.html_properties import Display, WhiteSpace
 from inscriptis.model.html_element import HtmlElement
 
+#: A CSS profile that corresponds to the defaults used by the Firefox Browser
 STRICT_CSS_PROFILE = {
     "body": HtmlElement(display=Display.inline, whitespace=WhiteSpace.normal),
     "head": HtmlElement(display=Display.none),
@@ -54,6 +54,7 @@ STRICT_CSS_PROFILE = {
     "plaintext": HtmlElement(display=Display.block, whitespace=WhiteSpace.pre),
 }
 
+#: A relaxed CSS profile optimized for content extraction and text analytics.
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
 RELAXED_CSS_PROFILE["div"] = HtmlElement(display=Display.block, padding_inline=2)
 RELAXED_CSS_PROFILE["span"] = HtmlElement(

@@ -7,7 +7,7 @@ Inscriptis provides support for
  - annotations
 
 The following example provides the text representation of
-`<https://www.fhgr.ch>`_.
+`<https://www.fhgr.ch>`_ using the method :meth:`inscriptis.get_text`.
 
 .. code::
 
@@ -21,7 +21,7 @@ The following example provides the text representation of
 
    print(text)
 
-Use the method :meth:`~inscriptis.get_annotated_text` to obtain text and
+Use the method :meth:`inscriptis.get_annotated_text` to obtain text and
 annotations. The method requires annotation rules as described in annotations_.
 
 .. code::
@@ -116,7 +116,7 @@ def get_annotated_text(
     Notes:
         - the text is stored under the key 'text'.
         - annotations are provided under the key 'label' which contains a
-          list of :class:`Annotation`s.
+          list of Annotations.
 
     Examples:
         {"text": "EU rejects German call to boycott British lamb.", "

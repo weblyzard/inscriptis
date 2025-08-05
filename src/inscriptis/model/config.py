@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-"""Provide configuration objects for the Inscriptis HTML to text converter."""
+"""This modul provides the ParserConfig class which allows customizing
+   how Inscriptis converts HTML to text.
+"""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -15,7 +17,45 @@ DEFAULT_CSS_PROFILE_NAME = "relaxed"
 
 
 class ParserConfig:
-    """Encapsulate configuration options and CSS definitions."""
+    """The ParserConfig class encapsulate
+
+    - CSS definitions (from :mod:`inscriptis.css_profiles` or custom
+      definitions).
+    - configuration options for handling images, captions, links, etc.
+    - annotation rules, if Inscripitis is used for annotating text.
+    - custom html tag handlers.
+
+    Attributes:
+            css: An optional custom CSS definition.
+            display_images: Whether to include image tiles/alt texts.
+            deduplicate_captions: Whether to deduplicate captions such as image
+                titles (many newspaper include images and video previews with
+                identical titles).
+            display_links: Whether to display link targets
+                           (e.g. `[Python](https://www.python.org)`).
+            display_anchors: Whether to display anchors (e.g. `[here](#here)`).
+            annotation_rules: An optional dictionary of annotation rules which
+                              specify tags and attributes to annotation.
+            table_cell_separator: Separator to use between table cells.
+            custom_html_tag_handler_mapping: An optional CustomHtmlTagHandler.
+
+
+    The following example demonstrates how ParserConfig is used to
+
+    - enable the strict CSS profile and
+    - prevent links from being shown.
+
+    .. code-block:: Python
+
+       from inscriptis import get_text
+       from inscriptis.css_profiles import CSS_PROFILES
+       from inscriptis.model.config import ParserConfig
+
+       css_profile = CSS_PROFILES['strict'].copy()
+       config = ParserConfig(css=css_profile, display_links=False)
+       text = get_text('fi<span>r</span>st <a href="/first">link</a>', config)
+       print(text)
+    """
 
     def __init__(
         self,
@@ -65,7 +105,7 @@ class ParserConfig:
     def parse_a(self) -> bool:
         """Indicate whether the text output should contain links or anchors.
 
-        Returns
+        Returns:
             Whether we need to parse <a> tags.
         """
         return self.display_links or self.display_anchors

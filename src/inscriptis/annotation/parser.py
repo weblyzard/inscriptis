@@ -16,6 +16,7 @@ Example::
         "#class=short-description]": ["description"]
     }
 """
+
 from collections import defaultdict
 from copy import copy
 from typing import Dict, Tuple, List

@@ -1,4 +1,5 @@
 """Handle the <br> tag."""
+
 from typing import Dict
 
 from inscriptis.model.html_document_state import HtmlDocumentState

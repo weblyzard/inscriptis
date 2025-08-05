@@ -49,6 +49,7 @@ uvicorn = { version = "^0.34.0", optional = true }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
+myst_parser = "^4.0.1"
 
 
 [build-system]
