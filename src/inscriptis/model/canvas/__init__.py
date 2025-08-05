@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 """Classes used for rendering (parts) of the canvas.
 
@@ -15,7 +14,7 @@ textual content to the canvas which is managed by the following three classes:
 """
 
 from inscriptis.annotation import Annotation
-from inscriptis.html_properties import WhiteSpace, Display
+from inscriptis.html_properties import Display, WhiteSpace
 from inscriptis.model.canvas.block import Block
 from inscriptis.model.canvas.prefix import Prefix
 from inscriptis.model.html_element import HtmlElement
@@ -38,10 +37,10 @@ class Canvas:
     """
 
     __slots__ = (
+        "_open_annotations",
         "annotations",
         "blocks",
         "current_block",
-        "_open_annotations",
         "margin",
     )
 
@@ -112,9 +111,7 @@ class Canvas:
                 return
 
             for annotation in tag.annotation:
-                self.annotations.append(
-                    Annotation(start_idx, self.current_block.idx, annotation)
-                )
+                self.annotations.append(Annotation(start_idx, self.current_block.idx, annotation))
 
     def close_block(self, tag: HtmlElement) -> None:
         """Close the given HtmlElement by writing its bottom margin.

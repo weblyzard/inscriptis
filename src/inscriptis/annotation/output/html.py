@@ -2,7 +2,7 @@
 
 from collections import defaultdict
 from itertools import cycle
-from typing import Dict, Any, List
+from typing import Any
 
 from inscriptis.annotation.output import AnnotationProcessor
 
@@ -18,13 +18,11 @@ class HtmlExtractor(AnnotationProcessor):
 
     verbatim = True
 
-    def __call__(self, annotated_text: Dict[str, Any]) -> str:
+    def __call__(self, annotated_text: dict[str, Any]) -> str:
         tag_dict = defaultdict(list)
 
         for start, end, label in reversed(annotated_text["label"]):
-            tag_dict[start].append(
-                f'<span class="{label}-label">{label}</span><span class="{label}">'
-            )
+            tag_dict[start].append(f'<span class="{label}-label">{label}</span><span class="{label}">')
             tag_dict[end].insert(0, "</span>")
 
         tagged_content = [
@@ -43,7 +41,7 @@ class HtmlExtractor(AnnotationProcessor):
         return "".join(tagged_content) + "</pre></body></html>"
 
     @staticmethod
-    def _get_label_colors(labels: List[str]) -> Dict[str, str]:
+    def _get_label_colors(labels: list[str]) -> dict[str, str]:
         """Compute the mapping between annotation labels and colors.
 
         The used color schema is available in the global variable COLOR_SCHEMA.
@@ -57,7 +55,7 @@ class HtmlExtractor(AnnotationProcessor):
         """
         return dict(zip({a[2] for a in sorted(labels)}, cycle(COLOR_SCHEMA)))
 
-    def _get_css(self, labels: List[str]) -> str:
+    def _get_css(self, labels: list[str]) -> str:
         """Compute the CSS to be included into the HTML output.
 
         Args:
@@ -71,18 +69,18 @@ class HtmlExtractor(AnnotationProcessor):
         css = []
         for label, color in sorted(self._get_label_colors(labels).items()):
             css.append(
-                "pre{{"
+                "pre{"
                 "  position: relative;\n"
-                "}}\n"
-                ".{label} {{\n"
-                "  background-color: {color};\n"
+                "}\n"
+                f".{label} {{\n"
+                f"  background-color: {color};\n"
                 "  border-radius: 0.4em;\n"
-                "}}\n"
-                ".{label}-label {{\n"
+                "}\n"
+                f".{label}-label {{\n"
                 "  top: -1.0em;\n"
-                '  content: "{label}";\n'
+                f'  content: "{label}";\n'
                 "  position: absolute;\n"
-                "  background-color: {color};\n"
-                "  font-size: 75%; }}\n".format(label=label, color=color)
+                f"  background-color: {color};\n"
+                "  font-size: 75%; }\n"
             )
         return "\n".join(css)

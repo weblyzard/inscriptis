@@ -7,8 +7,6 @@ The HtmlElement class controls how Inscriptis interprets HTML Elements.
   the :class:`HtmlElement` and its interpretation.
 """
 
-from typing import Tuple
-
 from inscriptis.html_properties import (
     Display,
     HorizontalAlignment,
@@ -41,21 +39,21 @@ class HtmlElement:
     """
 
     __slots__ = (
-        "canvas",
-        "tag",
-        "prefix",
-        "suffix",
-        "display",
-        "margin_before",
-        "margin_after",
-        "padding_inline",
-        "list_bullet",
-        "whitespace",
-        "limit_whitespace_affixes",
         "align",
-        "valign",
-        "previous_margin_after",
         "annotation",
+        "canvas",
+        "display",
+        "limit_whitespace_affixes",
+        "list_bullet",
+        "margin_after",
+        "margin_before",
+        "padding_inline",
+        "prefix",
+        "previous_margin_after",
+        "suffix",
+        "tag",
+        "valign",
+        "whitespace",
     )
 
     def __init__(
@@ -68,11 +66,11 @@ class HtmlElement:
         margin_after: int = 0,
         padding_inline: int = 0,
         list_bullet: str = "",
-        whitespace: WhiteSpace = None,
+        whitespace: WhiteSpace = WhiteSpace.normal,
         limit_whitespace_affixes: bool = False,
         align: HorizontalAlignment = HorizontalAlignment.left,
         valign: VerticalAlignment = VerticalAlignment.middle,
-        annotation: Tuple[str] = (),
+        annotation: tuple[str] = (),
     ):
         self.canvas = None
         self.tag = tag

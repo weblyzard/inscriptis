@@ -4,9 +4,15 @@ The provided `HtmlDocumentState` class contains and exposes all fields required 
 representing the current state of the HTML to text conversion.
 """
 
-from inscriptis import ParserConfig
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT
+
+if TYPE_CHECKING:
+    from inscriptis import ParserConfig
 
 
 class HtmlDocumentState:
@@ -44,9 +50,7 @@ class HtmlDocumentState:
         cur = self.tags[-1].get_refined_html_element(
             self.apply_attributes(
                 attrs,
-                html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT)
-                .__copy__()
-                .set_tag(tag),
+                html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT).__copy__().set_tag(tag),
             )
         )
         self.tags.append(cur)

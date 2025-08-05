@@ -1,17 +1,17 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 """
 Tests HtmlElement and the parsing of CSS style definitiosn
 """
 
 from copy import copy
+
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.html_properties import (
     Display,
-    WhiteSpace,
-    VerticalAlignment,
     HorizontalAlignment,
+    VerticalAlignment,
+    WhiteSpace,
 )
 from inscriptis.model.css import CssParse
 from inscriptis.model.html_element import HtmlElement
@@ -32,9 +32,7 @@ def test_html_element_str():
     """
     Tests the string representation of an HtmlElement.
     """
-    html_element = HtmlElement(
-        "div", "", "", Display.inline, 0, 0, 0, "", WhiteSpace.pre
-    )
+    html_element = HtmlElement("div", "", "", Display.inline, 0, 0, 0, "", WhiteSpace.pre)
     assert str(html_element) == (
         "<div prefix=, suffix=, "
         "display=Display.inline, margin_before=0, "

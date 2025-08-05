@@ -43,10 +43,7 @@ def test_display_links_and_anchors():
                 </html>
             """
     config = ParserConfig(display_links=True, display_anchors=True)
-    assert (
-        get_text(html, config).strip()
-        == "[first](first) [second](second) [third](third)"
-    )
+    assert get_text(html, config).strip() == "[first](first) [second](second) [third](third)"
 
 
 def test_display_images():
@@ -59,10 +56,7 @@ def test_display_images():
                 </html>
             """
     config = ParserConfig(display_images=True)
-    assert (
-        get_text(html, config).strip()
-        == "[Ein Test Bild] [Ein Test Bild] [Ein zweites Bild]"
-    )
+    assert get_text(html, config).strip() == "[Ein Test Bild] [Ein Test Bild] [Ein zweites Bild]"
 
 
 def test_display_images_deduplicated():

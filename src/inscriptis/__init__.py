@@ -59,19 +59,23 @@ Annotations in the `label` field are returned as a list of triples with
 
 """
 
+from __future__ import annotations
+
 import re
-from typing import Dict, Optional, Any
-from inscriptis.model.config import ParserConfig
+from typing import TYPE_CHECKING, Any
 
 from lxml.etree import ParserError
-from lxml.html import fromstring, HtmlElement
+from lxml.html import HtmlElement, fromstring
 
 from inscriptis.html_engine import Inscriptis
+
+if TYPE_CHECKING:
+    from inscriptis.model.config import ParserConfig
 
 RE_STRIP_XML_DECLARATION = re.compile(r"^<\?xml [^>]+?\?>")
 
 
-def _get_html_tree(html_content: str) -> Optional[HtmlElement]:
+def _get_html_tree(html_content: str) -> HtmlElement | None:
     """Obtain the HTML parse tree for the given HTML content.
 
     Args:
@@ -94,7 +98,7 @@ def _get_html_tree(html_content: str) -> Optional[HtmlElement]:
         return fromstring("<pre>" + html_content + "</pre>")
 
 
-def get_text(html_content: str, config: ParserConfig = None) -> str:
+def get_text(html_content: str, config: ParserConfig | None = None) -> str:
     """Provide a text representation of the given HTML content.
 
     Args:
@@ -108,9 +112,7 @@ def get_text(html_content: str, config: ParserConfig = None) -> str:
     return Inscriptis(html_tree, config).get_text() if html_tree is not None else ""
 
 
-def get_annotated_text(
-    html_content: str, config: ParserConfig = None
-) -> Dict[str, Any]:
+def get_annotated_text(html_content: str, config: ParserConfig | None = None) -> dict[str, Any]:
     """Return a dictionary of the extracted text and annotations.
 
     Notes:

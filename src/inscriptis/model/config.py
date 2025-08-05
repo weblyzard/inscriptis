@@ -5,15 +5,17 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Dict, List
+from typing import TYPE_CHECKING
 
 from inscriptis.annotation.parser import AnnotationModel
 from inscriptis.css_profiles import CSS_PROFILES
 from inscriptis.model.attribute import Attribute
-from inscriptis.model.html_element import HtmlElement
-from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 
 DEFAULT_CSS_PROFILE_NAME = "relaxed"
+
+if TYPE_CHECKING:
+    from inscriptis.model.html_element import HtmlElement
+    from inscriptis.model.tag import CustomHtmlTagHandlerMapping
 
 
 class ParserConfig:
@@ -59,12 +61,12 @@ class ParserConfig:
 
     def __init__(
         self,
-        css: Dict[str, HtmlElement] = None,
+        css: dict[str, HtmlElement] | None = None,
         display_images: bool = False,
         deduplicate_captions: bool = False,
         display_links: bool = False,
         display_anchors: bool = False,
-        annotation_rules: Dict[str, List[str]] = None,
+        annotation_rules: dict[str, list[str]] | None = None,
         table_cell_separator: str = "  ",
         custom_html_tag_handler_mapping: CustomHtmlTagHandlerMapping = None,
     ):

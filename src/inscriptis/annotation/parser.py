@@ -19,9 +19,8 @@ Example::
 
 from collections import defaultdict
 from copy import copy
-from typing import Dict, Tuple, List
 
-from inscriptis.model.html_element import HtmlElement, DEFAULT_HTML_ELEMENT
+from inscriptis.model.html_element import DEFAULT_HTML_ELEMENT, HtmlElement
 
 
 class ApplyAnnotation:
@@ -36,14 +35,14 @@ class ApplyAnnotation:
                      match_value.
     """
 
-    __slots__ = ("annotations", "match_tag", "match_value", "attr", "matcher")
+    __slots__ = ("annotations", "attr", "match_tag", "match_value", "matcher")
 
     def __init__(
         self,
         annotations: tuple,
         attr: str,
-        match_tag: str = None,
-        match_value: str = None,
+        match_tag: str = "",
+        match_value: str = "",
     ):
         self.annotations = tuple(annotations)
         self.attr = attr
@@ -87,7 +86,7 @@ class AnnotationModel:
         self.css = css_profile
 
     @staticmethod
-    def _parse(model: dict) -> Tuple[Dict, List]:
+    def _parse(model: dict) -> tuple[dict, list]:
         """Compute the AnnotationModel from a model dictionary.
 
         Returns:

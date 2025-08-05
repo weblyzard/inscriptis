@@ -1,6 +1,6 @@
 """Surface Form Annotation Processor."""
 
-from typing import Dict, Any
+from typing import Any
 
 from inscriptis.annotation.output import AnnotationProcessor
 
@@ -10,7 +10,7 @@ class SurfaceExtractor(AnnotationProcessor):
 
     verbatim = False
 
-    def __call__(self, annotated_text: Dict[str, Any]) -> Dict[str, Any]:
+    def __call__(self, annotated_text: dict[str, Any]) -> dict[str, Any]:
         """
         Add information on the surface forms to the annotated_text dictionary.
 
@@ -22,9 +22,6 @@ class SurfaceExtractor(AnnotationProcessor):
             An extended dictionary which contains the extracted surface-forms
             of the annotations under the key 'surface'.
         """
-        surface_forms = [
-            (label, annotated_text["text"][start:end])
-            for start, end, label in annotated_text["label"]
-        ]
+        surface_forms = [(label, annotated_text["text"][start:end]) for start, end, label in annotated_text["label"]]
         annotated_text["surface"] = surface_forms
         return annotated_text

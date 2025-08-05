@@ -1,14 +1,12 @@
 """Handle the <table>, <tr> and <td> tags."""
 
-from typing import Dict
-
 from inscriptis.annotation import Annotation
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.html_document_state import HtmlDocumentState
 from inscriptis.model.table import Table, TableCell
 
 
-def td_start_handler(state: HtmlDocumentState, _: Dict) -> None:
+def td_start_handler(state: HtmlDocumentState, _: dict) -> None:
     """Handle the <td> tag."""
     if state.current_table:
         # open td tag
@@ -17,13 +15,13 @@ def td_start_handler(state: HtmlDocumentState, _: Dict) -> None:
         state.current_table[-1].add_cell(table_cell)
 
 
-def tr_start_handler(state: HtmlDocumentState, _: Dict) -> None:
+def tr_start_handler(state: HtmlDocumentState, _: dict) -> None:
     """Handle the <tr> tag."""
     if state.current_table:
         state.current_table[-1].add_row()
 
 
-def table_start_handler(state: HtmlDocumentState, _: Dict) -> None:
+def table_start_handler(state: HtmlDocumentState, _: dict) -> None:
     """Handle the <table> tag."""
     state.tags[-1].set_canvas(Canvas())
     state.current_table.append(
@@ -64,6 +62,4 @@ def table_end_handler(state: HtmlDocumentState) -> None:
             state.tags[-2].canvas.annotations.append(Annotation(start_idx, end_idx, a))
 
     # transfer in-table annotations
-    state.tags[-2].canvas.annotations.extend(
-        table.get_annotations(start_idx, state.tags[-2].canvas.left_margin)
-    )
+    state.tags[-2].canvas.annotations.extend(table.get_annotations(start_idx, state.tags[-2].canvas.left_margin))

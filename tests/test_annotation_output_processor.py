@@ -23,7 +23,7 @@ def test_abstract_class():
     processor = AnnotationProcessor()
 
     with pytest.raises(NotImplementedError):
-        result = processor(EXAMPLE_OUTPUT)
+        _ = processor(EXAMPLE_OUTPUT)
 
 
 def test_surface_annotator():
@@ -81,6 +81,5 @@ def test_trailing_tag_annotation():
     result = processor({"text": "Ehre sei Gott!", "label": [[9, 14, "emphasis"]]})
 
     assert result == (
-        '<?xml version="1.0" encoding="UTF-8" ?>\n<content>\n'
-        "Ehre sei <emphasis>Gott!</emphasis>\n</content>"
+        '<?xml version="1.0" encoding="UTF-8" ?>\n<content>\nEhre sei <emphasis>Gott!</emphasis>\n</content>'
     )

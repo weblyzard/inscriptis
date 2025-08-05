@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 """
 Tests different white-space handling.
@@ -13,19 +12,19 @@ config = ParserConfig(css=CSS_PROFILES["strict"])
 
 
 def test_white_space():
-    html = '<body><span style="white-space: normal"><i>1</i>2\n3</span>' "</body>"
+    html = '<body><span style="white-space: normal"><i>1</i>2\n3</span></body>'
     assert get_text(html, config) == "12 3"
 
-    html = '<body><span style="white-space: nowrap"><i>1</i>2\n3</span>' "</body>"
+    html = '<body><span style="white-space: nowrap"><i>1</i>2\n3</span></body>'
     assert get_text(html, config) == "12 3"
 
-    html = '<body><span style="white-space: pre"><i>1</i>2\n3</span>' "</body>"
+    html = '<body><span style="white-space: pre"><i>1</i>2\n3</span></body>'
     assert get_text(html, config) == "12\n3"
 
-    html = '<body><span style="white-space: pre-line"><i>1</i>2\n3</span>' "</body>"
+    html = '<body><span style="white-space: pre-line"><i>1</i>2\n3</span></body>'
     assert get_text(html, config) == "12\n3"
 
-    html = '<body><span style="white-space: pre-wrap"><i>1</i>2\n3</span>' "</body>"
+    html = '<body><span style="white-space: pre-wrap"><i>1</i>2\n3</span></body>'
     assert get_text(html, config) == "12\n3"
 
 
@@ -69,5 +68,5 @@ def test_tail():
     """
     ensure that the tail elements are formated based on the container element.
     """
-    html = '<body>Hi<span style="white-space: pre"> 1   3 </span>' " versus 1   3"
+    html = '<body>Hi<span style="white-space: pre"> 1   3 </span> versus 1   3'
     assert get_text(html, config) == "Hi 1   3  versus 1 3"

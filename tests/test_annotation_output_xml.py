@@ -3,10 +3,12 @@
 """
 Test the annotation XmlExtractor.
 """
+
 from lxml.html import fromstring
 
-from inscriptis import Inscriptis, ParserConfig
+from inscriptis import Inscriptis
 from inscriptis.annotation.output.xml import XmlExtractor
+from inscriptis.model.config import ParserConfig
 
 
 def test_tag_error_issue_93():
@@ -31,9 +33,7 @@ def test_tag_error_issue_93():
     )
     rules = {"div#class=a": ["outer"], "span#class=b": ["inner"]}
 
-    inscriptis = Inscriptis(
-        fromstring(html_issue_93), ParserConfig(annotation_rules=rules)
-    )
+    inscriptis = Inscriptis(fromstring(html_issue_93), ParserConfig(annotation_rules=rules))
     annotated_html = {
         "text": inscriptis.get_text(),
         "label": inscriptis.get_annotations(),
@@ -64,9 +64,7 @@ def test_tag_folding_issue_93_extended():
     )
     rules = {"div#class=a": ["outer"], "span#class=b": ["inner"], "b": ["bold"]}
 
-    inscriptis = Inscriptis(
-        fromstring(html_issue_93), ParserConfig(annotation_rules=rules)
-    )
+    inscriptis = Inscriptis(fromstring(html_issue_93), ParserConfig(annotation_rules=rules))
     annotated_html = {
         "text": inscriptis.get_text(),
         "label": inscriptis.get_annotations(),

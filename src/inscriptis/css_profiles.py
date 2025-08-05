@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-# coding: utf-8
-"""Standard CSS profiles shipped with Inscriptis. 
+"""Standard CSS profiles shipped with inscriptis.
 
    CSS profiles are used together with 
    :class:`inscriptis.model.config.ParserConfig` to customize
@@ -27,12 +26,8 @@ STRICT_CSS_PROFILE = {
     "h4": HtmlElement(display=Display.block, margin_before=1, margin_after=1),
     "h5": HtmlElement(display=Display.block, margin_before=1, margin_after=1),
     "h6": HtmlElement(display=Display.block, margin_before=1, margin_after=1),
-    "ul": HtmlElement(
-        display=Display.block, margin_before=0, margin_after=0, padding_inline=4
-    ),
-    "ol": HtmlElement(
-        display=Display.block, margin_before=0, margin_after=0, padding_inline=4
-    ),
+    "ul": HtmlElement(display=Display.block, margin_before=0, margin_after=0, padding_inline=4),
+    "ol": HtmlElement(display=Display.block, margin_before=0, margin_after=0, padding_inline=4),
     "li": HtmlElement(display=Display.block),
     "address": HtmlElement(display=Display.block),
     "article": HtmlElement(display=Display.block),
@@ -57,9 +52,7 @@ STRICT_CSS_PROFILE = {
 #: A relaxed CSS profile optimized for content extraction and text analytics.
 RELAXED_CSS_PROFILE = STRICT_CSS_PROFILE.copy()
 RELAXED_CSS_PROFILE["div"] = HtmlElement(display=Display.block, padding_inline=2)
-RELAXED_CSS_PROFILE["span"] = HtmlElement(
-    display=Display.inline, prefix=" ", suffix=" ", limit_whitespace_affixes=True
-)
+RELAXED_CSS_PROFILE["span"] = HtmlElement(display=Display.inline, prefix=" ", suffix=" ", limit_whitespace_affixes=True)
 
 
 CSS_PROFILES = {"strict": STRICT_CSS_PROFILE, "relaxed": RELAXED_CSS_PROFILE}

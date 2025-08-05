@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 """
 Tests the Table formatting with different parameters such as width and
 alignment
 """
 
-from inscriptis.model.table import TableCell
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
+from inscriptis.model.table import TableCell
 
 
 def test_height():
