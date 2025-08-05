@@ -60,8 +60,6 @@ dev = [
     "pytest-cov>=6.1.1",
     "safety>=3.5.1",
 ]
->>>>>>> feature/python3.14
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
