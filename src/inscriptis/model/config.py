@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-"""This modul provides the ParserConfig class which allows customizing
-how Inscriptis converts HTML to text.
-"""
+"""Configure Inscripits HTML rendering."""
 
 from __future__ import annotations
 
@@ -20,7 +18,7 @@ if TYPE_CHECKING:
 
 
 class ParserConfig:
-    """The ParserConfig class encapsulate
+    """The ParserConfig class allows fine-tuning the HTML rendering.
 
     - CSS definitions (from :mod:`inscriptis.css_profiles` or custom
       definitions).
