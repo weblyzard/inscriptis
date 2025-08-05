@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Standard CSS profiles shipped with inscriptis.
 
-   CSS profiles are used together with 
-   :class:`inscriptis.model.config.ParserConfig` to customize
-   the HTML to text conversion.
+CSS profiles are used together with
+:class:`inscriptis.model.config.ParserConfig` to customize
+the HTML to text conversion.
 """
 
 from inscriptis.html_properties import Display, WhiteSpace

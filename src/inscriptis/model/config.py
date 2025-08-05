@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """This modul provides the ParserConfig class which allows customizing
-   how Inscriptis converts HTML to text.
+how Inscriptis converts HTML to text.
 """
+
 from __future__ import annotations
 
 from copy import deepcopy
