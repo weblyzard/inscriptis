@@ -27,3 +27,15 @@ def test_divs():
 
     html = "<body>Thomas <ul><li> a  <div>Anton</div>Maria</ul></body>"
     assert get_text(html, config) == "Thomas\n  * a\n    Anton\n    Maria"
+
+    html = "<body>Thomas <ol><li> a  <div>Anton</div>Maria</ol></body>"
+    assert get_text(html, config) == "Thomas\n 1. a\n    Anton\n    Maria"
+
+    html = """<body>Thomas <ol><li value="2"> a  <div>Anton</div>Maria</ol></body>"""
+    assert get_text(html, config) == "Thomas\n 2. a\n    Anton\n    Maria"
+
+    html = """<body>Thomas <ol><li value="2"> a  <ol><li><div>Anton</div></li></ol>Maria</ol></body>"""
+    assert get_text(html, config) == "Thomas\n 2. a\n     1. Anton\n    Maria"
+
+    html = """<body>Thomas <ol><li value="2"> a  <ol><li value="10"><div>Anton</div></li></ol>Maria</ol></body>"""
+    assert get_text(html, config) == "Thomas\n 2. a\n    10. Anton\n    Maria"
