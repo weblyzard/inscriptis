@@ -24,3 +24,7 @@ tests/reference.txt
 docs/paper/*.pdf
 htmlcov/
 poetry.lock
+
+# test
+converted.txt
+reference.txt
