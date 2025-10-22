@@ -1,5 +1,4 @@
 """Handle the <li>, <ol>, <ul> tags."""
-from typing import Dict
 
 from inscriptis.model.html_document_state import HtmlDocumentState
 
@@ -12,16 +11,14 @@ def get_bullet(state: HtmlDocumentState) -> str:
     return UL_COUNTER[len(state.li_counter) % UL_COUNTER_LEN]
 
 
-def li_start_handler(state: HtmlDocumentState, tag: Dict) -> None:
+def li_start_handler(state: HtmlDocumentState, tag: dict) -> None:
     """Handle the <li> tag."""
     bullet = state.li_counter[-1] if state.li_counter else "* "
-    if tag.get('value'):
-        if tag.get('value').isdigit():
-            bullet = int(tag.get('value'))
-            if not state.li_counter:
-                state.li_counter.append(bullet)
-        else:
-            bullet = tag.get('value')
+    # Value can only used for numerical bullets.
+    if "value" in tag and tag["value"].isdigit() and isinstance(bullet, int):
+        bullet = int(tag["value"])
+        state.li_counter[-1] = bullet
+
     if isinstance(bullet, int):
         state.li_counter[-1] += 1
         state.tags[-1].list_bullet = f"{bullet}. "
@@ -31,7 +28,7 @@ def li_start_handler(state: HtmlDocumentState, tag: Dict) -> None:
     state.tags[-1].write("")
 
 
-def ul_start_handler(state: HtmlDocumentState, _: Dict) -> None:
+def ul_start_handler(state: HtmlDocumentState, _: dict) -> None:
     """Handle the <ul> tag."""
     state.li_counter.append(get_bullet(state))
 
@@ -41,7 +38,7 @@ def ul_end_handler(state: HtmlDocumentState) -> None:
     state.li_counter.pop()
 
 
-def ol_start_handler(state: HtmlDocumentState, _: Dict) -> None:
+def ol_start_handler(state: HtmlDocumentState, _: dict) -> None:
     """Handle the <ol> tag."""
     state.li_counter.append(1)
 

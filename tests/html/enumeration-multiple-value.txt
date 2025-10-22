@@ -1,0 +1,6 @@
+100. Coffee
+101. Tea
+102. Milk
+ 7. Water
+ 8. Juice
+ 9. Beer
