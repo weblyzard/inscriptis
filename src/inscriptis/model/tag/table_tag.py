@@ -28,7 +28,7 @@ def table_start_handler(state: HtmlDocumentState, _: dict) -> None:
         Table(
             left_margin_len=state.tags[-1].canvas.left_margin,
             cell_separator=state.config.table_cell_separator,
-        )
+        ),
     )
 
 

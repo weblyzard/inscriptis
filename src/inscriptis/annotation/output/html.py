@@ -83,6 +83,6 @@ class HtmlExtractor(AnnotationProcessor):
                 f'  content: "{label}";\n'
                 "  position: absolute;\n"
                 f"  background-color: {color};\n"
-                "  font-size: 75%; }\n"
+                "  font-size: 75%; }\n",
             )
         return "\n".join(css)

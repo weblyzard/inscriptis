@@ -81,14 +81,19 @@ quote-style = "double"
 select = [
     "A",      # flake8-builtins
     "B",      # flake8-bugbear
+    "COM",    # flake8-commas - trailing commas
+    "BLE",    # flake8-blind-except - avoid bare except
     "D",      # flake8-dockstrings
     "C4",     # flake8-comprehensions
     "E",      # pycodestyle
     "EM",     # flake8-errmsg
     "F",      # Pyflakes
+    "FA",     # flake8-future-annotations - use modern annotations
+    "ICN",    # flake8-import-conventions - standard import aliases
     "PIE",    # flake8-pie
     "PLE",    # pyline equivents
     "PLW",    # pyline equivents
+    "PTH",    # flake8-use-pathlib - prefer pathlib over os.path
     "PYI",    # flake8-pyi
     "Q",      # flake8-quotes
     "N",      # flake8-naming
@@ -97,6 +102,7 @@ select = [
     "RET",    # flake8-return
     "RSE", "SLOT", "TID", "TC", "C90", "PERF", "E", "W", 
     "FURB", "RUF", "TRY", "YTT",
+    "TCH",    # flake8-type-checking - optimize type checking imports
     "S",      # flake8-bandit (security) — replaces dlint/bandit
     "UP",     # pyupgrade
 ]
@@ -114,10 +120,12 @@ ignore = [
   "S101",   # allow asserts
   "D",      # no dockstring checks
   "S310",   # allow URLs
+  "PTH",    # prefer pathlib
 ]
 "benchmarking/*.py" = [
   "S310",   # allow URLs
   "S603",   # call: check for execution of untrusted input
+  "PTH",    # prefer pathlib  
 ] 
 
 

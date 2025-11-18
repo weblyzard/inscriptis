@@ -52,6 +52,6 @@ class HtmlDocumentState:
             self.apply_attributes(
                 attrs,
                 html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT).__copy__().set_tag(tag),
-            )
+            ),
         )
         self.tags.append(cur)
