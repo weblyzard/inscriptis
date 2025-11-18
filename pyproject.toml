@@ -83,7 +83,7 @@ select = [
     "B",      # flake8-bugbear
     "COM",    # flake8-commas - trailing commas
     "BLE",    # flake8-blind-except - avoid bare except
-    "D",      # flake8-dockstrings
+    "D",      # flake8-docstrings
     "C4",     # flake8-comprehensions
     "E",      # pycodestyle
     "EM",     # flake8-errmsg
