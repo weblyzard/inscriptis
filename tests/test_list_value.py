@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-"""Test list value in ordered and unordered lists.
-"""
+"""Test list value in ordered and unordered lists."""
 
 from inscriptis import get_text
 from inscriptis.css_profiles import CSS_PROFILES
@@ -31,5 +30,3 @@ def test_value_without_ol():
 
     html = """<body>Thomas <li value="2">Maria</li><li>Ana</li></ul></body>"""
     assert get_text(html, config) == "Thomas\n* Maria\n* Ana"
-
-
