@@ -56,6 +56,7 @@ class ParserConfig:
        config = ParserConfig(css=css_profile, display_links=False)
        text = get_text('fi<span>r</span>st <a href="/first">link</a>', config)
        print(text)
+
     """
 
     def __init__(
@@ -84,6 +85,7 @@ class ParserConfig:
                               specify tags and attributes to annotation.
             table_cell_separator: separator to use between table cells.
             custom_html_tag_handler_mapping: an optional CustomHtmlTagHandler
+
         """
         self.display_images = display_images
         self.deduplicate_captions = deduplicate_captions
@@ -108,5 +110,6 @@ class ParserConfig:
 
         Returns:
             Whether we need to parse <a> tags.
+
         """
         return self.display_links or self.display_anchors

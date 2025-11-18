@@ -83,6 +83,7 @@ def _get_html_tree(html_content: str) -> HtmlElement | None:
 
     Returns:
         The corresponding HTML parse tree.
+
     """
     html_content = html_content.strip()
     if not html_content:
@@ -107,6 +108,7 @@ def get_text(html_content: str, config: ParserConfig | None = None) -> str:
 
     Returns:
       The text representation of the HTML content.
+
     """
     html_tree = _get_html_tree(html_content)
     return Inscriptis(html_tree, config).get_text() if html_tree is not None else ""
@@ -128,6 +130,7 @@ def get_annotated_text(html_content: str, config: ParserConfig | None = None) ->
 
     Returns:
         A dictionary of text (key: 'text') and annotations (key: 'label')
+
     """
     html_tree = _get_html_tree(html_content)
     if html_tree is None:

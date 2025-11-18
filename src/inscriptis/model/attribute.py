@@ -24,6 +24,7 @@ def merge_function(func1, func2):
     Args:
         func1: the first function
         func2: the second function
+
     """
 
     def merged(*args):
@@ -42,6 +43,7 @@ class Attribute:
     Attributes:
         attribute_mapping: a mapping of attributes to the corresponding handler
                            functions.
+
     """
 
     def __init__(self):
@@ -53,6 +55,7 @@ class Attribute:
         Args:
             attributes: the list of attributes
             html_element: the HTML element for which the attributes are parsed
+
         """
         for attr_name, attr_value in attributes.items():
             if attr_name in self.attribute_mapping:

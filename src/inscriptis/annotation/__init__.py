@@ -51,6 +51,7 @@ def horizontal_shift(
     Returns:
         A list of :class:`Annotation`\s with the adjusted start and end
         positions.
+
     """
     if align == HorizontalAlignment.left:
         h_align = shift

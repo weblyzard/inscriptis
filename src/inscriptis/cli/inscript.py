@@ -25,6 +25,7 @@ def get_postprocessor(name):
 
     Returns:
         The matching postprocessing function
+
     """
     pp_class = name.capitalize() + "Extractor"
     mod = __import__("inscriptis.annotation.output." + name, fromlist=[pp_class])
@@ -36,6 +37,7 @@ def parse_command_line() -> argparse.Namespace:
 
     Returns:
         The parsed command line arguments.
+
     """
     parser = argparse.ArgumentParser(description="Convert the given HTML document to text.")
     parser.add_argument(
@@ -127,8 +129,7 @@ def parse_command_line() -> argparse.Namespace:
 
 
 def get_html_content(url: str, timeout: int, encoding: str = "") -> str:
-    """
-    Return the HTML content to convert.
+    """Return the HTML content to convert.
 
     Args:
         url: URL to the HTML content, or None if the content is obtained from stdin.
@@ -144,7 +145,7 @@ def get_html_content(url: str, timeout: int, encoding: str = "") -> str:
     if (p := Path(url)).is_file():
         with p.open(encoding=encoding or DEFAULT_ENCODING, errors="ignore") as f:
             return f.read()
-    elif url.startswith("http://") or url.startswith("https://"):
+    elif url.startswith(("http://", "https://")):
         req = requests.get(url, timeout=timeout)
         return req.content.decode(encoding or req.encoding)
     return ""

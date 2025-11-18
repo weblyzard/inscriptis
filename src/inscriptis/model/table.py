@@ -16,6 +16,7 @@ class TableCell(Canvas):
                     annotations after a reformatting)
         vertical_padding: vertical padding that has been introduced due to
                           vertical formatting rules.
+
     """
 
     __slots__ = (
@@ -45,6 +46,7 @@ class TableCell(Canvas):
 
         Returns:
             The height of the normalized cell.
+
         """
         self.flush_inline()
         self.blocks = list(chain(*(line.split("\n") for line in self.blocks)))
@@ -58,6 +60,7 @@ class TableCell(Canvas):
 
         Returns:
             The cell's current height.
+
         """
         return max(1, len(self.blocks))
 
@@ -67,6 +70,7 @@ class TableCell(Canvas):
 
         Returns:
             The cell's current width.
+
         """
         if self._width:
             return self._width
@@ -77,7 +81,8 @@ class TableCell(Canvas):
         """Set the table's width and applies the cell's horizontal formatting.
 
         Args:
-            The cell's expected width.
+            width: The cell's expected width.
+
         """
         # save the original line widths before reformatting
         self.line_width = [len(block) for block in self.blocks]
@@ -94,6 +99,7 @@ class TableCell(Canvas):
         Notes:
             Depending on the height and the cell's vertical formatting this
             might require the introduction of empty lines.
+
         """
         rows = len(self.blocks)
         if rows < height:
@@ -113,6 +119,7 @@ class TableCell(Canvas):
         Returns:
             A list of annotations that have been adjusted to the cell's
             position.
+
         """
         self.current_block.idx = idx
         if not self.annotations:
@@ -150,6 +157,7 @@ class TableRow:
     Attributes:
         columns: the table row's columns.
         cell_separator: string used for separating columns from each other.
+
     """
 
     __slots__ = ("cell_separator", "columns")
@@ -184,6 +192,7 @@ class Table:
         rows: the table's rows.
         left_margin_len: length of the left margin before the table.
         cell_separator: string used for separating cells from each other.
+
     """
 
     __slots__ = ("cell_separator", "left_margin_len", "rows")
@@ -248,6 +257,7 @@ class Table:
         Returns:
             A list of all :class:`~inscriptis.annotation.Annotation`\s present
             in the table.
+
         """
         if not self.rows:
             return []

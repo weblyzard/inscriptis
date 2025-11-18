@@ -45,6 +45,7 @@ class HtmlDocumentState:
         Args:
           tag: the HTML start tag to process.
           attrs: a dictionary of HTML attributes and their respective values.
+
         """
         # use the css to handle tags known to it :)
         cur = self.tags[-1].get_refined_html_element(

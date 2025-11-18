@@ -49,9 +49,11 @@ class HtmlExtractor(AnnotationProcessor):
         Args:
             labels: a list of the annotations classes (e.g., heading, etc.)
                     that need to be color-coded.
+
         Returns:
             A mapping between the available labels and the corresponding color
             from the COLOR_SCHEMA.
+
         """
         return dict(zip({a[2] for a in sorted(labels)}, cycle(COLOR_SCHEMA)))
 

@@ -33,6 +33,7 @@ class ApplyAnnotation:
                    given match_tag.
         match_value: only apply annotations to attribute with the given
                      match_value.
+
     """
 
     __slots__ = ("annotations", "attr", "match_tag", "match_value", "matcher")
@@ -75,6 +76,7 @@ class AnnotationModel:
         css: the refined CSS class which contains annotations for HtmlElements
              which should be annotated.
         css_attr: information on CSS attributes that shall be annotated.
+
     """
 
     def __init__(self, css_profile, model: dict):
@@ -91,6 +93,7 @@ class AnnotationModel:
 
         Returns:
             the AnnotationModel matching the input dictionary.
+
         """
         tags = defaultdict(list)
         attrs = []
