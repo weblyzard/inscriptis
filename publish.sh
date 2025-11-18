@@ -19,8 +19,9 @@ case "$1" in
 		# cleanup dist
 		rm -rf ./dist
 
-		# build and publish packages
-		poetry publish --build
+		# build with hatchling and publish to PyPI
+		uv build
+		uv publish
 		;;
 	docker)
 		echo "Publishing ${IMAGE_NAME} in version ${VERSION}"
