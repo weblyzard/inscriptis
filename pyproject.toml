@@ -79,33 +79,34 @@ quote-style = "double"
 
 [tool.ruff.lint]
 select = [
-    "E",      # pycodestyle
-    "F",      # Pyflakes
-    "UP",     # pyupgrade
     "A",      # flake8-builtins
     "B",      # flake8-bugbear
     "D",      # flake8-dockstrings
     "C4",     # flake8-comprehensions
+    "E",      # pycodestyle
     "EM",     # flake8-errmsg
-    "Q",      # flake8-quotes
+    "F",      # Pyflakes
     "PIE",    # flake8-pie
+    "PLE",    # pyline equivents
+    "PLW",    # pyline equivents
     "PYI",    # flake8-pyi
+    "Q",      # flake8-quotes
     "N",      # flake8-naming
     "SIM",    # flake8-simplify
     "I",      # isort
-    "RSE", "RET", "SLOT", "TID", "TC", "C90", "PERF", "E", "W", 
-    "UP", "FURB", "RUF", "TRY", "YTT",
+    "RET",    # flake8-return
+    "RSE", "SLOT", "TID", "TC", "C90", "PERF", "E", "W", 
+    "FURB", "RUF", "TRY", "YTT",
     "S",      # flake8-bandit (security) — replaces dlint/bandit
+    "UP",     # pyupgrade
 ]
 
 ignore = [
-    "A005",   # (flake8-builtins) shadowing builtins
     "D102",   # missing docstring in public method
     "D105",   # missing docstring in magic method
     "D107",   # missing docstring in __init__
     "D203",   # incorrect-blank-line-before-class
     "D213",   # multi-line-summary-second-line
-    "S104",   # binding to all interfaces (allowed in your usage)
 ]
 
 [tool.ruff.lint.per-file-ignores]
