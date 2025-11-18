@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-"""
-Custom HTML tag handling example.
+"""Custom HTML tag handling example.
 
 Add a custom HTML handler for the bold <b> tag which encloses
 bold text with "**".
 
 Example:
     "Welcome to <b>Chur</b>" is rendered as "Welcome to **Chur**".
+
 """
 
 from lxml.html import fromstring

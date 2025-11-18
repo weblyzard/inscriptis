@@ -34,6 +34,7 @@ class Canvas:
         annotations: the list of recorded
             :class:`~inscriptis.annotation.Annotation`\s.
         _open_annotations: a map of open tags that contain annotations.
+
     """
 
     __slots__ = (
@@ -56,6 +57,7 @@ class Canvas:
 
         Args:
             tag: the tag to open.
+
         """
         if tag.annotation:
             self._open_annotations[tag] = self.current_block.idx
@@ -96,6 +98,7 @@ class Canvas:
 
         Args:
             tag: the tag to close.
+
         """
         if tag.display == Display.block:
             # write missing bullets, if no content has been written so far.
@@ -118,6 +121,7 @@ class Canvas:
 
         Args:
             tag: the HTML Block element to close
+
         """
         if tag.margin_after > self.margin:
             required_newlines = tag.margin_after - self.margin
@@ -146,6 +150,7 @@ class Canvas:
 
         Returns:
             True if the attempt was successful, False otherwise.
+
         """
         if not self.current_block.is_empty():
             self.blocks.append(self.current_block.content)

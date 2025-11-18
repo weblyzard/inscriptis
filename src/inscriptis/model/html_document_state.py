@@ -45,12 +45,13 @@ class HtmlDocumentState:
         Args:
           tag: the HTML start tag to process.
           attrs: a dictionary of HTML attributes and their respective values.
+
         """
         # use the css to handle tags known to it :)
         cur = self.tags[-1].get_refined_html_element(
             self.apply_attributes(
                 attrs,
                 html_element=self.css.get(tag, DEFAULT_HTML_ELEMENT).__copy__().set_tag(tag),
-            )
+            ),
         )
         self.tags.append(cur)

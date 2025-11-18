@@ -16,6 +16,7 @@ class CustomHtmlTagHandlerMapping(NamedTuple):
     Attributes:
         start_tag_mapping: a dictionary of custom start tag handlers.
         end_tag_mapping: a dictionary of custom end tag handlers.
+
     """
 
     start_tag_mapping: dict[str, Callable[[HtmlDocumentState, dict], None]]

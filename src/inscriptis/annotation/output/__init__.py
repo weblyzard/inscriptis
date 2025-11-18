@@ -42,5 +42,6 @@ class AnnotationProcessor:
         Returns:
             An output representation that has been changed according to the
             AnnotationProcessor's design.
+
         """
         raise NotImplementedError

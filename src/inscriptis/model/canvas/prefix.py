@@ -12,6 +12,7 @@ class Prefix:
         paddings: the list of paddings for the current and all previous tags.
         bullets: the list of bullets in the current and all previous tags.
         consumed: whether the current bullet has already been consumed.
+
     """
 
     __slots__ = ("bullets", "consumed", "current_padding", "paddings")
@@ -28,6 +29,7 @@ class Prefix:
         Args:
             padding_inline: the number of characters used for padding_inline
             bullet: an optional bullet.
+
         """
         self.current_padding += padding_inline
         self.paddings.append(padding_inline)

@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Runs a benchmarking suite to compare speed
-and output of different implementations.
-"""
+"""Run a benchmarking suite to compare speed and output of different implementations."""
 
 import argparse
 import operator
@@ -53,23 +50,16 @@ OUTFILE = "speed_comparisons.txt"
 
 
 class AbstractHtmlConverter:
-    """
-    An abstract HTML convert class.
-    """
+    """An abstract HTML convert class."""
 
     def get_text(self, html):
-        """
-        Returns:
-            a text representation of the given HTML snippet.
-        """
+        """Return a text representation of the given HTML snippet."""
         raise NotImplementedError
 
     def benchmark(self, html):
-        """
-        Benchmarks the classes HTML to text converter.
+        """Benchmarks the classes HTML to text converter.
 
-        Returns:
-            A tuple of the required time and the obtained text representation.
+        Return a tuple of the required time and the obtained text representation.
         """
         start_time = time()
         for _ in range(TRIES):
@@ -78,9 +68,7 @@ class AbstractHtmlConverter:
 
 
 class BeautifulSoupHtmlConverter(AbstractHtmlConverter):
-    """
-    Converts HTML to text using BeautifulSoup.
-    """
+    """Converts HTML to text using BeautifulSoup."""
 
     name = "BeautifulSoup"
 
@@ -100,9 +88,7 @@ class BeautifulSoupHtmlConverter(AbstractHtmlConverter):
 
 
 class JustextConverter(AbstractHtmlConverter):
-    """
-    Converts HTML to text using Justtext.
-    """
+    """Converts HTML to text using Justtext."""
 
     name = "Justtext"
 
@@ -116,9 +102,7 @@ class JustextConverter(AbstractHtmlConverter):
 
 
 class Html2TextConverter(AbstractHtmlConverter):
-    """
-    Converts HTML to text using Html2Text.
-    """
+    """Converts HTML to text using Html2Text."""
 
     name = "Html2Text"
 
@@ -133,9 +117,7 @@ class Html2TextConverter(AbstractHtmlConverter):
 
 
 class LynxConverter(AbstractHtmlConverter):
-    """
-    Converts HTML to text using lynx.
-    """
+    """Converts HTML to text using lynx."""
 
     name = "Lynx"
 
@@ -166,9 +148,7 @@ class LynxConverter(AbstractHtmlConverter):
 
 
 class LinksConverter(AbstractHtmlConverter):
-    """
-    Converts HTML to text using links.
-    """
+    """Converts HTML to text using links."""
 
     name = "Links"
 
@@ -199,9 +179,7 @@ class LinksConverter(AbstractHtmlConverter):
 
 
 class InscriptisHtmlConverter(AbstractHtmlConverter):
-    """
-    Converts HTML to text using Inscriptis.
-    """
+    """Converts HTML to text using Inscriptis."""
 
     name = "Inscriptis"
 
@@ -217,18 +195,14 @@ DEFAULT_CACHE_DIR = os.path.join(BENCHMARKING_ROOT, "html_cache")
 
 
 def save_to_file(algorithm, url, data, benchmarking_results_dir):
-    """
-    Saves a benchmarking result to the given file.
-    """
+    """Save the benchmarking result to the given file."""
     result_file = os.path.join(benchmarking_results_dir, f"{algorithm}_{url}.txt")
     with open(result_file, "w") as output_file:
         output_file.write(data)
 
 
 def get_speed_table(times):
-    """
-    Provides the table which compares the conversion speed.
-    """
+    """Provide the table which compares the conversion speed."""
     fastest = min((value for _, value in times.items()))
     longest_key = max(len(key) for key, _ in times.items())
     longest_value = max(len(str(value)) for _, value in times.items())
@@ -251,9 +225,7 @@ def get_speed_table(times):
 
 
 def get_fname(url) -> str:
-    """
-    Transforms a URL to a file name.
-    """
+    """Transform a URL to a file name."""
     trash = (("http://", ""), ("https://", ""), ("/", "-"), (":", "-"), ("%", ""))
 
     for key, value in trash:
@@ -272,9 +244,7 @@ CONVERTER = (
 
 
 def parse_args():
-    """
-    Parse optional benchmarking arguments.
-    """
+    """Parse optional benchmarking arguments."""
     parser = argparse.ArgumentParser(description="Inscriptis benchmarking suite")
     parser.add_argument(
         "converter",
@@ -306,11 +276,11 @@ def parse_args():
 
 
 def _setup_benchmarking_directories(args):
-    """
-    Setup the benchmarking result and caching directories.
+    """Set up the benchmarking result and caching directories.
 
     Args:
         args: command line arguments that provide the directory names.
+
     """
     if not os.path.exists(args.benchmarking_results):
         os.makedirs(args.benchmarking_results)
@@ -319,16 +289,17 @@ def _setup_benchmarking_directories(args):
 
 
 def _fetch_url(url, cache_dir):
-    """
-    Fetch the given URL either from the cache or from the Web.
+    """Fetch the given URL either from the cache or from the Web.
 
     URLs that are not yet cached are added to the cache.
 
     Args:
         url: the URL to fetch.
+        cache_dir: the cache directory.
 
     Returns:
         A tuple of the cache file name and the URLs content.
+
     """
     source_name = get_fname(url)
     source_cache_path = os.path.join(cache_dir, source_name)
@@ -349,14 +320,13 @@ def _fetch_url(url, cache_dir):
 
 
 def benchmark(args, source_list):
-    """
-    Run the benchmark.
+    """Run the benchmark.
 
     Args:
         args: command line arguments
         source_list: a list of URLs to benchmark.
-    """
 
+    """
     _setup_benchmarking_directories(args)
 
     output = []

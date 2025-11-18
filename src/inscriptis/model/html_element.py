@@ -1,5 +1,4 @@
-"""
-The HtmlElement class controls how Inscriptis interprets HTML Elements.
+"""The HtmlElement class controls how Inscriptis interprets HTML Elements.
 
 - The module :mod:`inscriptis.css_profiles` contain CSS profiles which assign
   to each standard HTML tag the corresponding :class:`HtmlElement`.
@@ -36,6 +35,7 @@ class HtmlElement:
         valign: the element's vertical alignment.
         previous_margin_after: the margin after of the previous HtmlElement.
         annotation: annotations associated with the HtmlElement.
+
     """
 
     __slots__ = (
@@ -114,6 +114,7 @@ class HtmlElement:
 
         Args:
             text: the text to write
+
         """
         if not text:
             return
@@ -138,6 +139,7 @@ class HtmlElement:
 
         Returns:
             The refined element with the context applied.
+
         """
         new.canvas = self.canvas
 

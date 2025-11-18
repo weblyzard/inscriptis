@@ -23,6 +23,7 @@ class Block:
     Args:
         idx: the current block's start index.
         prefix: prefix used within the current block.
+
     """
 
     __slots__ = ("_content", "collapsable_whitespace", "idx", "prefix")
@@ -39,6 +40,7 @@ class Block:
         Args:
             text: the text to merge.
             whitespace: whitespace handling.
+
         """
         if whitespace == WhiteSpace.pre:
             self.merge_pre_text(text)
@@ -54,6 +56,7 @@ class Block:
         Note:
             If the previous text ended with a whitespace and text starts with one, both
              will automatically collapse into a single whitespace.
+
         """
         normalized_text = []
 
@@ -76,6 +79,7 @@ class Block:
 
         Args:
             text: the text to merge
+
         """
         text = "".join((self.prefix.first, text.replace("\n", "\n" + self.prefix.rest)))
         text = unescape(text)

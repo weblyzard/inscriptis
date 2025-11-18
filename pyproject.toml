@@ -4,7 +4,7 @@ version = "2.7.0"
 description = "inscriptis - HTML to text converter."
 license = "Apache-2.0"
 readme = "README.rst"
-requires-python = ">=3.9,<3.14"
+requires-python = ">=3.10,<3.15"
 
 authors = [
         { name = "Albert Weichselbraun", email = "albert.weichselbraun@fhgr.ch" },
@@ -20,12 +20,13 @@ classifiers = [
         "Topic :: Text Processing :: Markup :: HTML",
         "Topic :: Utilities",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",        
     ]
+    
 
 dependencies = [
   "requests>=2.32.3,<3.0.0",
@@ -49,14 +50,15 @@ web-service = [
 
 [dependency-groups]
 dev = [
-    "pytest>=8.3.5",
+    "pytest>=9.0.1",
     "fastapi>=0.115.11,<1.0.0",
-    "ruff>=0.11.12",
+    "ruff>=0.14.5",
     "httpx>=0.28.1",
-    "uvicorn>=0.34.2",
-    "ty>=0.0.1a7",
-    "pytest-cov>=6.1.1",
-    "safety>=3.5.1",
+    "uvicorn>=0.38.0",
+    "ty>=0.0.1a26",
+    "pytest-cov>=7.0.0",
+    "safety>=3.7.0",
+    "tox>=4.23.0",
 ]
 [build-system]
 requires = ["hatchling"]
@@ -77,31 +79,55 @@ quote-style = "double"
 
 [tool.ruff.lint]
 select = [
-    # pycodestyle
-    "E",
-    # Pyflakes
-    "F",
-    # pyupgrade
-    "UP",
-    # flake8-builtins
-    "A",
-    # flake8-bugbear
-    "B",
-    # flake8-comprehensions
-    "C4",
-    # flake8-errmsg
-    "EM",
-    # flake8-quotes
-    "Q",
-    # flake8-pyi
-    "PYI",
-    # flake8-simplify
-    "SIM",
-    # isort
-    "I",
-    "RSE", "RET", "SLOT", "TID", "TC", "C90", "N", "PERF", "E", "W", 
-    "UP", "FURB", "RUF", "TRY", "YTT"
+    "A",      # flake8-builtins
+    "B",      # flake8-bugbear
+    "COM",    # flake8-commas - trailing commas
+    "BLE",    # flake8-blind-except - avoid bare except
+    "D",      # flake8-docstrings
+    "C4",     # flake8-comprehensions
+    "E",      # pycodestyle
+    "EM",     # flake8-errmsg
+    "F",      # Pyflakes
+    "FA",     # flake8-future-annotations - use modern annotations
+    "ICN",    # flake8-import-conventions - standard import aliases
+    "PIE",    # flake8-pie
+    "PLE",    # pylint equivalents
+    "PLW",    # pylint equivalents
+    "PTH",    # flake8-use-pathlib - prefer pathlib over os.path
+    "PYI",    # flake8-pyi
+    "Q",      # flake8-quotes
+    "N",      # flake8-naming
+    "SIM",    # flake8-simplify
+    "I",      # isort
+    "RET",    # flake8-return
+    "RSE", "SLOT", "TID", "TC", "C90", "PERF", "E", "W", 
+    "FURB", "RUF", "TRY", "YTT",
+    "TCH",    # flake8-type-checking - optimize type checking imports
+    "S",      # flake8-bandit (security) — replaces dlint/bandit
+    "UP",     # pyupgrade
 ]
+
+ignore = [
+    "D102",   # missing docstring in public method
+    "D105",   # missing docstring in magic method
+    "D107",   # missing docstring in __init__
+    "D203",   # incorrect-blank-line-before-class
+    "D213",   # multi-line-summary-second-line
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "S101",   # allow asserts
+  "D",      # no dockstring checks
+  "S310",   # allow URLs
+  "PTH",    # prefer pathlib
+]
+"benchmarking/*.py" = [
+  "S310",   # allow URLs
+  "S603",   # call: check for execution of untrusted input
+  "PTH",    # prefer pathlib  
+] 
+
 
 [tool.ty.src]
 root="./src"

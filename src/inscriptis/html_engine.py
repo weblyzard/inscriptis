@@ -56,6 +56,7 @@ class Inscriptis:
       # transform the HTML tree to text.
       parser = Inscriptis(html_tree)
       text = parser.get_text()
+
     """
 
     def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None) -> None:
@@ -95,7 +96,9 @@ class Inscriptis:
         """Parse the HTML tree.
 
         Args:
+            state: the current HTML document state.
             tree: the HTML tree to parse.
+
         """
         if isinstance(tree.tag, str):
             state.apply_starttag_layout(tree.tag, tree.attrib)

@@ -36,6 +36,7 @@ class CssParse:
           style_attribute: The attribute value of the given style sheet.
                            Example: display: none
           html_element: The HtmlElement to which the given style is applied.
+
         """
         for style_directive in style_attribute.lower().split(";"):
             if ":" not in style_directive:
@@ -60,6 +61,7 @@ class CssParse:
 
         Returns:
             the length in em.
+
         """
         _m = CssParse.RE_UNIT.search(length)
         value = float(_m.group(1))
