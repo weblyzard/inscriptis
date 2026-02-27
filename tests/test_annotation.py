@@ -14,12 +14,20 @@ def test_horizontal_shift():
 
     # no shift
     assert horizontal_shift(
-        a, content_width=5, line_width=10, align=HorizontalAlignment.left, shift=0,
+        a,
+        content_width=5,
+        line_width=10,
+        align=HorizontalAlignment.left,
+        shift=0,
     ).pop() == Annotation(0, 4, "test")
 
     # shift
     assert horizontal_shift(
-        a, content_width=5, line_width=10, align=HorizontalAlignment.left, shift=3,
+        a,
+        content_width=5,
+        line_width=10,
+        align=HorizontalAlignment.left,
+        shift=3,
     ).pop() == Annotation(3, 7, "test")
 
     # realignment to the right
