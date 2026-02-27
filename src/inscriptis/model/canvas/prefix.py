@@ -33,7 +33,7 @@ class Prefix:
         """
         self.current_padding += padding_inline
         self.paddings.append(padding_inline)
-        self.bullets.append(bullet if bullet else "")
+        self.bullets.append(bullet or "")
 
     def remove_last_prefix(self) -> None:
         """Remove the last prefix from the list."""
