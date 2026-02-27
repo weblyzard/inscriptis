@@ -1,11 +1,7 @@
 name: helm release
 
 on:
-  push:
-    branches:
-      - PhilippKuntschik-patch-2
-    tags:
-      - '*'
+  workflow_dispatch:
 
 jobs:
   dispatch_helm_release:
