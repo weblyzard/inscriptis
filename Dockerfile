@@ -1,7 +1,7 @@
 #
 # Stage 1 - Install build dependencies
 #
-FROM python:3.11-slim-bullseye AS builder
+FROM python:3.13-slim-bullseye AS builder
 
 WORKDIR /inscriptis
 RUN python -m venv .venv && .venv/bin/python -m pip install --upgrade pip
@@ -11,7 +11,7 @@ RUN .venv/bin/pip install --no-cache-dir inscriptis[web-service] && \
 #
 # Stage 2 - Copy only necessary files to the runner stage
 #
-FROM python:3.11-slim-bullseye 
+FROM python:3.13-slim-bullseye 
 LABEL maintainer="albert@weichselbraun.net"
 
 # Note: only copy the src directory, to prevent bloating the image with 
