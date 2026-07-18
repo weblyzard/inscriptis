@@ -37,7 +37,7 @@ class HtmlExtractor(AnnotationProcessor):
             tagged_content.append(text[current_idx:idx].replace("\n", "</pre>\n<pre>"))
             current_idx = idx
             tagged_content.extend(tags)
-        tagged_content.append(text[current_idx:].replace("\n", "</pre>\n</pre>"))
+        tagged_content.append(text[current_idx:].replace("\n", "</pre>\n<pre>"))
         return "".join(tagged_content) + "</pre></body></html>"
 
     @staticmethod

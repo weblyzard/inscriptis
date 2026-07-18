@@ -83,3 +83,18 @@ def test_trailing_tag_annotation():
     assert result == (
         '<?xml version="1.0" encoding="UTF-8" ?>\n<content>\nEhre sei <emphasis>Gott!</emphasis>\n</content>'
     )
+
+
+def test_html_annotator_trailing_newlines():
+    """Trailing text after the last annotation must reopen <pre> per newline."""
+    processor = HtmlExtractor()
+    result = processor({"text": "Hi\nthere\nend", "label": [[0, 2, "greeting"]]})
+    body = result.split("</style>")[1]
+    assert "</pre>\n</pre>" not in body
+    assert body == (
+        "</head><body><pre>"
+        '<span class="greeting-label">greeting</span><span class="greeting">Hi</span>'
+        "</pre>\n"
+        "<pre>there</pre>\n"
+        "<pre>end</pre></body></html>"
+    )
