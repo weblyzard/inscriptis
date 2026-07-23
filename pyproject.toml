@@ -50,15 +50,15 @@ web-service = [
 
 [dependency-groups]
 dev = [
-    "pytest>=9.0.2",
+    "pytest>=9.1.1",
     "fastapi>=0.118.0,<1.0.0",
-    "ruff>=0.15.17",
-    "httpx2>=2.4.0",
+    "ruff>=0.15.22",
+    "httpx2>=2.7.0",
     "uvicorn>=0.38.0",
-    "ty>=0.0.50",
-    "pytest-cov>=7.0.0",
-    "safety>=3.7.0",
-    "tox>=4.23.0",
+    "ty>=0.0.62",
+    "pytest-cov>=7.1.0",
+    "safety>=3.8.1",
+    "tox>=4.58.0",
 ]
 [build-system]
 requires = ["hatchling"]
@@ -129,8 +129,13 @@ ignore = [
 
 
 [tool.ty.src]
-root="./src"
+exclude = ["benchmarking", "tests"]
+
+[tool.ty.environment]
+root = ["./src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=inscriptis --cov-report=term-missing"
+
+
