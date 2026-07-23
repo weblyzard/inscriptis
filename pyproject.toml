@@ -1,6 +1,6 @@
 [project]
 name = "inscriptis"
-version = "2.7.2"
+version = "2.7.3"
 description = "inscriptis - HTML to text converter."
 license = "Apache-2.0"
 readme = "README.rst"
