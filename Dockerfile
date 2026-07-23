@@ -1,7 +1,7 @@
 #
 # Stage 1 - Install build dependencies
 #
-FROM python:3.13-slim-bullseye AS builder
+FROM python:3.14-slim-bullseye AS builder
 
 WORKDIR /inscriptis
 RUN python -m venv .venv && .venv/bin/python -m pip install --upgrade pip
