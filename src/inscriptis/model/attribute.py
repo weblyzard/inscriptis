@@ -2,20 +2,24 @@
 
 """HTML attribute handling."""
 
+from collections.abc import Callable
 from copy import copy
 
 from inscriptis.annotation.parser import ApplyAnnotation
 from inscriptis.model.css import CssParse
 from inscriptis.model.html_element import HtmlElement
 
-DEFAULT_ATTRIBUTE_MAP = {
+AttributeHandler = Callable[[str, HtmlElement], None]
+
+
+DEFAULT_ATTRIBUTE_MAP : dict[str, AttributeHandler] = {
     "style": CssParse.attr_style,
     "align": CssParse.attr_horizontal_align,
     "valign": CssParse.attr_vertical_align,
 }
 
 
-def merge_function(func1, func2):
+def merge_function(func1: AttributeHandler, func2: AttributeHandler) -> AttributeHandler:
     """Merge two functions with the same arguments into a single one.
 
     This function is used for cascading functions that operate on HtmlElements
@@ -47,7 +51,7 @@ class Attribute:
     """
 
     def __init__(self):
-        self.attribute_mapping = DEFAULT_ATTRIBUTE_MAP
+        self.attribute_mapping: dict[str, AttributeHandler] = DEFAULT_ATTRIBUTE_MAP
 
     def apply_attributes(self, attributes: dict[str, str], html_element: HtmlElement) -> HtmlElement:
         """Apply the attributes to the given HTML element.
