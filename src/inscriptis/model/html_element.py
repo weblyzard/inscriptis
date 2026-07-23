@@ -70,7 +70,7 @@ class HtmlElement:
         limit_whitespace_affixes: bool = False,
         align: HorizontalAlignment = HorizontalAlignment.left,
         valign: VerticalAlignment = VerticalAlignment.middle,
-        annotation: tuple[str] = (),
+        annotation: tuple[str, ...] = (),
     ):
         self.canvas = None
         self.tag = tag

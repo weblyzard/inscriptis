@@ -68,7 +68,7 @@ class ParserConfig:
         display_anchors: bool = False,
         annotation_rules: dict[str, list[str]] | None = None,
         table_cell_separator: str = "  ",
-        custom_html_tag_handler_mapping: CustomHtmlTagHandlerMapping = None,
+        custom_html_tag_handler_mapping: CustomHtmlTagHandlerMapping | None = None,
     ):
         """Create a ParserConfig configuration.
 

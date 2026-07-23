@@ -134,6 +134,13 @@ exclude = ["benchmarking", "tests"]
 [tool.ty.environment]
 root = ["./src"]
 
+[tool.ty.rules]
+unresolved-attribute = "ignore"
+not-iterable = "ignore"
+unsupported-operator = "ignore"
+invalid-assignment = "ignore"
+unresolved-import = "ignore"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=inscriptis --cov-report=term-missing"

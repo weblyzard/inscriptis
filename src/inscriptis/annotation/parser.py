@@ -43,7 +43,7 @@ class ApplyAnnotation:
         annotations: tuple,
         attr: str,
         match_tag: str = "",
-        match_value: str = "",
+        match_value: str | None = None,
     ):
         self.annotations = tuple(annotations)
         self.attr = attr

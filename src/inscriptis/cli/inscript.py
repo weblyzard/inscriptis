@@ -147,7 +147,7 @@ def get_html_content(url: str, timeout: int, encoding: str = "") -> str:
             return f.read()
     elif url.startswith(("http://", "https://")):
         req = requests.get(url, timeout=timeout)
-        return req.content.decode(encoding or req.encoding)
+        return req.content.decode(encoding or req.encoding or DEFAULT_ENCODING, errors="ignore")
     return ""
 
 

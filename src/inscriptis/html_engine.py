@@ -59,12 +59,12 @@ class Inscriptis:
 
     """
 
-    def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig = None) -> None:
+    def __init__(self, html_tree: lxml.html.HtmlElement, config: ParserConfig | None = None) -> None:
         # use the default configuration, if no config object is provided
         config = config or ParserConfig()
 
         # setup start and end tag call tables
-        self.start_tag_handler_dict: dict[str, Callable[[HtmlDocumentState, dict], None]] = {
+        self.start_tag_handler_dict: dict[str, Callable[[HtmlDocumentState, dict], None] | None] = {
             "table": table_start_handler,
             "tr": tr_start_handler,
             "td": td_start_handler,
@@ -76,7 +76,7 @@ class Inscriptis:
             "a": a_start_handler if config.parse_a() else None,
             "img": img_start_handler if config.display_images else None,
         }
-        self.end_tag_handler_dict: dict[str, Callable[[HtmlDocumentState], None]] = {
+        self.end_tag_handler_dict: dict[str, Callable[[HtmlDocumentState], None] | None] = {
             "table": table_end_handler,
             "ul": ul_end_handler,
             "ol": ol_end_handler,
