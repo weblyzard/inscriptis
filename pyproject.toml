@@ -136,8 +136,6 @@ root = ["./src"]
 
 [tool.ty.rules]
 unresolved-attribute = "ignore"
-not-iterable = "ignore"
-unsupported-operator = "ignore"
 unresolved-import = "ignore"
 
 [tool.pytest.ini_options]

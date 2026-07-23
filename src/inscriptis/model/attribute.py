@@ -12,7 +12,7 @@ from inscriptis.model.html_element import HtmlElement
 AttributeHandler = Callable[[str, HtmlElement], None]
 
 
-DEFAULT_ATTRIBUTE_MAP : dict[str, AttributeHandler] = {
+DEFAULT_ATTRIBUTE_MAP: dict[str, AttributeHandler] = {
     "style": CssParse.attr_style,
     "align": CssParse.attr_horizontal_align,
     "valign": CssParse.attr_vertical_align,

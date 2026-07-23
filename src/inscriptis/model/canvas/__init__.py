@@ -89,7 +89,7 @@ class Canvas:
             self.current_block = self.current_block.new_block()
             self.margin = 0
 
-    def write(self, tag: HtmlElement, text: str, whitespace: WhiteSpace|None= None) -> None:
+    def write(self, tag: HtmlElement, text: str, whitespace: WhiteSpace | None = None) -> None:
         """Write the given text to the current block."""
         self.current_block.merge(text, whitespace or tag.whitespace)
 
