@@ -20,6 +20,7 @@ class TableCell(Canvas):
     """
 
     __slots__ = (
+        "_content_height",
         "_width",
         "align",
         "annotation_counter",
@@ -40,6 +41,7 @@ class TableCell(Canvas):
         self._width = None
         self.line_width: list[int] = []
         self.vertical_padding = 0
+        self._content_height = 0
 
     def normalize_blocks(self) -> int:
         """Split multi-line blocks into multiple one-line blocks.
@@ -52,7 +54,10 @@ class TableCell(Canvas):
         self.blocks = list(chain(*(line.split("\n") for line in self.blocks)))
         if not self.blocks:
             self.blocks = [""]
-        return len(self.blocks)
+        # Remember the pre-padding row count so annotation mapping can
+        # distinguish content lines from padding lines added by `height.setter`.
+        self._content_height = len(self.blocks)
+        return self._content_height
 
     @property
     def height(self) -> int:
@@ -133,14 +138,26 @@ class TableCell(Canvas):
             return result
 
         # the more challenging one - multiple cell lines
-        line_break_pos = list(accumulate(self.line_width))
+        #
+        # `self.line_width` is `height`-long after vertical padding was
+        # applied: zero-length entries fill the top (`self.vertical_padding`)
+        # and bottom (for VerticalAlignment.middle) padding slots, while the
+        # remaining `self._content_height` entries hold the original line
+        # widths. Annotation `start` positions reference the *pre-padding*
+        # joined content (one newline between lines), so we must scan only
+        # the content widths to find which content line an annotation falls
+        # on, then offset the destination by the top padding to land on the
+        # correct output line.
+        top_pad = self.vertical_padding
+        content_widths = self.line_width[top_pad : top_pad + self._content_height]
+        line_break_pos = list(accumulate(content_widths))
         annotation_lines = [[] for _ in self.blocks]
 
         # assign annotations to the corresponding line
         for a in self.annotations:
             for no, line_break in enumerate(line_break_pos):
                 if a.start <= (line_break + no):  # consider newline
-                    annotation_lines[no + self.vertical_padding].append(a)
+                    annotation_lines[no + top_pad].append(a)
                     break
 
         # compute the annotation index based on its line and delta :)
