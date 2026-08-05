@@ -55,6 +55,7 @@ class HorizontalAlignment(Enum):
 
         Returns:
             The formatted text.
+
         """
         match self:
             case HorizontalAlignment.left:
@@ -63,6 +64,7 @@ class HorizontalAlignment(Enum):
                 return text.rjust(width)
             case HorizontalAlignment.center:
                 return text.center(width)
+
 
 class VerticalAlignment(Enum):
     """Specify the content's vertical alignment."""

@@ -7,6 +7,7 @@ from inscriptis.annotation import Annotation, horizontal_shift
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 from inscriptis.model.canvas import Canvas
 
+
 class TableCell(Canvas):
     """A table cell.
 
@@ -100,9 +101,9 @@ class TableCell(Canvas):
             The cell's current width.
 
         """
-        if self._width:
+        if self._width > 0:
             return self._width
-        return max(len(line) for line in chain(*(block.split("\n") for block in self.blocks))) or 0
+        return max(map(len, self.blocks), default=0)
 
     @width.setter
     def width(self, width):
@@ -137,7 +138,7 @@ class TableCell(Canvas):
         self.vertical_padding = top_padding
         bottom_padding = padding - top_padding
 
-        empty_line = "" if self._width is None else " " * self._width
+        empty_line = " " * self._width
         self._formatted_blocks = (
             top_padding * [empty_line]
             + [self.align.format(b, self._width) for b in self._content_blocks]
