@@ -45,3 +45,32 @@ def test_width():
     cell.width = 95
     cell.normalize_blocks()
     assert cell.width == 95
+
+
+def test_explicit_zero_width_is_preserved():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
+    cell.blocks = [""]
+    cell.normalize_blocks()
+
+    assert cell.width == 0
+
+
+def test_height_setter_rebuilds_from_content_blocks():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
+    cell.blocks = ["a", "b"]
+    cell.normalize_blocks()
+
+    cell.height = 5
+    cell.height = 4
+
+    assert cell.blocks == ["a", "b", "", ""]
+    assert cell.vertical_padding == 0
+
+
+def test_empty_cell():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
+    cell.blocks = []
+    cell.normalize_blocks()
+
+    assert cell.height == 1
+    assert cell.width == 0

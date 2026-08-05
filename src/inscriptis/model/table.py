@@ -7,7 +7,6 @@ from inscriptis.annotation import Annotation, horizontal_shift
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 from inscriptis.model.canvas import Canvas
 
-
 class TableCell(Canvas):
     """A table cell.
 
@@ -20,13 +19,14 @@ class TableCell(Canvas):
     """
 
     __slots__ = (
-        "_content_height",
+        "_content_blocks",
+        "_formatted_blocks",
+        "_height",
         "_width",
         "align",
         "annotation_counter",
         "annotations",
         "block_annotations",
-        "blocks",
         "current_block",
         "line_width",
         "margin",
@@ -38,26 +38,49 @@ class TableCell(Canvas):
         super().__init__()
         self.align = align
         self.valign = valign
-        self._width = None
-        self.line_width: list[int] = []
+        self._height: int | None = None
+        self._width: int | None = None
+        self._formatted_blocks: list[str] | None = None
+        self._content_blocks: list[str] = []
+        self.line_width: list[int]
         self.vertical_padding = 0
-        self._content_height = 0
 
     def normalize_blocks(self) -> int:
         """Split multi-line blocks into multiple one-line blocks.
+
+        Normalizes the cell's blocks by splitting multi-line blocks into multiple one-line blocks.
+        This is required for computing the cell's height and width.
+
+        Note:
+            Each cell has at least one empty block.
 
         Returns:
             The height of the normalized cell.
 
         """
         self.flush_inline()
-        self.blocks = list(chain(*(line.split("\n") for line in self.blocks)))
-        if not self.blocks:
-            self.blocks = [""]
-        # Remember the pre-padding row count so annotation mapping can
-        # distinguish content lines from padding lines added by `height.setter`.
-        self._content_height = len(self.blocks)
-        return self._content_height
+        self._content_blocks = list(chain(*(line.split("\n") for line in self.blocks))) or [""]
+        return len(self._content_blocks)
+
+    @property
+    def blocks(self) -> list[str]:
+        """Return the content blocks and any padding required to satisfy the cell's vertical formatting.
+
+        Returns:
+            The cell's content blocks.
+
+        """
+        return self._formatted_blocks or self._content_blocks
+
+    @blocks.setter
+    def blocks(self, blocks: list[str]):
+        """Set the cell's content blocks.
+
+        Args:
+            blocks: The cell's content blocks.
+
+        """
+        self._content_blocks = blocks
 
     @property
     def height(self) -> int:
@@ -67,7 +90,7 @@ class TableCell(Canvas):
             The cell's current height.
 
         """
-        return max(1, len(self.blocks))
+        return len(self.blocks)
 
     @property
     def width(self) -> int:
@@ -77,7 +100,7 @@ class TableCell(Canvas):
             The cell's current width.
 
         """
-        if self._width:
+        if self._width is not None:
             return self._width
         return max(len(line) for line in chain(*(block.split("\n") for block in self.blocks)))
 
@@ -94,29 +117,35 @@ class TableCell(Canvas):
 
         # record new width and start reformatting
         self._width = width
-        format_spec = f"{{:{self.align.value}{width}}}"
-        self.blocks = [format_spec.format(b) for b in self.blocks]
+        self._reformat_blocks()
 
     @height.setter
     def height(self, height: int):
-        """Set the cell's height to the given value.
+        """Adjust the _content_blocks to match the given height."""
+        if height <= len(self._content_blocks):
+            self._formatted_blocks = None
+            self.vertical_padding = 0
+            return
+        self._height = height
+        self._reformat_blocks()
 
-        Notes:
-            Depending on the height and the cell's vertical formatting this
-            might require the introduction of empty lines.
+    def _reformat_blocks(self) -> None:
+        """Reformat the cell's content blocks to match the given width and height."""
+        padding = self._height - len(self._content_blocks) if self._height else 0
+        format_spec = f"{{:{self.align.value}{self._width}}}" if self._width else "{}"
 
-        """
-        rows = len(self.blocks)
-        if rows < height:
-            empty_line = [""]
-            if self.valign == VerticalAlignment.bottom:
-                self.vertical_padding = height - rows
-                self.blocks = self.vertical_padding * empty_line + self.blocks
-            elif self.valign == VerticalAlignment.middle:
-                self.vertical_padding = (height - rows) // 2
-                self.blocks = self.vertical_padding * empty_line + self.blocks + ((height - rows + 1) // 2 * empty_line)
-            else:
-                self.blocks = self.blocks + ((height - rows) * empty_line)
+        top_padding = padding * self.valign.value // 2
+        self.vertical_padding = top_padding
+        bottom_padding = padding - top_padding
+
+        print(f"top_padding: {top_padding}, bottom_padding: {bottom_padding}, padding: {padding}")
+
+        empty_line = ["" if self._width is None else " " * self._width]
+        self._formatted_blocks = (
+            top_padding * empty_line
+            + [format_spec.format(b) for b in self._content_blocks]
+            + bottom_padding * empty_line
+        )
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
         """Return a list of all annotations within the TableCell.
@@ -142,14 +171,14 @@ class TableCell(Canvas):
         # `self.line_width` is `height`-long after vertical padding was
         # applied: zero-length entries fill the top (`self.vertical_padding`)
         # and bottom (for VerticalAlignment.middle) padding slots, while the
-        # remaining `self._content_height` entries hold the original line
+        # remaining `self._height` entries hold the original line
         # widths. Annotation `start` positions reference the *pre-padding*
         # joined content (one newline between lines), so we must scan only
         # the content widths to find which content line an annotation falls
         # on, then offset the destination by the top padding to land on the
         # correct output line.
         top_pad = self.vertical_padding
-        content_widths = self.line_width[top_pad : top_pad + self._content_height]
+        content_widths = self.line_width[top_pad : top_pad + len(self._content_blocks)]
         line_break_pos = list(accumulate(content_widths))
         annotation_lines = [[] for _ in self.blocks]
 

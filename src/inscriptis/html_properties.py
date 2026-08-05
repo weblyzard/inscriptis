@@ -50,9 +50,9 @@ class HorizontalAlignment(Enum):
 class VerticalAlignment(Enum):
     """Specify the content's vertical alignment."""
 
-    top = 1
+    top = 0
     """Align all content at the top."""
-    middle = 2
+    middle = 1
     """Align all content in the middle."""
-    bottom = 3
+    bottom = 2
     """Align all content at the bottom."""
