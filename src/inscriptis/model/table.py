@@ -131,7 +131,7 @@ class TableCell(Canvas):
 
     def _reformat_blocks(self) -> None:
         """Reformat the cell's content blocks to match the given width and height."""
-        padding = self._height - len(self._content_blocks) if self._height else 0
+        padding = max(0, self._height - len(self._content_blocks))
 
         top_padding = padding * self.valign.value // 2
         self.vertical_padding = top_padding
