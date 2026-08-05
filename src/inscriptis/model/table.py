@@ -38,8 +38,8 @@ class TableCell(Canvas):
         super().__init__()
         self.align = align
         self.valign = valign
-        self._height: int | None = None
-        self._width: int | None = None
+        self._height: int = 0
+        self._width: int = 0
         self._formatted_blocks: list[str] | None = None
         self._content_blocks: list[str] = []
         self.line_width: list[int]
@@ -100,9 +100,9 @@ class TableCell(Canvas):
             The cell's current width.
 
         """
-        if self._width is not None:
+        if self._width:
             return self._width
-        return max(len(line) for line in chain(*(block.split("\n") for block in self.blocks)))
+        return max(len(line) for line in chain(*(block.split("\n") for block in self.blocks))) or 0
 
     @width.setter
     def width(self, width):
@@ -132,19 +132,16 @@ class TableCell(Canvas):
     def _reformat_blocks(self) -> None:
         """Reformat the cell's content blocks to match the given width and height."""
         padding = self._height - len(self._content_blocks) if self._height else 0
-        format_spec = f"{{:{self.align.value}{self._width}}}" if self._width else "{}"
 
         top_padding = padding * self.valign.value // 2
         self.vertical_padding = top_padding
         bottom_padding = padding - top_padding
 
-        print(f"top_padding: {top_padding}, bottom_padding: {bottom_padding}, padding: {padding}")
-
-        empty_line = ["" if self._width is None else " " * self._width]
+        empty_line = "" if self._width is None else " " * self._width
         self._formatted_blocks = (
-            top_padding * empty_line
-            + [format_spec.format(b) for b in self._content_blocks]
-            + bottom_padding * empty_line
+            top_padding * [empty_line]
+            + [self.align.format(b, self._width) for b in self._content_blocks]
+            + bottom_padding * [empty_line]
         )
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
