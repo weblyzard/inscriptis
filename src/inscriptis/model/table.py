@@ -126,7 +126,7 @@ class TableCell(Canvas):
         return tuple(
             chain(
                 (empty_line,) * self._top_padding,
-                tuple(self.align.format(line, self.width) for line in self._content_blocks),
+                (self.align.format(line, self.width) for line in self._content_blocks),
                 (empty_line,) * (self._height - len(self._content_blocks) - self._top_padding),
             )
         )
@@ -212,7 +212,7 @@ class TableCell(Canvas):
     @property
     def _top_padding(self) -> int:
         """Return the number of vertical padding lines."""
-        return max((self._height - len(self._content_blocks)) * self.valign.value // 2, 0)
+        return max((self.height - len(self._content_blocks)) * self.valign.value // 2, 0)
 
     @cached_property
     def _line_width(self) -> tuple[int, ...]:
