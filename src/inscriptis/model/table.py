@@ -25,7 +25,6 @@ class TableCell(Canvas):
 
     Attributes:
         __dict__: used by the cached_property decorator to store cached values.
-        _content_width: the width of the cell's content (might be smaller than the requested width)
         _content_blocks: the cell's content blocks (might be smaller than the requested height)
         _width: the requested minimum width of the cell (might be larger than the content's width)
         _height: the requested minimum height of the cell (might be larger than the content's height)
