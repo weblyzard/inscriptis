@@ -28,20 +28,42 @@ def test_vertical_cell_formatting():
 
     # default top alignment
     cell.blocks = ["Ehre sei Gott!"]
+    cell.height = 4
+    assert list(cell.blocks) == ["Ehre sei Gott!", "", "", ""]
+
+    # bottom alignment
+    cell.blocks = ["Ehre sei Gott!"]
+    cell.valign = VerticalAlignment.bottom
+    cell.height = 4
+    assert list(cell.blocks) == ["", "", "", "Ehre sei Gott!"]
+
+    # middle alignment
+    cell.blocks = ["Ehre sei Gott!"]
+    cell.valign = VerticalAlignment.middle
+    cell.height = 4
+    assert list(cell.blocks) == ["", "Ehre sei Gott!", "", ""]
+
+
+def test_horizontal_and_vertical_cell_formatting():
+    """Check whether the vertical and horizontal padding are correct."""
+    cell = TableCell(align=HorizontalAlignment.left, valign=VerticalAlignment.top)
+
+    # default top alignment
+    cell.blocks = ["Ehre sei Gott!"]
     cell.width = 16
     cell.height = 4
-    assert cell.blocks == ["Ehre sei Gott!  ", "", "", ""]
+    assert list(cell.blocks) == ["Ehre sei Gott!  ", "                ", "                ", "                "]
 
     # bottom alignment
     cell.blocks = ["Ehre sei Gott!"]
     cell.valign = VerticalAlignment.bottom
     cell.width = 16
     cell.height = 4
-    assert cell.blocks == ["", "", "", "Ehre sei Gott!  "]
+    assert list(cell.blocks) == ["                ", "                ", "                ", "Ehre sei Gott!  "]
 
     # middle alignment
     cell.blocks = ["Ehre sei Gott!"]
     cell.valign = VerticalAlignment.middle
     cell.width = 16
     cell.height = 4
-    assert cell.blocks == ["", "Ehre sei Gott!  ", "", ""]
+    assert list(cell.blocks) == ["                ", "Ehre sei Gott!  ", "                ", "                "]
