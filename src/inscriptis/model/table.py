@@ -32,7 +32,6 @@ class TableCell(Canvas):
     __slots__ = (
         "__dict__",
         "_content_blocks",
-        "_content_width",
         "_height",
         "_width",
         "_align",
@@ -51,9 +50,8 @@ class TableCell(Canvas):
 
         # table content (might be smaller than the requested table width and height)
         self._content_blocks: list[str] = []
-        self._content_width: int = 0
 
-        # requested minimum table width and height (might be larger than the content's width and height)
+        # requested minimum table width and height (might be larger than the content's actual width and height)
         self._height: int = 0
         self._width: int = 0
 
@@ -70,7 +68,8 @@ class TableCell(Canvas):
         if not self._content_blocks:
             self._content_blocks = [""]
 
-        self._content_width = max(map(len, self._content_blocks))
+        # set the requested minimum table width to the maximum with of the content blocks.
+        self._width = max(map(len, self._content_blocks))
         self._invalidate_formatting()
         return len(self._content_blocks)
 
@@ -79,15 +78,14 @@ class TableCell(Canvas):
         """Return the cell's blocks.
 
         Note:
-            If the cell's width or height is larger than the content's width or height, 
-            _formatted_blocks will be returned instead of _content_blocks, which will 
-            include the necessary padding.
+            Once the cell's width is set or the requested height is larger than the number of content blocks, 
+            the cell's blocks are formatted to include horizontal and vertical padding.
 
         Returns:
             The cell's blocks.
 
         """
-        if self._width > self._content_width or self._height > 0:
+        if self._width or self._height > len(self._content_blocks):
             return self._formatted_blocks
         return self._content_blocks
 
@@ -137,7 +135,7 @@ class TableCell(Canvas):
             The cell's current width.
 
         """
-        return max(self._content_width, self._width)
+        return self._width
 
     @width.setter
     def width(self, width):
@@ -151,7 +149,7 @@ class TableCell(Canvas):
 
         """
         # record new width and start reformatting
-        if width > self._content_width and width != self._width:
+        if width != self._width:
             self.__dict__.pop("_formatted_blocks", None)
         self._width = width
 
