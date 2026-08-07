@@ -16,6 +16,10 @@ if TYPE_CHECKING:
     from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 
 
+class FrozenError(Exception):
+    """Raised when trying to modify a frozen object."""
+
+
 class TableCell(Canvas):
     """A table cell.
 
@@ -70,7 +74,6 @@ class TableCell(Canvas):
 
         # set the requested minimum table width to the maximum with of the content blocks.
         self._width = max(self._width, *map(len, self._content_blocks))
-        self._invalidate_formatting()
         return len(self._content_blocks)
 
     @property
@@ -97,8 +100,11 @@ class TableCell(Canvas):
             blocks: The cell's new blocks.
 
         """
+        if hasattr(self, "_content_blocks") and isinstance(self._content_blocks, tuple):
+            msg = "Cannot modify blocks after they have been normalized."
+            raise FrozenError(msg)
+
         self._content_blocks = blocks
-        self._invalidate_formatting()
 
     @cached_property
     def _formatted_blocks(self):
