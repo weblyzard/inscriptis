@@ -164,17 +164,14 @@ class TableCell(Canvas):
 
     @height.setter
     def height(self, height: int):
-        """Set the cell's height to the given value.
+        """Set the requested minimum cell height to the given value.
 
         Notes:
-            Depending on the height and the cell's vertical formatting this
-            might require the introduction of empty lines.
+            This might require reformatting the cell's content blocks to include vertical padding.
 
         """
-        if height <= len(self._content_blocks):
-            return
-
-        self._invalidate_formatting()
+        if height > len(self._content_blocks) and height != self._height:
+            self._invalidate_formatting()
         self._height = height
 
     @property
