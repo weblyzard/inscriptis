@@ -13,11 +13,16 @@ textual content to the canvas which is managed by the following three classes:
     and bullets that prefix a line.
 """
 
+from typing import TYPE_CHECKING
+
 from inscriptis.annotation import Annotation
 from inscriptis.html_properties import Display, WhiteSpace
 from inscriptis.model.canvas.block import Block
 from inscriptis.model.canvas.prefix import Prefix
 from inscriptis.model.html_element import HtmlElement
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 class Canvas:
@@ -48,7 +53,7 @@ class Canvas:
     def __init__(self):
         self.margin = 1000  # margin to the previous block
         self.current_block = Block(0, Prefix())
-        self.blocks = []
+        self.blocks: Sequence[str] = []
         self.annotations = []
         self._open_annotations = {}
 

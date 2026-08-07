@@ -11,6 +11,8 @@ from inscriptis.annotation import Annotation, horizontal_shift
 from inscriptis.model.canvas import Canvas
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 
 
@@ -48,7 +50,7 @@ class TableCell(Canvas):
         self._valign = valign
 
         # table content (might be smaller than the requested table width and height)
-        self._content_blocks: list[str] = []
+        self._content_blocks: Sequence[str] = []
 
         # requested minimum table width and height (might be larger than the content's actual width and height)
         self._height: int = 0
@@ -62,9 +64,9 @@ class TableCell(Canvas):
 
         """
         self.flush_inline()
-        self._content_blocks = list(chain(*(line.split("\n") for line in self._content_blocks)))
+        self._content_blocks = tuple(chain(*(line.split("\n") for line in self._content_blocks)))
         if not self._content_blocks:
-            self._content_blocks = [""]
+            self._content_blocks = ("",)
 
         # set the requested minimum table width to the maximum with of the content blocks.
         self._width = max(self._width, *map(len, self._content_blocks))
@@ -72,7 +74,7 @@ class TableCell(Canvas):
         return len(self._content_blocks)
 
     @property
-    def blocks(self) -> list[str]:
+    def blocks(self) -> Sequence[str]:
         """Return the cell's blocks.
 
         Note:
@@ -101,10 +103,12 @@ class TableCell(Canvas):
     @cached_property
     def _formatted_blocks(self):
         empty_line = " " * self._width
-        return (
-            [empty_line] * self._top_padding
-            + [self.align.format(line, self._width) for line in self._content_blocks]
-            + [empty_line] * (self._height - len(self._content_blocks) - self._top_padding)
+        return tuple(
+            chain(
+                (empty_line,) * self._top_padding,
+                tuple(self.align.format(line, self._width) for line in self._content_blocks),
+                (empty_line,) * (self._height - len(self._content_blocks) - self._top_padding),
+            )
         )
 
     @property
@@ -136,7 +140,7 @@ class TableCell(Canvas):
         return self._width
 
     @width.setter
-    def width(self, width):
+    def width(self, width: int):
         """Set the requested minimum cell width to the given value.
 
         Note:

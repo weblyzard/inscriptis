@@ -65,3 +65,14 @@ def test_line_width_is_cached():
     cell.height = 22
     assert first != cell._line_width
     assert len(cell._line_width) == 22
+
+
+def test_formatted_blocks_are_cached_as_tuple():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
+    cell.blocks = ["hallo", "echo"]
+    cell.width = 6
+
+    formatted_blocks = cell._formatted_blocks
+
+    assert isinstance(formatted_blocks, tuple)
+    assert formatted_blocks is cell._formatted_blocks
