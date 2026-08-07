@@ -143,7 +143,7 @@ class TableCell(Canvas):
             The cell's current height.
 
         """
-        return max(0, len(self.blocks))
+        return max(0, len(self._content_blocks))
 
     @height.setter
     def height(self, height: int):
