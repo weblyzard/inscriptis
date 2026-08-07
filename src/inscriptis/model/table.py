@@ -19,10 +19,13 @@ class TableCell(Canvas):
     """A table cell.
 
     Attributes:
-        line_width: the original line widths per line (required to adjust
-                    annotations after a reformatting)
-        vertical_padding: vertical padding that has been introduced due to
-                          vertical formatting rules.
+        __dict__: used by the cached_property decorator to store cached values.
+        _content_width: the width of the cell's content (might be smaller than the requested width)
+        _content_blocks: the cell's content blocks (might be smaller than the requested height)
+        _width: the requested minimum width of the cell (might be larger than the content's width)
+        _height: the requested minimum height of the cell (might be larger than the content's height)
+        _align: the cell's horizontal alignment
+        _valign: the cell's vertical alignment
 
     """
 
@@ -45,10 +48,15 @@ class TableCell(Canvas):
         super().__init__()
         self._align = align
         self._valign = valign
+
+        # table content (might be smaller than the requested table width and height)
+        self._content_blocks: list[str] = []
+        self._content_width: int = 0
+
+        # requested minimum table width and height (might be larger than the content's width and height)
         self._height: int = 0
         self._width: int = 0
-        self._content_width: int = 0
-        self._content_blocks: list[str] = []
+
 
     def normalize_blocks(self) -> int:
         """Split multi-line blocks into multiple one-line blocks.
@@ -62,7 +70,7 @@ class TableCell(Canvas):
         self._content_width = max(map(len, self._content_blocks), default=0)
         if not self._content_blocks:
             self._content_blocks = [""]
-        self.__dict__.pop("line_width", None)
+        self.__dict__.pop("_line_width", None)
         return len(self._content_blocks)
 
     @property
@@ -86,7 +94,8 @@ class TableCell(Canvas):
 
         """
         self._content_blocks = blocks
-        self.__dict__.pop("line_width", None)
+        self.__dict__.pop("_line_width", None)
+        self.__dict__.pop("_formatted_blocks", None)
 
     @cached_property
     def _formatted_blocks(self):
@@ -103,7 +112,7 @@ class TableCell(Canvas):
     @align.setter
     def align(self, align: HorizontalAlignment):
         self._align = align
-        self.__dict__.pop("line_width", None)
+        self.__dict__.pop("_line_width", None)
         self.__dict__.pop("_formatted_blocks", None)
 
     @property
@@ -113,7 +122,8 @@ class TableCell(Canvas):
     @valign.setter
     def valign(self, valign: VerticalAlignment):
         self._valign = valign
-        self.__dict__.pop("line_width", None)
+        self.__dict__.pop("_line_width", None)
+        self.__dict__.pop("_formatted_blocks", None)
 
     @property
     def width(self) -> int:
@@ -146,7 +156,7 @@ class TableCell(Canvas):
             The cell's current height.
 
         """
-        return max(0, len(self._content_blocks))
+        return max(len(self._content_blocks), self._height)
 
     @height.setter
     def height(self, height: int):
@@ -161,7 +171,7 @@ class TableCell(Canvas):
             return
 
         self._requires_formatting = True
-        self.__dict__.pop("line_width", None)
+        self.__dict__.pop("_line_width", None)
         self.__dict__.pop("_formatted_blocks", None)
         self._height = height
 
@@ -171,7 +181,7 @@ class TableCell(Canvas):
         return max((self._height - len(self._content_blocks)) * self.valign.value // 2, 0)
 
     @cached_property
-    def line_width(self) -> list[int]:
+    def _line_width(self) -> list[int]:
         """Return the line widths of the cell's content blocks, including vertical padding.
 
         Note:
@@ -203,12 +213,12 @@ class TableCell(Canvas):
 
         # the easy case - the cell has only one line :)
         if len(self.blocks) == 1:
-            content_width = self.line_width[0]
+            content_width = self._line_width[0]
             return horizontal_shift(self.annotations, content_width, self.width, self.align, idx)
 
         # the more challenging one - multiple cell lines
         #
-        # `self.line_width` is `height`-long after vertical padding was
+        # `self._line_width` is `height`-long after vertical padding was
         # applied: zero-length entries fill the top (`self.vertical_padding`)
         # and bottom (for VerticalAlignment.middle) padding slots, while the
         # remaining `len(self._content_blocks)` entries hold the original line
@@ -218,7 +228,7 @@ class TableCell(Canvas):
         # on, then offset the destination by the top padding to land on the
         # correct output line.
         top_pad = self._top_padding
-        content_widths = self.line_width[top_pad : top_pad + len(self._content_blocks)]
+        content_widths = self._line_width[top_pad : top_pad + len(self._content_blocks)]
         line_break_pos = list(accumulate(content_widths))
         annotation_lines = [[] for _ in self.blocks]
 
@@ -232,7 +242,7 @@ class TableCell(Canvas):
         # compute the annotation index based on its line and delta :)
         result = []
         idx += self._top_padding  # newlines introduced by the padding
-        for line_annotations, line_len in zip(annotation_lines, self.line_width, strict=False):
+        for line_annotations, line_len in zip(annotation_lines, self._line_width, strict=False):
             result.extend(horizontal_shift(line_annotations, line_len, self.width, self.align, idx))
             idx += row_width - line_len
         return result

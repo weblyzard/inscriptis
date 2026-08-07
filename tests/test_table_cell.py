@@ -52,8 +52,8 @@ def test_line_width_is_cached():
     cell.blocks = ["hallo\necho", "Ehre sei Gott"]
     cell.normalize_blocks()
 
-    first = cell.line_width
-    second = cell.line_width
+    first = cell._line_width
+    second = cell._line_width
 
     assert first is second
 
@@ -63,6 +63,6 @@ def test_line_width_is_cached():
 
     # changes to height do
     cell.height = 22
-    assert first != cell.line_width
-    assert len(cell.line_width) == 22
+    assert first != cell._line_width
+    assert len(cell._line_width) == 22
 
