@@ -2,6 +2,7 @@
 """Classes used for representing Tables, TableRows and TableCells."""
 
 from __future__ import annotations
+from functools import cached_property
 
 from collections.abc import Sequence
 from itertools import accumulate, chain
@@ -45,8 +46,8 @@ class FormattedBlockView(Sequence[str]):
         if idx < 0 or idx >= len(self):
             raise IndexError(INDEX_ERROR_MSG)
 
-        content_idx = idx - self._cell._vertical_padding
-        if content_idx < 0 or content_idx >= len(self._cell._content_blocks):
+        content_idx = idx - self._cell._top_padding
+        if not 0 <= content_idx < len(self._cell._content_blocks):
             return " " * self._cell._width
 
         return self._cell.align.format(self._cell._content_blocks[content_idx], self._cell._width)
@@ -64,9 +65,9 @@ class TableCell(Canvas):
     """
 
     __slots__ = (
+        "__dict__",
         "_content_blocks",
         "_formatted_blocks",
-        "_vertical_padding",
         "_width",
         "align",
         "annotation_counter",
@@ -82,7 +83,6 @@ class TableCell(Canvas):
         self.align = align
         self.valign = valign
         self._width: int = 0
-        self._vertical_padding = 0
         self._content_blocks: list[str] = []
         self._formatted_blocks: FormattedBlockView | None = None
 
@@ -97,6 +97,7 @@ class TableCell(Canvas):
         self._content_blocks = list(chain(*(line.split("\n") for line in self._content_blocks)))
         if not self._content_blocks:
             self._content_blocks = [""]
+        self.__dict__.pop("line_width", None)
         return len(self._content_blocks)
 
     @property
@@ -107,7 +108,7 @@ class TableCell(Canvas):
             The cell's blocks.
 
         """
-        if self._formatted_blocks:
+        if self._formatted_blocks is not None:
             return self._formatted_blocks
         return self._content_blocks
 
@@ -120,6 +121,7 @@ class TableCell(Canvas):
 
         """
         self._content_blocks = blocks
+        self.__dict__.pop("line_width", None)
 
     @property
     def width(self) -> int:
@@ -145,6 +147,7 @@ class TableCell(Canvas):
         self._width = width
         if not self._formatted_blocks:
             self._formatted_blocks = FormattedBlockView(self)
+        self.__dict__.pop("line_width", None)
 
     @property
     def height(self) -> int:
@@ -165,6 +168,7 @@ class TableCell(Canvas):
             might require the introduction of empty lines.
 
         """
+        self.__dict__.pop("line_width", None)
         if height <= len(self._content_blocks):
             return
 
@@ -173,9 +177,12 @@ class TableCell(Canvas):
         else:
             self._formatted_blocks.height = height
 
-        self._vertical_padding = (height - len(self._content_blocks)) * self.valign.value // 2
-
     @property
+    def _top_padding(self) -> int:
+        """Return the number of vertical padding lines."""
+        return (self.height - len(self._content_blocks)) * self.valign.value // 2
+
+    @cached_property
     def line_width(self) -> list[int]:
         """Return the line widths of the cell's content blocks, including vertical padding.
 
@@ -189,9 +196,9 @@ class TableCell(Canvas):
 
         """
         return (
-            self._vertical_padding * [0]
+            [0] * self._top_padding
             + [len(line) for line in self._content_blocks]
-            + (len(self.blocks) - len(self._content_blocks) - self._vertical_padding) * [0]
+            + [0] * (len(self.blocks) - len(self._content_blocks) - self._top_padding)
         )
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
@@ -222,7 +229,7 @@ class TableCell(Canvas):
         # the content widths to find which content line an annotation falls
         # on, then offset the destination by the top padding to land on the
         # correct output line.
-        top_pad = self._vertical_padding
+        top_pad = self._top_padding
         content_widths = self.line_width[top_pad : top_pad + len(self._content_blocks)]
         line_break_pos = list(accumulate(content_widths))
         annotation_lines = [[] for _ in self.blocks]
@@ -236,7 +243,7 @@ class TableCell(Canvas):
 
         # compute the annotation index based on its line and delta :)
         result = []
-        idx += self._vertical_padding  # newlines introduced by the padding
+        idx += self._top_padding  # newlines introduced by the padding
         for line_annotations, line_len in zip(annotation_lines, self.line_width, strict=False):
             result.extend(horizontal_shift(line_annotations, line_len, self.width, self.align, idx))
             idx += row_width - line_len

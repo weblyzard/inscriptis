@@ -45,3 +45,24 @@ def test_width():
     cell.width = 95
     cell.normalize_blocks()
     assert cell.width == 95
+
+
+def test_line_width_is_cached():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
+    cell.blocks = ["hallo\necho", "Ehre sei Gott"]
+    cell.normalize_blocks()
+
+    first = cell.line_width
+    second = cell.line_width
+
+    assert first is second
+
+    # changes of the cell's width do not affect the cached line_width
+    cell.width = 95
+    assert first is second
+
+    # changes to height do
+    cell.height = 22
+    assert first != cell.line_width
+    assert len(cell.line_width) == 22
+
