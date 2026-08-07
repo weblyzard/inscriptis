@@ -5,6 +5,8 @@ Tests the Table formatting with different parameters such as width and
 alignment
 """
 
+import pytest
+
 from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 from inscriptis.model.table import TableCell
 
@@ -79,3 +81,13 @@ def test_formatted_blocks_are_cached_as_tuple():
 
     assert isinstance(formatted_blocks, tuple)
     assert formatted_blocks is cell._formatted_blocks
+
+
+def test_width_is_enforced_to_be_at_least_content_width():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
+    cell.blocks = ["hallo", "echo"]
+    cell.normalize_blocks()
+
+    with pytest.raises(ValueError, 
+                       match="Cannot set cell width to 2 as it is smaller than the content's width of 5."):
+        cell.width = 2

@@ -19,6 +19,7 @@ if TYPE_CHECKING:
 class FrozenError(TypeError):
     """Raised when trying to modify a frozen object."""
 
+
 class BlocksNotNormalizedError(RuntimeError):
     """Raised when an operation requires normalized blocks."""
 
@@ -169,10 +170,14 @@ class TableCell(Canvas):
             width: The cell's expected minimum width.
 
         """
-        # record new width and start reformatting
-        if width != self._width and width > self.width:
+        if width < self._content_width:
+            msg = (
+                f"Cannot set cell width to {width} as it is smaller than the content's width of {self._content_width}."
+            )
+            raise ValueError(msg)
+        if width != self._width:
             self._invalidate_formatting()
-        self._width = width
+            self._width = width
 
     @property
     def height(self) -> int:
