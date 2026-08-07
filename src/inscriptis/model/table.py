@@ -67,10 +67,11 @@ class TableCell(Canvas):
         """
         self.flush_inline()
         self._content_blocks = list(chain(*(line.split("\n") for line in self._content_blocks)))
-        self._content_width = max(map(len, self._content_blocks), default=0)
         if not self._content_blocks:
             self._content_blocks = [""]
-        self.__dict__.pop("_line_width", None)
+
+        self._content_width = max(map(len, self._content_blocks))
+        self._invalidate_formatting()
         return len(self._content_blocks)
 
     @property
@@ -94,8 +95,7 @@ class TableCell(Canvas):
 
         """
         self._content_blocks = blocks
-        self.__dict__.pop("_line_width", None)
-        self.__dict__.pop("_formatted_blocks", None)
+        self._invalidate_formatting()
 
     @cached_property
     def _formatted_blocks(self):
@@ -112,8 +112,7 @@ class TableCell(Canvas):
     @align.setter
     def align(self, align: HorizontalAlignment):
         self._align = align
-        self.__dict__.pop("_line_width", None)
-        self.__dict__.pop("_formatted_blocks", None)
+        self._invalidate_formatting()
 
     @property
     def valign(self) -> VerticalAlignment:
@@ -122,8 +121,7 @@ class TableCell(Canvas):
     @valign.setter
     def valign(self, valign: VerticalAlignment):
         self._valign = valign
-        self.__dict__.pop("_line_width", None)
-        self.__dict__.pop("_formatted_blocks", None)
+        self._invalidate_formatting()
 
     @property
     def width(self) -> int:
@@ -170,9 +168,7 @@ class TableCell(Canvas):
         if height <= len(self._content_blocks):
             return
 
-        self._requires_formatting = True
-        self.__dict__.pop("_line_width", None)
-        self.__dict__.pop("_formatted_blocks", None)
+        self._invalidate_formatting()
         self._height = height
 
     @property
@@ -198,6 +194,11 @@ class TableCell(Canvas):
             + [len(line) for line in self._content_blocks]
             + [0] * (len(self.blocks) - len(self._content_blocks) - self._top_padding)
         )
+
+    def _invalidate_formatting(self) -> None:
+        """Invalidate the cached formatting of the cell."""
+        self.__dict__.pop("_formatted_blocks", None)
+        self.__dict__.pop("_line_width", None)
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
         """Return a list of all annotations within the TableCell.
