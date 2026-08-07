@@ -30,8 +30,8 @@ class TableCell(Canvas):
     Attributes:
         __dict__: used by the cached_property decorator to store cached values.
         _content_blocks: the cell's content blocks (might be smaller than the requested height)
-        _width: the requested minimum width of the cell (might be larger than the content's width)
-        _height: the requested minimum height of the cell (might be larger than the content's height)
+        _width: the width of the cell (might be larger than the content's width)
+        _height: the height of the cell (might be larger than the content's height)
         _align: the cell's horizontal alignment
         _valign: the cell's vertical alignment
 
@@ -59,7 +59,7 @@ class TableCell(Canvas):
         # table content (might be smaller than the requested table width and height)
         self._content_blocks: Sequence[str] = []
 
-        # requested minimum table width and height (might be larger than the content's actual width and height)
+        # table width and height (might be larger than the content's actual width and height)
         self._height: int = 0
         self._width: int = 0
 
@@ -103,7 +103,7 @@ class TableCell(Canvas):
 
         """
         if self._width > 0 or self._height > len(self._content_blocks):
-            return self._formatted_blocks
+            return self._rendered_blocks
         return self._content_blocks
 
     @blocks.setter
@@ -121,7 +121,8 @@ class TableCell(Canvas):
         self._content_blocks = blocks
 
     @cached_property
-    def _formatted_blocks(self):
+    def _rendered_blocks(self):
+        """Return the cell's blocks formatted to include horizontal and vertical padding."""
         empty_line = " " * self.width
         return tuple(
             chain(
@@ -176,8 +177,9 @@ class TableCell(Canvas):
             )
             raise ValueError(msg)
         if width != self._width:
-            self._invalidate_formatting()
             self._width = width
+            self._invalidate_formatting()
+            
 
     @property
     def height(self) -> int:
@@ -205,15 +207,15 @@ class TableCell(Canvas):
                    f"of {len(self._content_blocks)}.")
             raise ValueError(msg)
         if height != self._height:
-            self._invalidate_formatting()
             self._height = height
+            self._invalidate_formatting()
 
     @property
     def _top_padding(self) -> int:
         """Return the number of vertical padding lines."""
         return (self.height - len(self._content_blocks)) * self.valign.value // 2
 
-    @cached_property
+    @property
     def _line_width(self) -> tuple[int, ...]:
         """Return the line widths of the cell's content blocks, including vertical padding.
 
@@ -237,7 +239,6 @@ class TableCell(Canvas):
     def _invalidate_formatting(self) -> None:
         """Invalidate the cached formatting of the cell."""
         self.__dict__.pop("_formatted_blocks", None)
-        self.__dict__.pop("_line_width", None)
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
         """Return a list of all annotations within the TableCell.
