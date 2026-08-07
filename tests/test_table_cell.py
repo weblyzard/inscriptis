@@ -91,3 +91,12 @@ def test_width_is_enforced_to_be_at_least_content_width():
     with pytest.raises(ValueError, 
                        match="Cannot set cell width to 2 as it is smaller than the content's width of 5."):
         cell.width = 2
+
+def test_height_is_enforced_to_be_at_least_content_height():
+    cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
+    cell.blocks = ["hallo", "echo"]
+    cell.normalize_blocks()
+
+    with pytest.raises(ValueError, 
+                       match="Cannot set cell height to 1 as it is smaller than the content's height of 2."):
+        cell.height = 1
