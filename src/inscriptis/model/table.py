@@ -75,14 +75,19 @@ class TableCell(Canvas):
         return len(self._content_blocks)
 
     @property
-    def blocks(self) -> Sequence[str]:
+    def blocks(self) -> list[str]:
         """Return the cell's blocks.
+
+        Note:
+            If the cell's width or height is larger than the content's width or height, 
+            _formatted_blocks will be returned instead of _content_blocks, which will 
+            include the necessary padding.
 
         Returns:
             The cell's blocks.
 
         """
-        if self._width > 0 or self._height > 0:
+        if self._width > self._content_width or self._height > len(self._content_blocks):
             return self._formatted_blocks
         return self._content_blocks
 
@@ -99,10 +104,11 @@ class TableCell(Canvas):
 
     @cached_property
     def _formatted_blocks(self):
+        empty_line = " " * self._width
         return (
-            [" " * self._width] * self._top_padding
+            [empty_line] * self._top_padding
             + [self.align.format(line, self._width) for line in self._content_blocks]
-            + [" " * self._width] * (self._height - len(self._content_blocks) - self._top_padding)
+            + [empty_line] * (self._height - len(self._content_blocks) - self._top_padding)
         )
 
     @property
@@ -142,9 +148,9 @@ class TableCell(Canvas):
 
         """
         # record new width and start reformatting
-        if width > self.width:
+        if width > self._content_width:
             self.__dict__.pop("_formatted_blocks", None)
-        self._width = width
+            self._width = width
 
     @property
     def height(self) -> int:
