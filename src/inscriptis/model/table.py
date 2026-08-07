@@ -200,9 +200,14 @@ class TableCell(Canvas):
             height: The cell's expected minium height.
 
         """
-        if height != self._height and height > len(self._content_blocks):
+        if height < len(self._content_blocks):
+            msg = (
+                f"Cannot set cell height to {height} as it is smaller than the content's height of {len(self._content_blocks)}."
+            )
+            raise ValueError(msg)
+        if height != self._height:
             self._invalidate_formatting()
-        self._height = height
+            self._height = height
 
     @property
     def _top_padding(self) -> int:
