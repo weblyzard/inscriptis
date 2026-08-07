@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from itertools import accumulate, chain
+from itertools import chain
 from typing import TYPE_CHECKING
 
 from inscriptis.annotation import Annotation, horizontal_shift
@@ -271,11 +271,20 @@ class TableCell(Canvas):
         self.__dict__.pop("_rendered_blocks", None)
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
-        """Return a list of all annotations within the TableCell.
+        """Return annotations positioned within the rendered table cell.
+
+        Annotation positions are translated from the cell's unpadded content
+        coordinates to their positions in the rendered table, accounting for
+        horizontal alignment, vertical padding, and the width of the containing
+        table row.
+
+        Args:
+            idx: The starting index of the table row in the output.
+            row_width: The width of the containing table row.
 
         Returns:
-            A list of annotations that have been adjusted to the cell's
-            position.
+            The cell's annotations with positions adjusted for the rendered
+            table layout.
 
         """
         self.current_block.idx = idx
@@ -298,24 +307,44 @@ class TableCell(Canvas):
         # the content widths to find which content line an annotation falls
         # on, then offset the destination by the top padding to land on the
         # correct output line.
+        line_widths = self._line_width
         top_pad = self._top_padding
-        content_widths = self._line_width[top_pad : top_pad + len(self._content_blocks)]
-        line_break_pos = list(accumulate(content_widths))
+        content_widths = line_widths[top_pad : top_pad + len(self._content_blocks)]
         annotation_lines = [[] for _ in self.blocks]
 
-        # assign annotations to the corresponding line
-        for a in self.annotations:
-            for no, line_break in enumerate(line_break_pos):
-                if a.start <= (line_break + no):  # consider newline
-                    annotation_lines[no + top_pad].append(a)
-                    break
+        line_no = 0
+        line_end = content_widths[0]
 
-        # compute the annotation index based on its line and delta :)
+        # Annotations are ordered by start position, allowing us to advance
+        # through the content lines only once.
+        for annotation in self.annotations:
+            while annotation.start > line_end:
+                line_no += 1
+                line_end += content_widths[line_no] + 1
+
+            annotation_lines[line_no + top_pad].append(annotation)
+
+        # Translate each annotation from content coordinates to rendered
+        # table coordinates.
         result = []
-        idx += top_pad  # newlines introduced by the padding
-        for line_annotations, line_len in zip(annotation_lines, self._line_width, strict=False):
-            result.extend(horizontal_shift(line_annotations, line_len, self.width, self.align, idx))
-            idx += row_width - line_len
+        idx += top_pad
+
+        for line_annotations, line_width in zip(
+            annotation_lines,
+            line_widths,
+            strict=False,
+        ):
+            result.extend(
+                horizontal_shift(
+                    line_annotations,
+                    line_width,
+                    self.width,
+                    self.align,
+                    idx,
+                )
+            )
+            idx += row_width - line_width
+
         return result
 
 
