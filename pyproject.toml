@@ -1,6 +1,6 @@
 [project]
 name = "inscriptis"
-version = "2.7.3"
+version = "2.7.4"
 description = "inscriptis - HTML to text converter."
 license = "Apache-2.0"
 readme = "README.rst"
@@ -52,10 +52,10 @@ web-service = [
 dev = [
     "pytest>=9.1.1",
     "fastapi>=0.118.0,<1.0.0",
-    "ruff>=0.15.22",
-    "httpx2>=2.7.0",
-    "uvicorn>=0.38.0",
-    "ty>=0.0.62",
+    "ruff>=0.16.1",
+    "httpx2>=2.9.1",
+    "uvicorn>=0.52.1",
+    "ty>=0.0.69",
     "pytest-cov>=7.1.0",
     "safety>=3.8.1",
     "tox>=4.58.0",
