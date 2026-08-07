@@ -201,9 +201,8 @@ class TableCell(Canvas):
 
         """
         if height < len(self._content_blocks):
-            msg = (
-                f"Cannot set cell height to {height} as it is smaller than the content's height of {len(self._content_blocks)}."
-            )
+            msg = (f"Cannot set cell height to {height} as it is smaller than the content's height "
+                   f"of {len(self._content_blocks)}.")
             raise ValueError(msg)
         if height != self._height:
             self._invalidate_formatting()
@@ -212,7 +211,7 @@ class TableCell(Canvas):
     @property
     def _top_padding(self) -> int:
         """Return the number of vertical padding lines."""
-        return max((self.height - len(self._content_blocks)) * self.valign.value // 2, 0)
+        return (self.height - len(self._content_blocks)) * self.valign.value // 2
 
     @cached_property
     def _line_width(self) -> tuple[int, ...]:
