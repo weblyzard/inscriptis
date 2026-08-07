@@ -105,7 +105,7 @@ class TableCell(Canvas):
 
         """
         if self._formatted_blocks:
-            return list(self._formatted_blocks)  # remove for optimization
+            return self._formatted_blocks
         return self._content_blocks
 
     @blocks.setter
@@ -174,13 +174,22 @@ class TableCell(Canvas):
 
     @property
     def line_width(self) -> list[int]:
-        """Return the original line widths per line.
+        """Return the line widths of the cell's content blocks, including vertical padding.
+
+        Note:
+            The returned list is `height`-long, with zero-length entries
+            filling the top and bottom padding slots, while the remaining
+            entries hold the original line widths.
 
         Returns:
             A list of the original line widths per line.
 
         """
-        return [len(line) for line in self._content_blocks]
+        return (
+            self._vertical_padding * [0]
+            + [len(line) for line in self._content_blocks]
+            + (len(self.blocks) - len(self._content_blocks) - self._vertical_padding) * [0]
+        )
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
         """Return a list of all annotations within the TableCell.
