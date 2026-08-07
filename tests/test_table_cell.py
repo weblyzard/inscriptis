@@ -65,4 +65,3 @@ def test_line_width_is_cached():
     cell.height = 22
     assert first != cell._line_width
     assert len(cell._line_width) == 22
-

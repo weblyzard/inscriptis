@@ -2,11 +2,10 @@
 """Classes used for representing Tables, TableRows and TableCells."""
 
 from __future__ import annotations
-from functools import cached_property
 
-from collections.abc import Sequence
+from functools import cached_property
 from itertools import accumulate, chain
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING
 
 from inscriptis.annotation import Annotation, horizontal_shift
 from inscriptis.model.canvas import Canvas
@@ -31,16 +30,16 @@ class TableCell(Canvas):
 
     __slots__ = (
         "__dict__",
+        "_align",
         "_content_blocks",
         "_height",
+        "_valign",
         "_width",
-        "_align",
         "annotation_counter",
         "annotations",
         "block_annotations",
         "current_block",
         "margin",
-        "_valign",
     )
 
     def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
@@ -55,9 +54,8 @@ class TableCell(Canvas):
         self._height: int = 0
         self._width: int = 0
 
-
     def normalize_blocks(self) -> int:
-        """Split multi-line blocks into multiple one-line blocks.
+        """Split multi-line blocks into multiple one-line blocks and compute the cell's height and width.
 
         Returns:
             The height of the normalized cell.
@@ -69,7 +67,7 @@ class TableCell(Canvas):
             self._content_blocks = [""]
 
         # set the requested minimum table width to the maximum with of the content blocks.
-        self._width = max(map(len, self._content_blocks))
+        self._width = max(self._width, *map(len, self._content_blocks))
         self._invalidate_formatting()
         return len(self._content_blocks)
 
@@ -78,14 +76,14 @@ class TableCell(Canvas):
         """Return the cell's blocks.
 
         Note:
-            Once the cell's width is set or the requested height is larger than the number of content blocks, 
-            the cell's blocks are formatted to include horizontal and vertical padding.
+            Once the cell's width is set or the requested height is larger than the number of
+            content blocks, the cell's blocks are formatted to include horizontal and vertical padding.
 
         Returns:
             The cell's blocks.
 
         """
-        if self._width or self._height > len(self._content_blocks):
+        if self._width > 0 or self._height > len(self._content_blocks):
             return self._formatted_blocks
         return self._content_blocks
 
