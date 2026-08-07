@@ -87,7 +87,7 @@ class TableCell(Canvas):
             The cell's blocks.
 
         """
-        if self._width > self._content_width or self._height > len(self._content_blocks):
+        if self._width > 0 or self._height > 0:
             return self._formatted_blocks
         return self._content_blocks
 
@@ -148,9 +148,9 @@ class TableCell(Canvas):
 
         """
         # record new width and start reformatting
-        if width > self._content_width:
+        if width > self.width:
             self.__dict__.pop("_formatted_blocks", None)
-            self._width = width
+        self._width = width
 
     @property
     def height(self) -> int:
