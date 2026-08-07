@@ -283,7 +283,7 @@ class TableCell(Canvas):
             return []
 
         # the easy case - the cell has only one line :)
-        if len(self.blocks) == 1:
+        if self.height == 1:
             content_width = self._line_width[0]
             return horizontal_shift(self.annotations, content_width, self.width, self.align, idx)
 
@@ -312,7 +312,7 @@ class TableCell(Canvas):
 
         # compute the annotation index based on its line and delta :)
         result = []
-        idx += self._top_padding  # newlines introduced by the padding
+        idx += top_pad  # newlines introduced by the padding
         for line_annotations, line_len in zip(annotation_lines, self._line_width, strict=False):
             result.extend(horizontal_shift(line_annotations, line_len, self.width, self.align, idx))
             idx += row_width - line_len
