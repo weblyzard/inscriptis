@@ -14,13 +14,13 @@ def test_horizontal_cell_formatting():
     # left alignment
     cell.blocks = ["Ehre sei Gott!"]
     cell.width = 16
-    assert cell.blocks == ["Ehre sei Gott!  "]
+    assert list(cell.blocks) == ["Ehre sei Gott!  "]
 
     # right alignment
     cell.align = HorizontalAlignment.right
     cell.blocks = ["Ehre sei Gott!"]
     cell.width = 16
-    assert cell.blocks == ["  Ehre sei Gott!"]
+    assert list(cell.blocks) == ["  Ehre sei Gott!"]
 
 
 def test_vertical_cell_formatting():
