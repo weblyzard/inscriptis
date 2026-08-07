@@ -87,7 +87,7 @@ class TableCell(Canvas):
             The cell's blocks.
 
         """
-        if self._width > 0 or self._height > 0:
+        if self._width > self._content_width or self._height > 0:
             return self._formatted_blocks
         return self._content_blocks
 
