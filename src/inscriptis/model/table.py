@@ -15,44 +15,6 @@ if TYPE_CHECKING:
     from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 
 
-INDEX_ERROR_MSG = "list index out of range"
-
-
-class FormattedBlockView(Sequence[str]):
-    """A view of a list of content blocks that applies horizontal and vertical formatting."""
-
-    __slots__ = ("_cell", "height")
-
-    def __init__(self, cell: TableCell, height: int = 0):
-        self._cell: TableCell = cell
-        self.height: int = height
-
-    def __len__(self) -> int:
-        return max(self.height, len(self._cell._content_blocks))
-
-    @overload
-    def __getitem__(self, idx: int) -> str: ...
-
-    @overload
-    def __getitem__(self, idx: slice) -> list[str]: ...
-
-    def __getitem__(self, idx: int | slice) -> str | list[str]:
-        if isinstance(idx, slice):
-            start, stop, step = idx.indices(self._cell.height)
-            if step != 1:
-                return [self[i] for i in range(start, stop, step)]
-            return [self[i] for i in range(start, stop)]
-
-        if idx < 0 or idx >= len(self):
-            raise IndexError(INDEX_ERROR_MSG)
-
-        content_idx = idx - self._cell._top_padding
-        if not 0 <= content_idx < len(self._cell._content_blocks):
-            return " " * self._cell._width
-
-        return self._cell.align.format(self._cell._content_blocks[content_idx], self._cell._width)
-
-
 class TableCell(Canvas):
     """A table cell.
 
@@ -67,24 +29,24 @@ class TableCell(Canvas):
     __slots__ = (
         "__dict__",
         "_content_blocks",
-        "_formatted_blocks",
+        "_height",
         "_width",
-        "align",
+        "_align",
         "annotation_counter",
         "annotations",
         "block_annotations",
         "current_block",
         "margin",
-        "valign",
+        "_valign",
     )
 
     def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
         super().__init__()
-        self.align = align
-        self.valign = valign
+        self._align = align
+        self._valign = valign
+        self._height: int = 0
         self._width: int = 0
         self._content_blocks: list[str] = []
-        self._formatted_blocks: FormattedBlockView | None = None
 
     def normalize_blocks(self) -> int:
         """Split multi-line blocks into multiple one-line blocks.
@@ -108,7 +70,7 @@ class TableCell(Canvas):
             The cell's blocks.
 
         """
-        if self._formatted_blocks is not None:
+        if self._width > 0 or self._height > 0:
             return self._formatted_blocks
         return self._content_blocks
 
@@ -121,6 +83,33 @@ class TableCell(Canvas):
 
         """
         self._content_blocks = blocks
+        self.__dict__.pop("line_width", None)
+
+    @cached_property
+    def _formatted_blocks(self):
+        return (
+            [" " * self._width] * self._top_padding
+            + [self.align.format(line, self._width) for line in self._content_blocks]
+            + [" " * self._width] * (self._height - len(self._content_blocks) - self._top_padding)
+        )
+
+    @property
+    def align(self) -> HorizontalAlignment:
+        return self._align
+
+    @align.setter
+    def align(self, align: HorizontalAlignment):
+        self._align = align
+        self.__dict__.pop("line_width", None)
+        self.__dict__.pop("_formatted_blocks", None)
+
+    @property
+    def valign(self) -> VerticalAlignment:
+        return self._valign
+
+    @valign.setter
+    def valign(self, valign: VerticalAlignment):
+        self._valign = valign
         self.__dict__.pop("line_width", None)
 
     @property
@@ -145,9 +134,6 @@ class TableCell(Canvas):
         """
         # record new width and start reformatting
         self._width = width
-        if not self._formatted_blocks:
-            self._formatted_blocks = FormattedBlockView(self)
-        self.__dict__.pop("line_width", None)
 
     @property
     def height(self) -> int:
@@ -168,19 +154,17 @@ class TableCell(Canvas):
             might require the introduction of empty lines.
 
         """
-        self.__dict__.pop("line_width", None)
         if height <= len(self._content_blocks):
             return
 
-        if not self._formatted_blocks:
-            self._formatted_blocks = FormattedBlockView(self, height=height)
-        else:
-            self._formatted_blocks.height = height
+        self.__dict__.pop("line_width", None)
+        self.__dict__.pop("_formatted_blocks", None)
+        self._height = height
 
     @property
     def _top_padding(self) -> int:
         """Return the number of vertical padding lines."""
-        return (self.height - len(self._content_blocks)) * self.valign.value // 2
+        return max((self._height - len(self._content_blocks)) * self.valign.value // 2, 0)
 
     @cached_property
     def line_width(self) -> list[int]:
