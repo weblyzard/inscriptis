@@ -3,13 +3,16 @@
 
 from __future__ import annotations
 
-from typing import Sequence, overload
-
+from collections.abc import Sequence
 from itertools import accumulate, chain
+from typing import TYPE_CHECKING, overload
 
 from inscriptis.annotation import Annotation, horizontal_shift
-from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 from inscriptis.model.canvas import Canvas
+
+if TYPE_CHECKING:
+    from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
+
 
 INDEX_ERROR_MSG = "list index out of range"
 
@@ -61,6 +64,10 @@ class TableCell(Canvas):
     """
 
     __slots__ = (
+        "_content_blocks",
+        "_formatted_blocks",
+        "_vertical_padding",
+        "_width",
         "align",
         "annotation_counter",
         "annotations",
@@ -68,10 +75,6 @@ class TableCell(Canvas):
         "current_block",
         "margin",
         "valign",
-        "_content_blocks",
-        "_formatted_blocks",
-        "_width",
-        "_vertical_padding",
     )
 
     def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
@@ -206,8 +209,7 @@ class TableCell(Canvas):
         # the easy case - the cell has only one line :)
         if len(self.blocks) == 1:
             content_width = self.line_width[0]
-            result = horizontal_shift(self.annotations, content_width, self.width, self.align, idx)
-            return result
+            return horizontal_shift(self.annotations, content_width, self.width, self.align, idx)
 
         # the more challenging one - multiple cell lines
         #
