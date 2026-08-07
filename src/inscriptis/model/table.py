@@ -68,13 +68,21 @@ class TableCell(Canvas):
 
         """
         self.flush_inline()
-        self._content_blocks = tuple(chain(*(line.split("\n") for line in self._content_blocks)))
+        self._content_blocks = tuple(chain.from_iterable(line.split("\n") for line in self._content_blocks))
         if not self._content_blocks:
             self._content_blocks = ("",)
 
-        # set the requested minimum table width to the maximum with of the content blocks.
-        self._width = max(self._width, *map(len, self._content_blocks))
         return len(self._content_blocks)
+
+    @cached_property
+    def _content_width(self) -> int:
+        """Compute the width of the cell's content.
+
+        Returns:
+            The width of the cell's content.
+
+        """
+        return max(len(line) for line in self._content_blocks)
 
     @property
     def blocks(self) -> Sequence[str]:
@@ -143,7 +151,7 @@ class TableCell(Canvas):
             The cell's current width.
 
         """
-        return self._width
+        return max(self._content_width, self._width)
 
     @width.setter
     def width(self, width: int):
@@ -157,8 +165,8 @@ class TableCell(Canvas):
 
         """
         # record new width and start reformatting
-        if width != self._width:
-            self.__dict__.pop("_formatted_blocks", None)
+        if width != self._width and width > self.width:
+            self._invalidate_formatting()
         self._width = width
 
     @property
@@ -182,7 +190,7 @@ class TableCell(Canvas):
             height: The cell's expected minium height.
 
         """
-        if height > len(self._content_blocks) and height != self._height:
+        if height != self._height and height > len(self._content_blocks):
             self._invalidate_formatting()
         self._height = height
 
@@ -192,7 +200,7 @@ class TableCell(Canvas):
         return max((self._height - len(self._content_blocks)) * self.valign.value // 2, 0)
 
     @cached_property
-    def _line_width(self) -> list[int]:
+    def _line_width(self) -> tuple[int, ...]:
         """Return the line widths of the cell's content blocks, including vertical padding.
 
         Note:
@@ -204,10 +212,12 @@ class TableCell(Canvas):
             A list of the original line widths per line.
 
         """
-        return (
-            [0] * self._top_padding
-            + [len(line) for line in self._content_blocks]
-            + [0] * (len(self.blocks) - len(self._content_blocks) - self._top_padding)
+        return tuple(
+            chain(
+                (0,) * self._top_padding,
+                (len(line) for line in self._content_blocks),
+                (0,) * (len(self.blocks) - len(self._content_blocks) - self._top_padding),
+            )
         )
 
     def _invalidate_formatting(self) -> None:
