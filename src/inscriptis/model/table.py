@@ -29,6 +29,7 @@ class TableCell(Canvas):
     __slots__ = (
         "__dict__",
         "_content_blocks",
+        "_content_width",
         "_height",
         "_width",
         "_align",
@@ -46,6 +47,7 @@ class TableCell(Canvas):
         self._valign = valign
         self._height: int = 0
         self._width: int = 0
+        self._content_width: int = 0
         self._content_blocks: list[str] = []
 
     def normalize_blocks(self) -> int:
@@ -57,6 +59,7 @@ class TableCell(Canvas):
         """
         self.flush_inline()
         self._content_blocks = list(chain(*(line.split("\n") for line in self._content_blocks)))
+        self._content_width = max(map(len, self._content_blocks), default=0)
         if not self._content_blocks:
             self._content_blocks = [""]
         self.__dict__.pop("line_width", None)
@@ -120,9 +123,7 @@ class TableCell(Canvas):
             The cell's current width.
 
         """
-        if self._width > 0:
-            return self._width
-        return max(map(len, self._content_blocks), default=0)
+        return max(self._content_width, self._width)
 
     @width.setter
     def width(self, width):
@@ -133,6 +134,8 @@ class TableCell(Canvas):
 
         """
         # record new width and start reformatting
+        if width > self.width:
+            self.__dict__.pop("_formatted_blocks", None)
         self._width = width
 
     @property
@@ -157,6 +160,7 @@ class TableCell(Canvas):
         if height <= len(self._content_blocks):
             return
 
+        self._requires_formatting = True
         self.__dict__.pop("line_width", None)
         self.__dict__.pop("_formatted_blocks", None)
         self._height = height
