@@ -25,15 +25,27 @@ class BlocksNotNormalizedError(RuntimeError):
 
 
 class TableCell(Canvas):
-    """A table cell.
+    """A table cell containing normalized, immutable content.
+
+    A cell has two distinct phases. During construction, its content blocks are
+    mutable and may contain multiple lines. Calling `normalize_blocks`
+    converts the content into one-line blocks and freezes the cell's content.
+    After normalization, the cell's dimensions and alignment may still be
+    changed, but its content blocks cannot be modified.
+
+    The cell distinguishes between its content dimensions and its requested
+    dimensions. The actual cell width and height are at least as large as the
+    content dimensions, while horizontal and vertical alignment determine how
+    the content is positioned within any additional space.
 
     Attributes:
-        __dict__: used by the cached_property decorator to store cached values.
-        _content_blocks: the cell's content blocks (might be smaller than the requested height)
-        _width: the width of the cell (might be larger than the content's width)
-        _height: the height of the cell (might be larger than the content's height)
-        _align: the cell's horizontal alignment
-        _valign: the cell's vertical alignment
+        __dict__: Used by :func:`cached_property` to store cached values.
+        _content_blocks: The cell's content blocks. This is a mutable list
+            before normalization and an immutable tuple after normalization.
+        _width: The requested minimum width of the cell.
+        _height: The requested minimum height of the cell.
+        _align: The cell's horizontal alignment.
+        _valign: The cell's vertical alignment.
 
     """
 
@@ -52,6 +64,13 @@ class TableCell(Canvas):
     )
 
     def __init__(self, align: HorizontalAlignment, valign: VerticalAlignment):
+        """Initialize a table cell.
+
+        Args:
+            align: The horizontal alignment of the cell's content.
+            valign: The vertical alignment of the cell's content.
+
+        """
         super().__init__()
         self._align = align
         self._valign = valign
@@ -64,10 +83,14 @@ class TableCell(Canvas):
         self._width: int = 0
 
     def normalize_blocks(self) -> int:
-        """Split multi-line blocks into multiple one-line blocks and compute the cell's height and width.
+        """Normalize and freeze the cell's content blocks.
+
+        Multi-line blocks are split into individual lines. If the cell has no
+        content, a single empty block is created. After normalization, the
+        content blocks are immutable and cannot be replaced through ``blocks``.
 
         Returns:
-            The height of the normalized cell.
+            The number of normalized content blocks.
 
         """
         self.flush_inline()
@@ -79,10 +102,13 @@ class TableCell(Canvas):
 
     @cached_property
     def _content_width(self) -> int:
-        """Compute the width of the cell's content.
+        """Return the width of the normalized content.
 
         Returns:
-            The width of the cell's content.
+            The length of the longest content block.
+
+        Raises:
+            BlocksNotNormalizedError: If the content has not been normalized.
 
         """
         if not isinstance(self._content_blocks, tuple):
@@ -94,12 +120,12 @@ class TableCell(Canvas):
     def blocks(self) -> Sequence[str]:
         """Return the cell's blocks.
 
-        Note:
-            Once the cell's width is set or the requested height is larger than the number of
-            content blocks, the cell's blocks are formatted to include horizontal and vertical padding.
+        Returns the normalized content blocks when no padding is required;
+        otherwise returns the rendered blocks including horizontal and vertical
+        padding.
 
         Returns:
-            The cell's blocks.
+            The cell's content or rendered blocks.
 
         """
         if self._width > 0 or self._height > len(self._content_blocks):
@@ -108,10 +134,13 @@ class TableCell(Canvas):
 
     @blocks.setter
     def blocks(self, blocks: list[str]):
-        """Set the cell's blocks.
+        """Set the cell's content blocks.
 
         Args:
-            blocks: The cell's new blocks.
+            blocks: The new content blocks.
+
+        Raises:
+            FrozenError: If the cell has already been normalized.
 
         """
         if hasattr(self, "_content_blocks") and isinstance(self._content_blocks, tuple):
@@ -122,7 +151,7 @@ class TableCell(Canvas):
 
     @cached_property
     def _rendered_blocks(self):
-        """Return the cell's blocks formatted to include horizontal and vertical padding."""
+        """Return the content blocks with alignment and padding applied."""
         empty_line = " " * self.width
         return tuple(
             chain(
@@ -152,23 +181,23 @@ class TableCell(Canvas):
 
     @property
     def width(self) -> int:
-        """Compute the table cell's width.
+        """Return the cell's actual width.
 
         Returns:
-            The cell's current width.
+            The greater of the content width and the requested minimum width.
 
         """
         return max(self._content_width, self._width)
 
     @width.setter
     def width(self, width: int):
-        """Set the requested minimum cell width to the given value.
-
-        Note:
-            This might require reformatting the cell's content blocks to include horizontal padding.
+        """Set the cell's minimum width.
 
         Args:
-            width: The cell's expected minimum width.
+            width: The minimum width of the cell.
+
+        Raises:
+            ValueError: If `width` is smaller than the content width.
 
         """
         if width < self._content_width:
@@ -179,32 +208,33 @@ class TableCell(Canvas):
         if width != self._width:
             self._width = width
             self._invalidate_formatting()
-            
 
     @property
     def height(self) -> int:
-        """Compute the table cell's height.
+        """Return the cell's actual height.
 
         Returns:
-            The cell's current height.
+            The greater of the content height and the requested minimum height.
 
         """
         return max(len(self._content_blocks), self._height)
 
     @height.setter
     def height(self, height: int):
-        """Set the requested minimum cell height to the given value.
-
-        Notes:
-            This might require reformatting the cell's content blocks to include vertical padding.
+        """Set the cell's minimum height.
 
         Args:
-            height: The cell's expected minium height.
+            height: The minimum height of the cell.
+
+        Raises:
+            ValueError: If `height` is smaller than the content height.
 
         """
         if height < len(self._content_blocks):
-            msg = (f"Cannot set cell height to {height} as it is smaller than the content's height "
-                   f"of {len(self._content_blocks)}.")
+            msg = (
+                f"Cannot set cell height to {height} as it is smaller than the content's height "
+                f"of {len(self._content_blocks)}."
+            )
             raise ValueError(msg)
         if height != self._height:
             self._height = height
@@ -212,7 +242,7 @@ class TableCell(Canvas):
 
     @property
     def _top_padding(self) -> int:
-        """Return the number of vertical padding lines."""
+        """Return the number of blank lines above the cell's content."""
         return (self.height - len(self._content_blocks)) * self.valign.value // 2
 
     @property
@@ -238,7 +268,7 @@ class TableCell(Canvas):
 
     def _invalidate_formatting(self) -> None:
         """Invalidate the cached formatting of the cell."""
-        self.__dict__.pop("_formatted_blocks", None)
+        self.__dict__.pop("_rendered_blocks", None)
 
     def get_annotations(self, idx: int, row_width: int) -> list[Annotation]:
         """Return a list of all annotations within the TableCell.

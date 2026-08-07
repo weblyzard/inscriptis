@@ -57,10 +57,10 @@ def test_formatted_blocks_are_cached_as_tuple():
     cell.normalize_blocks()
     cell.width = 6
 
-    formatted_blocks = cell._formatted_blocks
+    rendered_blocks = cell._rendered_blocks
 
-    assert isinstance(formatted_blocks, tuple)
-    assert formatted_blocks is cell._formatted_blocks
+    assert isinstance(rendered_blocks, tuple)
+    assert rendered_blocks is cell._rendered_blocks
 
 
 def test_width_is_enforced_to_be_at_least_content_width():
