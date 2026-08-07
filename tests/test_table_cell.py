@@ -72,6 +72,7 @@ def test_line_width_is_cached():
 def test_formatted_blocks_are_cached_as_tuple():
     cell = TableCell(HorizontalAlignment.left, VerticalAlignment.top)
     cell.blocks = ["hallo", "echo"]
+    cell.normalize_blocks()
     cell.width = 6
 
     formatted_blocks = cell._formatted_blocks

@@ -16,8 +16,11 @@ if TYPE_CHECKING:
     from inscriptis.html_properties import HorizontalAlignment, VerticalAlignment
 
 
-class FrozenError(Exception):
+class FrozenError(TypeError):
     """Raised when trying to modify a frozen object."""
+
+class BlocksNotNormalizedError(RuntimeError):
+    """Raised when an operation requires normalized blocks."""
 
 
 class TableCell(Canvas):
@@ -81,6 +84,9 @@ class TableCell(Canvas):
             The width of the cell's content.
 
         """
+        if not isinstance(self._content_blocks, tuple):
+            msg = "Cannot reliably compute content width before blocks have been normalized."
+            raise BlocksNotNormalizedError(msg)
         return max(len(line) for line in self._content_blocks)
 
     @property
@@ -115,11 +121,11 @@ class TableCell(Canvas):
 
     @cached_property
     def _formatted_blocks(self):
-        empty_line = " " * self._width
+        empty_line = " " * self.width
         return tuple(
             chain(
                 (empty_line,) * self._top_padding,
-                tuple(self.align.format(line, self._width) for line in self._content_blocks),
+                tuple(self.align.format(line, self.width) for line in self._content_blocks),
                 (empty_line,) * (self._height - len(self._content_blocks) - self._top_padding),
             )
         )
