@@ -141,14 +141,17 @@ class TableCell(Canvas):
 
     @width.setter
     def width(self, width):
-        """Set the table's width and applies the cell's horizontal formatting.
+        """Set the requested minimum cell width to the given value.
+
+        Note:
+            This might require reformatting the cell's content blocks to include horizontal padding.
 
         Args:
-            width: The cell's expected width.
+            width: The cell's expected minimum width.
 
         """
         # record new width and start reformatting
-        if width > self.width:
+        if width > self._content_width and width != self._width:
             self.__dict__.pop("_formatted_blocks", None)
         self._width = width
 
@@ -168,6 +171,9 @@ class TableCell(Canvas):
 
         Notes:
             This might require reformatting the cell's content blocks to include vertical padding.
+
+        Args:
+            height: The cell's expected minium height.
 
         """
         if height > len(self._content_blocks) and height != self._height:
