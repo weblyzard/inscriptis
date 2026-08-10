@@ -15,6 +15,7 @@ from inscriptis.model.config import ParserConfig
 
 DEFAULT_ENCODING = "utf8"
 DEFAULT_TIMEOUT = 5  # default timeout in seconds
+DEFAULT_USER_AGENT = f"Inscriptis/{__version__} (+https://inscriptis.readthedocs.io/)"
 
 
 def get_postprocessor(name):
@@ -110,6 +111,11 @@ def parse_command_line() -> argparse.Namespace:
         help=f"Request timeout in seconds (default: {DEFAULT_TIMEOUT}).",
     )
     parser.add_argument(
+        "--user-agent",
+        default=DEFAULT_USER_AGENT,
+        help=f"User agent string (default: {DEFAULT_USER_AGENT}).",
+    )
+    parser.add_argument(
         "-v",
         "--version",
         action="store_true",
@@ -128,13 +134,14 @@ def parse_command_line() -> argparse.Namespace:
     return args
 
 
-def get_html_content(url: str, timeout: int, encoding: str = "") -> str:
+def get_html_content(url: str, timeout: int, encoding: str = "", user_agent: str = DEFAULT_USER_AGENT) -> str:
     """Return the HTML content to convert.
 
     Args:
         url: URL to the HTML content, or None if the content is obtained from stdin.
         encoding: used encoding.
         timeout: timeout in seconds for retrieving the URL.
+        user_agent: user agent to report to the Web server.
 
     Returns:
         The html_content or None, if no content could be extracted.
@@ -146,7 +153,10 @@ def get_html_content(url: str, timeout: int, encoding: str = "") -> str:
         with p.open(encoding=encoding or DEFAULT_ENCODING, errors="ignore") as f:
             return f.read()
     elif url.startswith(("http://", "https://")):
-        req = requests.get(url, timeout=timeout)
+        headers = {
+            "User-Agent": user_agent,
+        }
+        req = requests.get(url, timeout=timeout, headers=headers)
         return req.content.decode(encoding or req.encoding or DEFAULT_ENCODING, errors="ignore")
     return ""
 
