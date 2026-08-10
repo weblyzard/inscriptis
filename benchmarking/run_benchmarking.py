@@ -2,7 +2,6 @@
 """Run a benchmarking suite to compare speed and output of different implementations."""
 
 import argparse
-import inscriptis
 import os
 import signal
 import statistics
@@ -11,8 +10,10 @@ import sys
 import threading
 import urllib.request
 from datetime import datetime
-from inscriptis.metadata import __version__
 from time import time
+
+import inscriptis
+from inscriptis.metadata import __version__
 
 #
 # Import inscriptis (using the version in the project directory rather than
@@ -215,10 +216,7 @@ def get_speed_table(times):
         mx = max(t)
         diff = med - fastest_median
         diff_str = "--> fastest" if diff == 0 else f"{diff:+.4f}"
-        output = (
-            f"{key:{longest_key}}: "
-            f"min={mn:.4f}  median={med:.4f}  mean={mean:.4f}  max={mx:.4f}  {diff_str}"
-        )
+        output = f"{key:{longest_key}}: min={mn:.4f}  median={med:.4f}  mean={mean:.4f}  max={mx:.4f}  {diff_str}"
         result += output + "\n"
 
     return result
@@ -308,10 +306,7 @@ def _fetch_url(url, cache_dir):
         with open(source_cache_path) as f:
             html = f.read()
     else:
-        headers = {
-            "User-Agent": f"Inscriptis/{__version__} (+https://inscriptis.readthedocs.io/)"
-
-        }
+        headers = {"User-Agent": f"Inscriptis/{__version__} (+https://inscriptis.readthedocs.io/)"}
         req = urllib.request.Request(url, headers=headers)
         try:
             html = urllib.request.urlopen(req).read().decode("utf-8")
