@@ -2,14 +2,16 @@
 """Run a benchmarking suite to compare speed and output of different implementations."""
 
 import argparse
-import operator
+import inscriptis
 import os
 import signal
+import statistics
 import subprocess
 import sys
 import threading
 import urllib.request
 from datetime import datetime
+from inscriptis.metadata import __version__
 from time import time
 
 #
@@ -22,11 +24,6 @@ LINKS_BIN = "/usr/bin/links"
 BENCHMARKING_ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(BENCHMARKING_ROOT, "../src")
 sys.path.insert(0, os.path.abspath(SRC_DIR))
-
-try:
-    import inscriptis
-except ImportError:
-    print("Inscriptis is not available. Please install it in order to compare with inscriptis.")
 
 #
 # Import third-party HTML 2 text converters.
@@ -45,7 +42,7 @@ except ImportError:
     print("justext is not available. Please install it in order to compare with justext.")
 
 
-TRIES = 7
+TRIES = 10
 OUTFILE = "speed_comparisons.txt"
 
 
@@ -57,14 +54,16 @@ class AbstractHtmlConverter:
         raise NotImplementedError
 
     def benchmark(self, html):
-        """Benchmarks the classes HTML to text converter.
+        """Benchmarks the class's HTML to text converter.
 
-        Return a tuple of the required time and the obtained text representation.
+        Return a tuple of individual conversion times and the last text result.
         """
-        start_time = time()
+        times = []
         for _ in range(TRIES):
+            start_time = time()
             text = self.get_text(html)
-        return time() - start_time, text
+            times.append(time() - start_time)
+        return times, text
 
 
 class BeautifulSoupHtmlConverter(AbstractHtmlConverter):
@@ -202,22 +201,23 @@ def save_to_file(algorithm, url, data, benchmarking_results_dir):
 
 
 def get_speed_table(times):
-    """Provide the table which compares the conversion speed."""
-    fastest = min((value for _, value in times.items()))
-    longest_key = max(len(key) for key, _ in times.items())
-    longest_value = max(len(str(value)) for _, value in times.items())
+    """Provide the table which compares the conversion speed distribution."""
+    medians = {name: statistics.median(t) for name, t in times.items()}
+    fastest_median = min(medians.values())
+    longest_key = max(len(key) for key in times)
 
     result = ""
-    for key, value in sorted(times.items(), key=operator.itemgetter(1)):
-        difference = value - fastest
-        difference = "--> fastest" if difference == 0 else f"{difference:+f}"
-
-        output = "{}{}: {}{} {}".format(
-            key,
-            " " * (longest_key - len(key)),
-            value,
-            " " * (longest_value - len(str(value))),
-            difference,
+    for key in sorted(times, key=lambda k: medians[k]):
+        t = times[key]
+        mn = min(t)
+        med = medians[key]
+        mean = statistics.mean(t)
+        mx = max(t)
+        diff = med - fastest_median
+        diff_str = "--> fastest" if diff == 0 else f"{diff:+.4f}"
+        output = (
+            f"{key:{longest_key}}: "
+            f"min={mn:.4f}  median={med:.4f}  mean={mean:.4f}  max={mx:.4f}  {diff_str}"
         )
         result += output + "\n"
 
@@ -309,8 +309,8 @@ def _fetch_url(url, cache_dir):
             html = f.read()
     else:
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-            "(KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Inscriptis/1.0"
+            "User-Agent": f"Inscriptis/{__version__} (+https://inscriptis.readthedocs.io/)"
+
         }
         req = urllib.request.Request(url, headers=headers)
         try:
@@ -344,12 +344,14 @@ def benchmark(args, source_list):
         times = {}
         for converter in CONVERTER:
             if (converter.available and not args.converter) or converter.name in args.converter:
-                time_required, text = converter.benchmark(html)
-                times[converter.name] = time_required
+                individual_times, text = converter.benchmark(html)
+                times[converter.name] = individual_times
                 save_to_file(converter.name, source_name, text, args.benchmarking_results)
 
-        for converter, conversion_time in times.items():
-            total_times[converter] = total_times.get(converter, 0) + conversion_time
+        for converter, conv_times in times.items():
+            if converter not in total_times:
+                total_times[converter] = []
+            total_times[converter].extend(conv_times)
         speed_table = get_speed_table(times)
         print(speed_table)
         output.append(speed_table)

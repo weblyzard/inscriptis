@@ -12,5 +12,4 @@ http://jr-central.co.jp
 http://www.aljazeera.net/portal
 http://www.aljazeera.net/news/humanrights/2015/12/14/%D8%A3%D9%88%D8%A8%D8%A7%D9%85%D8%A7-%D9%8A%D8%AC%D8%AF%D8%AF-%D8%A7%D9%84%D8%AA%D8%B2%D8%A7%D9%85%D9%87-%D8%A8%D8%A5%D8%BA%D9%84%D8%A7%D9%82-%D8%BA%D9%88%D8%A7%D9%86%D8%AA%D8%A7%D9%86%D8%A7%D9%85%D9%88
 https://www.fhgr.ch
-https://stackoverflow.com/questions/328356/extracting-text-from-html-file-using-python/46921881
 https://www.chur.ch/churinzahlen
