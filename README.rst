@@ -154,6 +154,9 @@ The inscript command line client supports the following parameters::
                             How to handle indentation (extended or strict; default: extended).
       --table-cell-separator TABLE_CELL_SEPARATOR
                             Separator to use between table cells (default: three spaces).
+      --user-agent USER_AGENT
+                            User agent string (default: Inscriptis/{version}
+                            (+https://inscriptis.readthedocs.io/)).
       -v, --version         display version information
 
    
