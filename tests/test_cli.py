@@ -50,7 +50,7 @@ def test_cli_read_from_file(monkeypatch, capsys):
     monkeypatch.setattr("pathlib.Path.open", mock_open(read_data=INPUT_DATA))
     cli()
 
-    # Capture the printed output
+    # Capture the printed outputinsc
     captured = capsys.readouterr()
     assert captured.out.strip() == "Hello World!"
 
@@ -63,7 +63,10 @@ def test_cli_read_from_url(monkeypatch, capsys):
     mock_request = Mock()
     mock_request.content = INPUT_DATA.encode("utf8")
     mock_request.encoding = "utf-8"
-    monkeypatch.setattr("requests.get", lambda url, timeout=0: mock_request)
+    monkeypatch.setattr(
+        "requests.get",
+        lambda url, timeout=0, headers="Inscriptis/2.7.4 (+https://inscriptis.readthedocs.io/)": mock_request,
+    )
     cli()
 
     # Capture the printed output
