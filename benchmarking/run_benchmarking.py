@@ -308,7 +308,11 @@ def _fetch_url(url, cache_dir):
         with open(source_cache_path) as f:
             html = f.read()
     else:
-        req = urllib.request.Request(url)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                          "(KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Inscriptis/1.0"
+        }
+        req = urllib.request.Request(url, headers=headers)
         try:
             html = urllib.request.urlopen(req).read().decode("utf-8")
         except UnicodeDecodeError:
