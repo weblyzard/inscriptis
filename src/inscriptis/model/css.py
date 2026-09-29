@@ -17,6 +17,10 @@ from inscriptis.html_properties import (
 )
 from inscriptis.model.html_element import HtmlElement
 
+# upper limit for lenght specifications to prevent
+# unbound memory allocation by malformed HTML.
+MAX_EM_LEN = 100000
+
 
 class CssParse:
     """Parse CSS specifications and applies them to HtmlElements.
@@ -68,8 +72,8 @@ class CssParse:
         unit = _m.group(2)
 
         if unit not in ("em", "qem", "rem"):
-            return round(value / 8)
-        return round(value)
+            value = value / 8
+        return min(round(value), MAX_EM_LEN)
 
     # ------------------------------------------------------------------------
     # css styles
