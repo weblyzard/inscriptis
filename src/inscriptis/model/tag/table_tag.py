@@ -1,6 +1,7 @@
 """Handle the <table>, <tr> and <td> tags."""
 
 from inscriptis.annotation import Annotation
+from inscriptis.html_properties import Display
 from inscriptis.model.canvas import Canvas
 from inscriptis.model.html_document_state import HtmlDocumentState
 from inscriptis.model.table import Table, TableCell
@@ -63,3 +64,8 @@ def table_end_handler(state: HtmlDocumentState) -> None:
 
     # transfer in-table annotations
     state.tags[-2].canvas.annotations.extend(table.get_annotations(start_idx, state.tags[-2].canvas.left_margin))
+
+    # write_verbatim_text() opened a block whose prefix is read above for the
+    # annotation offsets; drop it now so sibling tables do not accumulate padding
+    if state.tags[-2].display == Display.block:
+        state.tags[-2].canvas.current_block.prefix.remove_last_prefix()
