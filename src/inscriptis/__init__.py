@@ -65,7 +65,7 @@ import re
 from typing import TYPE_CHECKING, Any
 
 from lxml.etree import ParserError
-from lxml.html import HtmlElement, fromstring
+from lxml.html import HtmlElement, document_fromstring
 
 from inscriptis.html_engine import Inscriptis
 
@@ -93,10 +93,14 @@ def _get_html_tree(html_content: str) -> HtmlElement | None:
     if html_content.startswith("<?xml "):
         html_content = RE_STRIP_XML_DECLARATION.sub("", html_content, count=1)
 
+    # Use document_fromstring rather than fromstring: for fragments with
+    # multiple root elements or top-level text, fromstring returns a synthetic
+    # <div> or <span> wrapper that the CSS profiles style, adding indentation
+    # or whitespace that is not part of the input.
     try:
-        return fromstring(html_content)
+        return document_fromstring(html_content)
     except ParserError:
-        return fromstring("<pre>" + html_content + "</pre>")
+        return document_fromstring("<pre>" + html_content + "</pre>")
 
 
 def get_text(html_content: str, config: ParserConfig | None = None) -> str:
