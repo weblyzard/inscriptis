@@ -24,6 +24,7 @@ tests/reference.txt
 docs/paper/*.pdf
 htmlcov/
 poetry.lock
+uv.lock
 
 # test
 converted.txt
