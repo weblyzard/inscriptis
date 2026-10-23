@@ -2,6 +2,8 @@
 
 """
 Ensure that sibling tables do not accumulate indentation of their parent.
+
+Verifies the fix for https://github.com/weblyzard/inscriptis/security/advisories/GHSA-q87h-c5m7-659j
 """
 
 from inscriptis import get_text
