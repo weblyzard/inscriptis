@@ -20,10 +20,10 @@ def test_html_snippets(filter_str=""):
         if filter_str not in testcase_txt:
             continue
 
-        with open(testcase_txt) as f:
+        with open(testcase_txt, encoding="utf8") as f:
             reference_txt = f.read().rstrip()
 
-        with open(testcase_txt.replace(".txt", ".html")) as f:
+        with open(testcase_txt.replace(".txt", ".html"), encoding="utf8") as f:
             print(f.name)
             html = f"<html><body>{f.read()}</body></html>"
 
@@ -33,9 +33,9 @@ def test_html_snippets(filter_str=""):
             print(f"File:{testcase_txt}\nHTML:\n{html}\n\nReference:\n{reference_txt}\n\nConverted:\n{converted_txt}")
             print("HTML file:", testcase_txt.replace(".txt", ".html"))
             print("Visualize differences with `vimdiff reference.txt converted.txt`")
-            with open("reference.txt", "w") as f:
+            with open("reference.txt", "w", encoding="utf8") as f:
                 f.write(reference_txt)
-            with open("converted.txt", "w") as f:
+            with open("converted.txt", "w", encoding="utf8") as f:
                 f.write(converted_txt)
 
         assert converted_txt == reference_txt

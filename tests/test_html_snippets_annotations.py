@@ -26,10 +26,10 @@ def test_html_annotations(filter_str=""):
         if filter_str not in annotation_file:
             continue
 
-        with open(annotation_file) as f:
+        with open(annotation_file, encoding="utf8") as f:
             reference = load(f)
 
-        with open(annotation_file.replace(".json", ".html")) as f:
+        with open(annotation_file.replace(".json", ".html"), encoding="utf8") as f:
             print(f.name)
             html = f"<html><body>{f.read()}</body></html>"
 
