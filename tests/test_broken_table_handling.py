@@ -20,4 +20,4 @@ def test_forgotten_td_close_tag():
     # two lines (i.e. missing </td> before the <tr> and before the </table>
     html = "<body>hallo<table><tr><td>1<td>2<tr><td>3<td>4</table>echo</body>"
     print(html)
-    assert get_text(html, config) == "hallo\n1  2\n3  4\n\necho"
+    assert get_text(html, config) == "hallo1  2\n3  4\n\necho"
