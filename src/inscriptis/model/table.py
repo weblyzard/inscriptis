@@ -133,7 +133,7 @@ class TableCell(Canvas):
         return self._content_blocks
 
     @blocks.setter
-    def blocks(self, blocks: list[str]):
+    def blocks(self, blocks: Sequence[str]):
         """Set the cell's content blocks.
 
         Args:
