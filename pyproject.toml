@@ -52,13 +52,12 @@ web-service = [
 dev = [
     "pytest>=9.1.1",
     "fastapi>=0.118.0,<1.0.0",
-    "ruff>=0.16.1",
+    "ruff>=0.17.2",
     "httpx2>=2.9.1",
     "uvicorn>=0.52.1",
-    "ty>=0.0.69",
+    "ty>=0.0.91",
     "pytest-cov>=7.1.0",
     "safety>=3.8.1",
-    "tox>=4.58.0",
 ]
 [build-system]
 requires = ["hatchling"]
