@@ -108,6 +108,7 @@ def parse_command_line() -> argparse.Namespace:
     parser.add_argument(
         "--timeout",
         default=DEFAULT_TIMEOUT,
+        type=float,
         help=f"Request timeout in seconds (default: {DEFAULT_TIMEOUT}).",
     )
     parser.add_argument(

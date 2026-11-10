@@ -114,6 +114,30 @@ def test_missing_input_file(monkeypatch, capsys):
     assert captured.out.strip().startswith("ERROR: Cannot open input file")
 
 
+def test_cli_timeout_is_passed_as_number(monkeypatch, capsys):
+    """The CLI --timeout option must reach requests as a number, not a string."""
+    monkeypatch.setattr(
+        "sys.argv", ["inscript", "https://www.fhgr.ch/test.html", "--timeout", "10"]
+    )
+
+    seen = {}
+    mock_request = Mock()
+    mock_request.content = INPUT_DATA.encode("utf8")
+    mock_request.encoding = "utf-8"
+
+    def fake_get(url, timeout=0, headers=None):
+        seen["timeout"] = timeout
+        return mock_request
+
+    monkeypatch.setattr("requests.get", fake_get)
+    cli()
+
+    captured = capsys.readouterr()
+    assert captured.out.strip() == "Hello World!"
+    assert isinstance(seen["timeout"], float)
+    assert seen["timeout"] == 10.0
+
+
 def test_missing_annotation_file(monkeypatch, capsys):
     monkeypatch.setattr("sys.argv", ["inscript", "--annotation-rules", "rules.json"])
     monkeypatch.setattr("sys.stdin", StringIO(INPUT_DATA))
