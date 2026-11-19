@@ -74,6 +74,21 @@ def test_cli_read_from_url(monkeypatch, capsys):
     assert captured.out.strip() == "Hello World!"
 
 
+@pytest.mark.parametrize(("timeout_value", "expected_timeout"), [("10", 10.0), ("0.25", 0.25)])
+def test_cli_url_timeout(monkeypatch, timeout_value, expected_timeout):
+    """Test that the command line client passes the timeout value to requests."""
+    url = "https://www.fhgr.ch/test.html"
+    monkeypatch.setattr("sys.argv", ["inscript", "--timeout", timeout_value, url])
+
+    mock_request = Mock(content=INPUT_DATA.encode("utf8"), encoding="utf-8")
+    mock_get = Mock(return_value=mock_request)
+    monkeypatch.setattr("requests.get", mock_get)
+
+    cli()
+
+    assert mock_get.call_args.kwargs["timeout"] == expected_timeout
+
+
 def test_cli_annotations(monkeypatch, capsys):
     """Test annotation handling in the command line client."""
     # Prepare input data for the test
