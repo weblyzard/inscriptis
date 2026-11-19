@@ -17,9 +17,25 @@ from inscriptis.html_properties import (
 )
 from inscriptis.model.html_element import HtmlElement
 
-# upper limit for lenght specifications to prevent
+# upper limit for length specifications to prevent
 # unbound memory allocation by malformed HTML.
 MAX_EM_LEN = 100000
+MAX_CSS_LEN = 150
+
+# The CSS length units that are supported by Inscriptis
+# and their approximate conversion factors.
+CSS_UNIT_TO_EM = {
+    "px": 1 / 8,
+    "pt": 96 / 72 / 8,
+    "pc": 16 / 8,
+    "in": 96 / 8,
+    "cm": 96 / 2.54 / 8,
+    "mm": 96 / 25.4 / 8,
+    "q": 96 / 101.6 / 8,
+    "em": 1,
+    "rem": 1,
+    "ex": 0.5,
+}
 
 
 class CssParse:
@@ -30,7 +46,12 @@ class CssParse:
     """
 
     # used to separate value and unit from each other
-    RE_UNIT = re_compile(r"(-?[0-9.]+)(\w+)")
+    RE_UNIT = re_compile(
+        r"[ \t]*"
+        r"(-?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))"
+        r"(" + "|".join(CSS_UNIT_TO_EM.keys()) + r")"
+        r"[ \t]*"
+    )
 
     @staticmethod
     def attr_style(style_attribute: str, html_element: HtmlElement):
@@ -67,13 +88,14 @@ class CssParse:
             the length in em.
 
         """
-        _m = CssParse.RE_UNIT.search(length)
-        value = float(_m.group(1))
-        unit = _m.group(2)
-
-        if unit not in ("em", "qem", "rem"):
-            value = value / 8
-        return min(round(value), MAX_EM_LEN)
+        if len(length) > MAX_CSS_LEN:
+            return 0
+        if _m := CssParse.RE_UNIT.fullmatch(length.lower()):
+            value = float(_m.group(1))
+            unit = _m.group(2)
+            value *= CSS_UNIT_TO_EM[unit]
+            return min(round(value), MAX_EM_LEN)
+        return 0
 
     # ------------------------------------------------------------------------
     # css styles
@@ -103,20 +125,17 @@ class CssParse:
     @staticmethod
     def attr_margin_top(value: str, html_element: HtmlElement):
         """Apply the given top margin."""
-        with suppress(ValueError):
-            html_element.margin_before = CssParse._get_em(value)
+        html_element.margin_before = CssParse._get_em(value)
 
     @staticmethod
     def attr_margin_bottom(value: str, html_element: HtmlElement):
         """Apply the provided bottom margin."""
-        with suppress(ValueError):
-            html_element.margin_after = CssParse._get_em(value)
+        html_element.margin_after = CssParse._get_em(value)
 
     @staticmethod
     def attr_padding_left(value: str, html_element: HtmlElement):
         """Apply the given left padding_inline."""
-        with suppress(ValueError):
-            html_element.padding_inline = CssParse._get_em(value)
+        html_element.padding_inline = CssParse._get_em(value)
 
     @staticmethod
     def attr_horizontal_align(value: str, html_element: HtmlElement):
