@@ -69,6 +69,7 @@ class ParserConfig:
         annotation_rules: dict[str, list[str]] | None = None,
         table_cell_separator: str = "  ",
         custom_html_tag_handler_mapping: CustomHtmlTagHandlerMapping | None = None,
+        output_char_limit: int | None = None,
     ):
         """Create a ParserConfig configuration.
 
@@ -84,7 +85,10 @@ class ParserConfig:
             annotation_rules: an optional dictionary of annotation rules which
                               specify tags and attributes to annotation.
             table_cell_separator: separator to use between table cells.
-            custom_html_tag_handler_mapping: an optional CustomHtmlTagHandler
+            custom_html_tag_handler_mapping: an optional CustomHtmlTagHandler.
+            output_char_limit: maximum number of characters in the rendered output.
+                If None, defaults to 8_000_000 (8 MB). Set to 0 to disable the limit.
+                Raise OutputBudgetExceeded if limit is exceeded.
 
         """
         self.display_images = display_images
@@ -95,6 +99,7 @@ class ParserConfig:
         self.attribute_handler = Attribute()
         self.table_cell_separator = table_cell_separator
         self.custom_html_tag_handler_mapping = custom_html_tag_handler_mapping
+        self.output_char_limit = output_char_limit if output_char_limit is not None else 8_000_000
 
         if annotation_rules:
             # ensure that we do not modify the original model or its

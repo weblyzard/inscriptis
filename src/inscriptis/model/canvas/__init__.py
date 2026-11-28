@@ -48,14 +48,40 @@ class Canvas:
         "blocks",
         "current_block",
         "margin",
+        "output_char_limit",
+        "output_chars_used",
     )
 
-    def __init__(self):
+    def __init__(self, output_char_limit: int | None = None):
         self.margin = 1000  # margin to the previous block
         self.current_block = Block(0, Prefix())
         self.blocks: Sequence[str] = []
         self.annotations = []
         self._open_annotations = {}
+        self.output_char_limit = output_char_limit if output_char_limit is not None else 0
+        self.output_chars_used = 0
+
+    def _check_budget(self, chars_to_add: int) -> None:
+        """Check if adding chars_to_add would exceed the budget.
+        
+        Args:
+            chars_to_add: Number of characters about to be added.
+            
+        Raises:
+            OutputBudgetExceeded: If the output budget would be exceeded.
+        """
+        if self.output_char_limit > 0:
+            if self.output_chars_used + chars_to_add > self.output_char_limit:
+                from inscriptis.exception import OutputBudgetExceeded
+                raise OutputBudgetExceeded(self.output_char_limit, self.output_chars_used)
+
+    def _add_chars(self, count: int) -> None:
+        """Track characters added to output.
+        
+        Args:
+            count: Number of characters to add to the counter.
+        """
+        self.output_chars_used += count
 
     def open_tag(self, tag: HtmlElement) -> None:
         """Register that a tag is opened.
@@ -81,21 +107,28 @@ class Canvas:
         required_margin = max(tag.previous_margin_after, tag.margin_before)
         if required_margin > self.margin:
             required_newlines = required_margin - self.margin
+            newline_count = required_newlines - 1
+            self._check_budget(newline_count)
             self.current_block.idx += required_newlines
-            self.blocks.append("\n" * (required_newlines - 1))
+            self.blocks.append("\n" * newline_count)
+            self._add_chars(newline_count)
             self.margin = required_margin
 
     def write_unconsumed_bullet(self) -> None:
         """Write unconsumed bullets to the blocks list."""
         bullet = self.current_block.prefix.unconsumed_bullet
         if bullet:
+            self._check_budget(len(bullet))
             self.blocks.append(bullet)
             self.current_block.idx += len(bullet)
+            self._add_chars(len(bullet))
             self.current_block = self.current_block.new_block()
             self.margin = 0
 
     def write(self, tag: HtmlElement, text: str, whitespace: WhiteSpace | None = None) -> None:
         """Write the given text to the current block."""
+        # Check budget before merging (approximate check on input size)
+        self._check_budget(len(text))
         self.current_block.merge(text, whitespace or tag.whitespace)
 
     def close_tag(self, tag: HtmlElement) -> None:
@@ -130,13 +163,18 @@ class Canvas:
         """
         if tag.margin_after > self.margin:
             required_newlines = tag.margin_after - self.margin
+            newline_count = required_newlines - 1
+            self._check_budget(newline_count)
             self.current_block.idx += required_newlines
-            self.blocks.append("\n" * (required_newlines - 1))
+            self.blocks.append("\n" * newline_count)
+            self._add_chars(newline_count)
             self.margin = tag.margin_after
 
     def write_newline(self) -> None:
         if not self.flush_inline():
+            self._check_budget(1)
             self.blocks.append("")
+            self._add_chars(1)
             self.current_block = self.current_block.new_block()
 
     def get_text(self) -> str:
@@ -158,7 +196,10 @@ class Canvas:
 
         """
         if not self.current_block.is_empty():
-            self.blocks.append(self.current_block.content)
+            content = self.current_block.content
+            self._check_budget(len(content))
+            self.blocks.append(content)
+            self._add_chars(len(content))
             self.current_block = self.current_block.new_block()
             self.margin = 0
             return True
