@@ -20,7 +20,7 @@ class HtmlDocumentState:
 
     def __init__(self, config: ParserConfig):
         # instance variables
-        self.canvas = Canvas(config.output_char_limit)
+        self.canvas = Canvas()
         self.config = config
         self.css = config.css
         self.apply_attributes = config.attribute_handler.apply_attributes
