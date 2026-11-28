@@ -15,13 +15,7 @@ from inscriptis import get_text
 
 def test_ragged_table_is_linear():
     n = 12000
-    html = (
-        "<table><tr>"
-        + "<td>x</td>" * n
-        + "</tr>"
-        + "<tr><td>y</td></tr>" * n
-        + "</table>"
-    )
+    html = "<table><tr>" + "<td>x</td>" * n + "</tr>" + "<tr><td>y</td></tr>" * n + "</table>"
     start = time.monotonic()
     get_text(html)
     # The quadratic version took several seconds at this size (about 12 s); the
