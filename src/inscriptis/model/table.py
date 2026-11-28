@@ -422,17 +422,18 @@ class Table:
 
     def _set_column_width(self):
         """Set the column width for all :class:`TableCell`s in the table."""
-        # determine maximum number of columns
-        max_columns = max(len(row.columns) for row in self.rows)
+        # Compute the width of each column in a single pass over the cells that
+        # actually exist, then assign it. Iterating ``max_columns`` times over
+        # all rows instead is O(columns x rows), which is quadratic for a ragged
+        # table (one wide row plus many short rows).
+        column_width: dict[int, int] = {}
+        for row in self.rows:
+            for column_idx, cell in enumerate(row.columns):
+                column_width[column_idx] = max(column_width.get(column_idx, 0), cell.width)
 
-        for cur_column_idx in range(max_columns):
-            # determine the required column width for the current column
-            max_column_width = max(row.columns[cur_column_idx].width for row in self.rows if len(row) > cur_column_idx)
-
-            # set column width for all TableCells in the current column
-            for row in self.rows:
-                if len(row) > cur_column_idx:
-                    row.columns[cur_column_idx].width = max_column_width
+        for row in self.rows:
+            for column_idx, cell in enumerate(row.columns):
+                cell.width = column_width[column_idx]
 
     def get_text(self) -> str:
         """Return and render the text of the given table."""
